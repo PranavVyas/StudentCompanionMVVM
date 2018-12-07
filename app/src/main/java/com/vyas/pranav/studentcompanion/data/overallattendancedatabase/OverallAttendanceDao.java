@@ -6,19 +6,20 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
 @Dao
 public interface OverallAttendanceDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertOverall(OverallAttendanceEntry overallAttendanceEntry);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllOverall(List<OverallAttendanceEntry> overallAttendanceEntries);
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateOverall(OverallAttendanceEntry overallAttendanceEntry);
 
     @Delete

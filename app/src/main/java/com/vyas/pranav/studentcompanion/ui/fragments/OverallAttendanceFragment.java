@@ -8,10 +8,16 @@ import android.view.ViewGroup;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.OverallAttendanceRecyclerAdapter;
+import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceViewModel;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -26,6 +32,7 @@ public class OverallAttendanceFragment extends Fragment {
     RecyclerView rvOverallAttendance;
 
     private OverallAttendanceRecyclerAdapter mAdapter;
+    private OverallAttendanceViewModel mViewModel;
 
     public OverallAttendanceFragment() {
         // Required empty public constructor
@@ -44,10 +51,18 @@ public class OverallAttendanceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpRecyclerView();
+        mViewModel = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
+        mViewModel.getAllOverallAttendance().observe(this, new Observer<List<OverallAttendanceEntry>>() {
+            @Override
+            public void onChanged(List<OverallAttendanceEntry> overallAttendanceEntries) {
+                mAdapter.setOverallAttendanceEntries(overallAttendanceEntries);
+            }
+        });
     }
 
     private void setUpRecyclerView() {
         mAdapter = new OverallAttendanceRecyclerAdapter();
+        mAdapter.setHasStableIds(true);
         rvOverallAttendance.setAdapter(mAdapter);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         lm.setOrientation(RecyclerView.VERTICAL);

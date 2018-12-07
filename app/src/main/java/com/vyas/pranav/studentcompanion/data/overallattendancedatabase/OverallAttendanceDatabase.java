@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = OverallAttendanceEntry.class, version = 1, exportSchema = false)
-abstract class OverallAttendanceDatabase extends RoomDatabase {
+public abstract class OverallAttendanceDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
     private static OverallAttendanceDatabase sInstance;
@@ -23,7 +23,7 @@ abstract class OverallAttendanceDatabase extends RoomDatabase {
     };
     private static String DB_NAME = "OverallAttendanceDatabase";
 
-    static OverallAttendanceDatabase getInstance(Context context) {
+    public static OverallAttendanceDatabase getInstance(Context context) {
         if (sInstance == null) {
             synchronized (LOCK) {
                 sInstance = Room.databaseBuilder(context

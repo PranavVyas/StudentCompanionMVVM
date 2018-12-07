@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +18,7 @@ import me.itangqi.waveloadingview.WaveLoadingView;
 
 public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<OverallAttendanceRecyclerAdapter.OverallAttendanceHolder> {
 
+    List<OverallAttendanceEntry> overallAttendanceEntries;
     @NonNull
     @Override
     public OverallAttendanceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -24,15 +28,27 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
 
     @Override
     public void onBindViewHolder(@NonNull OverallAttendanceHolder holder, int position) {
-        holder.progressPresent.setProgressValue(50);
-        holder.progressPresent.cancelAnimation();
-        holder.tvAvailableToBunk.setText("HIi");
-        holder.tvSubject.setText("Sunhetdjsdhd");
+        if (overallAttendanceEntries == null) {
+            holder.progressPresent.setProgressValue(50);
+            holder.tvAvailableToBunk.setText("HIi");
+            holder.tvSubject.setText("Sunhetdjsdhd");
+        } else {
+            holder.tvSubject.setText(overallAttendanceEntries.get(position).getSubName());
+            int presentDays = overallAttendanceEntries.get(position).getPresentDays();
+            int bunkedDays = overallAttendanceEntries.get(position).getBunkedDays();
+            int totalDays = overallAttendanceEntries.get(position).getTotalDays();
+            float presentPersent = (presentDays * 100) / totalDays;
+            int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * 0.25);
+            int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
+            holder.tvAvailableToBunk.setText("Available to Bunk " + daysAvailableToBunk);
+            holder.progressPresent.setProgressValue((int) presentPersent);
+            holder.progressPresent.setCenterTitle((int) presentPersent + " %");
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 1;
+        return (overallAttendanceEntries == null) ? 1 : overallAttendanceEntries.size();
     }
 
     class OverallAttendanceHolder extends RecyclerView.ViewHolder {
@@ -48,5 +64,10 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public void setOverallAttendanceEntries(List<OverallAttendanceEntry> overallAttendanceEntries) {
+        this.overallAttendanceEntries = overallAttendanceEntries;
+        notifyDataSetChanged();
     }
 }
