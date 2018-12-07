@@ -1,4 +1,4 @@
-package com.vyas.pranav.studentcompanion;
+package com.vyas.pranav.studentcompanion.utils;
 
 import android.app.Application;
 import android.content.Context;
@@ -11,6 +11,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
+import com.vyas.pranav.studentcompanion.R;
 
 public class MainApp extends Application {
 

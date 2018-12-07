@@ -1,4 +1,4 @@
-package com.vyas.pranav.studentcompanion;
+package com.vyas.pranav.studentcompanion.utils;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
