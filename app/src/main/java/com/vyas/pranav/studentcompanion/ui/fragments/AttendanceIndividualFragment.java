@@ -47,7 +47,6 @@ public class AttendanceIndividualFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new AttendanceIndividualRecyclerAdapter();
         setUpRecyclerView();
         mDb = AttendanceDatabase.getInstance(getContext());
         AttendanceForDateViewModelFactory factory = new AttendanceForDateViewModelFactory(mDb, ConvertterUtils.convertStringToDate("06/12/2018"));
@@ -78,6 +77,7 @@ public class AttendanceIndividualFragment extends Fragment {
     }
 
     private void setUpRecyclerView() {
+        mAdapter = new AttendanceIndividualRecyclerAdapter();
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         lm.setOrientation(RecyclerView.VERTICAL);
         rvMain.setAdapter(mAdapter);

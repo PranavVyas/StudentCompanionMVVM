@@ -31,7 +31,7 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AttendanceIndividualHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final AttendanceIndividualHolder holder, final int position) {
         if (attendanceEntries != null) {
             Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceEntries.get(position).getLectureNo());
             holder.tvLectureNo.setText("Lecture " + attendanceEntries.get(position).getLectureNo());
@@ -44,6 +44,17 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
             holder.tvSwitchSummery.setText("Present");
             holder.switchPresent.setChecked(true);
         }
+        holder.switchPresent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO Attach comment here for the if statement
+                if (listener != null) {
+                    AttendanceEntry attendanceEntry = attendanceEntries.get(position);
+                    attendanceEntry.setPresent(holder.switchPresent.isChecked());
+                    listener.onAttendanceSwitchToggled(attendanceEntry);
+                }
+            }
+        });
     }
 
     @Override
@@ -77,18 +88,6 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
         AttendanceIndividualHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            switchPresent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    //TODO Attach comment here for the if statement
-                    if (listener != null && position != RecyclerView.NO_POSITION) {
-                        AttendanceEntry attendanceEntry = attendanceEntries.get(position);
-                        attendanceEntry.setPresent(switchPresent.isChecked());
-                        listener.onAttendanceSwitchToggled(attendanceEntry);
-                    }
-                }
-            });
         }
     }
 
