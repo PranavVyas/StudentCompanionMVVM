@@ -1,11 +1,11 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
 import android.app.Application;
-import android.os.AsyncTask;
 
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
+import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 
 import java.util.Date;
 import java.util.List;
@@ -15,90 +15,56 @@ import androidx.lifecycle.LiveData;
 public class AttendanceDatabaseRepository {
 
     private AttendanceDao attendanceDao;
+    private AppExecutors mExecutors;
 
     public AttendanceDatabaseRepository(Application application) {
         AttendanceDatabase mAttendanceDb = AttendanceDatabase.getInstance(application);
         attendanceDao = mAttendanceDb.attendanceDao();
+        mExecutors = AppExecutors.getInstance();
     }
 
     public AttendanceDatabaseRepository(AttendanceDao attendanceDao) {
         this.attendanceDao = attendanceDao;
+        mExecutors = AppExecutors.getInstance();
     }
 
     public LiveData<List<AttendanceEntry>> getAttendanceForDate(Date date) {
         return attendanceDao.getAttendanceForDate(date);
     }
 
-    public void insertAttendance(AttendanceEntry attendanceEntry) {
-        new InsertAttendanceAsyncTask(attendanceDao).execute(attendanceEntry);
+    public void insertAttendance(final AttendanceEntry attendanceEntry) {
+        mExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                attendanceDao.insertAttendance(attendanceEntry);
+            }
+        });
     }
 
-    public void deleteAttendance(AttendanceEntry attendanceEntry) {
-        new DeleteAttendanceAsyncTask(attendanceDao).execute(attendanceEntry);
+    public void deleteAttendance(final AttendanceEntry attendanceEntry) {
+        mExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                attendanceDao.deleteAttendance(attendanceEntry);
+            }
+        });
     }
 
     public void deleteAllAttendance() {
-        new DeleteAllAttendanceAsyncTask(attendanceDao).execute();
+        mExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                attendanceDao.deleteAll();
+            }
+        });
     }
 
-    public void updateAttendance(AttendanceEntry attendanceEntry) {
-        new UpdateAttendanceAsyncTask(attendanceDao).execute(attendanceEntry);
+    public void updateAttendance(final AttendanceEntry attendanceEntry) {
+        mExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                attendanceDao.updateAttendance(attendanceEntry);
+            }
+        });
     }
-
-    private static class InsertAttendanceAsyncTask extends AsyncTask<AttendanceEntry, Void, Void> {
-        AttendanceDao attendanceDao;
-
-        private InsertAttendanceAsyncTask(AttendanceDao attendanceDao) {
-            this.attendanceDao = attendanceDao;
-        }
-
-        @Override
-        protected Void doInBackground(AttendanceEntry... attendanceEntries) {
-            attendanceDao.insertAttendance(attendanceEntries[0]);
-            return null;
-        }
-    }
-
-    private static class UpdateAttendanceAsyncTask extends AsyncTask<AttendanceEntry, Void, Void> {
-        AttendanceDao attendanceDao;
-
-        private UpdateAttendanceAsyncTask(AttendanceDao attendanceDao) {
-            this.attendanceDao = attendanceDao;
-        }
-
-        @Override
-        protected Void doInBackground(AttendanceEntry... attendanceEntries) {
-            attendanceDao.updateAttendance(attendanceEntries[0]);
-            return null;
-        }
-    }
-
-    private static class DeleteAttendanceAsyncTask extends AsyncTask<AttendanceEntry, Void, Void> {
-        AttendanceDao attendanceDao;
-
-        private DeleteAttendanceAsyncTask(AttendanceDao attendanceDao) {
-            this.attendanceDao = attendanceDao;
-        }
-
-        @Override
-        protected Void doInBackground(AttendanceEntry... attendanceEntries) {
-            attendanceDao.deleteAttendance(attendanceEntries[0]);
-            return null;
-        }
-    }
-
-    private static class DeleteAllAttendanceAsyncTask extends AsyncTask<Void, Void, Void> {
-        AttendanceDao attendanceDao;
-
-        private DeleteAllAttendanceAsyncTask(AttendanceDao attendanceDao) {
-            this.attendanceDao = attendanceDao;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            attendanceDao.deleteAll();
-            return null;
-        }
-    }
-
 }

@@ -18,7 +18,7 @@ import me.itangqi.waveloadingview.WaveLoadingView;
 
 public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<OverallAttendanceRecyclerAdapter.OverallAttendanceHolder> {
 
-    List<OverallAttendanceEntry> overallAttendanceEntries;
+    private List<OverallAttendanceEntry> overallAttendanceEntries;
     @NonNull
     @Override
     public OverallAttendanceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,20 +29,20 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
     @Override
     public void onBindViewHolder(@NonNull OverallAttendanceHolder holder, int position) {
         if (overallAttendanceEntries == null) {
-            holder.progressPresent.setProgressValue(50);
-            holder.tvAvailableToBunk.setText("HIi");
-            holder.tvSubject.setText("Sunhetdjsdhd");
+            holder.progressPresent.setProgressValue(0);
+            holder.tvAvailableToBunk.setText("XX");
+            holder.tvSubject.setText("SUBJECT XX");
         } else {
             holder.tvSubject.setText(overallAttendanceEntries.get(position).getSubName());
             int presentDays = overallAttendanceEntries.get(position).getPresentDays();
             int bunkedDays = overallAttendanceEntries.get(position).getBunkedDays();
             int totalDays = overallAttendanceEntries.get(position).getTotalDays();
-            float presentPersent = (presentDays * 100) / totalDays;
+            float presentPresent = (presentDays * 100) / totalDays;
             int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * 0.25);
             int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
             holder.tvAvailableToBunk.setText("Available to Bunk " + daysAvailableToBunk);
-            holder.progressPresent.setProgressValue((int) presentPersent);
-            holder.progressPresent.setCenterTitle((int) presentPersent + " %");
+            holder.progressPresent.setProgressValue((int) presentPresent);
+            holder.progressPresent.setCenterTitle((int) presentPresent + " %");
         }
     }
 
@@ -52,7 +52,6 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
     }
 
     class OverallAttendanceHolder extends RecyclerView.ViewHolder {
-
         @BindView(R.id.progress_recycler_overall_attendance_present_percent)
         WaveLoadingView progressPresent;
         @BindView(R.id.tv_recycler_overall_attendance_available_to_bunk)
@@ -60,7 +59,7 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
         @BindView(R.id.tv_recycler_overall_attendance_subject)
         TextView tvSubject;
 
-        public OverallAttendanceHolder(@NonNull View itemView) {
+        OverallAttendanceHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

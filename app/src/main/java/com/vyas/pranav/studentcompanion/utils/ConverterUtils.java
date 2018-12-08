@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-public class ConvertterUtils {
+public class ConverterUtils {
     /**
      * Convert string to date.
      *
@@ -101,21 +101,6 @@ public class ConvertterUtils {
     }
 
     /**
-     * Generate id for individual attendance string.
-     *
-     * @param date      the date
-     * @param lectureNo the lecture no
-     * @return the string
-     */
-    public static String generateIdForIndividualAttendance(Date date, int lectureNo) {
-        return convertDateToString(date) + lectureNo;
-    }
-
-    public static String generateIdForIndividualAttendance(String dateStr, int lectureNo) {
-        return dateStr + lectureNo;
-    }
-
-    /**
      * Extract elements from date custom date.
      *
      * @param date the date
@@ -155,7 +140,7 @@ public class ConvertterUtils {
      * @return the string
      */
     public static String convertTimeIntInString(int time) {
-        CustomTime customTime = extractHourandMinFromTime(time);
+        CustomTime customTime = extractHourAndMinFromTime(time);
         int hour = customTime.getHour();
         int min = customTime.getMin();
         String hourStr = ((hour < 10) ? "0" + hour : "" + hour);
@@ -170,7 +155,7 @@ public class ConvertterUtils {
      * @param time the time
      * @return the custom time (Object that contains various helper varables)
      */
-    public static CustomTime extractHourandMinFromTime(int time) {
+    public static CustomTime extractHourAndMinFromTime(int time) {
         int hour = time / 60;
         int min = time % 60;
         return new CustomTime(min, hour);
@@ -182,7 +167,7 @@ public class ConvertterUtils {
      * @param timeStr the time str
      * @return the custom time
      */
-    public static CustomTime extractHourandMinFromTime(String timeStr) {
+    public static CustomTime extractHourAndMinFromTime(String timeStr) {
         int time = convertTimeInInt(timeStr);
         int hour = time / 60;
         int min = time % 60;

@@ -19,10 +19,6 @@ public class AttendanceEntry {
     private boolean present;
 
     @Ignore
-    public AttendanceEntry() {
-    }
-
-    @Ignore
     public AttendanceEntry(Date date, int lectureNo, String subjectName, String facultyName, boolean present) {
         this.date = date;
         this.lectureNo = lectureNo;

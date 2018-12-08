@@ -4,7 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.vyas.pranav.studentcompanion.data.DateConverter;
-import com.vyas.pranav.studentcompanion.utils.ConvertterUtils;
+import com.vyas.pranav.studentcompanion.utils.Constants;
+import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,23 +46,6 @@ public abstract class AttendanceDatabase extends RoomDatabase {
 
     private static void populateFakeAttendance(AttendanceDatabase db) {
         new addEntries(db).execute();
-//        AttendanceDao attendanceDao = db.attendanceDao();
-//        AttendanceEntry attendanceEntry = new AttendanceEntry("0612201801", ConvertterUtils.convertStringToDate("06/12/2018"), 1, "Sub1", "F1", true);
-//        AttendanceEntry attendanceEntry2 = new AttendanceEntry("0612201802",  ConvertterUtils.convertStringToDate("06/12/2018"), 2, "Sub2", "F2", true);
-//        AttendanceEntry attendanceEntry3 = new AttendanceEntry("0612201803",  ConvertterUtils.convertStringToDate("06/12/2018"), 3, "Sub3", "F3", false);
-//        AttendanceEntry attendanceEntry4 = new AttendanceEntry("0612201804",  ConvertterUtils.convertStringToDate("06/12/2018"), 4, "Sub4", "F4", true);
-//        AttendanceEntry attendanceEntry5 = new AttendanceEntry("0712201801",  ConvertterUtils.convertStringToDate("07/12/2018"), 1, "Sub1", "F1", false);
-//        List<AttendanceEntry> entries = new ArrayList<>();
-//        entries.add(attendanceEntry);
-//        entries.add(attendanceEntry2);
-//        entries.add(attendanceEntry3);
-//        entries.add(attendanceEntry4);
-//        entries.add(attendanceEntry5);
-//        attendanceDao.insertAttendance(attendanceEntry);
-//        attendanceDao.insertAttendance(attendanceEntry2);
-//        attendanceDao.insertAttendance(attendanceEntry3);
-//        attendanceDao.insertAttendance(attendanceEntry4);
-//        attendanceDao.insertAttendance(attendanceEntry5);
     }
 
     public abstract AttendanceDao attendanceDao();
@@ -75,11 +59,11 @@ public abstract class AttendanceDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            AttendanceEntry attendanceEntry = new AttendanceEntry("0612201801", ConvertterUtils.convertStringToDate("06/12/2018"), 1, "Sub1", "F1", true);
-            AttendanceEntry attendanceEntry2 = new AttendanceEntry("0612201802", ConvertterUtils.convertStringToDate("06/12/2018"), 2, "Sub2", "F2", true);
-            AttendanceEntry attendanceEntry3 = new AttendanceEntry("0612201803", ConvertterUtils.convertStringToDate("06/12/2018"), 3, "Sub3", "F3", false);
-            AttendanceEntry attendanceEntry4 = new AttendanceEntry("0612201804", ConvertterUtils.convertStringToDate("06/12/2018"), 4, "Sub4", "F4", true);
-            AttendanceEntry attendanceEntry5 = new AttendanceEntry("0712201801", ConvertterUtils.convertStringToDate("07/12/2018"), 1, "Sub1", "F1", false);
+            AttendanceEntry attendanceEntry = new AttendanceEntry("0612201801", ConverterUtils.convertStringToDate(Constants.TEST_DATE_1), 1, "Sub1", "F1", true);
+            AttendanceEntry attendanceEntry2 = new AttendanceEntry("0612201802", ConverterUtils.convertStringToDate(Constants.TEST_DATE_1), 2, "Sub2", "F2", true);
+            AttendanceEntry attendanceEntry3 = new AttendanceEntry("0612201803", ConverterUtils.convertStringToDate(Constants.TEST_DATE_1), 3, "Sub3", "F3", false);
+            AttendanceEntry attendanceEntry4 = new AttendanceEntry("0612201804", ConverterUtils.convertStringToDate(Constants.TEST_DATE_1), 4, "Sub4", "F4", true);
+            AttendanceEntry attendanceEntry5 = new AttendanceEntry("0712201801", ConverterUtils.convertStringToDate(Constants.TEST_DATE_2), 1, "Sub1", "F1", false);
             List<AttendanceEntry> entries = new ArrayList<>();
             entries.add(attendanceEntry);
             entries.add(attendanceEntry2);

@@ -14,7 +14,7 @@ public abstract class OverallAttendanceDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
     private static OverallAttendanceDatabase sInstance;
-    static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
+    private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
@@ -44,9 +44,9 @@ public abstract class OverallAttendanceDatabase extends RoomDatabase {
 
     static class AddDataAsynvTask extends AsyncTask<Void, Void, Void> {
 
-        OverallAttendanceDao dao;
+        private OverallAttendanceDao dao;
 
-        public AddDataAsynvTask(OverallAttendanceDatabase db) {
+        AddDataAsynvTask(OverallAttendanceDatabase db) {
             dao = db.overallAttendanceDao();
         }
 

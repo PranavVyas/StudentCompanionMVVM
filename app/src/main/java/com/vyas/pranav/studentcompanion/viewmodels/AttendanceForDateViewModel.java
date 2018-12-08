@@ -24,12 +24,7 @@ public class AttendanceForDateViewModel extends ViewModel {
         return attendanceForDate;
     }
 
-    public void setAttendanceForDate(LiveData<List<AttendanceEntry>> attendanceForDate) {
-        this.attendanceForDate = attendanceForDate;
-    }
-
     public void updateAttendance(AttendanceEntry attendanceEntry) {
         repository.updateAttendance(attendanceEntry);
     }
-
 }

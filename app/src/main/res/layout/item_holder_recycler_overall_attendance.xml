@@ -24,15 +24,14 @@
             app:wlv_borderWidth="1dp"
             app:wlv_round_rectangle="true"
             app:wlv_shapeType="circle"
-            app:wlv_titleCenter="50 %"
+            tools:wlv_titleCenter="50 %"
             app:wlv_titleCenterColor="@android:color/white"
             app:wlv_titleCenterSize="28sp"
             app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
             app:wlv_titleCenterStrokeWidth="1dp"
             app:wlv_triangle_direction="north"
             app:wlv_waveAmplitude="60"
-            app:wlv_waveColor="@color/colorAccent"
-            app:wlv_wave_background_Color="@color/colorPrimaryLight" />
+            app:wlv_waveColor="@color/colorAccent" />
 
         <TextView
             android:id="@+id/tv_recycler_overall_attendance_subject"

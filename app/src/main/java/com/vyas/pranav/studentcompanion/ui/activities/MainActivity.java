@@ -8,9 +8,11 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
+import com.vyas.pranav.studentcompanion.viewmodels.AttendanceIndividualViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -21,7 +23,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     @BindView(R.id.frame_main_activity_container)
     FrameLayout frameFragmentContainer;
 
-    Drawer mDrawer;
+    private Drawer mDrawer;
+    private AttendanceIndividualViewModel attendanceIndividualViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +33,9 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         ButterKnife.bind(this);
         setSupportActionBar(toolbarMainActivity);
         mDrawer = NavigationDrawerUtil.getMaterialDrawer(MainActivity.this, toolbarMainActivity);
-        AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_main_activity_container, attendanceFragment)
-                .commit();
+        attendanceIndividualViewModel = ViewModelProviders.of(this).get(AttendanceIndividualViewModel.class);
+        OnNavigationItemClicked(attendanceIndividualViewModel.getCurrentFragmentId());
+        mDrawer.setSelection(attendanceIndividualViewModel.getCurrentFragmentId());
     }
 
     @Override
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_main_activity_container, attendanceFragment)
                         .commit();
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_OVERALL_ATTENDANCE:
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_main_activity_container, overallAttendanceFragment)
                         .commit();
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
         }
     }

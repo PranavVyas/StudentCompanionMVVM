@@ -1,6 +1,5 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class OverallAttendanceFragment extends Fragment {
 
     @BindView(R.id.recycler_overall_attendance_fragment_main)
@@ -35,13 +31,11 @@ public class OverallAttendanceFragment extends Fragment {
     private OverallAttendanceViewModel mViewModel;
 
     public OverallAttendanceFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_overall_attendance, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -51,13 +45,7 @@ public class OverallAttendanceFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpRecyclerView();
-        mViewModel = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
-        mViewModel.getAllOverallAttendance().observe(this, new Observer<List<OverallAttendanceEntry>>() {
-            @Override
-            public void onChanged(List<OverallAttendanceEntry> overallAttendanceEntries) {
-                mAdapter.setOverallAttendanceEntries(overallAttendanceEntries);
-            }
-        });
+        setUpOverallAttendance();
     }
 
     private void setUpRecyclerView() {
@@ -67,5 +55,15 @@ public class OverallAttendanceFragment extends Fragment {
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         lm.setOrientation(RecyclerView.VERTICAL);
         rvOverallAttendance.setLayoutManager(lm);
+    }
+
+    private void setUpOverallAttendance() {
+        mViewModel = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
+        mViewModel.getAllOverallAttendance().observe(this, new Observer<List<OverallAttendanceEntry>>() {
+            @Override
+            public void onChanged(List<OverallAttendanceEntry> overallAttendanceEntries) {
+                mAdapter.setOverallAttendanceEntries(overallAttendanceEntries);
+            }
+        });
     }
 }
