@@ -1,12 +1,15 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.ui.activities.OverallAttendanceDetailActivity;
 
 import java.util.List;
 
@@ -51,7 +54,7 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
         return (overallAttendanceEntries == null) ? 1 : overallAttendanceEntries.size();
     }
 
-    class OverallAttendanceHolder extends RecyclerView.ViewHolder {
+    class OverallAttendanceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.progress_recycler_overall_attendance_present_percent)
         WaveLoadingView progressPresent;
         @BindView(R.id.tv_recycler_overall_attendance_available_to_bunk)
@@ -62,6 +65,16 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
         OverallAttendanceHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent openDetail = new Intent(view.getContext(), OverallAttendanceDetailActivity.class);
+            Gson gson = new Gson();
+            String JsonOverallAttendance = gson.toJson(overallAttendanceEntries.get(getAdapterPosition()));
+            openDetail.putExtra(OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE, JsonOverallAttendance);
+            view.getContext().startActivity(openDetail);
         }
     }
 
