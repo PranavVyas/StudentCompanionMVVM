@@ -154,7 +154,7 @@ public class ConverterUtils {
 
     public static List<Date> getDates(String dateString1, String dateString2) {
         ArrayList<Date> dates = new ArrayList<Date>();
-        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
         Date date1 = null;
         Date date2 = null;

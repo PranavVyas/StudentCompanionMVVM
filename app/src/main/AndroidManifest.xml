@@ -24,6 +24,7 @@
         <activity
             android:name=".ui.activities.AttendanceIndividualActivity"
             android:parentActivityName=".ui.activities.MainActivity" />
+        <activity android:name=".ui.activities.SetUpActivity"></activity>
     </application>
 
 </manifest>

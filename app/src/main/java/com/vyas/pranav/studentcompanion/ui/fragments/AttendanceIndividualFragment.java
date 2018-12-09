@@ -1,17 +1,23 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
+import com.vyas.pranav.studentcompanion.data.DateConverter;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
+import com.vyas.pranav.studentcompanion.ui.activities.AttendanceIndividualActivity;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModel;
@@ -19,6 +25,7 @@ import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModelFac
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceForSubjectViewModel;
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceForSubjectViewModelFactory;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +50,8 @@ public class AttendanceIndividualFragment extends Fragment {
     RecyclerView rvMain;
     @BindView(R.id.tv_attendance_individual_date)
     TextView tvDate;
+    @BindView(R.id.btn_attendance_individual_fragment_other_attendance)
+    Button btnOpenOtherAttendance;
 
     private AttendanceForDateViewModel attendanceViewModel;
     private OverallAttendanceForSubjectViewModel overallAttendanceViewModel;
@@ -55,11 +65,19 @@ public class AttendanceIndividualFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvDate.setText(Constants.TEST_DATE_1);
         setUpDatabase();
         setUpRecyclerView();
-        Date date = ConverterUtils.convertStringToDate(Constants.TEST_DATE_1);
-        setUpIndividualAttendance(date);
+        if (getArguments() == null) {
+            Date date = ConverterUtils.convertStringToDate(Constants.TEST_DATE_1);
+            setUpIndividualAttendance(date);
+            tvDate.setText(Constants.TEST_DATE_1);
+        } else {
+            String dateStr = getArguments().getString(AttendanceIndividualActivity.EXTRA_DATE);
+            Date date = ConverterUtils.convertStringToDate(dateStr);
+            setUpIndividualAttendance(date);
+            tvDate.setText(dateStr);
+            btnOpenOtherAttendance.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -68,6 +86,30 @@ public class AttendanceIndividualFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_attendance_individual, container, false);
         ButterKnife.bind(this, view);
         return view;
+    }
+
+    @OnClick(R.id.btn_attendance_individual_fragment_other_attendance)
+    void openDatePicker() {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int i1, int day) {
+                        int month = i1 + 1;
+                        String selectedDate = ConverterUtils.formatDateStringFromCalender(day, month, year);
+                        Intent intent = new Intent(getContext(), AttendanceIndividualActivity.class);
+                        intent.putExtra(AttendanceIndividualActivity.EXTRA_DATE, selectedDate);
+                        getContext().startActivity(intent);
+                        //Toast.makeText(getContext(), "i = "+i+" i1 = "+i1+" i2 = "+i2, Toast.LENGTH_SHORT).show();
+                    }
+                },
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMaxDate(DateConverter.toTimeStamp(new Date()));
+        datePickerDialog.getDatePicker().setMinDate(DateConverter.toTimeStamp(ConverterUtils.convertStringToDate(Constants.SEM_START_DATE_STR)));
+        datePickerDialog.show();
     }
 
     //TODO Next step : Don't setUpDatabase in the UI Class but use getContext.getApplicationContext() to send application context in the viewModel
@@ -111,5 +153,4 @@ public class AttendanceIndividualFragment extends Fragment {
         overallAttendanceViewModel = ViewModelProviders.of(getActivity(), factory).get(OverallAttendanceForSubjectViewModel.class);
         overallAttendanceViewModel.refreshOverallAttendance(subName);
     }
-
 }
