@@ -1,6 +1,6 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
-import android.app.Application;
+import android.content.Context;
 
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
@@ -8,33 +8,25 @@ import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAt
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
-import com.vyas.pranav.studentcompanion.utils.Constants;
-import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
-import java.util.Date;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 public class OverallAttendanceRepository {
 
     private OverallAttendanceDao overallAttendanceDao;
     private AttendanceDao attendanceDao;
     private AppExecutors mExecutors;
+    private Context application;
 
-    public OverallAttendanceRepository(Application application) {
+    public OverallAttendanceRepository(Context application) {
         OverallAttendanceDatabase mOverallDb = OverallAttendanceDatabase.getInstance(application);
         this.overallAttendanceDao = mOverallDb.overallAttendanceDao();
         AttendanceDatabase mAttendanceDb = AttendanceDatabase.getInstance(application);
         this.attendanceDao = mAttendanceDb.attendanceDao();
         this.mExecutors = AppExecutors.getInstance();
-    }
-
-    public OverallAttendanceRepository(OverallAttendanceDatabase mOverallDb, AttendanceDatabase mAttendanceDb) {
-        this.attendanceDao = mAttendanceDb.attendanceDao();
-        this.overallAttendanceDao = mOverallDb.overallAttendanceDao();
-        this.mExecutors = AppExecutors.getInstance();
+        this.application = application;
     }
 
     public LiveData<List<OverallAttendanceEntry>> getAllOverallAttendance() {
@@ -76,31 +68,4 @@ public class OverallAttendanceRepository {
             }
         });
     }
-
-    public void refreshAllOverallAttendance() {
-        overallAttendanceDao.getAllOverallAttendance().observeForever(new Observer<List<OverallAttendanceEntry>>() {
-            @Override
-            public void onChanged(List<OverallAttendanceEntry> overallAttendanceEntries) {
-                overallAttendanceDao.getAllOverallAttendance().removeObserver(this);
-                for (final OverallAttendanceEntry x :
-                        overallAttendanceEntries) {
-                    final String subName = x.getSubName();
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            Date todayDate = new Date();
-                            int presentDays = attendanceDao.getAttendedDaysForSubject(subName, ConverterUtils.convertStringToDate(Constants.SEM_START_DATE_STR), todayDate);
-                            int bunkedDays = attendanceDao.getBunkedDaysForSubject(subName, ConverterUtils.convertStringToDate("01/12/2018"), new Date());
-                            int totalDays = attendanceDao.getTotalDaysForSubject(subName);
-                            x.setTotalDays(totalDays);
-                            x.setBunkedDays(bunkedDays);
-                            x.setPresentDays(presentDays);
-                            overallAttendanceDao.updateOverall(x);
-                        }
-                    });
-                }
-            }
-        });
-    }
-
 }

@@ -1,5 +1,7 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
+import android.content.Context;
+
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
@@ -27,6 +29,13 @@ public class OverallAttendanceForSubjectRepository {
         mExecutors = AppExecutors.getInstance();
     }
 
+    public OverallAttendanceForSubjectRepository(Context application, String subject) {
+        overallAttendanceDao = OverallAttendanceDatabase.getInstance(application).overallAttendanceDao();
+        attendanceDao = AttendanceDatabase.getInstance(application).attendanceDao();
+        this.subject = subject;
+        mExecutors = AppExecutors.getInstance();
+    }
+
     public void updateOverallAttendance(final OverallAttendanceEntry overallAttendanceEntry) {
         mExecutors.diskIO().execute(new Runnable() {
             @Override
@@ -41,6 +50,9 @@ public class OverallAttendanceForSubjectRepository {
     }
 
     public void refreshOverallAttendanceForSubject(final String subjectName) {
+        if (subjectName.equals("No Lecture")) {
+            return;
+        }
         final LiveData<OverallAttendanceEntry> overallAttendance = overallAttendanceDao.getOverallAttendanceForSubject(subjectName);
         overallAttendance.observeForever(new Observer<OverallAttendanceEntry>() {
             @Override

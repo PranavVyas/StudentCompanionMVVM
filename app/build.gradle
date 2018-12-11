@@ -56,4 +56,16 @@ dependencies {
     implementation 'me.itangqi.waveloadingview:library:0.3.5'
     //Gson
     implementation 'com.google.code.gson:gson:2.8.5'
+    //Logging
+    implementation 'com.orhanobut:logger:2.2.0'
+    //Debugging database
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
+    //Firebase Analytics
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    //Firebase Realtime Database
+    implementation 'com.google.firebase:firebase-database:16.0.1'
+    //Preference Fragment Compat
+    implementation 'androidx.preference:preference:1.0.0'
+
 }
+apply plugin: 'com.google.gms.google-services'

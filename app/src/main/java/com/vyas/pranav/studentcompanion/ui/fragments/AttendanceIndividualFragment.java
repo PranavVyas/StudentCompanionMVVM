@@ -107,6 +107,7 @@ public class AttendanceIndividualFragment extends Fragment {
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH));
+        //TODO [ENHANCEMENT] Set title of date picker
         datePickerDialog.getDatePicker().setMaxDate(DateConverter.toTimeStamp(new Date()));
         datePickerDialog.getDatePicker().setMinDate(DateConverter.toTimeStamp(ConverterUtils.convertStringToDate(Constants.SEM_START_DATE_STR)));
         datePickerDialog.show();

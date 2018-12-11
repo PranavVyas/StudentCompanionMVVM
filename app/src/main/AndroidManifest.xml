@@ -12,11 +12,7 @@
         <activity
             android:name=".ui.activities.MainActivity"
             android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.activities.OverallAttendanceDetailActivity"
@@ -24,7 +20,13 @@
         <activity
             android:name=".ui.activities.AttendanceIndividualActivity"
             android:parentActivityName=".ui.activities.MainActivity" />
-        <activity android:name=".ui.activities.SetUpActivity"></activity>
+        <activity android:name=".ui.activities.SetUpActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

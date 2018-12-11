@@ -152,19 +152,8 @@ public class ConverterUtils {
         return hourStr + ":" + minStr;
     }
 
-    public static List<Date> getDates(String dateString1, String dateString2) {
-        ArrayList<Date> dates = new ArrayList<Date>();
-        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-
-        Date date1 = null;
-        Date date2 = null;
-
-        try {
-            date1 = df1.parse(dateString1);
-            date2 = df1.parse(dateString2);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public static List<Date> getDates(Date date1, Date date2) {
+        ArrayList<Date> dates = new ArrayList<>();
 
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
@@ -202,6 +191,28 @@ public class ConverterUtils {
         int hour = time / 60;
         int min = time % 60;
         return new CustomTime(min, hour);
+    }
+
+    public static String getDayFromInt(int day) {
+        switch (day) {
+            case 1:
+                return "Monday";
+
+            case 2:
+                return "Tuesday";
+
+            case 3:
+                return "Wednesday";
+
+            case 4:
+                return "Thursday";
+
+            case 5:
+                return "Friday";
+
+            default:
+                return "Error";
+        }
     }
 
     /**

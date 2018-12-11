@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -33,11 +34,16 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
     @Override
     public void onBindViewHolder(@NonNull final AttendanceIndividualHolder holder, final int position) {
         if (attendanceEntries != null) {
-            Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceEntries.get(position).getLectureNo());
-            holder.tvLectureNo.setText("Lecture " + attendanceEntries.get(position).getLectureNo());
-            holder.tvSubjectName.setText(attendanceEntries.get(position).getSubjectName());
-            holder.tvSwitchSummery.setText(attendanceEntries.get(position).isPresent() ? "Present" : "Absent");
-            holder.switchPresent.setChecked(attendanceEntries.get(position).isPresent());
+            if (attendanceEntries.get(position).getSubjectName().equals("No Lecture")) {
+                holder.itemView.setVisibility(View.GONE);
+                holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+            } else {
+                Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceEntries.get(position).getLectureNo());
+                holder.tvLectureNo.setText("Lecture " + attendanceEntries.get(position).getLectureNo());
+                holder.tvSubjectName.setText(attendanceEntries.get(position).getSubjectName());
+                holder.tvSwitchSummery.setText(attendanceEntries.get(position).isPresent() ? "Present" : "Absent");
+                holder.switchPresent.setChecked(attendanceEntries.get(position).isPresent());
+            }
         } else {
             holder.tvLectureNo.setText("Lecture XX");
             holder.tvSubjectName.setText("Subject Name");
@@ -63,6 +69,7 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
     }
 
     public void setAttendanceForDate(List<AttendanceEntry> attendanceEntries) {
+        this.attendanceEntries = new ArrayList<>();
         this.attendanceEntries = attendanceEntries;
         notifyDataSetChanged();
     }

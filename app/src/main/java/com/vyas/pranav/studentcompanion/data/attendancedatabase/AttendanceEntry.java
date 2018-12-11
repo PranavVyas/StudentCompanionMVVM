@@ -9,38 +9,35 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "AttendanceIndividual")
 public class AttendanceEntry {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
-    private String _ID;
+    private long _ID;
     private Date date;
     private int lectureNo;
     private String subjectName;
-    private String facultyName;
     private boolean present;
 
     @Ignore
-    public AttendanceEntry(Date date, int lectureNo, String subjectName, String facultyName, boolean present) {
+    public AttendanceEntry(Date date, int lectureNo, String subjectName, boolean present) {
         this.date = date;
         this.lectureNo = lectureNo;
         this.subjectName = subjectName;
-        this.facultyName = facultyName;
         this.present = present;
     }
 
-    public AttendanceEntry(String _ID, Date date, int lectureNo, String subjectName, String facultyName, boolean present) {
+    public AttendanceEntry(long _ID, Date date, int lectureNo, String subjectName, boolean present) {
         this._ID = _ID;
         this.date = date;
         this.lectureNo = lectureNo;
         this.subjectName = subjectName;
-        this.facultyName = facultyName;
         this.present = present;
     }
 
-    public String get_ID() {
+    public long get_ID() {
         return _ID;
     }
 
-    public void set_ID(String _ID) {
+    public void set_ID(long _ID) {
         this._ID = _ID;
     }
 
@@ -66,14 +63,6 @@ public class AttendanceEntry {
 
     public void setSubjectName(String subjectName) {
         this.subjectName = subjectName;
-    }
-
-    public String getFacultyName() {
-        return facultyName;
-    }
-
-    public void setFacultyName(String facultyName) {
-        this.facultyName = facultyName;
     }
 
     public boolean isPresent() {

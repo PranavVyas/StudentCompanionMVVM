@@ -8,10 +8,14 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "OverallAttendance")
 public class OverallAttendanceEntry {
     @NonNull
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private long _ID;
     private String subName;
     private int totalDays, presentDays, bunkedDays, credits;
+
+    @Ignore
+    public OverallAttendanceEntry() {
+    }
 
     public OverallAttendanceEntry(long _ID, String subName, int totalDays, int presentDays, int bunkedDays, int credits) {
         this._ID = _ID;

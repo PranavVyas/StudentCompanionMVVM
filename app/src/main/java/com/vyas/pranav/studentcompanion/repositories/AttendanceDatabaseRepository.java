@@ -1,6 +1,6 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
-import android.app.Application;
+import android.content.Context;
 
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
@@ -17,8 +17,8 @@ public class AttendanceDatabaseRepository {
     private AttendanceDao attendanceDao;
     private AppExecutors mExecutors;
 
-    public AttendanceDatabaseRepository(Application application) {
-        AttendanceDatabase mAttendanceDb = AttendanceDatabase.getInstance(application);
+    public AttendanceDatabaseRepository(Context context) {
+        AttendanceDatabase mAttendanceDb = AttendanceDatabase.getInstance(context);
         attendanceDao = mAttendanceDb.attendanceDao();
         mExecutors = AppExecutors.getInstance();
     }
@@ -32,14 +32,14 @@ public class AttendanceDatabaseRepository {
         return attendanceDao.getAttendanceForDate(date);
     }
 
-    public void insertAttendance(final AttendanceEntry attendanceEntry) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                attendanceDao.insertAttendance(attendanceEntry);
-            }
-        });
-    }
+//    public void insertAttendance(final AttendanceEntry attendanceEntry) {
+//        mExecutors.diskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                attendanceDao.insertAttendance(attendanceEntry);
+//            }
+//        });
+//    }
 
     public void deleteAttendance(final AttendanceEntry attendanceEntry) {
         mExecutors.diskIO().execute(new Runnable() {
@@ -64,6 +64,19 @@ public class AttendanceDatabaseRepository {
             @Override
             public void run() {
                 attendanceDao.updateAttendance(attendanceEntry);
+            }
+        });
+    }
+
+    public void insertAllAttendanceAndOverallAttendance(final List<AttendanceEntry> attendanceEntries, final Context context) {
+        mExecutors.diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < attendanceEntries.size(); i++) {
+                    attendanceDao.insertAttendance(attendanceEntries.get(i));
+                }
+                SetUpProcessRepository repo = new SetUpProcessRepository(context);
+                repo.initializeOverallAttendance();
             }
         });
     }

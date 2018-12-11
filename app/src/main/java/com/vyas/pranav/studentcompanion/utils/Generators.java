@@ -18,4 +18,8 @@ public class Generators {
     public static String generateIdForIndividualAttendance(String dateStr, int lectureNo) {
         return dateStr + lectureNo;
     }
+
+    public static String generateIdForTimetableEntry(int lectureNo, int semester, int dayNo) {
+        return semester + "" + dayNo + "" + lectureNo;
+    }
 }
