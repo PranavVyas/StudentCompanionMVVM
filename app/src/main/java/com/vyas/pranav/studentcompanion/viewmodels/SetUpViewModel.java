@@ -22,6 +22,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import static com.vyas.pranav.studentcompanion.utils.ConverterUtils.getDayFromInt;
+
 public class SetUpViewModel extends AndroidViewModel implements SetUpProcessRepository.OnEligibleDatesCalculatedListener {
 
     private String startDate;
@@ -127,7 +129,7 @@ public class SetUpViewModel extends AndroidViewModel implements SetUpProcessRepo
             String id = Generators.generateIdForTimetableEntry(lectureNo, semester, day);
             TimetableEntry temp = new TimetableEntry();
             temp.set_ID(id);
-            temp.setDay(ConverterUtils.getDayFromInt(day));
+            temp.setDay(getDayFromInt(day));
             temp.setLectureNo(lectureNo);
             temp.setSubName(schedule.get(i));
             temp.setTimeStart(Constants.TEST_START_TIME);
@@ -135,6 +137,10 @@ public class SetUpViewModel extends AndroidViewModel implements SetUpProcessRepo
             timetableEntries.add(temp);
         }
         timetableRepository.insertTimetable(timetableEntries);
+    }
+
+    public LiveData<List<TimetableEntry>> getTimetableAttendanceForDay(int day) {
+        return timetableRepository.getTimetableForDay(getDayFromInt(day));
     }
 
     public void saveHolidaysAndInitAttendance() {

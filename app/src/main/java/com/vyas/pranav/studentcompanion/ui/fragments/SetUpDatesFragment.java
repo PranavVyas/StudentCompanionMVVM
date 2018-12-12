@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,7 +63,13 @@ public class SetUpDatesFragment extends Fragment {
 
     @OnClick(R.id.btn_set_up_dates_fragment_continue)
     void continueClicked() {
-        if (mCallback != null) {
+        if (setUpViewModel.getStartDate().equals("Select Starting Date")) {
+            Toast.makeText(getContext(), "Select Starting date", Toast.LENGTH_SHORT).show();
+        } else if (setUpViewModel.getEndDate().equals("Select Ending Date")) {
+            Toast.makeText(getContext(), "Select Ending date", Toast.LENGTH_SHORT).show();
+        } else if (getDifferenceInDates(setUpViewModel.getStartDate(), setUpViewModel.getEndDate()) < 15) {
+            Toast.makeText(getContext(), "Difference between dates must be more than 15 Days\nEnding date must be after Starting date", Toast.LENGTH_SHORT).show();
+        } else if (mCallback != null) {
             mCallback.onDatesSetUp();
         }
     }
@@ -110,4 +119,16 @@ public class SetUpDatesFragment extends Fragment {
         void onDatesSetUp();
     }
 
+    private int getDifferenceInDates(String startDate, String endDate) {
+        Date start = ConverterUtils.convertStringToDate(startDate);
+        Date end = ConverterUtils.convertStringToDate(endDate);
+        Calendar startCal = Calendar.getInstance();
+        startCal.setTime(start);
+        Calendar endCal = Calendar.getInstance();
+        endCal.setTime(end);
+
+        long diffInMillis = endCal.getTimeInMillis() - startCal.getTimeInMillis();
+        //Toast.makeText(getContext(), "Diff in days are "+days, Toast.LENGTH_SHORT).show();
+        return (int) TimeUnit.MILLISECONDS.toDays(diffInMillis);
+    }
 }

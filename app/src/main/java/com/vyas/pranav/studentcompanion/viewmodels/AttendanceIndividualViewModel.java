@@ -13,7 +13,7 @@ public class AttendanceIndividualViewModel extends AndroidViewModel {
 
     public AttendanceIndividualViewModel(@NonNull Application application) {
         super(application);
-        currentFragmentId = NavigationDrawerUtil.ID_TODAY_ATTENDACE;
+        currentFragmentId = NavigationDrawerUtil.ID_TODAY_ATTENDANCE;
     }
 
     public int getCurrentFragmentId() {

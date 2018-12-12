@@ -21,9 +21,8 @@ import butterknife.ButterKnife;
 
 public class SetUpTimetableRecyclerAdapter extends RecyclerView.Adapter<SetUpTimetableRecyclerAdapter.SetUpTimetableHolder> {
     private int lecturesPerDay = 0;
-    private int day;
     private List<String> subjectsList = new ArrayList<>();
-    private List<String> daySchedule;
+    private List<String> daySchedule = new ArrayList<>();
 
     @NonNull
     @Override
@@ -35,7 +34,7 @@ public class SetUpTimetableRecyclerAdapter extends RecyclerView.Adapter<SetUpTim
     @Override
     public void onBindViewHolder(@NonNull SetUpTimetableHolder holder, int position) {
         holder.tvTitle.setText("Select subject for lecture No : " + (position + 1));
-        holder.mSpinner.setSelection(0);
+        holder.mSpinner.setSelection(holder.adapter.getPosition(daySchedule.get(position)));
     }
 
     @Override
@@ -43,8 +42,7 @@ public class SetUpTimetableRecyclerAdapter extends RecyclerView.Adapter<SetUpTim
         return lecturesPerDay;
     }
 
-    public void setItem(int day, int lecturesPerDay) {
-        this.day = day;
+    public void setItem(int lecturesPerDay) {
         this.lecturesPerDay = lecturesPerDay;
         String defaultSubject = subjectsList.get(0);
         daySchedule = new ArrayList<>();
@@ -92,6 +90,11 @@ public class SetUpTimetableRecyclerAdapter extends RecyclerView.Adapter<SetUpTim
             });
             mSpinner.setAdapter(adapter);
         }
+    }
+
+    public void setUpSchedule(List<String> schedule) {
+        this.daySchedule = schedule;
+        notifyDataSetChanged();
     }
 
 }

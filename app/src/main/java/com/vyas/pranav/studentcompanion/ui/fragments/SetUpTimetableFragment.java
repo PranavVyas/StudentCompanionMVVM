@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.SetUpTimetableRecyclerAdapter;
+import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,6 +62,7 @@ public class SetUpTimetableFragment extends Fragment {
         currentDay = setUpViewModel.getCurrentDay();
         tvDay.setText(getDayFromInt(currentDay));
         setUpRecyclerView();
+        setUpViewModel.initTimetableAttendance();
     }
 
     private void setUpRecyclerView() {
@@ -70,18 +74,60 @@ public class SetUpTimetableFragment extends Fragment {
         List<String> subjectList = setUpViewModel.getSubjectList();
         subjectList.add(subjectList.size(), "No Lecture");
         mAdapter.setSubjectsList(subjectList);
-        mAdapter.setItem(currentDay, 4);
+        mAdapter.setItem(4);
     }
 
     public void setOnTimeTableSelectedListener(OnTimetableSelectedListener listener) {
         this.listener = listener;
     }
 
+    @OnClick(R.id.btn_set_up_timetable_fragment_previous)
+    void clickedPrevious() {
+        switch (currentDay) {
+            case 1:
+                if (listener != null) {
+                    listener.onPreviousClickedInSetUpTimetable();
+                } else {
+                    Toast.makeText(getContext(), "Error Occurred", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case 2:
+                currentDay = 1;
+                break;
+
+            case 3:
+                currentDay = 2;
+                break;
+
+            case 4:
+                currentDay = 3;
+                break;
+
+            case 5:
+                currentDay = 4;
+                break;
+        }
+        final LiveData<List<TimetableEntry>> timetableAttendanceForDay = setUpViewModel.getTimetableAttendanceForDay(currentDay);
+        timetableAttendanceForDay.observe(this, new Observer<List<TimetableEntry>>() {
+            @Override
+            public void onChanged(List<TimetableEntry> timetableEntries) {
+                timetableAttendanceForDay.removeObserver(this);
+                List<String> schedule = new ArrayList<>();
+                for (int i = 0; i < timetableEntries.size(); i++) {
+                    schedule.add(timetableEntries.get(i).getLectureNo() - 1, timetableEntries.get(i).getSubName());
+                }
+                mAdapter.setUpSchedule(schedule);
+            }
+        });
+        setUpViewModel.setCurrentDay(currentDay);
+        tvDay.setText(getDayFromInt(currentDay));
+    }
+
     @OnClick(R.id.btn_set_up_timetable_fragment_continue)
     void continueClicked() {
         daySchedule = new ArrayList<>();
         daySchedule = mAdapter.getDaySchedule();
-        setUpViewModel.initTimetableAttendance();
         setUpViewModel.setTimetableAttendanceForDay(currentDay, daySchedule);
         switch (currentDay) {
             case 1:
@@ -108,12 +154,14 @@ public class SetUpTimetableFragment extends Fragment {
                 }
         }
         Logger.d("Schedule for " + getDayFromInt(currentDay) + " is " + daySchedule);
-        mAdapter.setItem(currentDay, 4);
+        mAdapter.setItem(4);
         tvDay.setText(getDayFromInt(currentDay));
         setUpViewModel.setCurrentDay(currentDay);
     }
 
     public interface OnTimetableSelectedListener {
         void onTimetableSelected();
+
+        void onPreviousClickedInSetUpTimetable();
     }
 }

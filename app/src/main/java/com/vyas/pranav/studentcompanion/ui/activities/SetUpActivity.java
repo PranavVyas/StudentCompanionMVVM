@@ -81,11 +81,24 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
     }
 
     @Override
+    public void onPreviousClickedOnSemSetUp() {
+        setUpViewModel.setCurrentStep(1);
+        executeSetUpStep(setUpViewModel.getCurrentStep());
+    }
+
+    @Override
     public void onTimetableSelected() {
         setUpViewModel.saveHolidaysAndInitAttendance();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         setUpViewModel.setFirstRun(false);
+        finish();
         Toast.makeText(this, "Timetable successfully done", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPreviousClickedInSetUpTimetable() {
+        setUpViewModel.setCurrentStep(2);
+        executeSetUpStep(setUpViewModel.getCurrentStep());
     }
 }

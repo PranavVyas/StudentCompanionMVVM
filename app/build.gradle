@@ -66,6 +66,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.1'
     //Preference Fragment Compat
     implementation 'androidx.preference:preference:1.0.0'
+    //Evernote Job Scheduler
+    implementation 'com.evernote:android-job:1.3.0-alpha09'
 
 }
 apply plugin: 'com.google.gms.google-services'

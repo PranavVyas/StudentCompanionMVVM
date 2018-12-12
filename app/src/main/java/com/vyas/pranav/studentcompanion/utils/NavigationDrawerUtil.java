@@ -13,20 +13,22 @@ import androidx.appcompat.widget.Toolbar;
 
 public class NavigationDrawerUtil {
 
-    public static final int ID_TODAY_ATTENDACE = 1;
+    public static final int ID_TODAY_ATTENDANCE = 1;
     public static final int ID_OVERALL_ATTENDANCE = 2;
+    public static final int ID_HOLIDAYS = 3;
+
 
     public static Drawer getMaterialDrawer(Context context, Toolbar toolbar) {
 
         final OnNavigationItemClickedListener mCallback = (OnNavigationItemClickedListener) context;
 
         PrimaryDrawerItem todayAttendance = new PrimaryDrawerItem()
-                .withIdentifier(ID_TODAY_ATTENDACE)
+                .withIdentifier(ID_TODAY_ATTENDANCE)
                 .withName("Today's Attendance")
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_TODAY_ATTENDACE);
+                        mCallback.OnNavigationItemClicked(ID_TODAY_ATTENDANCE);
                         return false;
                     }
                 });
@@ -40,15 +42,25 @@ public class NavigationDrawerUtil {
                         return false;
                     }
                 });
+        PrimaryDrawerItem holidays = new PrimaryDrawerItem()
+                .withIdentifier(ID_HOLIDAYS)
+                .withName("Holidays")
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        mCallback.OnNavigationItemClicked(ID_HOLIDAYS);
+                        return false;
+                    }
+                });
 
         Drawer drawer = new DrawerBuilder()
                 .withActivity((Activity) context)
                 .withToolbar(toolbar)
                 .addDrawerItems(
                         todayAttendance,
-                        overallAttendance
+                        overallAttendance,
+                        holidays
                 ).build();
-
 
         return drawer;
     }

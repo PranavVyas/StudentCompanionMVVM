@@ -13,7 +13,7 @@ import androidx.room.Update;
 @Dao
 public interface TimetableDao {
     @Query("SELECT * FROM TimeTable WHERE day = :day")
-    TimetableEntry getTimetableForDay(String day);
+    LiveData<List<TimetableEntry>> getTimetableForDay(String day);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllTimeTableEntry(List<TimetableEntry> newTimetableEntries);

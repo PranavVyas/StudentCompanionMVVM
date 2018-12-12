@@ -47,4 +47,8 @@ public class TimetableRepository {
     public LiveData<List<TimetableEntry>> getFullTimetable() {
         return timetableDao.getFullTimetable();
     }
+
+    public LiveData<List<TimetableEntry>> getTimetableForDay(String day) {
+        return timetableDao.getTimetableForDay(day);
+    }
 }

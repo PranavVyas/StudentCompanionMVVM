@@ -51,6 +51,7 @@ public class SetUpDetailsSemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_set_up_details_sem, container, false);
         ButterKnife.bind(this, view);
+        Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
         return view;
     }
@@ -59,6 +60,7 @@ public class SetUpDetailsSemFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpViewModel = ViewModelProviders.of(getActivity()).get(SetUpViewModel.class);
+        btnContinue.setEnabled(false);
     }
 
     @OnClick(R.id.btn_set_up_details_sem_fragment_go)
@@ -66,17 +68,21 @@ public class SetUpDetailsSemFragment extends Fragment {
         String semNo = etSemNo.getText().toString().trim();
         String noOfSubjects = etNoOfSubjects.getText().toString().trim();
 
-        if (semNo == null || semNo.length() == 0 || noOfSubjects == null || noOfSubjects.length() == 0) {
+        if (semNo.isEmpty() || noOfSubjects.isEmpty()) {
             Toast.makeText(getContext(), "Please Fill all details", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (Integer.parseInt(semNo) < 1 || Integer.parseInt(noOfSubjects) < 1) {
+            Toast.makeText(getContext(), "Please Fill all details correctly", Toast.LENGTH_SHORT).show();
             return;
         }
         int index = 0;
+        linearContainer.removeAllViews();
         for (int i = 0; i < Integer.parseInt(noOfSubjects); i++) {
             EditText et = new EditText(getContext());
-            et.setHint("Subject Name");
+            et.setHint("Subject Name " + (i + 1));
             et.setInputType(InputType.TYPE_CLASS_TEXT);
             EditText et2 = new EditText(getContext());
-            et2.setHint("Credits of Subject");
+            et2.setHint("Credits of Subject " + (i + 1));
             et2.setInputType(InputType.TYPE_CLASS_NUMBER);
             et.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             et2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -84,6 +90,14 @@ public class SetUpDetailsSemFragment extends Fragment {
             index++;
             linearContainer.addView(et2, index);
             index++;
+        }
+        btnContinue.setEnabled(true);
+    }
+
+    @OnClick(R.id.btn_set_up_details_dem_previous)
+    void clickedPrevious() {
+        if (listener != null) {
+            listener.onPreviousClickedOnSemSetUp();
         }
     }
 
@@ -96,8 +110,16 @@ public class SetUpDetailsSemFragment extends Fragment {
         for (int i = 0; i < (noOfSubjectsNo * 2); i++) {
             String str = ((EditText) linearContainer.getChildAt(i)).getText().toString().trim();
             if (i % 2 == 0) {
+                if (str.isEmpty()) {
+                    Toast.makeText(getContext(), "Please Fill Subject " + (i / 2), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 subjects.add(str);
             } else {
+                if (str.isEmpty() || Integer.parseInt(str) < 1) {
+                    Toast.makeText(getContext(), "Please Fill Appropriate Credit for Subject " + (i / 2), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 credits.add(str);
             }
         }
@@ -113,6 +135,8 @@ public class SetUpDetailsSemFragment extends Fragment {
 
     public interface OnSubjectsSelectedListener {
         void onSubjectSelected();
+
+        void onPreviousClickedOnSemSetUp();
     }
 
 }

@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import com.mikepenz.materialdrawer.Drawer;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceIndividualViewModel;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     @Override
     public void OnNavigationItemClicked(int identifier) {
         switch (identifier) {
-            case NavigationDrawerUtil.ID_TODAY_ATTENDACE:
+            case NavigationDrawerUtil.ID_TODAY_ATTENDANCE:
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_main_activity_container, attendanceFragment)
@@ -53,6 +54,14 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 OverallAttendanceFragment overallAttendanceFragment = new OverallAttendanceFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_main_activity_container, overallAttendanceFragment)
+                        .commit();
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                break;
+
+            case NavigationDrawerUtil.ID_HOLIDAYS:
+                HolidayFragment holidayFragment = new HolidayFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_main_activity_container, holidayFragment)
                         .commit();
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
