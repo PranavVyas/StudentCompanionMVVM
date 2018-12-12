@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class ConverterUtils {
     /**
@@ -368,4 +369,14 @@ public class ConverterUtils {
         }
     }
 
+    public static long convertTimeInInt(int hour, int min) {
+        return TimeUnit.HOURS.toMillis(hour) + TimeUnit.MINUTES.toMillis(min);
+    }
+
+//    public static long convertTimeStringInMillis(String timeStr) {
+//        String[] newStr = timeStr.split(":");
+//        int min = Integer.valueOf(newStr[1]);
+//        int hour = Integer.valueOf(newStr[0]);
+//        return (TimeUnit.HOURS.toMillis(hour) + TimeUnit.MINUTES.toMillis(min));
+//    }
 }

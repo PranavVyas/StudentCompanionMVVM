@@ -9,7 +9,6 @@ import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.repositories.AttendanceDatabaseRepository;
 import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
 import com.vyas.pranav.studentcompanion.repositories.TimetableRepository;
-import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.Generators;
 
@@ -34,6 +33,7 @@ public class SetUpViewModel extends AndroidViewModel implements SetUpProcessRepo
     private Application application;
     private int semester;
     private boolean isFirstRun;
+    private int noOfLecturesPerDay;
 
     private SetUpProcessRepository repository;
     private TimetableRepository timetableRepository;
@@ -56,6 +56,7 @@ public class SetUpViewModel extends AndroidViewModel implements SetUpProcessRepo
         currentDay = repository.getCurrentDay();
         semester = repository.getSemester();
         isFirstRun = repository.isAppFirstRun();
+        noOfLecturesPerDay = repository.getNoOfLecturesPerDay();
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
     }
@@ -118,6 +119,31 @@ public class SetUpViewModel extends AndroidViewModel implements SetUpProcessRepo
         this.semester = semester;
     }
 
+    public int getNoOfLecturesPerDay() {
+        return noOfLecturesPerDay;
+    }
+
+    public void setNoOfLecturesPerDay(int noOfLecturesPerDay) {
+        repository.setNoOfLecturesPerDay(noOfLecturesPerDay);
+        this.noOfLecturesPerDay = noOfLecturesPerDay;
+    }
+
+    public void setLectureStartTimeInSharedPrefs(int lectureNo, int timeStart) {
+        repository.setLectureStartTimeInSharedPrefs(lectureNo, timeStart);
+    }
+
+    public void setLectureEndTimeInSharedPrefs(int lectureNo, int timeEnd) {
+        repository.setLectureEndTimeInSharedPrefs(lectureNo, timeEnd);
+    }
+
+    public int getStartingTimeOfLecture(int lectureNo) {
+        return repository.getStartTimeForLecture(lectureNo);
+    }
+
+    public int getEndingTimeOfLecture(int lectureNo) {
+        return repository.getEndTimeForLecture(lectureNo);
+    }
+
     public void initTimetableAttendance() {
         timetableRepository = new TimetableRepository(application);
     }
@@ -132,8 +158,8 @@ public class SetUpViewModel extends AndroidViewModel implements SetUpProcessRepo
             temp.setDay(getDayFromInt(day));
             temp.setLectureNo(lectureNo);
             temp.setSubName(schedule.get(i));
-            temp.setTimeStart(Constants.TEST_START_TIME);
-            temp.setTimeEnd(Constants.TEST_END_TIME);
+            temp.setTimeStart(getStartingTimeOfLecture(i));
+            temp.setTimeEnd(getEndingTimeOfLecture(i));
             timetableEntries.add(temp);
         }
         timetableRepository.insertTimetable(timetableEntries);

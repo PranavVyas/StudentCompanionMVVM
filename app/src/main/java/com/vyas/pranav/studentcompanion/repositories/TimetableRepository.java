@@ -16,10 +16,10 @@ public class TimetableRepository {
     private TimetableDao timetableDao;
     private AppExecutors mExecutors;
 
-    public TimetableRepository(TimetableDatabase mTimetableDb) {
-        this.timetableDao = mTimetableDb.timetableDao();
-        mExecutors = AppExecutors.getInstance();
-    }
+//    public TimetableRepository(TimetableDatabase mTimetableDb) {
+//        this.timetableDao = mTimetableDb.timetableDao();
+//        mExecutors = AppExecutors.getInstance();
+//    }
 
     public TimetableRepository(Application application) {
         this.timetableDao = TimetableDatabase.getInstance(application).timetableDao();

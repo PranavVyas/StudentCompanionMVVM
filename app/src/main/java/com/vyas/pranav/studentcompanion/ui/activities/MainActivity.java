@@ -8,6 +8,7 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceIndividualViewModel;
 
@@ -65,6 +66,15 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                         .commit();
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
+
+            case NavigationDrawerUtil.ID_TIMETABLE:
+                TimetableFragment timetableFragment = new TimetableFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_main_activity_container, timetableFragment)
+                        .commit();
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                break;
+
         }
     }
 }

@@ -37,6 +37,8 @@ public class SetUpDetailsSemFragment extends Fragment {
     EditText etNoOfSubjects;
     @BindView(R.id.et_set_up_details_sem_fragment_sem_no)
     EditText etSemNo;
+    @BindView(R.id.et_set_up_sem_details_no_of_lectures)
+    EditText etNoOfLecturesPerDay;
     @BindView(R.id.linear_set_up_details_sem_container)
     LinearLayout linearContainer;
 
@@ -67,15 +69,18 @@ public class SetUpDetailsSemFragment extends Fragment {
     void goClicked() {
         String semNo = etSemNo.getText().toString().trim();
         String noOfSubjects = etNoOfSubjects.getText().toString().trim();
+        String noOfLecturesPerDay = etNoOfLecturesPerDay.getText().toString().trim();
 
-        if (semNo.isEmpty() || noOfSubjects.isEmpty()) {
+        if (semNo.isEmpty() || noOfSubjects.isEmpty() || noOfLecturesPerDay.isEmpty()) {
             Toast.makeText(getContext(), "Please Fill all details", Toast.LENGTH_SHORT).show();
             return;
-        } else if (Integer.parseInt(semNo) < 1 || Integer.parseInt(noOfSubjects) < 1) {
+        } else if (Integer.parseInt(semNo) < 1 || Integer.parseInt(noOfSubjects) < 1 || Integer.parseInt(noOfLecturesPerDay) < 1) {
             Toast.makeText(getContext(), "Please Fill all details correctly", Toast.LENGTH_SHORT).show();
             return;
         }
         int index = 0;
+        setUpViewModel.setSemester(Integer.parseInt(semNo));
+        setUpViewModel.setNoOfLecturesPerDay(Integer.parseInt(noOfLecturesPerDay));
         linearContainer.removeAllViews();
         for (int i = 0; i < Integer.parseInt(noOfSubjects); i++) {
             EditText et = new EditText(getContext());

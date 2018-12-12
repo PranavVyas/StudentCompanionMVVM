@@ -29,6 +29,9 @@ public class SetUpProcessRepository {
     private static final String SHARED_PREF_CURRENT_DAY = "CURRENT_DAY";
     private static final String SHARED_PREF_CURRENT_SEMESTER = "CURRENT_SEMESTER";
     private static final String SHARED_PREF_FIRST_RUN = "IS_FIRST_RUN";
+    private static final String SHARED_PREF_NO_OF_LECTURES_PER_DAY = "NO_OF_LECTURES_PER_DAY";
+    private static final String SHARED_PREF_LECTURE_START = "STARTING_TIME_OF_LECTURE";
+    private static final String SHARED_PREF_LECTURE_END = "ENDING_TIME_OF_LECTURE";
 
 
     private Context context;
@@ -123,6 +126,33 @@ public class SetUpProcessRepository {
 
     public int getSemester() {
         return preferences.getInt(SHARED_PREF_CURRENT_SEMESTER, 1);
+    }
+
+    public void setLectureStartTimeInSharedPrefs(int lectureNo, int startTime) {
+        editor.putInt(SHARED_PREF_LECTURE_START + lectureNo, startTime);
+        editor.apply();
+    }
+
+    public void setLectureEndTimeInSharedPrefs(int lectureNo, int endTime) {
+        editor.putInt(SHARED_PREF_LECTURE_END + lectureNo, endTime);
+        editor.apply();
+    }
+
+    public int getStartTimeForLecture(int lectureNo) {
+        return preferences.getInt(SHARED_PREF_LECTURE_START + lectureNo, 0);
+    }
+
+    public int getEndTimeForLecture(int lectureNo) {
+        return preferences.getInt(SHARED_PREF_LECTURE_END + lectureNo, 60);
+    }
+
+    public int getNoOfLecturesPerDay() {
+        return preferences.getInt(SHARED_PREF_NO_OF_LECTURES_PER_DAY, 4);
+    }
+
+    public void setNoOfLecturesPerDay(int noOfLecturesPerDay) {
+        editor.putInt(SHARED_PREF_NO_OF_LECTURES_PER_DAY, noOfLecturesPerDay);
+        editor.apply();
     }
 
     public void saveHolidaysAndInitAttendance() {

@@ -74,7 +74,7 @@ public class SetUpTimetableFragment extends Fragment {
         List<String> subjectList = setUpViewModel.getSubjectList();
         subjectList.add(subjectList.size(), "No Lecture");
         mAdapter.setSubjectsList(subjectList);
-        mAdapter.setItem(4);
+        mAdapter.setItem(setUpViewModel.getNoOfLecturesPerDay());
     }
 
     public void setOnTimeTableSelectedListener(OnTimetableSelectedListener listener) {
@@ -154,7 +154,7 @@ public class SetUpTimetableFragment extends Fragment {
                 }
         }
         Logger.d("Schedule for " + getDayFromInt(currentDay) + " is " + daySchedule);
-        mAdapter.setItem(4);
+        mAdapter.setItem(setUpViewModel.getNoOfLecturesPerDay());
         tvDay.setText(getDayFromInt(currentDay));
         setUpViewModel.setCurrentDay(currentDay);
     }
