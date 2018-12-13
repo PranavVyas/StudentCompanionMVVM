@@ -23,7 +23,7 @@ public class TimePreferenceDialogFragmentCompat extends PreferenceDialogFragment
      * @param key the key
      * @return the new instance
      */
-    static TimePreferenceDialogFragmentCompat getNewInstance(String key) {
+    public static TimePreferenceDialogFragmentCompat getNewInstance(String key) {
         TimePreferenceDialogFragmentCompat sInstance = new TimePreferenceDialogFragmentCompat();
         Bundle b = new Bundle();
         b.putString(ARG_KEY, key);

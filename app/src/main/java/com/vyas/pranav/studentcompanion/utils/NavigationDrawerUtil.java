@@ -17,6 +17,7 @@ public class NavigationDrawerUtil {
     public static final int ID_OVERALL_ATTENDANCE = 2;
     public static final int ID_HOLIDAYS = 3;
     public static final int ID_TIMETABLE = 4;
+    public static final int ID_SETTINGS = 5;
 
 
     public static Drawer getMaterialDrawer(Context context, Toolbar toolbar) {
@@ -63,6 +64,16 @@ public class NavigationDrawerUtil {
                         return false;
                     }
                 });
+        PrimaryDrawerItem settings = new PrimaryDrawerItem()
+                .withIdentifier(ID_SETTINGS)
+                .withName("Settings")
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        mCallback.OnNavigationItemClicked(ID_SETTINGS);
+                        return false;
+                    }
+                });
 
         Drawer drawer = new DrawerBuilder()
                 .withActivity((Activity) context)
@@ -71,7 +82,8 @@ public class NavigationDrawerUtil {
                         todayAttendance,
                         overallAttendance,
                         holidays,
-                        timetable
+                        timetable,
+                        settings
                 ).build();
 
         return drawer;

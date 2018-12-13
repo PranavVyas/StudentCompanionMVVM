@@ -150,7 +150,7 @@ public class AttendanceIndividualFragment extends Fragment {
     }
 
     private void setUpOverallAttendance(String subName) {
-        OverallAttendanceForSubjectViewModelFactory factory = new OverallAttendanceForSubjectViewModelFactory(subName, mOverallDb, mAttendanceDb);
+        OverallAttendanceForSubjectViewModelFactory factory = new OverallAttendanceForSubjectViewModelFactory(subName, mOverallDb, mAttendanceDb, getContext().getApplicationContext());
         overallAttendanceViewModel = ViewModelProviders.of(getActivity(), factory).get(OverallAttendanceForSubjectViewModel.class);
         overallAttendanceViewModel.refreshOverallAttendance(subName);
     }

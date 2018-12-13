@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">Student Companion</string>
+    <string name="pref_key_switch_enable_reminder" translatable="false">SHARED_PREF_IS_REMINDER_ENABLED</string>
+    <string name="pref_title_switch_enable_reminder">Enable Reminder</string>
+    <string name="pref_summery_on_switch_enable_reminder">Reminder Enabled</string>
+    <string name="pref_summery_off_switch_enable_reminder">Reminder Disabled</string>
+    <bool name="pref_def_value_switch_enable_reminder">false</bool>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="pref_key_time_reminder_time" translatable="false">SHARED_PREF_REMINDER_TIME</string>
+    <string name="pref_title_time_reminder_time">Select Time</string>
+    <integer name="pref_def_value_time_reminder_time">0</integer>
+    <string name="pref_summery_time_reminder_time">00:00</string>
 
 </resources>

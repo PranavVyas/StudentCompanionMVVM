@@ -1,6 +1,6 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
-import android.app.Application;
+import android.content.Context;
 
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDao;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDatabase;
@@ -15,14 +15,16 @@ public class TimetableRepository {
 
     private TimetableDao timetableDao;
     private AppExecutors mExecutors;
+    private Context context;
 
 //    public TimetableRepository(TimetableDatabase mTimetableDb) {
 //        this.timetableDao = mTimetableDb.timetableDao();
 //        mExecutors = AppExecutors.getInstance();
 //    }
 
-    public TimetableRepository(Application application) {
-        this.timetableDao = TimetableDatabase.getInstance(application).timetableDao();
+    public TimetableRepository(Context context) {
+        this.context = context;
+        this.timetableDao = TimetableDatabase.getInstance(context).timetableDao();
         mExecutors = AppExecutors.getInstance();
     }
 

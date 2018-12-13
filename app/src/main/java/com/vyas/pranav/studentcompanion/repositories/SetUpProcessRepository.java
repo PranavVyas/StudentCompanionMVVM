@@ -2,8 +2,9 @@ package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.firebase.HolidaysFetcher;
@@ -11,6 +12,7 @@ import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobToEditOverallAttendance;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
+import androidx.preference.PreferenceManager;
 
 public class SetUpProcessRepository {
 
@@ -33,7 +37,6 @@ public class SetUpProcessRepository {
     private static final String SHARED_PREF_LECTURE_START = "STARTING_TIME_OF_LECTURE";
     private static final String SHARED_PREF_LECTURE_END = "ENDING_TIME_OF_LECTURE";
 
-
     private Context context;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -42,6 +45,11 @@ public class SetUpProcessRepository {
     private AppExecutors mExecutors;
 
     public SetUpProcessRepository(Context context) {
+        Logger.clearLogAdapters();
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        if (context == null) {
+            Logger.d("Context is empty in SetUpRepository");
+        }
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
         this.context = context;
@@ -196,17 +204,6 @@ public class SetUpProcessRepository {
         return allDates;
     }
 
-    public List<Date> removeHolidays(List<Date> originalDates, List<Date> holidays) {
-        List<Date> result = new ArrayList<>();
-        for (Date x :
-                originalDates) {
-            if (!holidays.contains(x)) {
-                result.add(x);
-            }
-        }
-        return result;
-    }
-
     public void setOnEligibleDatesCalculatedListener(OnEligibleDatesCalculatedListener listener) {
         this.listener = listener;
     }
@@ -235,6 +232,7 @@ public class SetUpProcessRepository {
                     x.setCredits(credits);
                     x.setSubName(subject);
                     overallAttendanceDao.insertOverall(x);
+                    DailyJobToEditOverallAttendance.scheduleJob();
                 }
             }
         });
