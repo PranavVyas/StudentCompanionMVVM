@@ -5,6 +5,7 @@ import android.widget.FrameLayout;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.ui.fragments.AppSettingsFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         OnNavigationItemClicked(attendanceIndividualViewModel.getCurrentFragmentId());
         mDrawer.setSelection(attendanceIndividualViewModel.getCurrentFragmentId());
     }
+
 
     @Override
     public void OnNavigationItemClicked(int identifier) {
@@ -75,6 +77,13 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
+            case NavigationDrawerUtil.ID_SETTINGS:
+                AppSettingsFragment appSettingsFragment = new AppSettingsFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_main_activity_container, appSettingsFragment)
+                        .commit();
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                break;
         }
     }
 }
