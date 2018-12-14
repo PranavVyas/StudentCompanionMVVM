@@ -1,8 +1,13 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.Drawer;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.fragments.AppSettingsFragment;
@@ -13,6 +18,7 @@ import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceIndividualViewModel;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -21,6 +27,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerUtil.OnNavigationItemClickedListener {
 
+    private static final int RC_SIGN_IN = 123;
     @BindView(R.id.toolbar_main_activity)
     Toolbar toolbarMainActivity;
     @BindView(R.id.frame_main_activity_container)
@@ -35,12 +42,12 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbarMainActivity);
-        mDrawer = NavigationDrawerUtil.getMaterialDrawer(MainActivity.this, toolbarMainActivity);
         attendanceIndividualViewModel = ViewModelProviders.of(this).get(AttendanceIndividualViewModel.class);
+        FirebaseUser currUser = attendanceIndividualViewModel.getCurrUser();
+        mDrawer = NavigationDrawerUtil.getMaterialDrawer(MainActivity.this, toolbarMainActivity, currUser);
         OnNavigationItemClicked(attendanceIndividualViewModel.getCurrentFragmentId());
         mDrawer.setSelection(attendanceIndividualViewModel.getCurrentFragmentId());
     }
-
 
     @Override
     public void OnNavigationItemClicked(int identifier) {
@@ -83,6 +90,19 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                         .replace(R.id.frame_main_activity_container, appSettingsFragment)
                         .commit();
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                break;
+
+            case NavigationDrawerUtil.ID_SIGN_OUT:
+                AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        attendanceIndividualViewModel.setCurrUser(null);
+                        Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivity(startSignInActivity);
+                        MainActivity.this.finish();
+                    }
+                });
+                attendanceIndividualViewModel.signOutUser();
                 break;
         }
     }

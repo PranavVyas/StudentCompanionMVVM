@@ -6,6 +6,7 @@
       <w>gson</w>
       <w>livedata</w>
       <w>realtime</w>
+      <w>snackbar</w>
     </words>
   </dictionary>
 </component>

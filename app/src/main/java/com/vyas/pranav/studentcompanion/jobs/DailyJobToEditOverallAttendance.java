@@ -12,7 +12,7 @@ import com.evernote.android.job.JobRequest;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.services.EditOverallAttendanceIntentService;
+import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
 import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
 
 import java.util.Date;
@@ -36,7 +36,7 @@ public class DailyJobToEditOverallAttendance extends DailyJob {
         }
         Logger.d("Job was not started ,Starting Now...");
         JobRequest.Builder jobBuilder = new JobRequest.Builder(TAG).setUpdateCurrent(true);
-        long startTime = TimeUnit.HOURS.toMillis(16) + TimeUnit.MINUTES.toMillis(55);
+        long startTime = TimeUnit.HOURS.toMillis(0) + TimeUnit.MINUTES.toMillis(10);
         long endTime = startTime + TimeUnit.MINUTES.toMillis(1);
         DailyJob.schedule(jobBuilder, startTime, endTime);
     }
@@ -50,8 +50,8 @@ public class DailyJobToEditOverallAttendance extends DailyJob {
             Logger.d("Context is Empty Now...");
             return DailyJobResult.SUCCESS;
         }
-        Intent refreshOverallAttendance = new Intent(getContext(), EditOverallAttendanceIntentService.class);
-        getContext().startService(refreshOverallAttendance);
+        OverallAttendanceRepository overallAttendanceRepository = new OverallAttendanceRepository(getContext());
+        overallAttendanceRepository.refreshAllOverallAttendance();
         showNotification();
         return DailyJobResult.SUCCESS;
     }
