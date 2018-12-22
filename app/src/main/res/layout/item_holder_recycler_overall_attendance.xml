@@ -20,7 +20,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderColor="?attr/colorAccent"
             app:wlv_borderWidth="1dp"
             app:wlv_round_rectangle="true"
             app:wlv_shapeType="circle"
@@ -31,7 +31,7 @@
             app:wlv_titleCenterStrokeWidth="1dp"
             app:wlv_triangle_direction="north"
             app:wlv_waveAmplitude="60"
-            app:wlv_waveColor="@color/colorAccent" />
+            app:wlv_waveColor="?attr/colorAccent" />
 
         <TextView
             android:id="@+id/tv_recycler_overall_attendance_subject"
@@ -39,8 +39,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:textSize="24sp"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@android:style/TextAppearance.Large"
             app:layout_constraintStart_toEndOf="@+id/progress_recycler_overall_attendance_present_percent"
             app:layout_constraintTop_toTopOf="@+id/progress_recycler_overall_attendance_present_percent"
             tools:text="Engineering Mathematics 2" />
@@ -48,11 +49,11 @@
         <TextView
             android:id="@+id/tv_recycler_overall_attendance_available_to_bunk"
             android:layout_width="0dp"
+            android:textAppearance="@android:style/TextAppearance.Medium"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/progress_recycler_overall_attendance_present_percent"
             app:layout_constraintTop_toBottomOf="@+id/tv_recycler_overall_attendance_subject"

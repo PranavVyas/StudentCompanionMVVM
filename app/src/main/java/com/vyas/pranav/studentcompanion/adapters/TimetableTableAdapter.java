@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.evrencoskun.tableview.adapter.AbstractTableAdapter;
@@ -44,6 +45,9 @@ public class TimetableTableAdapter extends AbstractTableAdapter<String, String, 
         CellViewHolder viewHolder = (CellViewHolder) holder;
         String cell = (String) cellItemModel;
         viewHolder.tvCell.setText(cell);
+        viewHolder.itemView.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+        viewHolder.itemView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        viewHolder.tvCell.requestLayout();
     }
 
     @Override
@@ -56,6 +60,10 @@ public class TimetableTableAdapter extends AbstractTableAdapter<String, String, 
         ColumnHeaderViewHolder viewHolder = (ColumnHeaderViewHolder) holder;
         String columnHeader = (String) columnHeaderItemModel;
         viewHolder.tvColumnHeader.setText(columnHeader);
+        viewHolder.itemView.setBackgroundColor(R.attr.table_background);
+        viewHolder.itemView.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+        viewHolder.itemView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        viewHolder.tvColumnHeader.requestLayout();
     }
 
     @Override
@@ -68,6 +76,10 @@ public class TimetableTableAdapter extends AbstractTableAdapter<String, String, 
         RowHeaderViewHolder viewHolder = (RowHeaderViewHolder) holder;
         String rowHeader = (String) rowHeaderItemModel;
         viewHolder.tvRowHeader.setText(rowHeader);
+        viewHolder.itemView.setBackgroundColor(R.attr.table_background);
+        viewHolder.itemView.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+        viewHolder.itemView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        viewHolder.tvRowHeader.requestLayout();
     }
 
     @Override
@@ -94,7 +106,6 @@ public class TimetableTableAdapter extends AbstractTableAdapter<String, String, 
         public ColumnHeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
         }
     }
 

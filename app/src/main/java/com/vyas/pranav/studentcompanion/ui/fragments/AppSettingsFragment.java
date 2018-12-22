@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import butterknife.ButterKnife;
 
 public class AppSettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -31,8 +32,15 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         super.onViewCreated(view, savedInstanceState);
         appSettingsViewModel = ViewModelProviders.of(getActivity()).get(AppSettingsViewModel.class);
         setTimePrefSummery(getContext().getString(R.string.pref_key_time_reminder_time));
+        ButterKnife.bind(this, view);
         setSelectTimeStateFromViewModel();
     }
+
+//    @OnClick(R.id.pref_delete_account)
+//    void clickedcDeleteAccount(){
+//        Toast.makeText(getContext(), "Clicked Delete account bro", Toast.LENGTH_SHORT).show();
+//    }
+
 
     /**
      * Register the listener
@@ -63,6 +71,10 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         } else if (s.equals(getString(R.string.pref_key_time_reminder_time))) {
             appSettingsViewModel.cancelReminderJob();
             appSettingsViewModel.setReminderJobTime(getTimeFromViewModel());
+        } else if (s.equals(getString(R.string.pref_key_switch_enable_auto_attendance))) {
+            checkAutoAttendanceStateAndExecute();
+        } else if (s.equals(getString(R.string.pref_key_switch_enable_night_mode))) {
+            toggleNightMode();
         }
     }
 
@@ -125,5 +137,18 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
 
     private int getTimeFromViewModel() {
         return appSettingsViewModel.getReminderTime();
+    }
+
+    private void checkAutoAttendanceStateAndExecute() {
+        if (appSettingsViewModel.isAutoAttendanceEnabled()) {
+            appSettingsViewModel.enableAutoAttendanceJob();
+        } else {
+            appSettingsViewModel.cancelAutoAttendanceJob();
+        }
+    }
+
+    private void toggleNightMode() {
+        appSettingsViewModel.toggleNightMode();
+        getActivity().recreate();
     }
 }

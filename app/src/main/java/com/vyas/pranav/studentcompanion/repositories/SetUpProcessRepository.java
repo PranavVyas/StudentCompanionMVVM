@@ -42,7 +42,6 @@ public class SetUpProcessRepository {
     private SharedPreferences.Editor editor;
     private HolidayRepository holidayRepository;
     private OnEligibleDatesCalculatedListener listener;
-    private AppExecutors mExecutors;
 
     public SetUpProcessRepository(Context context) {
         Logger.clearLogAdapters();
@@ -53,7 +52,15 @@ public class SetUpProcessRepository {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
         this.context = context;
-        mExecutors = AppExecutors.getInstance();
+    }
+
+    public boolean isAppFirstRun() {
+        return preferences.getBoolean(SHARED_PREF_FIRST_RUN, true);
+    }
+
+    public void setAppFirstRun(boolean isAppFirstRun) {
+        editor.putBoolean(SHARED_PREF_FIRST_RUN, isAppFirstRun);
+        editor.apply();
     }
 
     public void setUpEndingDate(String endDateStr) {
@@ -251,15 +258,6 @@ public class SetUpProcessRepository {
         }
         int index = subjects.indexOf(subject);
         return Integer.parseInt(credits.get(index));
-    }
-
-    public boolean isAppFirstRun() {
-        return preferences.getBoolean(SHARED_PREF_FIRST_RUN, true);
-    }
-
-    public void setAppFirstRun(boolean isAppFirstRun) {
-        editor.putBoolean(SHARED_PREF_FIRST_RUN, isAppFirstRun);
-        editor.apply();
     }
 
     public interface OnEligibleDatesCalculatedListener {

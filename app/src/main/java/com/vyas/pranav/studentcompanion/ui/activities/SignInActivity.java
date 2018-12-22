@@ -9,6 +9,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.viewmodels.SignInViewModel;
 
 import java.util.Arrays;
@@ -32,12 +33,13 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferencesRepository.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbarSignIn);
         signInViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
         checkForUserSignIn();
-
     }
 
     @OnClick(R.id.btn_sign_in_activity_sign_in)

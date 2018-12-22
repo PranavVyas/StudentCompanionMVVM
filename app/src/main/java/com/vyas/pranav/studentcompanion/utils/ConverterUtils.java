@@ -379,4 +379,9 @@ public class ConverterUtils {
 //        int hour = Integer.valueOf(newStr[0]);
 //        return (TimeUnit.HOURS.toMillis(hour) + TimeUnit.MINUTES.toMillis(min));
 //    }
+
+    public static long getCurrentTimeInMillis() {
+        Calendar now = GregorianCalendar.getInstance();
+        return TimeUnit.HOURS.toMillis(now.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(now.get(Calendar.MINUTE)) + TimeUnit.SECONDS.toMillis(now.get(Calendar.SECOND));
+    }
 }

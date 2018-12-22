@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:andriod="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
         android:defaultValue="@bool/pref_def_value_switch_enable_reminder"
         android:key="@string/pref_key_switch_enable_reminder"
         android:summaryOff="@string/pref_summery_off_switch_enable_reminder"
         android:summaryOn="@string/pref_summery_on_switch_enable_reminder"
+        android:icon="@drawable/ic_reminder"
         android:title="@string/pref_title_switch_enable_reminder" />
 
+    <!--suppress AndroidElementNotAllowed -->
     <com.vyas.pranav.studentcompanion.utils.TimePreference
         android:defaultValue="@integer/pref_def_value_time_reminder_time"
         android:key="@string/pref_key_time_reminder_time"
+        andriod:icon="@drawable/ic_clock"
         android:title="@string/pref_title_time_reminder_time" />
-    <!--<com.vyas.pranav.studentcompanion.utils.TimePreference-->
-    <!--android:defaultValue="@integer/pref_def_value_time_reminder_time"-->
-    <!--android:key="@string/pref_key_time_reminder_time"-->
-    <!--android:title="@string/pref_title_time_reminder_time"-->
-    <!--android:summery="@string/pref_summery_time_reminder_time"/>-->
+
+    <SwitchPreference
+        android:defaultValue="@bool/pref_def_value_switch_enable_auto_attendance"
+        android:icon="@drawable/ic_auto_attendance_map"
+        android:key="@string/pref_key_switch_enable_auto_attendance"
+        android:summaryOff="@string/pref_summery_off_switch_enable_auto_attendance"
+        android:summaryOn="@string/pref_summery_on_switch_enable_auto_attendance"
+        android:title="@string/pref_title_switch_enable_auto_attendance" />
+
+    <SwitchPreference
+        android:defaultValue="@bool/pref_def_value_switch_enable_night_mode"
+        android:icon="@drawable/ic_night_mode"
+        android:key="@string/pref_key_switch_enable_night_mode"
+        android:summaryOff="@string/pref_summery_off_switch_enable_night_mode"
+        android:summaryOn="@string/pref_summery_on_switch_enable_night_mode"
+        android:title="@string/pref_title_switch_enable_night_mode" />
 
 </PreferenceScreen>

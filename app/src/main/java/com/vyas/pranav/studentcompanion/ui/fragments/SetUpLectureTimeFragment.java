@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
 import androidx.annotation.NonNull;
@@ -35,11 +37,8 @@ public class SetUpLectureTimeFragment extends Fragment {
     private int noOfLecturesPerDay;
     private OnLectureTimeSelectedListener listener;
 
-    private int index;
-
     public SetUpLectureTimeFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,72 +59,97 @@ public class SetUpLectureTimeFragment extends Fragment {
 
     private void populateUI() {
         noOfLecturesPerDay = setUpViewModel.getNoOfLecturesPerDay();
-        index = 0;
+
         linearContainer.removeAllViews();
-        for (int i = 0; i < noOfLecturesPerDay; i++) {
-            final Button btnStartTime = new Button(getContext());
-            btnStartTime.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            btnStartTime.setText("Select start time of lecture " + (i + 1));
-            linearContainer.addView(btnStartTime, index);
-            index++;
-            final Button btnEndTime = new Button(getContext());
-            btnEndTime.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            btnEndTime.setText("Select ending time of lecture " + (i + 1));
-            linearContainer.addView(btnEndTime, index);
-            index++;
+        for (int i = 0; i < noOfLecturesPerDay * 2; i++) {
+            if (i % 2 == 0) {
+                TextView tv = new TextView(getContext());
+                tv.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                tv.setText("Lecture : " + ((i / 2) + 1));
+                linearContainer.addView(tv, i);
+            } else {
+                LinearLayout layout = new LinearLayout(getContext());
+                layout.setOrientation(LinearLayout.HORIZONTAL);
+                layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-            btnStartTime.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                            Toast.makeText(getContext(), "Hour is " + i + " Minute is " + i1, Toast.LENGTH_SHORT).show();
-                            btnStartTime.setText(i + ":" + i1);
-                        }
-                    }, 0, 0, false);
-                    timePickerDialog.show();
-                }
-            });
+                final Button btnStartTime = new Button(getContext());
+                btnStartTime.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                btnStartTime.setText("Select start time");
+                layout.addView(btnStartTime, 0);
 
-            btnEndTime.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                            btnEndTime.setText(i + ":" + i1);
-                        }
-                    }, 0, 0, false);
-                    timePickerDialog.show();
-                }
-            });
+                final Button btnEndTime = new Button(getContext());
+                btnEndTime.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                btnEndTime.setText("Select end time");
+                layout.addView(btnEndTime, 1);
+
+                btnStartTime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                                btnStartTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i + ":" + i1)));
+                            }
+                        }, 0, 0, false);
+                        timePickerDialog.show();
+                    }
+                });
+
+                btnEndTime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                                btnEndTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i + ":" + i1)));
+                            }
+                        }, 0, 0, false);
+                        timePickerDialog.show();
+                    }
+                });
+                linearContainer.addView(layout, i);
+            }
         }
     }
 
-//    private void insertTimeFor(int lectureNo,int startHour,int startMin,int endHour, int endMin){
-//        long startTimeInMillis = ConverterUtils.convertTimeInInt(startHour,startMin);
-//        long endTimeInMillis = ConverterUtils.convertTimeInInt(endHour,endMin);
-//        setUpViewModel.setLectureTimeInSharedPrefs(lectureNo,startTimeInMillis,endTimeInMillis);
-//    }
-
-    //TODO Validation check left here
     @OnClick(R.id.btn_set_up_lecture_time_continue)
     void clickedContinue() {
-        int maxIndex = (noOfLecturesPerDay * 2);
-        for (int i = 0; i < maxIndex; i++) {
-            int time = convertTimeInInt(((Button) linearContainer.getChildAt(i)).getText().toString());
+        for (int i = 0; i < noOfLecturesPerDay * 2; i++) {
             if (i % 2 == 0) {
-                setUpViewModel.setLectureStartTimeInSharedPrefs(i / 2, time);
-                Logger.d("Setting starting time for Lecture " + i / 2 + "as " + time + " Minutes");
+                //Toast.makeText(getContext(), "Title detected", Toast.LENGTH_SHORT).show();
             } else {
-                setUpViewModel.setLectureEndTimeInSharedPrefs(i / 2, time);
-                Logger.d("Setting ending time for Lecture " + i / 2 + "as " + time + " Minutes");
+                LinearLayout linearLayout = (LinearLayout) linearContainer.getChildAt(i);
+
+                int index = 0;
+                String startTimeStr = ((Button) linearLayout.getChildAt(index)).getText().toString();
+                index++;
+                String endTimeStr = ((Button) linearLayout.getChildAt(index)).getText().toString();
+
+                if (!startTimeStr.contains(":") || !endTimeStr.contains(":")) {
+                    Toast.makeText(getContext(), "Please Select time for All the Lectures", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int startTime = convertTimeInInt(startTimeStr);
+                int endTime = convertTimeInInt(endTimeStr);
+
+                if (endTime - startTime < 1) {
+                    Toast.makeText(getContext(), "End time must be after Start time", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                setUpViewModel.setLectureStartTimeInSharedPrefs(i / 2, startTime);
+                Logger.d("Setting starting time for Lecture " + i / 2 + "as " + startTime + " Minutes");
+                setUpViewModel.setLectureEndTimeInSharedPrefs(i / 2, endTime);
+                Logger.d("Setting ending time for Lecture " + i / 2 + "as " + endTime + " Minutes");
+                if (listener != null) {
+                    listener.OnLectureTimeSelected();
+                }
             }
+
         }
-        if (listener != null) {
-            listener.OnLectureTimeSelected();
-        }
+
     }
 
     @OnClick(R.id.btn_set_up_lecture_time_previous)
@@ -141,7 +165,6 @@ public class SetUpLectureTimeFragment extends Fragment {
 
     public interface OnLectureTimeSelectedListener {
         void OnLectureTimeSelected();
-
         void OnPreviousClickedOnSetUpLectureTime();
     }
 }

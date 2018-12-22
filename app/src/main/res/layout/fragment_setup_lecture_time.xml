@@ -6,19 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.SetUpLectureTimeFragment">
 
-    <LinearLayout
-        android:id="@+id/linear_set_up_lecture_time_fragment_container"
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/btn_set_up_lecture_time_continue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linear_set_up_lecture_time_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/btn_set_up_lecture_time_continue"

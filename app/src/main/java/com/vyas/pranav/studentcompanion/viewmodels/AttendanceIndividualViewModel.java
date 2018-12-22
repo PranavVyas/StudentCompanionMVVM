@@ -40,7 +40,4 @@ public class AttendanceIndividualViewModel extends AndroidViewModel {
         this.currUser = currUser;
     }
 
-    public void signOutUser() {
-
-    }
 }

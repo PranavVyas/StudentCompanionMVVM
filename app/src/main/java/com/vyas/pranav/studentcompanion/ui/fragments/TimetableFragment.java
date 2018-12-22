@@ -111,6 +111,8 @@ public class TimetableFragment extends Fragment {
                 List<String> lectureNo = getColumnHeaders(lecturesPerDay);
                 tableTimetable.setAdapter(mAdapter);
                 mAdapter.setAllItems(lectureNo, weekDays, daysLectures);
+                //tableTimetable.setColumnWidth(1,LinearLayout.LayoutParams.WRAP_CONTENT);
+                //tableTimetable.setColumnWidth(2,LinearLayout.LayoutParams.WRAP_CONTENT);
             }
         });
     }
@@ -123,7 +125,7 @@ public class TimetableFragment extends Fragment {
             int endingTime = timetableViewModel.getEndingTimeOfLecture(i);
             String start = ConverterUtils.convertTimeIntInString(startingTime);
             String end = ConverterUtils.convertTimeIntInString(endingTime);
-            header = header + "\n" + start + "\nTo" + end;
+            header = header + "\n" + start + "\nTo\n" + end;
             columnHeader.add(header);
         }
         return columnHeader;

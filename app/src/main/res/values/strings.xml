@@ -6,10 +6,21 @@
     <string name="pref_summery_off_switch_enable_reminder">Reminder Disabled</string>
     <bool name="pref_def_value_switch_enable_reminder">false</bool>
 
-
     <string name="pref_key_time_reminder_time" translatable="false">SHARED_PREF_REMINDER_TIME</string>
     <string name="pref_title_time_reminder_time">Select Time</string>
     <integer name="pref_def_value_time_reminder_time">0</integer>
     <string name="pref_summery_time_reminder_time">00:00</string>
+
+    <string name="pref_key_switch_enable_auto_attendance" translatable="false">SHARED_PREF_IS_AUTO_ATTENDANCE_ENABLED</string>
+    <string name="pref_title_switch_enable_auto_attendance">Enable Auto Attendance</string>
+    <string name="pref_summery_on_switch_enable_auto_attendance">Auto Attendance Enabled</string>
+    <string name="pref_summery_off_switch_enable_auto_attendance">Auto Attendance Disabled</string>
+    <bool name="pref_def_value_switch_enable_auto_attendance">false</bool>
+
+    <string name="pref_key_switch_enable_night_mode" translatable="false">SHARED_PREF_IS_NIGHT_MODE_ENABLED</string>
+    <string name="pref_title_switch_enable_night_mode">Enable Night Mode</string>
+    <string name="pref_summery_on_switch_enable_night_mode">Night Mode Enabled</string>
+    <string name="pref_summery_off_switch_enable_night_mode">Night Mode Disabled</string>
+    <bool name="pref_def_value_switch_enable_night_mode">false</bool>
 
 </resources>

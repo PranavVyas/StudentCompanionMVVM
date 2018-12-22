@@ -7,10 +7,11 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
-import com.vyas.pranav.studentcompanion.utils.Constants;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.Date;
+import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -31,14 +32,10 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
     TextView tvDateToday;
     @BindView(R.id.tv_overall_attendance_detail_elapsed)
     TextView tvElapsedDays;
-    @BindView(R.id.tv_overall_attendance_detail_end_date)
-    TextView tvEndDate;
     @BindView(R.id.tv_overall_attendance_detail_left_bunk)
     TextView tvLeftToBunkDays;
     @BindView(R.id.tv_overall_attendance_detail_present)
     TextView tvPresentDays;
-    @BindView(R.id.tv_overall_attendance_detail_start_date)
-    TextView tvStartDate;
     @BindView(R.id.tv_overall_attendance_detail_subject)
     TextView tvSubject;
     @BindView(R.id.tv_overall_attendance_detail_total)
@@ -48,6 +45,7 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferencesRepository.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overall_attendacne_detail);
         ButterKnife.bind(this);
@@ -66,16 +64,14 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
 
     private void populateUI(OverallAttendanceEntry entry) {
         tvSubject.setText(entry.getSubName());
-        tvCredits.setText(String.valueOf(entry.getCredits()));
-        tvDateToday.setText(ConverterUtils.convertDateToString(new Date()));
-        tvStartDate.setText(Constants.SEM_START_DATE_STR);
-        tvEndDate.setText(Constants.SEM_END_DATE_STR);
-        tvTotalDays.setText(String.valueOf(entry.getTotalDays()));
-        tvPresentDays.setText(String.valueOf(entry.getPresentDays()));
-        tvBunkedDays.setText(String.valueOf(entry.getBunkedDays()));
-        tvElapsedDays.setText(String.valueOf((entry.getBunkedDays() + entry.getPresentDays())));
+        tvCredits.setText(String.format(Locale.US, ": %d", entry.getCredits()));
+        tvDateToday.setText(String.format(Locale.US, ": %s", ConverterUtils.convertDateToString(new Date())));
+        tvTotalDays.setText(String.format(Locale.US, ": %d", entry.getTotalDays()));
+        tvPresentDays.setText(String.format(Locale.US, ": %d", entry.getPresentDays()));
+        tvBunkedDays.setText(String.format(Locale.US, ": %d", entry.getBunkedDays()));
+        tvElapsedDays.setText(String.format(Locale.US, ": %d", (entry.getBunkedDays() + entry.getPresentDays())));
         int leftToBunk = (int) Math.ceil(entry.getTotalDays() * 0.25) - entry.getBunkedDays();
-        tvLeftToBunkDays.setText(String.valueOf(leftToBunk));
+        tvLeftToBunkDays.setText(String.format(Locale.US, ": %d", leftToBunk));
         int precentPercent = (entry.getPresentDays() * 100) / entry.getTotalDays();
         progressSubject.setProgressValue(precentPercent);
         progressSubject.setCenterTitle(precentPercent + " %");

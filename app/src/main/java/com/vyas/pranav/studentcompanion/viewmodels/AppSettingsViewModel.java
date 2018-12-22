@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 public class AppSettingsViewModel extends AndroidViewModel {
 
     private boolean isReminderEnabled;
+    private boolean isAutoAttendanceEnabled;
     private int reminderTime;
 
     private AppSettingsRepository appSettingsRepository;
@@ -35,4 +36,23 @@ public class AppSettingsViewModel extends AndroidViewModel {
         appSettingsRepository.cancelReminderJob();
     }
 
+    public void cancelAutoAttendanceJob() {
+        appSettingsRepository.cancelAutoAttendanceJobs();
+    }
+
+    public boolean isAutoAttendanceEnabled() {
+        return appSettingsRepository.isAutoAttendanceEnabled();
+    }
+
+    public void enableAutoAttendanceJob() {
+        appSettingsRepository.enableAutoAttendanceForToday();
+    }
+
+    public void deleteUserAccount() {
+        appSettingsRepository.deleteUserAccount();
+    }
+
+    public void toggleNightMode() {
+        appSettingsRepository.toggleNightMode();
+    }
 }

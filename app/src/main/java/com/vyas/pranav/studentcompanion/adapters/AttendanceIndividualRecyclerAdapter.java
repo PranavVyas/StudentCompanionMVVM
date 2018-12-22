@@ -44,11 +44,6 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
                 holder.tvSwitchSummery.setText(attendanceEntries.get(position).isPresent() ? "Present" : "Absent");
                 holder.switchPresent.setChecked(attendanceEntries.get(position).isPresent());
             }
-        } else {
-            holder.tvLectureNo.setText("Lecture XX");
-            holder.tvSubjectName.setText("Subject Name");
-            holder.tvSwitchSummery.setText("Present");
-            holder.switchPresent.setChecked(true);
         }
         holder.switchPresent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +60,7 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
 
     @Override
     public int getItemCount() {
-        return (attendanceEntries == null) ? 1 : attendanceEntries.size();
+        return (attendanceEntries == null) ? 0 : attendanceEntries.size();
     }
 
     public void setAttendanceForDate(List<AttendanceEntry> attendanceEntries) {

@@ -12,7 +12,6 @@ import com.evernote.android.job.JobRequest;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -32,7 +31,6 @@ public class DailyJobForShowingReminder extends DailyJob {
         long startTime = TimeUnit.MINUTES.toMillis(time);
         long endTime = startTime + TimeUnit.MINUTES.toMillis(1);
         DailyJob.schedule(jobBuilder, startTime, endTime);
-
     }
 
     public static void cancelReminderJob() {
@@ -62,7 +60,7 @@ public class DailyJobForShowingReminder extends DailyJob {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext(), "NOTIFICATION_MAIN")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Added")
-                .setContentText("Attendance added for date " + new Date().toString())
+                .setContentText("Please fill today's attendance")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .addAction(getOpenAppAction())
                 .setAutoCancel(true);

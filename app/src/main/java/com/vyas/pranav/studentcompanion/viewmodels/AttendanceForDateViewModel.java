@@ -15,14 +15,16 @@ public class AttendanceForDateViewModel extends ViewModel {
     private LiveData<List<AttendanceEntry>> attendanceForDate;
     private AttendanceDatabaseRepository repository;
     private String lastChangedSubject;
+    private Date date;
 
     public AttendanceForDateViewModel(AttendanceDatabase mAttendanceDb, Date date) {
         repository = new AttendanceDatabaseRepository(mAttendanceDb.attendanceDao());
+        this.date = date;
         attendanceForDate = repository.getAttendanceForDate(date);
     }
 
     public LiveData<List<AttendanceEntry>> getAttendanceForDate() {
-        return attendanceForDate;
+        return repository.getAttendanceForDate(date);
     }
 
     public void updateAttendance(AttendanceEntry attendanceEntry) {

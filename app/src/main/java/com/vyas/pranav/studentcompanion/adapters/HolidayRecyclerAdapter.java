@@ -29,15 +29,22 @@ public class HolidayRecyclerAdapter extends RecyclerView.Adapter<HolidayRecycler
 
     @Override
     public void onBindViewHolder(@NonNull HolidayHolder holder, int position) {
-        holder.tvNo.setText("" + (position + 1));
-        holder.tvDate.setText(ConverterUtils.convertDateToString(holidays.get(position).getDate()));
-        holder.tvDay.setText(holidays.get(position).getDay());
-        holder.tvName.setText(holidays.get(position).getName());
+        if (position == 0) {
+            holder.tvName.setText("Holiday Name");
+            holder.tvDay.setText("Day");
+            holder.tvDate.setText("Date");
+            holder.tvNo.setText("No");
+            return;
+        }
+        holder.tvNo.setText("" + position);
+        holder.tvDate.setText(ConverterUtils.convertDateToString(holidays.get(position - 1).getDate()));
+        holder.tvDay.setText(holidays.get(position - 1).getDay());
+        holder.tvName.setText(holidays.get(position - 1).getName());
     }
 
     @Override
     public int getItemCount() {
-        return holidays == null ? 0 : holidays.size();
+        return holidays == null ? 1 : holidays.size() + 1;
     }
 
     public void setHolidays(List<HolidayEntry> holidays) {

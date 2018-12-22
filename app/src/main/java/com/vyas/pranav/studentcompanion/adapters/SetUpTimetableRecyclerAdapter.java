@@ -80,7 +80,7 @@ public class SetUpTimetableRecyclerAdapter extends RecyclerView.Adapter<SetUpTim
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     selectedSubject = (String) adapterView.getSelectedItem();
                     daySchedule.set(getAdapterPosition(), selectedSubject);
-                    Toast.makeText(view.getContext(), "Selected Item is " + selectedSubject, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(view.getContext(), "Selected Item is " + selectedSubject, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

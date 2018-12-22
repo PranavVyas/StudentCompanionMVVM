@@ -12,7 +12,9 @@ import com.evernote.android.job.JobRequest;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
 import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
+import com.vyas.pranav.studentcompanion.repositories.TimetableRepository;
 import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
 
 import java.util.Date;
@@ -52,6 +54,12 @@ public class DailyJobToEditOverallAttendance extends DailyJob {
         }
         OverallAttendanceRepository overallAttendanceRepository = new OverallAttendanceRepository(getContext());
         overallAttendanceRepository.refreshAllOverallAttendance();
+        AppSettingsRepository repo = new AppSettingsRepository(getContext());
+        TimetableRepository timetableRepository = new TimetableRepository(getContext());
+        boolean isAutoAttendanceEnabled = repo.isAutoAttendanceEnabled();
+        if (isAutoAttendanceEnabled) {
+            repo.enableAutoAttendanceForToday();
+        }
         showNotification();
         return DailyJobResult.SUCCESS;
     }

@@ -10,20 +10,15 @@ import androidx.lifecycle.AndroidViewModel;
 
 public class SignInViewModel extends AndroidViewModel {
 
-    FirebaseAuth mAuth;
-    FirebaseUser currUser;
+    private FirebaseAuth mAuth;
 
     public SignInViewModel(@NonNull Application application) {
         super(application);
         mAuth = FirebaseAuth.getInstance();
-        currUser = mAuth.getCurrentUser();
     }
 
     public FirebaseUser getCurrUser() {
-        return currUser;
+        return mAuth.getCurrentUser();
     }
 
-    public void setCurrUser(FirebaseUser currUser) {
-        this.currUser = currUser;
-    }
 }

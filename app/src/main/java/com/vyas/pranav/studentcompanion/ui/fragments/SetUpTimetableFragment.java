@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,10 @@ public class SetUpTimetableFragment extends Fragment {
     RecyclerView rvTimetable;
     @BindView(R.id.tv_set_up_timetable_day)
     TextView tvDay;
+    @BindView(R.id.btn_set_up_timetable_fragment_continue)
+    Button btnContinue;
+    @BindView(R.id.btn_set_up_timetable_fragment_previous)
+    Button btnPrevious;
 
     private OnTimetableSelectedListener listener;
     private SetUpTimetableRecyclerAdapter mAdapter;
@@ -148,6 +153,7 @@ public class SetUpTimetableFragment extends Fragment {
 
             case 5:
                 if (listener != null) {
+                    btnContinue.setEnabled(false);
                     listener.onTimetableSelected();
                 } else {
                     Toast.makeText(getContext(), "Error Occurred", Toast.LENGTH_SHORT).show();

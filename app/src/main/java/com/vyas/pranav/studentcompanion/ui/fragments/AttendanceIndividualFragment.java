@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.DateConverter;
@@ -58,6 +62,7 @@ public class AttendanceIndividualFragment extends Fragment {
     private OverallAttendanceDatabase mOverallDb;
     private AttendanceDatabase mAttendanceDb;
     private AttendanceIndividualRecyclerAdapter mAdapter;
+    private SkeletonScreen skeletonScreen;
 
     public AttendanceIndividualFragment() {
     }
@@ -67,17 +72,20 @@ public class AttendanceIndividualFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setUpDatabase();
         setUpRecyclerView();
-        if (getArguments() == null) {
-            Date date = ConverterUtils.convertStringToDate(Constants.TEST_DATE_1);
-            setUpIndividualAttendance(date);
-            tvDate.setText(Constants.TEST_DATE_1);
-        } else {
+        Date date = new Date();
+        Logger.clearLogAdapters();
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.d("Current Date is " + date);
+        date = ConverterUtils.convertStringToDate(ConverterUtils.convertDateToString(date));
+        Logger.d("Current Date after changing is " + date);
+        if (getArguments() != null) {
             String dateStr = getArguments().getString(AttendanceIndividualActivity.EXTRA_DATE);
-            Date date = ConverterUtils.convertStringToDate(dateStr);
-            setUpIndividualAttendance(date);
-            tvDate.setText(dateStr);
+            date = ConverterUtils.convertStringToDate(dateStr);
             btnOpenOtherAttendance.setVisibility(View.GONE);
+            Logger.d("Received date is " + date);
         }
+        setUpIndividualAttendance(date);
+        tvDate.setText(ConverterUtils.convertDateToString(date));
     }
 
     @Override
@@ -121,20 +129,29 @@ public class AttendanceIndividualFragment extends Fragment {
 
     private void setUpRecyclerView() {
         mAdapter = new AttendanceIndividualRecyclerAdapter();
-        mAdapter.setHasStableIds(true);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         lm.setOrientation(RecyclerView.VERTICAL);
-        rvMain.setAdapter(mAdapter);
         rvMain.setLayoutManager(lm);
+        skeletonScreen = Skeleton.bind(rvMain).adapter(mAdapter).load(R.layout.item_holder_recycler_indivdual_attendance_shimmer).count(3).show();
+        mAdapter.setHasStableIds(true);
+        //rvMain.setAdapter(mAdapter);
     }
 
     private void setUpIndividualAttendance(Date date) {
+        //Logger.d("Received Date is "+date);
         AttendanceForDateViewModelFactory factory = new AttendanceForDateViewModelFactory(mAttendanceDb, date);
         attendanceViewModel = ViewModelProviders.of(getActivity(), factory).get(AttendanceForDateViewModel.class);
         attendanceViewModel.getAttendanceForDate().observe(this, new Observer<List<AttendanceEntry>>() {
             @Override
-            public void onChanged(List<AttendanceEntry> attendanceEntries) {
-                mAdapter.setAttendanceForDate(attendanceEntries);
+            public void onChanged(final List<AttendanceEntry> attendanceEntries) {
+                //      Logger.d("Received List is "+attendanceEntries.size());
+                if (!attendanceEntries.isEmpty()) {
+                    skeletonScreen.hide();
+                    mAdapter.setAttendanceForDate(attendanceEntries);
+                    return;
+                }
+                //Holiday is here
+                skeletonScreen.hide();
             }
         });
         /*TODO [PROBABLE BUG] Might be needed to refresh all the overall attendance(Which depends on the attendance database updated) as updating the attendance database and refreshing attendance happens simultaniously
