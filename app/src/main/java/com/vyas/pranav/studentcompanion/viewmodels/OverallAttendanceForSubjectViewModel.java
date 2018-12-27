@@ -19,5 +19,4 @@ public class OverallAttendanceForSubjectViewModel extends ViewModel {
     public void refreshOverallAttendance(String subjectName) {
         repository.refreshOverallAttendanceForSubject(subjectName);
     }
-
 }

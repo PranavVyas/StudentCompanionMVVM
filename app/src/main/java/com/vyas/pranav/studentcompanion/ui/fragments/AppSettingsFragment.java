@@ -1,10 +1,12 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.ui.activities.AutoAttendanceSubjectListActivity;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.TimePreference;
 import com.vyas.pranav.studentcompanion.utils.TimePreferenceDialogFragmentCompat;
@@ -34,6 +36,14 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         setTimePrefSummery(getContext().getString(R.string.pref_key_time_reminder_time));
         ButterKnife.bind(this, view);
         setSelectTimeStateFromViewModel();
+        findPreference("Kdkskd").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(getContext(), AutoAttendanceSubjectListActivity.class);
+                startActivity(intent);
+                return false;
+            }
+        });
     }
 
 //    @OnClick(R.id.pref_delete_account)

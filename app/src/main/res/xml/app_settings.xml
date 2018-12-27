@@ -33,4 +33,8 @@
         android:summaryOn="@string/pref_summery_on_switch_enable_night_mode"
         android:title="@string/pref_title_switch_enable_night_mode" />
 
+    <Preference
+        android:key="Kdkskd"
+        android:title="Gwdojd" />
+
 </PreferenceScreen>

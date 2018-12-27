@@ -61,9 +61,9 @@ dependencies {
     //Debugging database
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
     //Firebase Analytics
-    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
     //Firebase Realtime Database
-    implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.google.firebase:firebase-database:16.0.5'
     //Preference Fragment Compat
     implementation 'androidx.preference:preference:1.0.0'
     //Evernote Job Scheduler
@@ -71,9 +71,12 @@ dependencies {
     //TableView for TimeTable
     implementation 'com.evrencoskun.library:tableview:0.8.8'
     //Firebase AuthUI
-    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.0'
     //RecyclerView Animations
     implementation 'com.ethanhua:skeleton:1.1.2'
     implementation 'io.supercharge:shimmerlayout:2.1.0'
+    //Places Api
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 }
 apply plugin: 'com.google.gms.google-services'

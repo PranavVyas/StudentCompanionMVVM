@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDatesFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDetailsSemFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpLectureTimeFragment;
@@ -26,6 +27,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferencesRepository.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up);
         ButterKnife.bind(this);

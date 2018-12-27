@@ -8,4 +8,8 @@ public final class Constants {
 
     public static int TEST_START_TIME = 60 * 1000;
     public static int TEST_END_TIME = 2 * 60 * 1000;
+
+    public static String DEFAULT_PLACE_ID = "NO_ID";
+
+
 }

@@ -22,12 +22,12 @@ import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDataba
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.ui.activities.AttendanceIndividualActivity;
-import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModel;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModelFactory;
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceForSubjectViewModel;
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceForSubjectViewModelFactory;
+import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -59,6 +59,7 @@ public class AttendanceIndividualFragment extends Fragment {
 
     private AttendanceForDateViewModel attendanceViewModel;
     private OverallAttendanceForSubjectViewModel overallAttendanceViewModel;
+    private OverallAttendanceViewModel model;
     private OverallAttendanceDatabase mOverallDb;
     private AttendanceDatabase mAttendanceDb;
     private AttendanceIndividualRecyclerAdapter mAdapter;
@@ -77,6 +78,7 @@ public class AttendanceIndividualFragment extends Fragment {
         Logger.addLogAdapter(new AndroidLogAdapter());
         Logger.d("Current Date is " + date);
         date = ConverterUtils.convertStringToDate(ConverterUtils.convertDateToString(date));
+        model = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
         Logger.d("Current Date after changing is " + date);
         if (getArguments() != null) {
             String dateStr = getArguments().getString(AttendanceIndividualActivity.EXTRA_DATE);
@@ -85,7 +87,7 @@ public class AttendanceIndividualFragment extends Fragment {
             Logger.d("Received date is " + date);
         }
         setUpIndividualAttendance(date);
-        tvDate.setText(ConverterUtils.convertDateToString(date));
+        tvDate.setText(ConverterUtils.convertDateToString(date) + "\n" + ConverterUtils.getDayOfWeek(date));
     }
 
     @Override
@@ -117,7 +119,7 @@ public class AttendanceIndividualFragment extends Fragment {
                 now.get(Calendar.DAY_OF_MONTH));
         //TODO [ENHANCEMENT] Set title of date picker
         datePickerDialog.getDatePicker().setMaxDate(DateConverter.toTimeStamp(new Date()));
-        datePickerDialog.getDatePicker().setMinDate(DateConverter.toTimeStamp(ConverterUtils.convertStringToDate(Constants.SEM_START_DATE_STR)));
+        datePickerDialog.getDatePicker().setMinDate(DateConverter.toTimeStamp(model.getStartingDate()));
         datePickerDialog.show();
     }
 

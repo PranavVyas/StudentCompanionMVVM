@@ -7,6 +7,9 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
+import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
+import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
+import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlacesDatabase;
 import com.vyas.pranav.studentcompanion.data.firebase.HolidaysFetcher;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
@@ -185,6 +188,7 @@ public class SetUpProcessRepository {
                 List<Date> eligibleDates = removeHolidaysAndWeekends(holidayDates);
                 if (listener != null) {
                     listener.onEligibleDatesCalculated(eligibleDates);
+                    setUpAutoAttendanceDatabase();
                 }
             }
         });
@@ -230,8 +234,8 @@ public class SetUpProcessRepository {
                     int credits = getCreditsForSubject(subject);
                     OverallAttendanceEntry x = new OverallAttendanceEntry();
                     Date todayDate = new Date();
-                    int presentDays = attendanceDao.getAttendedDaysForSubject(subject, ConverterUtils.convertStringToDate(Constants.SEM_START_DATE_STR), todayDate);
-                    int bunkedDays = attendanceDao.getBunkedDaysForSubject(subject, ConverterUtils.convertStringToDate(Constants.SEM_START_DATE_STR), new Date());
+                    int presentDays = attendanceDao.getAttendedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), todayDate);
+                    int bunkedDays = attendanceDao.getBunkedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), new Date());
                     int totalDays = attendanceDao.getTotalDaysForSubject(subject);
                     x.setTotalDays(totalDays);
                     x.setBunkedDays(bunkedDays);
@@ -258,6 +262,24 @@ public class SetUpProcessRepository {
         }
         int index = subjects.indexOf(subject);
         return Integer.parseInt(credits.get(index));
+    }
+
+    public void setUpAutoAttendanceDatabase() {
+        final AutoAttendancePlaceDao autoAttendancePlaceDao = AutoAttendancePlacesDatabase.getInstance(context).autoAttendancePlaceDao();
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<String> subjectsListOnly = getSubjectsListOnly();
+                for (int i = 0; i < subjectsListOnly.size(); i++) {
+                    String subject = subjectsListOnly.get(i);
+                    AutoAttendancePlaceEntry autoAttendancePlaceEntry = new AutoAttendancePlaceEntry();
+                    autoAttendancePlaceEntry.setPlaceId(Constants.DEFAULT_PLACE_ID);
+                    autoAttendancePlaceEntry.setSubject(subject);
+                    autoAttendancePlaceDao.insertNewPlaceId(autoAttendancePlaceEntry);
+                }
+            }
+        });
+
     }
 
     public interface OnEligibleDatesCalculatedListener {
