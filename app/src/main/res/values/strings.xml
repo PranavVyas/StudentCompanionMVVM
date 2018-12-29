@@ -23,4 +23,7 @@
     <string name="pref_summery_off_switch_enable_night_mode">Night Mode Disabled</string>
     <bool name="pref_def_value_switch_enable_night_mode">false</bool>
 
+    <string name="pref_select_places_auto_attendance">Select Places for Auto Attendance</string>
+    <string name="pref_key_select_places_auto_attendance">SHARED_PREF_SELECT_AUTO_ATTENDANCE_PLACES</string>
+
 </resources>

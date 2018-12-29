@@ -23,6 +23,7 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.Constants;
+import com.vyas.pranav.studentcompanion.utils.GeoFencing;
 import com.vyas.pranav.studentcompanion.viewmodels.AutoAttendanceSubjectDetailViewModel;
 
 import androidx.annotation.NonNull;
@@ -53,6 +54,8 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     private AutoAttendanceSubjectDetailViewModel autoAttendanceSubjectDetailViewModel;
     private LiveData<AutoAttendancePlaceEntry> placeIdOFSubject;
     private String currSubject;
+    private GeoFencing geoFencing;
+    private AutoAttendancePlaceEntry currPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,20 +67,23 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
         setUpGoogleClient();
+        geoFencing = new GeoFencing(this, mClient);
         checkForPermission();
+        currPlace = null;
         populateUI(getIntent());
+//        autoAttendanceSubjectDetailViewModel.getPlaceIdOFSubject(getIntent().getStringExtra(EXTRA_SUBJECT_NAME)).observe(this,
+//                new Observer<AutoAttendancePlaceEntry>() {
+//                    @Override
+//                    public void onChanged(AutoAttendancePlaceEntry placeEntry) {
+//                        currPlace = placeEntry;
+//                        Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "HIi There...", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
     }
 
     private void setUpGoogleClient() {
         autoAttendanceSubjectDetailViewModel.setGoogleClient(this, this);
         mClient = autoAttendanceSubjectDetailViewModel.getGoogleClient();
-//        mClient = new GoogleApiClient.Builder(this)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .addApi(Places.GEO_DATA_API)
-//                .enableAutoManage(this, this)
-//                .build();
     }
 
     private void checkForPermission() {
@@ -93,13 +99,29 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
                 currSubject = intent.getStringExtra(EXTRA_SUBJECT_NAME);
                 tvSubject.setText("Subject : " + currSubject);
                 placeIdOFSubject = autoAttendanceSubjectDetailViewModel.getPlaceIdOFSubject(currSubject);
-                placeIdOFSubject.observe(AutoAttendanceSubjectDetailActivity.this, new Observer<AutoAttendancePlaceEntry>() {
+                placeIdOFSubject.observe(this, new Observer<AutoAttendancePlaceEntry>() {
                     @Override
                     public void onChanged(AutoAttendancePlaceEntry placeEntry) {
                         if (placeEntry != null) {
+                            currPlace = placeEntry;
                             String id = placeEntry.getPlaceId();
                             if (!id.equals(Constants.DEFAULT_PLACE_ID)) {
                                 final PendingResult<PlaceBuffer> placeById = Places.GeoDataApi.getPlaceById(mClient, id);
+//                                Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Chenged Just Now", Toast.LENGTH_SHORT).show();
+//                                AppExecutors.getInstance().networkIO().execute(
+//                                        new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                PlaceBuffer await = placeById.await();
+//                                                AppExecutors.getInstance().mainThread().execute(new Runnable() {
+//                                                    @Override
+//                                                    public void run() {
+//                                                        Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Changed", Toast.LENGTH_SHORT).show();
+//                                                    }
+//                                                });
+//                                            }
+//                                        }
+//                                );
                                 placeById.setResultCallback(new ResultCallback<PlaceBuffer>() {
                                     @Override
                                     public void onResult(@NonNull PlaceBuffer places) {
@@ -115,9 +137,11 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
                                             autoAttendanceSubjectDetailViewModel.setCurrAddress(places.get(0).getAddress() + "");
 //                                        tvAddress.setText();
                                             autoAttendanceSubjectDetailViewModel.setCurrName(places.get(0).getName() + "");
-                                            places.release();
 //                                        tvName.setText();
                                             refreshTextViewData();
+                                            geoFencing.updateGeoFenceList(places);
+                                            places.release();
+                                            geoFencing.registerAllGeoFences();
                                         } else {
                                             Logger.d("Error Occurred");
                                             Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Error Occured", Toast.LENGTH_SHORT).show();
@@ -175,17 +199,19 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
 
         if (requestCode == RC_CHANGE_LOCATION && resultCode == RESULT_OK) {
             if (data != null) {
-                final Place place = PlacePicker.getPlace(this, data);
-                autoAttendanceSubjectDetailViewModel.getPlaceIdOFSubject(currSubject).observe(this, new Observer<AutoAttendancePlaceEntry>() {
-                    @Override
-                    public void onChanged(AutoAttendancePlaceEntry placeEntry) {
-                        autoAttendanceSubjectDetailViewModel.getPlaceIdOFSubject(currSubject).removeObserver(this);
-                        placeEntry.setPlaceId(place.getId());
-//                        autoAttendanceSubjectDetailViewModel.setCurrName(place.getName()+"");
-//                        autoAttendanceSubjectDetailViewModel.setCurrAddress(place.getAddress()+"");
-                        autoAttendanceSubjectDetailViewModel.updatePlaceId(placeEntry);
-                    }
-                });
+                Place place = PlacePicker.getPlace(this, data);
+                currPlace.setPlaceId(place.getId());
+                autoAttendanceSubjectDetailViewModel.updatePlaceId(currPlace);
+//                autoAttendanceSubjectDetailViewModel.getPlaceIdOFSubject(currSubject).observe(this, new Observer<AutoAttendancePlaceEntry>() {
+//                    @Override
+//                    public void onChanged(AutoAttendancePlaceEntry placeEntry) {
+//                        autoAttendanceSubjectDetailViewModel.getPlaceIdOFSubject(currSubject).removeObserver(this);
+//                        placeEntry.setPlaceId(place.getId());
+////                        autoAttendanceSubjectDetailViewModel.setCurrName(place.getName()+"");
+////                        autoAttendanceSubjectDetailViewModel.setCurrAddress(place.getAddress()+"");
+//                        autoAttendanceSubjectDetailViewModel.updatePlaceId(placeEntry);
+//                    }
+//                });
             } else {
                 Toast.makeText(this, "Error Occurred While Retrieving Data", Toast.LENGTH_SHORT).show();
             }

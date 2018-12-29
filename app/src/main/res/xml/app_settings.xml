@@ -18,8 +18,8 @@
         android:title="@string/pref_title_time_reminder_time" />
 
     <SwitchPreference
+        android:icon="@drawable/ic_enable_auto_attendance"
         android:defaultValue="@bool/pref_def_value_switch_enable_auto_attendance"
-        android:icon="@drawable/ic_auto_attendance_map"
         android:key="@string/pref_key_switch_enable_auto_attendance"
         android:summaryOff="@string/pref_summery_off_switch_enable_auto_attendance"
         android:summaryOn="@string/pref_summery_on_switch_enable_auto_attendance"
@@ -34,7 +34,8 @@
         android:title="@string/pref_title_switch_enable_night_mode" />
 
     <Preference
-        android:key="Kdkskd"
-        android:title="Gwdojd" />
+        android:icon="@drawable/ic_auto_attendance_map"
+        android:key="@string/pref_key_select_places_auto_attendance"
+        android:title="@string/pref_select_places_auto_attendance" />
 
 </PreferenceScreen>

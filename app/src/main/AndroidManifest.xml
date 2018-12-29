@@ -29,6 +29,7 @@
         <activity android:name=".ui.activities.SetUpActivity" />
 
         <service android:name=".services.EditOverallAttendanceIntentService" />
+        <service android:name=".services.GeoFenceIntentService" />
 
         <activity
             android:name=".ui.activities.SignInActivity"
@@ -46,6 +47,7 @@
         <activity
             android:name=".ui.activities.AutoAttendanceSubjectDetailActivity"
             android:launchMode="singleTop"></activity>
+
     </application>
 
 </manifest>

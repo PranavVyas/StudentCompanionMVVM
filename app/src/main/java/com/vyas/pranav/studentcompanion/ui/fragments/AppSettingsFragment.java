@@ -36,7 +36,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         setTimePrefSummery(getContext().getString(R.string.pref_key_time_reminder_time));
         ButterKnife.bind(this, view);
         setSelectTimeStateFromViewModel();
-        findPreference("Kdkskd").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(getContext(), AutoAttendanceSubjectListActivity.class);
