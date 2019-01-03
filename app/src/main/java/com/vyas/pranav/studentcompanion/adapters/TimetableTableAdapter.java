@@ -45,8 +45,7 @@ public class TimetableTableAdapter extends AbstractTableAdapter<String, String, 
         CellViewHolder viewHolder = (CellViewHolder) holder;
         String cell = (String) cellItemModel;
         viewHolder.tvCell.setText(cell);
-        viewHolder.itemView.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-        viewHolder.itemView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        viewHolder.itemView.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
         viewHolder.tvCell.requestLayout();
     }
 
@@ -61,8 +60,7 @@ public class TimetableTableAdapter extends AbstractTableAdapter<String, String, 
         String columnHeader = (String) columnHeaderItemModel;
         viewHolder.tvColumnHeader.setText(columnHeader);
         viewHolder.itemView.setBackgroundColor(R.attr.table_background);
-        viewHolder.itemView.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-        viewHolder.itemView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        viewHolder.itemView.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
         viewHolder.tvColumnHeader.requestLayout();
     }
 
@@ -76,9 +74,9 @@ public class TimetableTableAdapter extends AbstractTableAdapter<String, String, 
         RowHeaderViewHolder viewHolder = (RowHeaderViewHolder) holder;
         String rowHeader = (String) rowHeaderItemModel;
         viewHolder.tvRowHeader.setText(rowHeader);
-        viewHolder.itemView.setBackgroundColor(R.attr.table_background);
+        //viewHolder.itemView.setBackgroundColor(R.attr.table_background);
+        //viewHolder.itemView.setBackgroundResource(R.color.accent);
         viewHolder.itemView.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-        viewHolder.itemView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
         viewHolder.tvRowHeader.requestLayout();
     }
 

@@ -8,6 +8,8 @@
         android:id="@+id/tv_table_timetable_row_header"
         android:layout_width="match_parent"
         android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:layout_height="wrap_content"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         tools:text="RowHeader">

@@ -8,7 +8,10 @@
     <TextView
         android:id="@+id/tv_table_timetable_column_header"
         android:layout_width="match_parent"
+        android:background="@android:color/holo_blue_bright"
         android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:gravity="center"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         tools:text="ColumnHeader">
