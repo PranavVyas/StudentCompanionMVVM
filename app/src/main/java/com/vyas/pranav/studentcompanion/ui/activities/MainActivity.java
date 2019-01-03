@@ -1,5 +1,8 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
@@ -21,6 +24,7 @@ import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceIndividualViewModel;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_main_activity_container, attendanceFragment)
                         .commit();
+                mDrawer.setSelection(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
             } else {
                 super.onBackPressed();
             }
@@ -115,21 +120,63 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_SIGN_OUT:
-                signOutUser();
+                new AlertDialog.Builder(MainActivity.this)
+                        .setMessage("Signing out will not remove any data of attendance\nClick ok to sign out\nYou will be redirected to the sign in page to sign in again")
+                        .setTitle("Notice")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                signOutUser();
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
                 break;
 
             case NavigationDrawerUtil.ID_DELETE_ACCOUNT:
-                Toast.makeText(this, "Deleting Account...", Toast.LENGTH_SHORT).show();
-                AuthUI.getInstance().delete(this).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        attendanceIndividualViewModel.setCurrUser(null);
-                        Toast.makeText(MainActivity.this, "Account Successfully Deleted...\nRedirecting to sign In Page...", Toast.LENGTH_SHORT).show();
-                        Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
-                        startActivity(startSignInActivity);
-                        MainActivity.this.finish();
-                    }
-                });
+                new AlertDialog.Builder(MainActivity.this)
+                        .setCancelable(false)
+                        .setTitle("Please Read")
+                        .setMessage("Deleting account will remove all the attendance data and account from server as well as locally\nPlease proceed by touching \"Delete Anyways\" Or Click On \"Cancel\" to cancel\nApplication will shut down after deleting account, You have to manually start again\nThank You!")
+                        .setPositiveButton("Delete Anyways...", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MainActivity.this, "Deleting Account...", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                                AuthUI.getInstance().delete(MainActivity.this).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        attendanceIndividualViewModel.setCurrUser(null);
+                                        Toast.makeText(MainActivity.this, "Account Successfully Deleted...\nRedirecting to sign In Page...", Toast.LENGTH_SHORT).show();
+                                        Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
+                                        startActivity(startSignInActivity);
+                                        ((ActivityManager) MainActivity.this.getSystemService(Context.ACTIVITY_SERVICE)).clearApplicationUserData();
+                                        MainActivity.this.finish();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNeutralButton("Sign out Instead", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                signOutUser();
+                            }
+                        })
+                        .create()
+                        .show();
         }
     }
 
@@ -144,6 +191,4 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
             }
         });
     }
-
-
 }

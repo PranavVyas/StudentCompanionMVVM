@@ -13,6 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/api_key" />
@@ -48,6 +51,7 @@
             android:name=".ui.activities.AutoAttendanceSubjectDetailActivity"
             android:launchMode="singleTop"></activity>
 
+        <receiver android:name=".services.GeoFenceTransitionBroadcastReceiver" />
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@
     <TextView
         android:id="@+id/tv_recycler_individual_attendance_leture_no"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
@@ -25,7 +25,7 @@
     <TextView
         android:id="@+id/tv_recycler_individual_attendance_subject_name"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
@@ -38,29 +38,22 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Engineering Mathematics 2" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.github.angads25.toggle.widget.LabeledSwitch
         android:id="@+id/switch_recycler_individual_attendance_present"
-        android:layout_width="0dp"
+        android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:checked="true"
-        android:textAlignment="center"
+        android:layout_marginBottom="8dp"
+        app:colorOff="@android:color/holo_red_light"
+        app:colorOn="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_recycler_individual_attendance_subject_name"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:textOff="Absent"
+        app:textOn="Present"
+        tools:on="false" />
 
-    <TextView
-        android:id="@+id/tv_recycler_individual_attendance_switch_summery"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:textAlignment="textEnd"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/switch_recycler_individual_attendance_present"
-        app:layout_constraintStart_toStartOf="@+id/switch_recycler_individual_attendance_present"
-        app:layout_constraintTop_toBottomOf="@+id/switch_recycler_individual_attendance_present"
-        tools:text="Present" />
 </androidx.constraintlayout.widget.ConstraintLayout>

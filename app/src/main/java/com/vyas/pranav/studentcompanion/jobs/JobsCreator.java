@@ -19,6 +19,9 @@ public class JobsCreator implements JobCreator {
 
             case DailyJobForShowingReminder.TAG:
                 return new DailyJobForShowingReminder();
+
+            case DailyJobForRefreshGeoFence.TAG:
+                return new DailyJobForRefreshGeoFence();
         }
         return null;
     }

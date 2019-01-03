@@ -13,6 +13,7 @@ import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForAttendance;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForRefreshGeoFence;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForShowingReminder;
 import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
@@ -110,6 +111,15 @@ public class AppSettingsRepository {
             context.setTheme(R.style.AppTheme_Night);
         } else {
             context.setTheme(R.style.AppTheme);
+        }
+    }
+
+    public void setGeoFenceRefreshing(boolean isScheduled) {
+        if (isScheduled) {
+            DailyJobForRefreshGeoFence.cancelJob();
+            DailyJobForRefreshGeoFence.scheduleJob();
+        } else {
+            DailyJobForRefreshGeoFence.cancelJob();
         }
     }
 }

@@ -7,14 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.ethanhua.skeleton.Skeleton;
-import com.ethanhua.skeleton.SkeletonScreen;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.DateConverter;
@@ -55,7 +54,9 @@ public class AttendanceIndividualFragment extends Fragment {
     @BindView(R.id.tv_attendance_individual_date)
     TextView tvDate;
     @BindView(R.id.btn_attendance_individual_fragment_other_attendance)
-    Button btnOpenOtherAttendance;
+    FloatingActionButton btnOpenOtherAttendance;
+    @BindView(R.id.progress_attendance_individul_fragment_main)
+    ProgressBar mProgress;
 
     private AttendanceForDateViewModel attendanceViewModel;
     private OverallAttendanceForSubjectViewModel overallAttendanceViewModel;
@@ -63,7 +64,7 @@ public class AttendanceIndividualFragment extends Fragment {
     private OverallAttendanceDatabase mOverallDb;
     private AttendanceDatabase mAttendanceDb;
     private AttendanceIndividualRecyclerAdapter mAdapter;
-    private SkeletonScreen skeletonScreen;
+//    private SkeletonScreen skeletonScreen;
 
     public AttendanceIndividualFragment() {
     }
@@ -134,9 +135,10 @@ public class AttendanceIndividualFragment extends Fragment {
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         lm.setOrientation(RecyclerView.VERTICAL);
         rvMain.setLayoutManager(lm);
-        skeletonScreen = Skeleton.bind(rvMain).adapter(mAdapter).load(R.layout.item_holder_recycler_indivdual_attendance_shimmer).count(3).show();
+//        skeletonScreen = Skeleton.bind(rvMain).adapter(mAdapter).load(R.layout.item_holder_recycler_indivdual_attendance_shimmer).count(3).show();
         mAdapter.setHasStableIds(true);
-        //rvMain.setAdapter(mAdapter);
+        startProgress();
+        rvMain.setAdapter(mAdapter);
     }
 
     private void setUpIndividualAttendance(Date date) {
@@ -148,12 +150,14 @@ public class AttendanceIndividualFragment extends Fragment {
             public void onChanged(final List<AttendanceEntry> attendanceEntries) {
                 //      Logger.d("Received List is "+attendanceEntries.size());
                 if (!attendanceEntries.isEmpty()) {
-                    skeletonScreen.hide();
+//                    skeletonScreen.hide();
                     mAdapter.setAttendanceForDate(attendanceEntries);
+                    stopProgress();
                     return;
                 }
                 //Holiday is here
-                skeletonScreen.hide();
+                stopProgress();
+//                skeletonScreen.hide();
             }
         });
         /*TODO [PROBABLE BUG] Might be needed to refresh all the overall attendance(Which depends on the attendance database updated) as updating the attendance database and refreshing attendance happens simultaniously
@@ -166,6 +170,16 @@ public class AttendanceIndividualFragment extends Fragment {
                 setUpOverallAttendance(attendanceEntry.getSubjectName());
             }
         });
+    }
+
+    private void startProgress() {
+        rvMain.setVisibility(View.GONE);
+        mProgress.setVisibility(View.VISIBLE);
+    }
+
+    private void stopProgress() {
+        rvMain.setVisibility(View.VISIBLE);
+        mProgress.setVisibility(View.GONE);
     }
 
     private void setUpOverallAttendance(String subName) {

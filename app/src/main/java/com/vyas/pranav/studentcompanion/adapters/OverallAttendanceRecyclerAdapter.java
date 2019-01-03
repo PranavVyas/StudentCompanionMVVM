@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
@@ -31,27 +32,28 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
 
     @Override
     public void onBindViewHolder(@NonNull OverallAttendanceHolder holder, int position) {
-        if (overallAttendanceEntries == null) {
-            holder.progressPresent.setProgressValue(0);
-            holder.tvAvailableToBunk.setText("XX");
-            holder.tvSubject.setText("SUBJECT XX");
-        } else {
             holder.tvSubject.setText(overallAttendanceEntries.get(position).getSubName());
             int presentDays = overallAttendanceEntries.get(position).getPresentDays();
             int bunkedDays = overallAttendanceEntries.get(position).getBunkedDays();
             int totalDays = overallAttendanceEntries.get(position).getTotalDays();
+        if (totalDays == 0) {
+            holder.tvAvailableToBunk.setText("Subject is not in the timetable");
+            holder.progressPresent.setProgressValue(100);
+            holder.progressPresent.setCenterTitle("100 %");
+            return;
+        }
             float presentPresent = (presentDays * 100) / totalDays;
             int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * 0.25);
             int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
             holder.tvAvailableToBunk.setText("Available to Bunk " + daysAvailableToBunk);
             holder.progressPresent.setProgressValue((int) presentPresent);
             holder.progressPresent.setCenterTitle((int) presentPresent + " %");
-        }
+
     }
 
     @Override
     public int getItemCount() {
-        return (overallAttendanceEntries == null) ? 1 : overallAttendanceEntries.size();
+        return (overallAttendanceEntries == null) ? 0 : overallAttendanceEntries.size();
     }
 
     class OverallAttendanceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -73,6 +75,10 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
             Intent openDetail = new Intent(view.getContext(), OverallAttendanceDetailActivity.class);
             Gson gson = new Gson();
             String JsonOverallAttendance = gson.toJson(overallAttendanceEntries.get(getAdapterPosition()));
+            if (overallAttendanceEntries.get(getAdapterPosition()).getTotalDays() == 0) {
+                Toast.makeText(view.getContext(), "Subject is not available in the timetable", Toast.LENGTH_SHORT).show();
+                return;
+            }
             openDetail.putExtra(OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE, JsonOverallAttendance);
             view.getContext().startActivity(openDetail);
         }

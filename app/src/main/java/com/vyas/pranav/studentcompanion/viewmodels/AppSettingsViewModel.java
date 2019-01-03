@@ -55,4 +55,9 @@ public class AppSettingsViewModel extends AndroidViewModel {
     public void toggleNightMode() {
         appSettingsRepository.toggleNightMode();
     }
+
+    public void setRefreshGeoFence(boolean isScheduled) {
+        appSettingsRepository.setGeoFenceRefreshing(isScheduled);
+    }
+
 }

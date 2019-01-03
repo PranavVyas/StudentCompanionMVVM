@@ -13,13 +13,27 @@ import com.google.android.gms.location.GeofencingEvent;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
+import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
+import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
+import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDao;
+import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDatabase;
+import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
+import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 public class GeoFenceIntentService extends IntentService {
-    private static final int RC_SHOW_NOTIFICATION = 454646;
+    private static final int RC_SHOW_NOTIFICATION = 4546;
     private static final String TAG = "GeoFenceIntentService";
 
     public GeoFenceIntentService() {
@@ -30,26 +44,33 @@ public class GeoFenceIntentService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
+        Toast.makeText(this, "GeoFence Handling event triggered", Toast.LENGTH_LONG).show();
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
             if (GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE == geofencingEvent.getErrorCode()) {
                 Logger.d("GeoFence Not Available");
-                Toast.makeText(this, "GeoFence Not Available", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Location is Off", Toast.LENGTH_SHORT).show();
             }
         }
+
         // Get the transition type.
         int geofenceTransition = geofencingEvent.getGeofenceTransition();
 
-        // Test that the reported transition was of interest.
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT) {
 
-            Toast.makeText(this, "New Geo Fence Added", Toast.LENGTH_SHORT).show();
-            showNotification();
+        // Test that the reported transition was of interest.
+        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+
+            for (int i = 0; i < triggeringGeofences.size(); i++) {
+                Geofence geo = triggeringGeofences.get(i);
+                Logger.d("Triggering Geo fence is : " + geo.getRequestId());
+            }
+            Toast.makeText(this, "GeoFence Dwell Triggered", Toast.LENGTH_SHORT).show();
+            insertAttendance();
         }
     }
 
-    private void showNotification() {
+    private void showNotification(String subjectName) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "MainChannel";
             String description = "Show Main Notifications";
@@ -60,14 +81,59 @@ public class GeoFenceIntentService extends IntentService {
             notificationManager.createNotificationChannel(channel);
         }
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, "NOTIFICATION_MAIN")
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplication(), "NOTIFICATION_MAIN")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("GeoFence")
-                .setContentText("Entered Geo fence Now bro date ")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentText("Entered Geo fence For Subject " + subjectName)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.getApplicationContext());
 
-        notificationManager.notify(RC_SHOW_NOTIFICATION, mBuilder.build());
+        notificationManager.notify((int) (RC_SHOW_NOTIFICATION + Math.random() * 100), mBuilder.build());
+    }
+
+    private void insertAttendance() {
+        TimetableDao dao = TimetableDatabase.getInstance(this).timetableDao();
+        final AttendanceDao attendanceDao = AttendanceDatabase.getInstance(this).attendanceDao();
+        final LiveData<List<TimetableEntry>> timetableForDay = dao.getTimetableForDay(ConverterUtils.getDayOfWeek(new Date()));
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                timetableForDay.observeForever(new Observer<List<TimetableEntry>>() {
+                    @Override
+                    public void onChanged(List<TimetableEntry> timetableEntries) {
+                        timetableForDay.removeObserver(this);
+                        long currTime = ConverterUtils.getCurrentTimeInMillis();
+                        for (int i = 0; i < timetableEntries.size(); i++) {
+                            long timeStart = TimeUnit.MINUTES.toMillis(timetableEntries.get(i).getTimeStart());
+                            long timeEnd = TimeUnit.MINUTES.toMillis(timetableEntries.get(i).getTimeEnd());
+                            if (currTime < timeEnd && currTime > timeStart) {
+                                final String subName = timetableEntries.get(i).getSubName();
+                                AppExecutors.getInstance().mainThread().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        final LiveData<List<AttendanceEntry>> attendanceForDate = attendanceDao.getAttendanceForDate(new Date());
+                                        attendanceForDate.observeForever(new Observer<List<AttendanceEntry>>() {
+                                            @Override
+                                            public void onChanged(List<AttendanceEntry> attendanceEntries) {
+                                                attendanceForDate.removeObserver(this);
+                                                for (int j = 0; j < attendanceEntries.size(); j++) {
+                                                    if (attendanceEntries.get(j).getSubjectName().equals(subName)) {
+                                                        attendanceEntries.get(j).setPresent(true);
+                                                        attendanceDao.updateAttendance(attendanceEntries.get(j));
+                                                        showNotification(subName);
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
     }
 }

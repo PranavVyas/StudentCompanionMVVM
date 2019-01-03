@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.angads25.toggle.interfaces.OnToggledListener;
+import com.github.angads25.toggle.model.ToggleableView;
+import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 
@@ -13,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,17 +43,16 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
                 Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceEntries.get(position).getLectureNo());
                 holder.tvLectureNo.setText("Lecture " + attendanceEntries.get(position).getLectureNo());
                 holder.tvSubjectName.setText(attendanceEntries.get(position).getSubjectName());
-                holder.tvSwitchSummery.setText(attendanceEntries.get(position).isPresent() ? "Present" : "Absent");
-                holder.switchPresent.setChecked(attendanceEntries.get(position).isPresent());
+                holder.switchPresent.setOn(attendanceEntries.get(position).isPresent());
             }
         }
-        holder.switchPresent.setOnClickListener(new View.OnClickListener() {
+        holder.switchPresent.setOnToggledListener(new OnToggledListener() {
             @Override
-            public void onClick(View view) {
+            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
                 //TODO Attach comment here for the if statement
                 if (listener != null) {
                     AttendanceEntry attendanceEntry = attendanceEntries.get(position);
-                    attendanceEntry.setPresent(holder.switchPresent.isChecked());
+                    attendanceEntry.setPresent(isOn);
                     listener.onAttendanceSwitchToggled(attendanceEntry);
                 }
             }
@@ -82,10 +83,8 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
         TextView tvLectureNo;
         @BindView(R.id.tv_recycler_individual_attendance_subject_name)
         TextView tvSubjectName;
-        @BindView(R.id.tv_recycler_individual_attendance_switch_summery)
-        TextView tvSwitchSummery;
         @BindView(R.id.switch_recycler_individual_attendance_present)
-        SwitchCompat switchPresent;
+        LabeledSwitch switchPresent;
 
         AttendanceIndividualHolder(@NonNull View itemView) {
             super(itemView);

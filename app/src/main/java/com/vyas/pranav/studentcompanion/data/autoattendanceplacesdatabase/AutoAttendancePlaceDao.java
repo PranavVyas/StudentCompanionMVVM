@@ -30,4 +30,7 @@ public interface AutoAttendancePlaceDao {
 
     @Query("SELECT * FROM PlacesTable WHERE subject=:subject")
     LiveData<AutoAttendancePlaceEntry> getPlaceIdOfSubject(String subject);
+
+    @Query("SELECT * FROM PlacesTable WHERE placeId=:placeId")
+    LiveData<AutoAttendancePlaceEntry> getPlaceById(String placeId);
 }

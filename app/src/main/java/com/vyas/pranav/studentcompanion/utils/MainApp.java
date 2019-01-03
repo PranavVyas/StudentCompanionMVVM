@@ -1,6 +1,5 @@
 package com.vyas.pranav.studentcompanion.utils;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -15,7 +14,9 @@ import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.jobs.JobsCreator;
 
-public class MainApp extends Application {
+import androidx.multidex.MultiDexApplication;
+
+public class MainApp extends MultiDexApplication {
 
     @Override
     public void onCreate() {

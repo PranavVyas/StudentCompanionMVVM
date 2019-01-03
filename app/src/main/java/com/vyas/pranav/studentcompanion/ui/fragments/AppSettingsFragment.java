@@ -36,6 +36,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         setTimePrefSummery(getContext().getString(R.string.pref_key_time_reminder_time));
         ButterKnife.bind(this, view);
         setSelectTimeStateFromViewModel();
+        setEditAutoAttendanceStateFromViewModel();
         findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -45,12 +46,6 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             }
         });
     }
-
-//    @OnClick(R.id.pref_delete_account)
-//    void clickedcDeleteAccount(){
-//        Toast.makeText(getContext(), "Clicked Delete account bro", Toast.LENGTH_SHORT).show();
-//    }
-
 
     /**
      * Register the listener
@@ -82,7 +77,9 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             appSettingsViewModel.cancelReminderJob();
             appSettingsViewModel.setReminderJobTime(getTimeFromViewModel());
         } else if (s.equals(getString(R.string.pref_key_switch_enable_auto_attendance))) {
-            checkAutoAttendanceStateAndExecute();
+//            checkAutoAttendanceStateAndExecute();
+            appSettingsViewModel.setRefreshGeoFence(appSettingsViewModel.isAutoAttendanceEnabled());
+            setEditAutoAttendanceStateFromViewModel();
         } else if (s.equals(getString(R.string.pref_key_switch_enable_night_mode))) {
             toggleNightMode();
         }
@@ -160,5 +157,14 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     private void toggleNightMode() {
         appSettingsViewModel.toggleNightMode();
         getActivity().recreate();
+    }
+
+    private void setEditAutoAttendanceStateFromViewModel() {
+        boolean isAutoAttendanceEnabled = appSettingsViewModel.isAutoAttendanceEnabled();
+        if (isAutoAttendanceEnabled) {
+            findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setEnabled(true);
+        } else {
+            findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setEnabled(false);
+        }
     }
 }
