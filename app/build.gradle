@@ -88,6 +88,8 @@ dependencies {
     implementation 'com.robertlevonyan.view:CustomFloatingActionButton:2.1.1'
     //Custom switch
     implementation 'com.github.angads25:toggle:1.1.0'
+    //Firestore
+    implementation 'com.google.firebase:firebase-firestore:17.1.5'
 
 }
 apply plugin: 'com.google.gms.google-services'

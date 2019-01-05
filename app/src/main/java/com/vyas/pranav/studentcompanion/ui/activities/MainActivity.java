@@ -18,6 +18,7 @@ import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository
 import com.vyas.pranav.studentcompanion.ui.fragments.AppSettingsFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.MarketPlaceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
@@ -107,6 +108,14 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 TimetableFragment timetableFragment = new TimetableFragment();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_main_activity_container, timetableFragment)
+                        .commit();
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                break;
+
+            case NavigationDrawerUtil.ID_MARKET_PLACE:
+                MarketPlaceFragment marketPlaceFragment = new MarketPlaceFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_main_activity_container, marketPlaceFragment)
                         .commit();
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;

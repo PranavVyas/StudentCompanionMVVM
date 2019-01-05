@@ -30,6 +30,10 @@ public class HolidayEntry {
         this.date = date;
     }
 
+    @Ignore
+    public HolidayEntry() {
+    }
+
     public long get_ID() {
         return _ID;
     }

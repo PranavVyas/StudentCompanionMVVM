@@ -197,7 +197,6 @@ public class SetUpDetailsSemFragment extends Fragment {
 
     public interface OnSubjectsSelectedListener {
         void onSubjectSelected();
-
         void onPreviousClickedOnSemSetUp();
     }
 
