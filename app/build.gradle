@@ -90,6 +90,11 @@ dependencies {
     implementation 'com.github.angads25:toggle:1.1.0'
     //Firestore
     implementation 'com.google.firebase:firebase-firestore:17.1.5'
+    //Firebase Storage
+    implementation 'com.google.firebase:firebase-storage:16.0.5'
+    //Permission Library
+    implementation 'com.karumi:dexter:5.0.0'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

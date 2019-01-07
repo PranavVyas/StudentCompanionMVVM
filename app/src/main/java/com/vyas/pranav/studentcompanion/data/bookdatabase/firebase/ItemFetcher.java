@@ -14,12 +14,12 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 
-public class BooksFetcher {
+public class ItemFetcher {
 
     private FirebaseFirestore mFirestoreDatabase;
     private CollectionReference mCollectionReference;
 
-    public BooksFetcher() {
+    public ItemFetcher() {
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
         mFirestoreDatabase = FirebaseFirestore.getInstance();
@@ -30,12 +30,12 @@ public class BooksFetcher {
                 if (task.isSuccessful()) {
                     QuerySnapshot documentSnapshot = task.getResult();
                     List<DocumentSnapshot> documents = documentSnapshot.getDocuments();
-                    List<BookModel> books = new ArrayList<>();
+                    List<ItemModel> books = new ArrayList<>();
                     if (!documents.isEmpty()) {
                         for (int i = 0; i < documents.size(); i++) {
                             DocumentSnapshot temp = documents.get(i);
-                            BookModel bookModel = temp.toObject(BookModel.class);
-                            books.add(bookModel);
+                            ItemModel itemModel = temp.toObject(ItemModel.class);
+                            books.add(itemModel);
                         }
                     }
                     Logger.d("Books has total Member variables as " + books.size());

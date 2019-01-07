@@ -9,59 +9,60 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/btn_recycler_profile_item_sold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="Sold Item"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tv_recycler_profile_item_price"
+            app:layout_constraintStart_toStartOf="@+id/tv_recycler_profile_item_price"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_profile_item_price" />
+
         <ImageView
-            android:id="@+id/image_recycler_marketplace_item_photo"
-            android:layout_width="92dp"
-            android:layout_height="92dp"
+            android:id="@+id/image_recycler_profile_item_photo"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars[2]" />
+            tools:srcCompat="@tools:sample/avatars[1]" />
 
         <TextView
-            android:id="@+id/tv_recycler_marketplace_item_name"
+            android:id="@+id/tv_recycler_profile_item_price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image_recycler_marketplace_item_photo"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Book 1" />
-
-        <TextView
-            android:id="@+id/tv_recycler_marketplace_item_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="end"
             android:textAppearance="@android:style/TextAppearance.Medium"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image_recycler_marketplace_item_photo"
-            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_marketplace_item_name"
-            tools:text="Rs 100" />
+            app:layout_constraintStart_toEndOf="@+id/image_recycler_profile_item_photo"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_profile_item_name"
+            tools:text="Price : 200 Rs" />
 
         <TextView
-            android:id="@+id/tv_recycler_marketplace_item_p_name"
+            android:id="@+id/tv_recycler_profile_item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:textAppearance="@android:style/TextAppearance.Medium"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/image_recycler_marketplace_item_photo"
-            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_marketplace_item_price"
-            tools:text="Contect Name : Pranav Vyas" />
+            app:layout_constraintStart_toEndOf="@+id/image_recycler_profile_item_photo"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Name" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.cardview.widget.CardView>

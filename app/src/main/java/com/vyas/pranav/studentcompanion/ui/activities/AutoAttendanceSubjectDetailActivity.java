@@ -1,12 +1,22 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
 import android.Manifest;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +26,8 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
@@ -33,6 +43,14 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
@@ -42,10 +60,13 @@ import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.viewmodels.AutoAttendanceSubjectDetailViewModel;
 import com.vyas.pranav.studentcompanion.viewmodels.AutoAttendanceSubjectDetailViewModelFactory;
 
+import java.util.concurrent.TimeUnit;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -58,17 +79,26 @@ import static com.vyas.pranav.studentcompanion.adapters.AutoAttendanceSubjectLis
 
 public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks
         , GoogleApiClient.OnConnectionFailedListener
-        , OnMapReadyCallback
-        , LocationListener {
+        , OnMapReadyCallback {
 
     private static final int RC_LOCATION_ACCESS = 3000;
     private static final int RC_CHANGE_LOCATION = 4000;
+    private static final int RC_LOCATION_RECEIVED = 120;
     @BindView(R.id.tv_auto_attendance_subject_detail_address)
     TextView tvAddress;
     @BindView(R.id.tv_auto_attendance_subject_detail_name)
     TextView tvName;
     @BindView(R.id.tv_auto_attendance_subject_detail_subject)
     TextView tvSubject;
+
+    @BindView(R.id.card_auto_attendance_subject_detail_current_detail)
+    CardView cardCurrentDetails;
+    @BindView(R.id.frame_auto_attendance_subject_detail_placeholder)
+    FrameLayout framePlaceHolder;
+    @BindView(R.id.btn_auto_attendance_subject_detail_edit)
+    Button btnEditPlace;
+    @BindView(R.id.btn_frame_auto_attendance_subject_detail_placeholder_retry)
+    Button btnRetry;
 
     private GoogleApiClient mClient;
     private AutoAttendanceSubjectDetailViewModel autoAttendanceSubjectDetailViewModel;
@@ -81,6 +111,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     private Location mLastLocation;
     private Marker mCurrentLocationMarker;
     private Circle geoFenceLimits;
+    private PendingIntent locationUpdatePendingIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +119,9 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_attendance_subject_detail);
         ButterKnife.bind(this);
-        AutoAttendanceSubjectDetailViewModelFactory factory = new AutoAttendanceSubjectDetailViewModelFactory(this, this);
-        autoAttendanceSubjectDetailViewModel = ViewModelProviders.of(this, factory).get(AutoAttendanceSubjectDetailViewModel.class);
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
-        checkForPermission();
-        setUpGoogleMap();
+        checkForPermissionAndContinue();
         currPlace = null;
     }
 
@@ -104,13 +132,105 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     }
 
     private void setUpGoogleClient() {
-        mClient = autoAttendanceSubjectDetailViewModel.getGoogleClient();
+//        mClient = autoAttendanceSubjectDetailViewModel.getGoogleClient();
+        mClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, this)
+                .build();
     }
 
-    private void checkForPermission() {
-        if (ActivityCompat.checkSelfPermission(AutoAttendanceSubjectDetailActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION};
-            ActivityCompat.requestPermissions(this, permissions, RC_LOCATION_ACCESS);
+    private void checkForPermissionAndContinue() {
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        if (isLocationProviderAvailable()) {
+                            showNoLocationPlaceHolder(false);
+                            setUpGoogleMap();
+                        } else {
+                            showNoLocationPlaceHolder(true);
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            openSettingsDialog();
+                        } else {
+                            finish();
+                        }
+//                        checkForPermissionAndContinue();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+//        if (ActivityCompat.checkSelfPermission(AutoAttendanceSubjectDetailActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION};
+//            ActivityCompat.requestPermissions(this, permissions, RC_LOCATION_ACCESS);
+//        }
+    }
+
+    private void openSettingsDialog() {
+        new AlertDialog.Builder(this)
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Permission is denied...\nPlease Allow Permission first...", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        AutoAttendanceSubjectDetailActivity.this.finish();
+                    }
+                }).setPositiveButton("GO TO SETTINGS", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent openSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                openSettings.setData(uri);
+                startActivityForResult(openSettings, 101);
+                dialog.dismiss();
+                AutoAttendanceSubjectDetailActivity.this.finish();
+            }
+        }).setMessage("Location Permission is needed for setting up GeoFences\nPlease give permission through settings")
+                .setTitle("Permission Denied")
+                .setCancelable(false)
+                .setIcon(R.drawable.ic_bookshelf)
+                .show();
+        //TODO Change Icon later
+    }
+
+    private boolean isLocationProviderAvailable() {
+        //TODO Implement this method
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    private void showNoLocationPlaceHolder(boolean isShown) {
+        //TODO Implement Later
+        if (isShown) {
+            cardCurrentDetails.setVisibility(View.GONE);
+            btnEditPlace.setVisibility(View.GONE);
+            framePlaceHolder.setVisibility(View.VISIBLE);
+            Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Location Provider is not available\nPlease enable Location from Quick Settings", Toast.LENGTH_SHORT).show();
+        } else {
+            framePlaceHolder.setVisibility(View.GONE);
+            cardCurrentDetails.setVisibility(View.VISIBLE);
+            btnEditPlace.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @OnClick(R.id.btn_frame_auto_attendance_subject_detail_placeholder_retry)
+    void retryClicked() {
+        if (isLocationProviderAvailable()) {
+            showNoLocationPlaceHolder(false);
+            setUpGoogleMap();
+        } else {
+            showNoLocationPlaceHolder(true);
         }
     }
 
@@ -167,16 +287,27 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Logger.d("Google Client Connected");
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000000);
-        mLocationRequest.setFastestInterval(1000000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        AutoAttendanceSubjectDetailViewModelFactory factory = new AutoAttendanceSubjectDetailViewModelFactory(this, mClient);
+        autoAttendanceSubjectDetailViewModel = ViewModelProviders.of(this, factory).get(AutoAttendanceSubjectDetailViewModel.class);
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, this);
+            LocationServices.getFusedLocationProviderClient(this).requestLocationUpdates(getLocationRequest(), getLocationUpdatePendingIntent()).addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+
+                }
+            }).addOnFailureListener(this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Failed due to : " + e.toString(), Toast.LENGTH_SHORT).show();
+                    Logger.d("Failed due to : " + e.toString());
+                }
+            });
         }
-        populateUI(getIntent());
+        if (mClient != null) {
+            populateUI(getIntent());
+        }
     }
 
     @Override
@@ -226,10 +357,10 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     @Override
     protected void onPause() {
         super.onPause();
-        if (mClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mClient, this);
-        }
+        LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(getLocationUpdatePendingIntent());
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -249,26 +380,6 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
             setUpGoogleClient();
             map.setMyLocationEnabled(true);
         }
-        mClient.connect();
-
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mLastLocation = location;
-        if (mCurrentLocationMarker != null) {
-            mCurrentLocationMarker.remove();
-        }
-
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mCurrentLocationMarker = map.addMarker(markerOptions);
-
-        //move map camera
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 40.0f));
     }
 
     private void showGeoFenceCircleInMap(LatLng centerPosition) {
@@ -281,5 +392,53 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
                 .fillColor(Color.argb(100, 150, 150, 150))
                 .radius(100);
         geoFenceLimits = map.addCircle(circleOptions);
+    }
+
+    private PendingIntent getLocationUpdatePendingIntent() {
+        if (locationUpdatePendingIntent != null) {
+            return locationUpdatePendingIntent;
+        }
+        Intent locationIntent = new Intent(this, LocationUpdateReceiver.class);
+        locationUpdatePendingIntent = PendingIntent.getBroadcast(this, RC_LOCATION_RECEIVED, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return locationUpdatePendingIntent;
+    }
+
+    private LocationRequest getLocationRequest() {
+        if (mLocationRequest != null) {
+            return mLocationRequest;
+        }
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(TimeUnit.SECONDS.toMillis(30));
+        mLocationRequest.setFastestInterval(TimeUnit.SECONDS.toMillis(29));
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        return mLocationRequest;
+    }
+
+    class LocationUpdateReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (LocationResult.hasResult(intent)) {
+                LocationResult locationResult = LocationResult.extractResult(intent);
+                Location location = locationResult.getLastLocation();
+                mLastLocation = location;
+                if (mCurrentLocationMarker != null) {
+                    mCurrentLocationMarker.remove();
+                }
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(latLng);
+                markerOptions.title("Current Position");
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                mCurrentLocationMarker = map.addMarker(markerOptions);
+
+                //move map camera
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 40.0f));
+            }
+//            if(LocationAvailability.hasLocationAvailability(intent)){
+//                LocationAvailability locationAvailability = LocationAvailability.extractLocationAvailability(intent);
+//                locationAvailability.
+//            }
+        }
     }
 }

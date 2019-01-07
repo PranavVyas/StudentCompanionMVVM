@@ -5,7 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.repositories.GeoFencingRepository;
 import com.vyas.pranav.studentcompanion.ui.activities.AutoAttendanceSubjectListActivity;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.TimePreference;
@@ -20,9 +25,11 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import butterknife.ButterKnife;
 
-public class AppSettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class AppSettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private AppSettingsViewModel appSettingsViewModel;
+    private GoogleApiClient mClient;
+    private GeoFencingRepository geoFencingRepository;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -37,6 +44,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         ButterKnife.bind(this, view);
         setSelectTimeStateFromViewModel();
         setEditAutoAttendanceStateFromViewModel();
+        geoFencingRepository = new GeoFencingRepository(getContext(), getApiClient());
         findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -80,6 +88,11 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
 //            checkAutoAttendanceStateAndExecute();
             appSettingsViewModel.setRefreshGeoFence(appSettingsViewModel.isAutoAttendanceEnabled());
             setEditAutoAttendanceStateFromViewModel();
+            if (appSettingsViewModel.isAutoAttendanceEnabled()) {
+                geoFencingRepository.refreshAllGeoFences();
+            } else {
+                geoFencingRepository.unRegisterAllGeoFenceAtOnce();
+            }
         } else if (s.equals(getString(R.string.pref_key_switch_enable_night_mode))) {
             toggleNightMode();
         }
@@ -146,17 +159,15 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         return appSettingsViewModel.getReminderTime();
     }
 
-    private void checkAutoAttendanceStateAndExecute() {
-        if (appSettingsViewModel.isAutoAttendanceEnabled()) {
-            appSettingsViewModel.enableAutoAttendanceJob();
-        } else {
-            appSettingsViewModel.cancelAutoAttendanceJob();
-        }
+    private void toggleNightMode() {
+        //appSettingsViewModel.toggleNightMode();
+        getActivity().recreate();
     }
 
-    private void toggleNightMode() {
-        appSettingsViewModel.toggleNightMode();
-        getActivity().recreate();
+    @Override
+    public void onStop() {
+        super.onStop();
+        mClient.disconnect();
     }
 
     private void setEditAutoAttendanceStateFromViewModel() {
@@ -166,5 +177,33 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         } else {
             findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setEnabled(false);
         }
+    }
+
+    private GoogleApiClient getApiClient() {
+        if (mClient != null) {
+            return mClient;
+        }
+        mClient = new GoogleApiClient.Builder(getContext())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .build();
+        return mClient;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

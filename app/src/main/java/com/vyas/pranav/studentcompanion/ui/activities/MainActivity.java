@@ -19,6 +19,7 @@ import com.vyas.pranav.studentcompanion.ui.fragments.AppSettingsFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.MarketPlaceFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.MyProfileFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
@@ -28,13 +29,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerUtil.OnNavigationItemClickedListener {
 
-    private static final int RC_SIGN_IN = 123;
     @BindView(R.id.toolbar_main_activity)
     Toolbar toolbarMainActivity;
     @BindView(R.id.frame_main_activity_container)
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
     private Drawer mDrawer;
     private AttendanceIndividualViewModel attendanceIndividualViewModel;
+    private FragmentManager fragManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbarMainActivity);
+        fragManager = getSupportFragmentManager();
         attendanceIndividualViewModel = ViewModelProviders.of(this).get(AttendanceIndividualViewModel.class);
         FirebaseUser currUser = attendanceIndividualViewModel.getCurrUser();
         mDrawer = NavigationDrawerUtil.getMaterialDrawer(MainActivity.this, toolbarMainActivity, currUser);
@@ -65,9 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
             } else if (attendanceIndividualViewModel.getCurrentFragmentId() != NavigationDrawerUtil.ID_TODAY_ATTENDANCE) {
                 attendanceIndividualViewModel.setCurrentFragmentId(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_main_activity_container, attendanceFragment)
-                        .commit();
+                swapFragment(attendanceFragment);
                 mDrawer.setSelection(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
             } else {
                 super.onBackPressed();
@@ -82,49 +84,43 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         switch (identifier) {
             case NavigationDrawerUtil.ID_TODAY_ATTENDANCE:
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_main_activity_container, attendanceFragment)
-                        .commit();
+                swapFragment(attendanceFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_OVERALL_ATTENDANCE:
                 OverallAttendanceFragment overallAttendanceFragment = new OverallAttendanceFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_main_activity_container, overallAttendanceFragment)
-                        .commit();
+                swapFragment(overallAttendanceFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_HOLIDAYS:
                 HolidayFragment holidayFragment = new HolidayFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_main_activity_container, holidayFragment)
-                        .commit();
+                swapFragment(holidayFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_TIMETABLE:
                 TimetableFragment timetableFragment = new TimetableFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_main_activity_container, timetableFragment)
-                        .commit();
+                swapFragment(timetableFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_MARKET_PLACE:
                 MarketPlaceFragment marketPlaceFragment = new MarketPlaceFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_main_activity_container, marketPlaceFragment)
-                        .commit();
+                swapFragment(marketPlaceFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_SETTINGS:
                 AppSettingsFragment appSettingsFragment = new AppSettingsFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_main_activity_container, appSettingsFragment)
-                        .commit();
+                swapFragment(appSettingsFragment);
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                break;
+
+            case NavigationDrawerUtil.ID_MY_PROFILE:
+                MyProfileFragment myProfileFragment = new MyProfileFragment();
+                swapFragment(myProfileFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
@@ -199,5 +195,10 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 MainActivity.this.finish();
             }
         });
+    }
+
+    private void swapFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_activity_container, fragment)
+                .commit();
     }
 }

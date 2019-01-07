@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.evrencoskun.tableview.TableView;
 import com.vyas.pranav.studentcompanion.R;
@@ -28,9 +27,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimetableFragment extends Fragment {
-
-    @BindView(R.id.tv_timetable_fragment_title)
-    TextView tvTitle;
     @BindView(R.id.table_timetable_fragment_main)
     TableView tableTimetable;
 

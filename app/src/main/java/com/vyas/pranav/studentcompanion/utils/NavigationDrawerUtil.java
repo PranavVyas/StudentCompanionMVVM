@@ -12,6 +12,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.vyas.pranav.studentcompanion.R;
 
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +25,7 @@ public class NavigationDrawerUtil {
     public static final int ID_TIMETABLE = 4;
     public static final int ID_SETTINGS = 5;
     public static final int ID_MARKET_PLACE = 6;
+    public static final int ID_MY_PROFILE = 7;
     public static final int ID_SIGN_OUT = 10;
     public static final int ID_DELETE_ACCOUNT = 11;
 
@@ -94,12 +96,23 @@ public class NavigationDrawerUtil {
                 });
         PrimaryDrawerItem marketplace = new PrimaryDrawerItem()
                 .withIdentifier(ID_MARKET_PLACE)
-                .withName("MarketPlace")
+                .withName("Buy/Sell Items")
                 .withIcon(R.drawable.ic_settings)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         mCallback.OnNavigationItemClicked(ID_MARKET_PLACE);
+                        return false;
+                    }
+                });
+        PrimaryDrawerItem myProfile = new PrimaryDrawerItem()
+                .withIdentifier(ID_MY_PROFILE)
+                .withName("My Profile")
+                .withIcon(R.drawable.ic_profile)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        mCallback.OnNavigationItemClicked(ID_MY_PROFILE);
                         return false;
                     }
                 });
@@ -141,6 +154,18 @@ public class NavigationDrawerUtil {
                 .withActivity(context)
                 .withHeaderBackground(R.drawable.ic_launcher_background)
                 .withSelectionListEnabledForSingleProfile(false)
+                .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
+                    @Override
+                    public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
+                        mCallback.OnNavigationItemClicked(ID_MY_PROFILE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onProfileImageLongClick(View view, IProfile profile, boolean current) {
+                        return false;
+                    }
+                })
                 .addProfiles(
                         profile
                 ).build();
@@ -155,6 +180,7 @@ public class NavigationDrawerUtil {
                         holidays,
                         timetable,
                         marketplace,
+                        myProfile,
                         settings,
                         signOut,
                         deleteAccount

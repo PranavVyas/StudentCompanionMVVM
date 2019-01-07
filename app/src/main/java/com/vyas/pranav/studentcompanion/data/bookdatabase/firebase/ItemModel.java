@@ -1,19 +1,19 @@
 package com.vyas.pranav.studentcompanion.data.bookdatabase.firebase;
 
-public class BookModel {
-    String name, p_name, contact, category, extra_info, image_name;
+public class ItemModel {
+    String name, p_name, contact, category, extra_info, image_uri;
     float price;
 
-    public BookModel() {
+    public ItemModel() {
     }
 
-    public BookModel(String name, String p_name, String contact, String category, String extra_info, String image_name, float price) {
+    public ItemModel(String name, String p_name, String contact, String category, String extra_info, String image_uri, float price) {
         this.name = name;
         this.p_name = p_name;
         this.contact = contact;
         this.category = category;
         this.extra_info = extra_info;
-        this.image_name = image_name;
+        this.image_uri = image_uri;
         this.price = price;
     }
 
@@ -57,12 +57,12 @@ public class BookModel {
         this.extra_info = extra_info;
     }
 
-    public String getImage_name() {
-        return image_name;
+    public String getImage_uri() {
+        return image_uri;
     }
 
-    public void setImage_name(String image_name) {
-        this.image_name = image_name;
+    public void setImage_uri(String image_uri) {
+        this.image_uri = image_uri;
     }
 
     public float getPrice() {

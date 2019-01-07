@@ -74,7 +74,6 @@ public class GeoFencingRepository {
     }
 
     public void refreshAllGeoFences() {
-        unregisterAllGeoFences();
         final AutoAttendancePlaceDao autoAttendancePlaceDao = AutoAttendancePlacesDatabase.getInstance(context).autoAttendancePlaceDao();
         geofenceList = new ArrayList<>();
         autoAttendancePlaceDao.getAllPlaceIds().observeForever(new Observer<List<AutoAttendancePlaceEntry>>() {
@@ -97,7 +96,39 @@ public class GeoFencingRepository {
                                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
                                     .build();
                             geofenceList.add(geo);
+                            unregisterAllGeoFences();
                             registerAllGeoFences();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void unRegisterAllGeoFenceAtOnce() {
+        final AutoAttendancePlaceDao autoAttendancePlaceDao = AutoAttendancePlacesDatabase.getInstance(context).autoAttendancePlaceDao();
+        geofenceList = new ArrayList<>();
+        autoAttendancePlaceDao.getAllPlaceIds().observeForever(new Observer<List<AutoAttendancePlaceEntry>>() {
+            @Override
+            public void onChanged(List<AutoAttendancePlaceEntry> autoAttendancePlaceEntries) {
+                autoAttendancePlaceDao.getAllPlaceIds().removeObserver(this);
+                final List<String> requestIds = new ArrayList<>();
+                for (int i = 0; i < autoAttendancePlaceEntries.size(); i++) {
+                    requestIds.add(autoAttendancePlaceEntries.get(i).getPlaceId());
+                }
+                Places.GeoDataApi.getPlaceById(mClient, requestIds.toArray(new String[requestIds.size()])).setResultCallback(new ResultCallback<PlaceBuffer>() {
+                    @Override
+                    public void onResult(@NonNull PlaceBuffer places) {
+                        for (int i = 0; i < places.getCount(); i++) {
+                            Geofence geo = new Geofence.Builder()
+                                    .setRequestId(requestIds.get(i))
+                                    .setCircularRegion(places.get(i).getLatLng().latitude, places.get(i).getLatLng().longitude, 100.0f)
+                                    .setExpirationDuration(TimeUnit.HOURS.toMillis(24))
+                                    .setLoiteringDelay((int) TimeUnit.SECONDS.toMillis(30))
+                                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                                    .build();
+                            geofenceList.add(geo);
+                            unregisterAllGeoFences();
                         }
                     }
                 });

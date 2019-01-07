@@ -2,25 +2,26 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.content.Context;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 public class AutoAttendanceSubjectDetailViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private Context context;
-    private FragmentActivity fragmentActivity;
+    private GoogleApiClient googleApiClient;
 
-    public AutoAttendanceSubjectDetailViewModelFactory(Context context, FragmentActivity fragmentActivity) {
+    public AutoAttendanceSubjectDetailViewModelFactory(Context context, GoogleApiClient googleApiClient) {
         this.context = context;
-        this.fragmentActivity = fragmentActivity;
+        this.googleApiClient = googleApiClient;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new AutoAttendanceSubjectDetailViewModel(context, fragmentActivity);
+        return (T) new AutoAttendanceSubjectDetailViewModel(context, googleApiClient);
     }
 }

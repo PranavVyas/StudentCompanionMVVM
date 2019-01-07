@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.vyas.pranav.studentcompanion.data.bookdatabase.firebase.BooksFetcher;
+import com.vyas.pranav.studentcompanion.data.bookdatabase.firebase.ItemFetcher;
 
 public class MarketPlaceRepository {
     private Context context;
@@ -18,12 +18,12 @@ public class MarketPlaceRepository {
 //        mRef = mDb.getReference("Root");
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
-        BooksFetcher booksFetcher = new BooksFetcher();
+        ItemFetcher itemFetcher = new ItemFetcher();
         //getList();
     }
 
 //    public void getList(){
-//        List<BookModel> books = new ArrayList<>();
+//        List<ItemModel> books = new ArrayList<>();
 //        mRef = mRef.child("MarketPlace");
 //        mRef.addChildEventListener(new ChildEventListener() {
 //            @Override
