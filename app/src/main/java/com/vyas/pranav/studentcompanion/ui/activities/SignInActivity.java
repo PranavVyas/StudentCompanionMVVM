@@ -38,6 +38,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
         setSupportActionBar(toolbarSignIn);
+        getSupportActionBar().setTitle("Sign In");
         signInViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
         checkForUserSignIn();
     }

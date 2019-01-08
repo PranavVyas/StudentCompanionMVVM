@@ -81,7 +81,6 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
                                 Intent call = new Intent(Intent.ACTION_DIAL);
                                 call.setData(Uri.parse("tel:" + item.getContact()));
                                 v.getContext().startActivity(call);
-                                //TODO implement call feature here
                             }
                         })
                         .show();

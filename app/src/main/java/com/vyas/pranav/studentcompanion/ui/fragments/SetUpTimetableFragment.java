@@ -167,7 +167,6 @@ public class SetUpTimetableFragment extends Fragment {
 
     public interface OnTimetableSelectedListener {
         void onTimetableSelected();
-
         void onPreviousClickedInSetUpTimetable();
     }
 }

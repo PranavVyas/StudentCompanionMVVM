@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
+        android:background="?attr/gradient_background_normal"
         android:id="@+id/frame_setup_activity_container"
         android:layout_width="0dp"
         android:layout_height="0dp"

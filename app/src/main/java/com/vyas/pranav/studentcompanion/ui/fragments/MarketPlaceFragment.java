@@ -17,7 +17,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
@@ -36,7 +35,6 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.arch.core.util.Function;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -63,6 +61,7 @@ public class MarketPlaceFragment extends Fragment {
     private AppExecutors mExecutors = AppExecutors.getInstance();
 
     private MarketPlaceViewModel marketPlaceViewModel;
+    private FirestoreQueryLiveData firestoreQueryLiveData;
 
     private String selectedCategory;
     private String searchStr;
@@ -95,6 +94,7 @@ public class MarketPlaceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         marketPlaceViewModel = ViewModelProviders.of(getActivity()).get(MarketPlaceViewModel.class);
         populateUI();
+        getLiveData();
     }
 
     private void populateUI() {
@@ -164,15 +164,21 @@ public class MarketPlaceFragment extends Fragment {
     }
 
     private void startFetchingData() {
-        mFirestore = FirebaseFirestore.getInstance();
-        mCollectionReference = mFirestore.collection("sell");
-        Query query;
-        if (!searchStr.isEmpty()) {
-            query = mCollectionReference.whereEqualTo("name", searchStr).whereEqualTo("category", selectedCategory);
-        } else {
-            query = mCollectionReference.whereEqualTo("category", selectedCategory);
-        }
-        LiveData<QuerySnapshot> firestoreQueryLiveData = new FirestoreQueryLiveData(query);
+//        mFirestore = FirebaseFirestore.getInstance();
+//        mCollectionReference = mFirestore.collection("sell");
+//        Query query;
+//        if (!searchStr.isEmpty()) {
+//            query = mCollectionReference.whereEqualTo("name", searchStr).whereEqualTo("category", selectedCategory);
+//        } else {
+//            query = mCollectionReference.whereEqualTo("category", selectedCategory);
+//        }
+//        LiveData<QuerySnapshot> firestoreQueryLiveData = new FirestoreQueryLiveData(query);
+        marketPlaceViewModel.setNewQueryLiveData(searchStr, selectedCategory);
+        getLiveData();
+    }
+
+    private void getLiveData() {
+        firestoreQueryLiveData = marketPlaceViewModel.getQueryLiveData();
         MediatorLiveData<List<ItemModel>> listLiveData = new MediatorLiveData<>();
         listLiveData.addSource(firestoreQueryLiveData, new Observer<QuerySnapshot>() {
             @Override

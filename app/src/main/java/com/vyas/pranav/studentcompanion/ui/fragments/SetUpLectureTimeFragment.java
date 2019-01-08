@@ -121,10 +121,8 @@ public class SetUpLectureTimeFragment extends Fragment {
             } else {
                 LinearLayout linearLayout = (LinearLayout) linearContainer.getChildAt(i);
 
-                int index = 0;
-                String startTimeStr = ((Button) linearLayout.getChildAt(index)).getText().toString();
-                index++;
-                String endTimeStr = ((Button) linearLayout.getChildAt(index)).getText().toString();
+                String startTimeStr = ((Button) linearLayout.getChildAt(0)).getText().toString();
+                String endTimeStr = ((Button) linearLayout.getChildAt(1)).getText().toString();
 
                 if (!startTimeStr.contains(":") || !endTimeStr.contains(":")) {
                     Toast.makeText(getContext(), "Please Select time for All the Lectures", Toast.LENGTH_SHORT).show();
@@ -143,13 +141,11 @@ public class SetUpLectureTimeFragment extends Fragment {
                 Logger.d("Setting starting time for Lecture " + i / 2 + "as " + startTime + " Minutes");
                 setUpViewModel.setLectureEndTimeInSharedPrefs(i / 2, endTime);
                 Logger.d("Setting ending time for Lecture " + i / 2 + "as " + endTime + " Minutes");
-                if (listener != null) {
-                    listener.OnLectureTimeSelected();
-                }
             }
-
         }
-
+        if (listener != null) {
+            listener.OnLectureTimeSelected();
+        }
     }
 
     @OnClick(R.id.btn_set_up_lecture_time_previous)

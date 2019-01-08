@@ -32,6 +32,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         setContentView(R.layout.activity_set_up);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Set Up");
         setUpViewModel = ViewModelProviders.of(this).get(SetUpViewModel.class);
         if (!setUpViewModel.isFirstRun()) {
             Intent openMainActivity = new Intent(this, MainActivity.class);
@@ -103,7 +104,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         startActivity(intent);
         setUpViewModel.setFirstRun(false);
         finish();
-        Toast.makeText(this, "Timetable successfully done", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Database Initilized Done", Toast.LENGTH_SHORT).show();
     }
 
     @Override

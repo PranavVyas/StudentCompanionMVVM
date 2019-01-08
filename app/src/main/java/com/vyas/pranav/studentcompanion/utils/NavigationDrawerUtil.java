@@ -97,7 +97,7 @@ public class NavigationDrawerUtil {
         PrimaryDrawerItem marketplace = new PrimaryDrawerItem()
                 .withIdentifier(ID_MARKET_PLACE)
                 .withName("Buy/Sell Items")
-                .withIcon(R.drawable.ic_settings)
+                .withIcon(R.drawable.ic_market_place)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -152,7 +152,7 @@ public class NavigationDrawerUtil {
 
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(context)
-                .withHeaderBackground(R.drawable.ic_launcher_background)
+                .withHeaderBackground(R.drawable.account_background_new)
                 .withSelectionListEnabledForSingleProfile(false)
                 .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
                     @Override

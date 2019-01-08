@@ -51,6 +51,7 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Overall Attendance Details");
         Intent receivedData = getIntent();
         if (receivedData != null) {
             if (receivedData.hasExtra(EXTRA_OVERALL_ATTENDANCE)) {

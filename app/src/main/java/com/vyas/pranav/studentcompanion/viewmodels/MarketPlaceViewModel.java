@@ -27,7 +27,6 @@ public class MarketPlaceViewModel extends AndroidViewModel {
     private Query mQuery = collectionReference.whereEqualTo("category", categories.get(selectedCategory));
     private FirestoreQueryLiveData queryLiveData;
 
-
     public MarketPlaceViewModel(@NonNull Application application) {
         super(application);
         queryLiveData = new FirestoreQueryLiveData(mQuery);
@@ -40,6 +39,10 @@ public class MarketPlaceViewModel extends AndroidViewModel {
             setNewQueryLiveData(searchStr, selectedCategory);
             return queryLiveData;
         }
+    }
+
+    public FirestoreQueryLiveData getQueryLiveData() {
+        return queryLiveData;
     }
 
     public void setNewQueryLiveData(String searchStr, String selectedCategory) {
@@ -65,5 +68,9 @@ public class MarketPlaceViewModel extends AndroidViewModel {
 
     public void setSelectedCategory(int position) {
         this.selectedCategory = position;
+    }
+
+    public void setNewQueryLiveData(Query query) {
+
     }
 }

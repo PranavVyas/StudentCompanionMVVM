@@ -178,7 +178,7 @@ public class SetUpProcessRepository {
         holidaysFetcher.setOnHolidaysReceivedListener(new HolidaysFetcher.OnHolidaysReceivedListener() {
             @Override
             public void onHolidaysReceived(List<HolidayEntry> holidayEntries) {
-                initHolidayDatabase();
+                holidayRepository = new HolidayRepository(context);
                 List<Date> holidayDates = new ArrayList<>();
                 for (HolidayEntry x :
                         holidayEntries) {
@@ -195,24 +195,21 @@ public class SetUpProcessRepository {
         holidaysFetcher.getHolidayEntries();
     }
 
-    public void initHolidayDatabase() {
-        holidayRepository = new HolidayRepository(context);
-    }
-
     public void setHolidays(List<HolidayEntry> holidayEntries) {
         holidayRepository.setHolidays(holidayEntries);
     }
 
     public List<Date> removeHolidaysAndWeekends(List<Date> holidayDates) {
         List<Date> allDates = ConverterUtils.getDates(ConverterUtils.convertStringToDate(getStartingDate()), ConverterUtils.convertStringToDate(getEndingDate()));
+        List<Date> resultDates = new ArrayList<>();
         for (int i = 0; i < allDates.size(); i++) {
             Date date = allDates.get(i);
             String day = ConverterUtils.getDayOfWeek(date);
-            if (holidayDates.contains(date) || day.equals("Saturday") || day.equals("Sunday")) {
-                allDates.remove(date);
+            if (!holidayDates.contains(date) && !day.equals("Saturday") && !day.equals("Sunday")) {
+                resultDates.add(date);
             }
         }
-        return allDates;
+        return resultDates;
     }
 
     public void setOnEligibleDatesCalculatedListener(OnEligibleDatesCalculatedListener listener) {
@@ -245,6 +242,7 @@ public class SetUpProcessRepository {
                     overallAttendanceDao.insertOverall(x);
                     DailyJobToEditOverallAttendance.scheduleJob();
                 }
+                Logger.d("Overall Attendance Database Init success");
             }
         });
     }

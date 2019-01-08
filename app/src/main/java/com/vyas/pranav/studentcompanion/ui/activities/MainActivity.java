@@ -26,6 +26,7 @@ import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceIndividualViewModel;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     private Drawer mDrawer;
     private AttendanceIndividualViewModel attendanceIndividualViewModel;
     private FragmentManager fragManager;
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbarMainActivity);
+        actionBar = getSupportActionBar();
         fragManager = getSupportFragmentManager();
         attendanceIndividualViewModel = ViewModelProviders.of(this).get(AttendanceIndividualViewModel.class);
         FirebaseUser currUser = attendanceIndividualViewModel.getCurrUser();
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 attendanceIndividualViewModel.setCurrentFragmentId(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
                 swapFragment(attendanceFragment);
+                actionBar.setTitle("Home");
                 mDrawer.setSelection(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
             } else {
                 super.onBackPressed();
@@ -83,42 +87,49 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     public void OnNavigationItemClicked(int identifier) {
         switch (identifier) {
             case NavigationDrawerUtil.ID_TODAY_ATTENDANCE:
+                actionBar.setTitle("Home");
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
                 swapFragment(attendanceFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_OVERALL_ATTENDANCE:
+                actionBar.setTitle("Overall Attendance");
                 OverallAttendanceFragment overallAttendanceFragment = new OverallAttendanceFragment();
                 swapFragment(overallAttendanceFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_HOLIDAYS:
+                actionBar.setTitle("Holidays");
                 HolidayFragment holidayFragment = new HolidayFragment();
                 swapFragment(holidayFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_TIMETABLE:
+                actionBar.setTitle("Timetable");
                 TimetableFragment timetableFragment = new TimetableFragment();
                 swapFragment(timetableFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_MARKET_PLACE:
+                actionBar.setTitle("Marketplace");
                 MarketPlaceFragment marketPlaceFragment = new MarketPlaceFragment();
                 swapFragment(marketPlaceFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_SETTINGS:
+                actionBar.setTitle("Settings");
                 AppSettingsFragment appSettingsFragment = new AppSettingsFragment();
                 swapFragment(appSettingsFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_MY_PROFILE:
+                actionBar.setTitle("My Profile");
                 MyProfileFragment myProfileFragment = new MyProfileFragment();
                 swapFragment(myProfileFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);

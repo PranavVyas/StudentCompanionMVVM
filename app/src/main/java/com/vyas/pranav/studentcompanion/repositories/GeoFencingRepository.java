@@ -24,6 +24,7 @@ import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAt
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlacesDatabase;
 import com.vyas.pranav.studentcompanion.services.GeoFenceTransitionBroadcastReceiver;
+import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,33 +77,39 @@ public class GeoFencingRepository {
     public void refreshAllGeoFences() {
         final AutoAttendancePlaceDao autoAttendancePlaceDao = AutoAttendancePlacesDatabase.getInstance(context).autoAttendancePlaceDao();
         geofenceList = new ArrayList<>();
-        autoAttendancePlaceDao.getAllPlaceIds().observeForever(new Observer<List<AutoAttendancePlaceEntry>>() {
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
-            public void onChanged(List<AutoAttendancePlaceEntry> autoAttendancePlaceEntries) {
-                autoAttendancePlaceDao.getAllPlaceIds().removeObserver(this);
-                final List<String> requestIds = new ArrayList<>();
-                for (int i = 0; i < autoAttendancePlaceEntries.size(); i++) {
-                    requestIds.add(autoAttendancePlaceEntries.get(i).getPlaceId());
-                }
-                Places.GeoDataApi.getPlaceById(mClient, requestIds.toArray(new String[requestIds.size()])).setResultCallback(new ResultCallback<PlaceBuffer>() {
+            public void run() {
+                autoAttendancePlaceDao.getAllPlaceIds().observeForever(new Observer<List<AutoAttendancePlaceEntry>>() {
                     @Override
-                    public void onResult(@NonNull PlaceBuffer places) {
-                        for (int i = 0; i < places.getCount(); i++) {
-                            Geofence geo = new Geofence.Builder()
-                                    .setRequestId(requestIds.get(i))
-                                    .setCircularRegion(places.get(i).getLatLng().latitude, places.get(i).getLatLng().longitude, 100.0f)
-                                    .setExpirationDuration(TimeUnit.HOURS.toMillis(24))
-                                    .setLoiteringDelay((int) TimeUnit.SECONDS.toMillis(30))
-                                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                                    .build();
-                            geofenceList.add(geo);
-                            unregisterAllGeoFences();
-                            registerAllGeoFences();
+                    public void onChanged(List<AutoAttendancePlaceEntry> autoAttendancePlaceEntries) {
+                        autoAttendancePlaceDao.getAllPlaceIds().removeObserver(this);
+                        final List<String> requestIds = new ArrayList<>();
+                        for (int i = 0; i < autoAttendancePlaceEntries.size(); i++) {
+                            requestIds.add(autoAttendancePlaceEntries.get(i).getPlaceId());
                         }
+                        Places.GeoDataApi.getPlaceById(mClient, requestIds.toArray(new String[requestIds.size()])).setResultCallback(new ResultCallback<PlaceBuffer>() {
+                            @Override
+                            public void onResult(@NonNull PlaceBuffer places) {
+                                for (int i = 0; i < places.getCount(); i++) {
+                                    Geofence geo = new Geofence.Builder()
+                                            .setRequestId(requestIds.get(i))
+                                            .setCircularRegion(places.get(i).getLatLng().latitude, places.get(i).getLatLng().longitude, 100.0f)
+                                            .setExpirationDuration(TimeUnit.HOURS.toMillis(24))
+                                            .setLoiteringDelay((int) TimeUnit.SECONDS.toMillis(30))
+                                            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                                            .build();
+                                    geofenceList.add(geo);
+                                    unregisterAllGeoFences();
+                                    registerAllGeoFences();
+                                }
+                            }
+                        });
                     }
                 });
             }
         });
+
     }
 
     public void unRegisterAllGeoFenceAtOnce() {

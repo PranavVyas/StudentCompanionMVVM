@@ -50,14 +50,15 @@
             android:parentActivityName=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.AutoAttendanceSubjectDetailActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.AutoAttendanceSubjectListActivity" />
 
         <receiver android:name=".services.GeoFenceTransitionBroadcastReceiver" />
 
         <activity
             android:name=".ui.activities.MarketPlaceSellItemActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".ui.activities.MainActivity"></activity>
+            android:parentActivityName=".ui.activities.MainActivity" />
     </application>
 
 </manifest>

@@ -267,4 +267,5 @@ public class SetUpViewModel extends AndroidViewModel implements SetUpProcessRepo
         repository.setAppFirstRun(firstRun);
         isFirstRun = firstRun;
     }
+
 }

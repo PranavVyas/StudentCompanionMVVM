@@ -96,6 +96,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Sell Item");
         auth = FirebaseAuth.getInstance();
         userName = auth.getCurrentUser().getDisplayName();
         marketPlaceSellItemViewModel = ViewModelProviders.of(this).get(MarketPlaceSellItemViewModel.class);

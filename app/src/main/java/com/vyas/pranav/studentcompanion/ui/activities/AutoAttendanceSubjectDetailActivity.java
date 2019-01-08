@@ -66,6 +66,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
@@ -90,6 +91,8 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     TextView tvName;
     @BindView(R.id.tv_auto_attendance_subject_detail_subject)
     TextView tvSubject;
+    @BindView(R.id.toolbar_auto_attendance_subjet_detail)
+    Toolbar toolbar;
 
     @BindView(R.id.card_auto_attendance_subject_detail_current_detail)
     CardView cardCurrentDetails;
@@ -119,6 +122,9 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_attendance_subject_detail);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Edit GeoFence");
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
         checkForPermissionAndContinue();

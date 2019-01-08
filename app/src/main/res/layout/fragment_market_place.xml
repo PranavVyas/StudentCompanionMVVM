@@ -6,19 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.MarketPlaceFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:src="@android:drawable/ic_input_add"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:fabIcon="@drawable/ic_market_place"
+        app:fabText="Sell Something !"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:useCompatPadding="true" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_marketplace_search_query"
@@ -48,7 +45,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/rounded_corners_button"
         android:text="Search"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_search_query" />
