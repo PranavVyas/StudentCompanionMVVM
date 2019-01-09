@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -35,11 +36,11 @@ public class SetUpDetailsSemFragment extends Fragment {
     @BindView(R.id.btn_set_up_details_dem_continue)
     Button btnContinue;
     @BindView(R.id.et_set_up_details_sem_fragment_no_of_subjects)
-    EditText etNoOfSubjects;
+    TextInputEditText etNoOfSubjects;
     @BindView(R.id.et_set_up_details_sem_fragment_sem_no)
-    EditText etSemNo;
+    TextInputEditText etSemNo;
     @BindView(R.id.et_set_up_sem_details_no_of_lectures)
-    EditText etNoOfLecturesPerDay;
+    TextInputEditText etNoOfLecturesPerDay;
     @BindView(R.id.linear_set_up_details_sem_container)
     LinearLayout linearContainer;
     @BindView(R.id.text_input_set_up_details_sem_fragment_sem_no)

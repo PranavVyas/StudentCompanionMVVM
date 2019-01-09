@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_set_up_details_sem_fragment_sem_no"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,7 +25,6 @@
             android:hint="Semester No"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
-    >
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_set_up_details_sem_fragment_no_of_subjects"
@@ -38,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_input_set_up_details_sem_fragment_sem_no">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_set_up_details_sem_fragment_no_of_subjects"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -58,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_input_set_up_details_sem_fragment_no_of_subjects">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_set_up_sem_details_no_of_lectures"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

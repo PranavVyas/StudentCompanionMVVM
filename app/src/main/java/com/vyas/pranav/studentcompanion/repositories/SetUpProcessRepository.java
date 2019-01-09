@@ -7,6 +7,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
+import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlacesDatabase;
@@ -15,6 +16,7 @@ import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobToEditOverallAttendance;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.Constants;
@@ -25,6 +27,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 
 public class SetUpProcessRepository {
@@ -44,7 +48,13 @@ public class SetUpProcessRepository {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private HolidayRepository holidayRepository;
-    private OnEligibleDatesCalculatedListener listener;
+    private TimetableRepository timetableRepository;
+
+    private List<TimetableEntry> Monday;
+    private List<TimetableEntry> Tuesday;
+    private List<TimetableEntry> Wednesday;
+    private List<TimetableEntry> Thursday;
+    private List<TimetableEntry> Friday;
 
     public SetUpProcessRepository(Context context) {
         Logger.clearLogAdapters();
@@ -55,6 +65,8 @@ public class SetUpProcessRepository {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
         this.context = context;
+        holidayRepository = new HolidayRepository(context);
+        timetableRepository = new TimetableRepository(context);
     }
 
     public boolean isAppFirstRun() {
@@ -178,7 +190,6 @@ public class SetUpProcessRepository {
         holidaysFetcher.setOnHolidaysReceivedListener(new HolidaysFetcher.OnHolidaysReceivedListener() {
             @Override
             public void onHolidaysReceived(List<HolidayEntry> holidayEntries) {
-                holidayRepository = new HolidayRepository(context);
                 List<Date> holidayDates = new ArrayList<>();
                 for (HolidayEntry x :
                         holidayEntries) {
@@ -186,14 +197,98 @@ public class SetUpProcessRepository {
                 }
                 setHolidays(holidayEntries);
                 List<Date> eligibleDates = removeHolidaysAndWeekends(holidayDates);
-                if (listener != null) {
-                    listener.onEligibleDatesCalculated(eligibleDates);
-                    setUpAutoAttendanceDatabase();
-                }
+                setUpAutoAttendanceDatabase();
+                eligibleDatesCalculated(eligibleDates);
             }
         });
         holidaysFetcher.getHolidayEntries();
     }
+
+    private void eligibleDatesCalculated(List<Date> eligibleDates) {
+        final List<AttendanceEntry> attendanceEntries = new ArrayList<>();
+        Logger.d(eligibleDates);
+        final LiveData<List<TimetableEntry>> fullTimetable = timetableRepository.getFullTimetable();
+        fullTimetable.observeForever(new Observer<List<TimetableEntry>>() {
+            @Override
+            public void onChanged(List<TimetableEntry> timetableEntries) {
+                fullTimetable.removeObserver(this);
+                setTimetableForDay(timetableEntries);
+                for (Date date :
+                        eligibleDates) {
+                    List<TimetableEntry> currList = new ArrayList<>();
+                    String day = ConverterUtils.getDayOfWeek(date);
+                    switch (day) {
+                        case "Monday":
+                            currList = Monday;
+                            break;
+
+                        case "Tuesday":
+                            currList = Tuesday;
+                            break;
+
+                        case "Wednesday":
+                            currList = Wednesday;
+                            break;
+
+                        case "Thursday":
+                            currList = Thursday;
+                            break;
+
+                        case "Friday":
+                            currList = Friday;
+                            break;
+                    }
+                    Logger.d("Size of Current List is " + currList.size());
+                    for (TimetableEntry x :
+                            currList) {
+                        AttendanceEntry attendanceEntry = new AttendanceEntry(date, x.getLectureNo(), x.getSubName(), false);
+                        attendanceEntries.add(attendanceEntry);
+                    }
+                    Logger.d("Till date " + date + " Size of attendance is " + attendanceEntries.size());
+                }
+                AttendanceDatabaseRepository repo = new AttendanceDatabaseRepository(context);
+                repo.insertAllAttendanceAndOverallAttendance(attendanceEntries, context);
+            }
+        });
+    }
+
+    public void setTimetableForDay(List<TimetableEntry> timetableEntries) {
+        Monday = new ArrayList<>();
+        Tuesday = new ArrayList<>();
+        Wednesday = new ArrayList<>();
+        Thursday = new ArrayList<>();
+        Friday = new ArrayList<>();
+        for (TimetableEntry x :
+                timetableEntries) {
+            switch (x.getDay()) {
+                case "Monday":
+                    Monday.add(x);
+                    break;
+
+                case "Tuesday":
+                    Tuesday.add(x);
+                    break;
+
+                case "Wednesday":
+                    Wednesday.add(x);
+                    break;
+
+                case "Thursday":
+                    Thursday.add(x);
+                    break;
+
+                case "Friday":
+                    Friday.add(x);
+                    break;
+            }
+        }
+        Logger.d("Size of Monday is " + Monday.size());
+        Logger.d("Size of Tuesday is " + Tuesday.size());
+        Logger.d("Size of Wednesday is " + Wednesday.size());
+        Logger.d("Size of Thursday is " + Thursday.size());
+        Logger.d("Size of Friday is " + Friday.size());
+    }
+
 
     public void setHolidays(List<HolidayEntry> holidayEntries) {
         holidayRepository.setHolidays(holidayEntries);
@@ -210,10 +305,6 @@ public class SetUpProcessRepository {
             }
         }
         return resultDates;
-    }
-
-    public void setOnEligibleDatesCalculatedListener(OnEligibleDatesCalculatedListener listener) {
-        this.listener = listener;
     }
 
     public void initializeOverallAttendance() {
@@ -278,9 +369,5 @@ public class SetUpProcessRepository {
             }
         });
 
-    }
-
-    public interface OnEligibleDatesCalculatedListener {
-        void onEligibleDatesCalculated(List<Date> eligibleDates);
     }
 }

@@ -29,6 +29,8 @@ import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.bookdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 import com.vyas.pranav.studentcompanion.viewmodels.MarketPlaceSellItemViewModel;
 
@@ -40,6 +42,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,6 +77,10 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     Spinner spinnerCategory;
     @BindView(R.id.btn_marketplace_sell_item_post_ad)
     Button btnPostAd;
+    @BindView(R.id.placeholder_marketplace_sell_item_no_connection)
+    ConstraintLayout placeHOlderConnection;
+    @BindView(R.id.image_placeholder_market_place_sell_item)
+    ImageView imagePlaceHolder;
 
     private String phoneNo, Name, Info, Price, userName, selectedCategory;
     private Uri imageUri;
@@ -105,68 +112,6 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     private void populateUI() {
         setUpSpinner();
-//        etInfo.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//        etName.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//        etPhone.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//        etPrice.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
         imageUri = marketPlaceSellItemViewModel.getImageUri();
         downloadUri = marketPlaceSellItemViewModel.getDownloadUri();
         GlideApp.with(this)
@@ -176,6 +121,9 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                 .circleCrop()
                 .into(imageItem);
         continueUploadImageIfAvailable();
+        GlideApp.with(this)
+                .load(R.drawable.image_no_connection_placeholder)
+                .into(imagePlaceHolder);
     }
 
     private void setUpSpinner() {
@@ -299,7 +247,17 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                         .load(imageUri).circleCrop()
                         .into(imageItem);
                 btnPostAd.setEnabled(false);
-                uploadImage();
+                AppExecutors.getInstance().networkIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ConverterUtils.hasInternetAccess(MarketPlaceSellItemActivity.this)) {
+                            uploadImage();
+                        } else {
+                            showPlaceHOlder(true);
+                        }
+                    }
+                });
+
             }
         }
     }
@@ -423,5 +381,34 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         return imageUri != null;
     }
 
+    private void showPlaceHOlder(boolean isShown) {
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (isShown) {
+                    placeHOlderConnection.setVisibility(View.VISIBLE);
+                } else {
+                    placeHOlderConnection.setVisibility(View.GONE);
+                }
+            }
+        });
 
+    }
+
+    @OnClick(R.id.btn_placeholder_marketplace_sell_item_no_connection_retry)
+    void retryClicked() {
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                showPlaceHOlder(!ConverterUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
+                Logger.d("Internet Connection is " + ConverterUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        retryClicked();
+    }
 }

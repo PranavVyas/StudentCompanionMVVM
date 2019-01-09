@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.Drawer;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForShowingReminder;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.ui.fragments.AppSettingsFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
@@ -30,6 +31,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
@@ -62,6 +64,12 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         mDrawer = NavigationDrawerUtil.getMaterialDrawer(MainActivity.this, toolbarMainActivity, currUser);
         OnNavigationItemClicked(attendanceIndividualViewModel.getCurrentFragmentId());
         mDrawer.setSelection(attendanceIndividualViewModel.getCurrentFragmentId());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dismissCallingNotificationIsAvailable();
     }
 
     @Override
@@ -211,5 +219,10 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     private void swapFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_activity_container, fragment)
                 .commit();
+    }
+
+    private void dismissCallingNotificationIsAvailable() {
+        NotificationManagerCompat manager = NotificationManagerCompat.from(this);
+        manager.cancel(DailyJobForShowingReminder.RC_SHOW_NOTIFICATION);
     }
 }

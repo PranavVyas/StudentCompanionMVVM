@@ -32,15 +32,6 @@ public class AttendanceDatabaseRepository {
         return attendanceDao.getAttendanceForDate(date);
     }
 
-//    public void insertAttendance(final AttendanceEntry attendanceEntry) {
-//        mExecutors.diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                attendanceDao.insertAttendance(attendanceEntry);
-//            }
-//        });
-//    }
-
     public void deleteAttendance(final AttendanceEntry attendanceEntry) {
         mExecutors.diskIO().execute(new Runnable() {
             @Override

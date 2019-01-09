@@ -1,7 +1,14 @@
 package com.vyas.pranav.studentcompanion.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.format.DateFormat;
+import android.util.Log;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +20,8 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class ConverterUtils {
+
+    private static final String TAG = "ConverterUtils";
     /**
      * Convert string to date.
      *
@@ -383,5 +392,36 @@ public class ConverterUtils {
     public static long getCurrentTimeInMillis() {
         Calendar now = GregorianCalendar.getInstance();
         return TimeUnit.HOURS.toMillis(now.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(now.get(Calendar.MINUTE)) + TimeUnit.SECONDS.toMillis(now.get(Calendar.SECOND));
+    }
+
+    public static boolean hasInternetAccess(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean res = activeNetworkInfo != null;
+        if (res) {
+            try {
+                HttpURLConnection urlc = (HttpURLConnection)
+                        (new URL("https://clients3.google.com/generate_204")
+                                .openConnection());
+                urlc.setRequestProperty("User-Agent", "Android");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1500);
+                urlc.connect();
+                return (urlc.getResponseCode() == 204 &&
+                        urlc.getContentLength() == 0);
+//                HttpURLConnection urlc = (HttpURLConnection) (new URL("https://www.google.com").openConnection());
+//                urlc.setRequestProperty("User-Agent", "Test");
+//                urlc.setRequestProperty("Connection", "close");
+//                urlc.setConnectTimeout(1500);
+//                urlc.connect();
+//                return (urlc.getResponseCode() == 200);
+            } catch (IOException e) {
+                Log.e(TAG, "Error checking internet connection", e);
+            }
+        } else {
+            Log.d(TAG, "No network available!");
+        }
+        return false;
     }
 }

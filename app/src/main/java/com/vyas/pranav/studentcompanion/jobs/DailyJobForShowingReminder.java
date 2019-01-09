@@ -1,16 +1,18 @@
 package com.vyas.pranav.studentcompanion.jobs;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
 import com.evernote.android.job.DailyJob;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.services.AttendanceEditIntentService;
 import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
+import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
+import com.vyas.pranav.studentcompanion.utils.MainApp;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,8 +22,10 @@ import androidx.core.app.NotificationManagerCompat;
 
 public class DailyJobForShowingReminder extends DailyJob {
     public static final String TAG = "DailyJobForShowingRemin";
-    private static final int RC_SHOW_NOTIFICATION = 1000;
+    public static final int RC_SHOW_NOTIFICATION = 103;
     private static final int RC_OPEN_APP = 100;
+    private static final int RC_MARK_ATTENDANCE = 101;
+    private static final int RC_CONTENT_INTENT = 102;
 
     public static void scheduleReminderJob(int time) {
         if (!JobManager.instance().getAllJobRequestsForTag(TAG).isEmpty()) {
@@ -42,31 +46,8 @@ public class DailyJobForShowingReminder extends DailyJob {
     @NonNull
     @Override
     protected DailyJobResult onRunDailyJob(@NonNull Params params) {
-        showNotification();
+        sendNotification(getContext(), "Add Today's Attendance", "Please Add today's Attendance Now");
         return DailyJobResult.SUCCESS;
-    }
-
-    private void showNotification() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "MainChannel";
-            String description = "Show Main Notifications";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("NOTIFICATION_MAIN", name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext(), "NOTIFICATION_MAIN")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Added")
-                .setContentText("Please fill today's attendance")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .addAction(getOpenAppAction())
-                .setAutoCancel(true);
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext().getApplicationContext());
-
-        notificationManager.notify(RC_SHOW_NOTIFICATION, mBuilder.build());
     }
 
     /**
@@ -77,7 +58,34 @@ public class DailyJobForShowingReminder extends DailyJob {
     private NotificationCompat.Action getOpenAppAction() {
         Intent openAppIntent = new Intent(getContext(), MainActivity.class);
         PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Title", openAppFromNotification).build());
+        return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Open App Now", openAppFromNotification).build());
+    }
+
+    private NotificationCompat.Action getMarkAllPresent() {
+        Intent markAllAttendance = new Intent(getContext(), AttendanceEditIntentService.class);
+        PendingIntent markAllAttendancePendingIntent = PendingIntent.getService(getContext(), RC_MARK_ATTENDANCE, markAllAttendance, PendingIntent.FLAG_UPDATE_CURRENT);
+        return (new NotificationCompat.Action.Builder(R.drawable.ic_market_place, "I am present all day", markAllAttendancePendingIntent).build());
+    }
+
+    private PendingIntent getContentIntent() {
+        Intent intent = new Intent(getContext(), SignInActivity.class);
+        return PendingIntent.getActivity(getContext(), RC_CONTENT_INTENT, intent, 0);
+    }
+
+    private void sendNotification(Context context, String title, String desc) {
+        Notification notification = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
+                .setContentText(desc)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(getContentIntent())
+                .addAction(getOpenAppAction())
+                .addAction(getMarkAllPresent())
+                .setAutoCancel(true)
+                .build();
+
+        NotificationManagerCompat.from(context).notify(RC_SHOW_NOTIFICATION, notification);
     }
 
 }

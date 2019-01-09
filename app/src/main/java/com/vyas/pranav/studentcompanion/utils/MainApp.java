@@ -1,8 +1,11 @@
 package com.vyas.pranav.studentcompanion.utils;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -17,11 +20,13 @@ import com.vyas.pranav.studentcompanion.jobs.JobsCreator;
 import androidx.multidex.MultiDexApplication;
 
 public class MainApp extends MultiDexApplication {
+    public static final String NOTIFICATION_CHANNEL_ID = "NOTIFICATION_MAIN";
 
     @Override
     public void onCreate() {
         super.onCreate();
 
+        createNotificationChannels();
         JobManager.create(this).addJobCreator(new JobsCreator());
         //initialize and create the image loader logic
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
@@ -55,5 +60,17 @@ public class MainApp extends MultiDexApplication {
             }
         });
 
+    }
+
+    private void createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Reminders & Notifications";
+            String description = "Show Reminders and Notifications";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
