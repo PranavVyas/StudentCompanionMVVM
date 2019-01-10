@@ -17,7 +17,7 @@ import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAt
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
-import com.vyas.pranav.studentcompanion.jobs.DailyJobToEditOverallAttendance;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForEditOverallAttendance;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
@@ -331,7 +331,7 @@ public class SetUpProcessRepository {
                     x.setCredits(credits);
                     x.setSubName(subject);
                     overallAttendanceDao.insertOverall(x);
-                    DailyJobToEditOverallAttendance.scheduleJob();
+                    DailyJobForEditOverallAttendance.scheduleJob();
                 }
                 Logger.d("Overall Attendance Database Init success");
             }

@@ -12,6 +12,7 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.services.AttendanceEditIntentService;
 import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
 import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.MainApp;
 
 import java.util.concurrent.TimeUnit;
@@ -21,11 +22,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 public class DailyJobForShowingReminder extends DailyJob {
-    public static final String TAG = "DailyJobForShowingRemin";
-    public static final int RC_SHOW_NOTIFICATION = 103;
-    private static final int RC_OPEN_APP = 100;
-    private static final int RC_MARK_ATTENDANCE = 101;
-    private static final int RC_CONTENT_INTENT = 102;
+    public static final String TAG = "DailyJobForShowingReminder";
+
 
     public static void scheduleReminderJob(int time) {
         if (!JobManager.instance().getAllJobRequestsForTag(TAG).isEmpty()) {
@@ -57,19 +55,19 @@ public class DailyJobForShowingReminder extends DailyJob {
      */
     private NotificationCompat.Action getOpenAppAction() {
         Intent openAppIntent = new Intent(getContext(), MainActivity.class);
-        PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.SHOW_REMINDER_JOB_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Open App Now", openAppFromNotification).build());
     }
 
     private NotificationCompat.Action getMarkAllPresent() {
         Intent markAllAttendance = new Intent(getContext(), AttendanceEditIntentService.class);
-        PendingIntent markAllAttendancePendingIntent = PendingIntent.getService(getContext(), RC_MARK_ATTENDANCE, markAllAttendance, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent markAllAttendancePendingIntent = PendingIntent.getService(getContext(), Constants.SHOW_REMINDER_JOB_RC_MARK_ATTENDANCE, markAllAttendance, PendingIntent.FLAG_UPDATE_CURRENT);
         return (new NotificationCompat.Action.Builder(R.drawable.ic_market_place, "I am present all day", markAllAttendancePendingIntent).build());
     }
 
     private PendingIntent getContentIntent() {
         Intent intent = new Intent(getContext(), SignInActivity.class);
-        return PendingIntent.getActivity(getContext(), RC_CONTENT_INTENT, intent, 0);
+        return PendingIntent.getActivity(getContext(), Constants.SHOW_REMINDER_JOB_RC_CONTENT_INTENT, intent, 0);
     }
 
     private void sendNotification(Context context, String title, String desc) {
@@ -85,7 +83,7 @@ public class DailyJobForShowingReminder extends DailyJob {
                 .setAutoCancel(true)
                 .build();
 
-        NotificationManagerCompat.from(context).notify(RC_SHOW_NOTIFICATION, notification);
+        NotificationManagerCompat.from(context).notify(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION, notification);
     }
 
 }

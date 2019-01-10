@@ -5,9 +5,9 @@ import android.content.Intent;
 
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
-import com.vyas.pranav.studentcompanion.jobs.DailyJobForShowingReminder;
 import com.vyas.pranav.studentcompanion.repositories.AttendanceDatabaseRepository;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.Date;
@@ -29,7 +29,7 @@ public class AttendanceEditIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
-        manager.cancel(DailyJobForShowingReminder.RC_SHOW_NOTIFICATION);
+        manager.cancel(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION);
         AttendanceDatabaseRepository repository = new AttendanceDatabaseRepository(getApplicationContext());
         Date date = new Date();
         ConverterUtils.CustomDate customDate = ConverterUtils.extractElementsFromDate(date);

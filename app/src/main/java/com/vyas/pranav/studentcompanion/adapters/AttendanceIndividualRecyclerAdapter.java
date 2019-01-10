@@ -35,17 +35,20 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
 
     @Override
     public void onBindViewHolder(@NonNull final AttendanceIndividualHolder holder, final int position) {
-        if (attendanceEntries != null) {
-            if (attendanceEntries.get(position).getSubjectName().equals("No Lecture")) {
-                holder.itemView.setVisibility(View.GONE);
-                holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-            } else {
-                Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceEntries.get(position).getLectureNo());
-                holder.tvLectureNo.setText("Lecture " + attendanceEntries.get(position).getLectureNo());
-                holder.tvSubjectName.setText(attendanceEntries.get(position).getSubjectName());
-                holder.switchPresent.setOn(attendanceEntries.get(position).isPresent());
+
+        Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceEntries.get(position).getLectureNo());
+        holder.tvLectureNo.setText("Lecture " + attendanceEntries.get(position).getLectureNo());
+        holder.tvSubjectName.setText(attendanceEntries.get(position).getSubjectName());
+        holder.switchPresent.setOn(attendanceEntries.get(position).isPresent());
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.switchPresent.performClick();
             }
-        }
+        };
+//        holder.tvLectureNo.setOnClickListener(onClickListener);
+        holder.itemView.setOnClickListener(onClickListener);
         holder.switchPresent.setOnToggledListener(new OnToggledListener() {
             @Override
             public void onSwitched(ToggleableView toggleableView, boolean isOn) {

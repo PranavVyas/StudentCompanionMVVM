@@ -37,6 +37,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -92,6 +93,11 @@ public class AttendanceIndividualFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_attendance_individual, container, false);
@@ -137,6 +143,8 @@ public class AttendanceIndividualFragment extends Fragment {
         rvMain.setLayoutManager(lm);
 //        skeletonScreen = Skeleton.bind(rvMain).adapter(mAdapter).load(R.layout.item_holder_recycler_indivdual_attendance_shimmer).count(3).show();
         mAdapter.setHasStableIds(true);
+        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), lm.getOrientation());
+        rvMain.addItemDecoration(decoration);
         startProgress();
         rvMain.setAdapter(mAdapter);
     }

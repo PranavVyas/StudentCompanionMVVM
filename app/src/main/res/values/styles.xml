@@ -15,6 +15,8 @@
     <style name="AppTheme.Night" parent="MaterialDrawerTheme">
         <item name="table_background">#00616161</item>
         <item name="normal_background">#737373</item>
+        <item name="normal_background_dark">#000000</item>
+        <item name="gradient_background_normal">@drawable/gradient_blue_to_dark_blue</item>
     </style>
 
 </resources>

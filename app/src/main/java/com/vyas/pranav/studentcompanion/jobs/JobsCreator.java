@@ -11,17 +11,20 @@ public class JobsCreator implements JobCreator {
     @Override
     public Job create(@NonNull String tag) {
         switch (tag) {
-            case DailyJobToEditOverallAttendance.TAG:
-                return new DailyJobToEditOverallAttendance();
+            case DailyJobForEditOverallAttendance.TAG:
+                return new DailyJobForEditOverallAttendance();
 
-            case DailyJobForAttendance.TAG:
-                return new DailyJobForAttendance();
+            case DailyJobForSilentAction.TAG:
+                return new DailyJobForSilentAction();
 
             case DailyJobForShowingReminder.TAG:
                 return new DailyJobForShowingReminder();
 
             case DailyJobForRefreshGeoFence.TAG:
                 return new DailyJobForRefreshGeoFence();
+
+            case DailyJobForUnsilentAction.TAG:
+                return new DailyJobForUnsilentAction();
         }
         return null;
     }

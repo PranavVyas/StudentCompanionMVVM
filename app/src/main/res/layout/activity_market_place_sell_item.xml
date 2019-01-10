@@ -175,7 +175,8 @@
             android:id="@+id/placeholder_marketplace_sell_item_no_connection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/gradient_background_normal">
+            android:background="?attr/gradient_background_normal"
+            android:visibility="invisible">
 
             <ImageView
                 android:id="@+id/image_placeholder_market_place_sell_item"

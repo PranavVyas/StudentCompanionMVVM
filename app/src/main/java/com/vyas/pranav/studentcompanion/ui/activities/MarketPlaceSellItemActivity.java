@@ -3,6 +3,7 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,6 +38,7 @@ import com.vyas.pranav.studentcompanion.viewmodels.MarketPlaceSellItemViewModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -409,6 +411,11 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        retryClicked();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                retryClicked();
+            }
+        }, TimeUnit.SECONDS.toMillis(2));
     }
 }

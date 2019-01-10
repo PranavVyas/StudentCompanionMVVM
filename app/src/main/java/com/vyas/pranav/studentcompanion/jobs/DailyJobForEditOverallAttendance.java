@@ -7,16 +7,13 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
 import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
-import com.vyas.pranav.studentcompanion.repositories.TimetableRepository;
 
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 
-public class DailyJobToEditOverallAttendance extends DailyJob {
-    static final String TAG = "DailyJobToEditOverallAt";
-    private static int RC_OPEN_APP = 100;
-    private static int RC_SHOW_NOTIFICATION = 1100;
+public class DailyJobForEditOverallAttendance extends DailyJob {
+    static final String TAG = "DailyJobForEditOverallAttendance";
 
     public static void scheduleJob() {
         Logger.clearLogAdapters();
@@ -39,10 +36,8 @@ public class DailyJobToEditOverallAttendance extends DailyJob {
         OverallAttendanceRepository overallAttendanceRepository = new OverallAttendanceRepository(getContext());
         overallAttendanceRepository.refreshAllOverallAttendance();
         AppSettingsRepository repo = new AppSettingsRepository(getContext());
-        TimetableRepository timetableRepository = new TimetableRepository(getContext());
-        boolean isAutoAttendanceEnabled = repo.isAutoAttendanceEnabled();
-        if (isAutoAttendanceEnabled) {
-            repo.enableAutoAttendanceForToday();
+        if (repo.isSmartSilentEnabled()) {
+            repo.enableAutoSilentDevice();
         }
         return DailyJobResult.SUCCESS;
     }

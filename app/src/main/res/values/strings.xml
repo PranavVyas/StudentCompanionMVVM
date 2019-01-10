@@ -23,6 +23,12 @@
     <string name="pref_summery_off_switch_enable_night_mode">Night Mode Disabled</string>
     <bool name="pref_def_value_switch_enable_night_mode">false</bool>
 
+    <string name="pref_key_switch_enable_smart_silent" translatable="false">SHARED_PREF_IS_SMART_SILENT_ENABLED</string>
+    <string name="pref_title_switch_enable_smart_silent">Smart Silent</string>
+    <string name="pref_summery_on_switch_enable_smart_silent">Smart Silent Enabled\nDevice will be automatically silent during lectures</string>
+    <string name="pref_summery_off_switch_enable_smart_silent">Smart Silent Disabled\nDevice will not be automatically silent during lectures</string>
+    <bool name="pref_def_value_switch_enable_smart_silent">false</bool>
+
     <string name="pref_select_places_auto_attendance">Select Places for Auto Attendance</string>
     <string name="pref_key_select_places_auto_attendance" translatable="false">SHARED_PREF_SELECT_AUTO_ATTENDANCE_PLACES</string>
 

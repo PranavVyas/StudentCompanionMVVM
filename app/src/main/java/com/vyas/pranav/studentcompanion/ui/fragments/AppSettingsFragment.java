@@ -1,9 +1,14 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,6 +28,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import butterknife.ButterKnife;
 
 public class AppSettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -53,6 +59,37 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
                 return false;
             }
         });
+        findPreference(getString(R.string.pref_key_switch_enable_smart_silent)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                boolean isEnabled = (boolean) newValue;
+                if (isEnabled) {
+                    if (isPermissionGranted()) {
+//                        Toast.makeText(getContext(), "Enabled the Silent Mode", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Permission is not granted\nPlease Grant Do Not Disturb Access to StudentCompanion", Toast.LENGTH_SHORT).show();
+                        NotificationManager nm = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                        if (Build.VERSION.SDK_INT >= 24 && !nm.isNotificationPolicyAccessGranted()) {
+                            Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                            startActivity(intent);
+                        }
+                        return false;
+                    }
+                } else {
+//                    Toast.makeText(getContext(), "Disabled the Silent Mode", Toast.LENGTH_SHORT).show();
+                }
+                appSettingsViewModel.toggleSmartSilent();
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isPermissionGranted()) {
+            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putBoolean(getString(R.string.pref_key_switch_enable_smart_silent), false).apply();
+        }
     }
 
     /**
@@ -205,5 +242,10 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    private boolean isPermissionGranted() {
+        NotificationManager nm = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        return Build.VERSION.SDK_INT < 24 || nm.isNotificationPolicyAccessGranted();
     }
 }

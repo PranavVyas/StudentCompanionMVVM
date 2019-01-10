@@ -36,16 +36,12 @@ public class AppSettingsViewModel extends AndroidViewModel {
         appSettingsRepository.cancelReminderJob();
     }
 
-    public void cancelAutoAttendanceJob() {
-        appSettingsRepository.cancelAutoAttendanceJobs();
-    }
-
     public boolean isAutoAttendanceEnabled() {
         return appSettingsRepository.isAutoAttendanceEnabled();
     }
 
-    public void enableAutoAttendanceJob() {
-        appSettingsRepository.enableAutoAttendanceForToday();
+    public boolean isSmartSilentEnabled() {
+        return appSettingsRepository.isSmartSilentEnabled();
     }
 
     public void deleteUserAccount() {
@@ -60,4 +56,7 @@ public class AppSettingsViewModel extends AndroidViewModel {
         appSettingsRepository.setGeoFenceRefreshing(isScheduled);
     }
 
+    public void toggleSmartSilent() {
+        appSettingsRepository.toggleSmartSilent();
+    }
 }

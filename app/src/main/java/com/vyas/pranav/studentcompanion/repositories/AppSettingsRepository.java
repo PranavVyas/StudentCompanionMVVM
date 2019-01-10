@@ -8,13 +8,13 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
-import com.vyas.pranav.studentcompanion.jobs.DailyJobForAttendance;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForRefreshGeoFence;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForShowingReminder;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForSilentAction;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForUnsilentAction;
 import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
@@ -62,12 +62,8 @@ public class AppSettingsRepository {
         return mPreference.getBoolean(context.getString(R.string.pref_key_switch_enable_auto_attendance), context.getResources().getBoolean(R.bool.pref_def_value_switch_enable_auto_attendance));
     }
 
-    public void cancelAutoAttendanceJobs() {
-        DailyJobForAttendance.cancelAllAutoAttendanceJobs();
-    }
-
-    public void enableAutoAttendanceForToday() {
-        DailyJobForAttendance.cancelAllAutoAttendanceJobs();
+    public void enableAutoSilentDevice() {
+        DailyJobForSilentAction.cancelAllJobs();
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {
@@ -78,11 +74,12 @@ public class AppSettingsRepository {
                         timetableForDay.removeObserver(this);
                         for (int i = 0; i < timetableEntries.size(); i++) {
                             if (!timetableEntries.get(i).getSubName().equals("No Lecture")) {
-                                Logger.clearLogAdapters();
-                                Logger.addLogAdapter(new AndroidLogAdapter());
-                                int time = (timetableEntries.get(i).getTimeStart() + timetableEntries.get(i).getTimeEnd()) / 2;
-                                Logger.d("Setting Time Reminder For Lecture " + i + " At Time " + ConverterUtils.convertTimeIntInString(time));
-                                DailyJobForAttendance.scheduleAutoAttendanceJobAtTime(TimeUnit.MINUTES.toMillis(time));
+                                int startTime = timetableEntries.get(i).getTimeStart();
+                                int endTime = timetableEntries.get(i).getTimeEnd();
+                                Toast.makeText(context, "Enabled Smart Silent!", Toast.LENGTH_SHORT).show();
+                                Logger.d("Smart Silent : Enabled");
+                                DailyJobForSilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(startTime + 1));
+                                DailyJobForUnsilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(endTime - 1));
                             }
                         }
                     }
@@ -120,6 +117,21 @@ public class AppSettingsRepository {
             DailyJobForRefreshGeoFence.scheduleJob();
         } else {
             DailyJobForRefreshGeoFence.cancelJob();
+        }
+    }
+
+    public boolean isSmartSilentEnabled() {
+        return mPreference.getBoolean(context.getString(R.string.pref_key_switch_enable_smart_silent), false);
+    }
+
+    public void toggleSmartSilent() {
+        if (!isSmartSilentEnabled()) {
+            enableAutoSilentDevice();
+        } else {
+            DailyJobForSilentAction.cancelAllJobs();
+            DailyJobForUnsilentAction.cancelAllJobs();
+            Toast.makeText(context, "Disabled Smart Silent!", Toast.LENGTH_SHORT).show();
+            Logger.d("Smart Silent : Disabled");
         }
     }
 }

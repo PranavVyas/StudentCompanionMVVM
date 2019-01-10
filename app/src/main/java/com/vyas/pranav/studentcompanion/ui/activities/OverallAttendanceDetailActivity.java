@@ -8,9 +8,7 @@ import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
-import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
-import java.util.Date;
 import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,12 +24,6 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
     WaveLoadingView progressSubject;
     @BindView(R.id.tv_overall_attendance_detail_bunked)
     TextView tvBunkedDays;
-    @BindView(R.id.tv_overall_attendance_detail_credits)
-    TextView tvCredits;
-    @BindView(R.id.tv_overall_attendance_detail_date_today)
-    TextView tvDateToday;
-    @BindView(R.id.tv_overall_attendance_detail_elapsed)
-    TextView tvElapsedDays;
     @BindView(R.id.tv_overall_attendance_detail_left_bunk)
     TextView tvLeftToBunkDays;
     @BindView(R.id.tv_overall_attendance_detail_present)
@@ -65,14 +57,11 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
 
     private void populateUI(OverallAttendanceEntry entry) {
         tvSubject.setText(entry.getSubName());
-        tvCredits.setText(String.format(Locale.US, ": %d", entry.getCredits()));
-        tvDateToday.setText(String.format(Locale.US, ": %s", ConverterUtils.convertDateToString(new Date())));
-        tvTotalDays.setText(String.format(Locale.US, ": %d", entry.getTotalDays()));
-        tvPresentDays.setText(String.format(Locale.US, ": %d", entry.getPresentDays()));
-        tvBunkedDays.setText(String.format(Locale.US, ": %d", entry.getBunkedDays()));
-        tvElapsedDays.setText(String.format(Locale.US, ": %d", (entry.getBunkedDays() + entry.getPresentDays())));
+        tvTotalDays.setText(String.format(Locale.US, "%d", entry.getTotalDays()));
+        tvPresentDays.setText(String.format(Locale.US, "%d", entry.getPresentDays()));
+        tvBunkedDays.setText(String.format(Locale.US, "%d", entry.getBunkedDays()));
         int leftToBunk = (int) Math.ceil(entry.getTotalDays() * 0.25) - entry.getBunkedDays();
-        tvLeftToBunkDays.setText(String.format(Locale.US, ": %d", leftToBunk));
+        tvLeftToBunkDays.setText(String.format(Locale.US, "%d", leftToBunk));
         int precentPercent = (entry.getPresentDays() * 100) / entry.getTotalDays();
         progressSubject.setProgressValue(precentPercent);
         progressSubject.setCenterTitle(precentPercent + " %");

@@ -14,7 +14,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.Drawer;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.jobs.DailyJobForShowingReminder;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.ui.fragments.AppSettingsFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
@@ -23,6 +22,7 @@ import com.vyas.pranav.studentcompanion.ui.fragments.MarketPlaceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.MyProfileFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceIndividualViewModel;
 
@@ -223,6 +223,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
     private void dismissCallingNotificationIsAvailable() {
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
-        manager.cancel(DailyJobForShowingReminder.RC_SHOW_NOTIFICATION);
+        manager.cancel(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION);
     }
 }

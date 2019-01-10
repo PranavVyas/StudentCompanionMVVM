@@ -20,6 +20,7 @@ import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.repositories.GeoFencingRepository;
 import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,9 +30,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 public class DailyJobForRefreshGeoFence extends DailyJob implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    public static final String TAG = "DailyJobForRefreshGeoFe";
-    private static final int RC_OPEN_APP = 45489;
-    private static final int RC_SHOW_NOTIFICATION = 151351;
+    public static final String TAG = "DailyJobForRefreshGeoFence";
 
     public static void scheduleJob() {
         Logger.clearLogAdapters();
@@ -66,7 +65,7 @@ public class DailyJobForRefreshGeoFence extends DailyJob implements GoogleApiCli
         GeoFencingRepository geoFencingRepository = new GeoFencingRepository(context, mClient);
         geoFencingRepository.refreshAllGeoFences();
         mClient.disconnect();
-        //showNotification();
+        showNotification();
         mClient = null;
         return DailyJobResult.SUCCESS;
     }
@@ -105,7 +104,7 @@ public class DailyJobForRefreshGeoFence extends DailyJob implements GoogleApiCli
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext().getApplicationContext());
 
-        notificationManager.notify(RC_SHOW_NOTIFICATION, mBuilder.build());
+        notificationManager.notify(Constants.REFRESH_GEO_FENCE_RC_SHOW_NOTIFICATION, mBuilder.build());
     }
 
     /**
@@ -115,7 +114,7 @@ public class DailyJobForRefreshGeoFence extends DailyJob implements GoogleApiCli
      */
     private NotificationCompat.Action getOpenAppAction() {
         Intent openAppIntent = new Intent(getContext(), MainActivity.class);
-        PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.REFRESH_GEO_FENCE_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Open App", openAppFromNotification).build());
     }
 }
