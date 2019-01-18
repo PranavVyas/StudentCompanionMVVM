@@ -21,7 +21,7 @@ public class SetUpViewModel extends AndroidViewModel {
     private String startDate;
     private String endDate;
     private int currentStep;
-    private List<String[]> listSubjectAndCredits;
+    private List<String> subjectList;
     private int currentDay;
     private Application application;
     private int semester;
@@ -35,13 +35,16 @@ public class SetUpViewModel extends AndroidViewModel {
         super(application);
         this.application = application;
         repository = new SetUpProcessRepository(application);
+        isFirstRun = repository.isAppFirstRun();
+    }
+
+    public void init() {
         startDate = repository.getStartingDate() == null ? "Select Starting Date" : repository.getStartingDate();
         endDate = repository.getEndingDate() == null ? "Select Ending Date" : repository.getEndingDate();
         currentStep = repository.getSetUpCurrentStep();
-        listSubjectAndCredits = repository.getSubjectAndCredits();
+        subjectList = repository.getSubjectList();
         currentDay = repository.getCurrentDay();
         semester = repository.getSemester();
-        isFirstRun = repository.isAppFirstRun();
         noOfLecturesPerDay = repository.getNoOfLecturesPerDay();
     }
 
@@ -72,13 +75,13 @@ public class SetUpViewModel extends AndroidViewModel {
         this.currentStep = currentStep;
     }
 
-    public List<String[]> getListSubjectAndCredits() {
-        return listSubjectAndCredits;
+    public List<String> getSubjectList() {
+        return subjectList;
     }
 
-    public void setListSubjectAndCredits(List<String> listSubjects, List<String> listCredits) {
-        repository.setSubjectsInSharedPrefs(listSubjects, listCredits);
-        this.listSubjectAndCredits = repository.getSubjectAndCredits();
+    public void setSubjectList(List<String> listSubjects) {
+        repository.setSubjectListInSharedPrefrences(listSubjects);
+        this.subjectList = repository.getSubjectList();
     }
 
     public int getCurrentDay() {
@@ -88,10 +91,6 @@ public class SetUpViewModel extends AndroidViewModel {
     public void setCurrentDay(int currentDay) {
         repository.setCurrentDay(currentDay);
         this.currentDay = currentDay;
-    }
-
-    public List<String> getSubjectList() {
-        return repository.getSubjectsListOnly();
     }
 
     public int getSemester() {
@@ -164,6 +163,14 @@ public class SetUpViewModel extends AndroidViewModel {
     public void setFirstRun(boolean firstRun) {
         repository.setAppFirstRun(firstRun);
         isFirstRun = firstRun;
+    }
+
+    public boolean isTutorialDone() {
+        return repository.isTutorialDone();
+    }
+
+    public void setTutorialDone(boolean isDone) {
+        repository.setTutorialDone(isDone);
     }
 
 }

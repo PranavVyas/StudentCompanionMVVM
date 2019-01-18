@@ -38,6 +38,7 @@
         <service android:name=".services.AttendanceEditIntentService" />
         <service android:name=".services.ToggleSilentDeviceIntentService" />
 
+
         <activity
             android:name=".ui.activities.SignInActivity"
             android:launchMode="singleTop">
@@ -62,6 +63,8 @@
             android:name=".ui.activities.MarketPlaceSellItemActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivity" />
+
+        <activity android:name=".ui.activities.TutorialActivity" />
     </application>
 
 </manifest>

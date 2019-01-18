@@ -11,19 +11,18 @@ public class OverallAttendanceEntry {
     @PrimaryKey(autoGenerate = true)
     private long _ID;
     private String subName;
-    private int totalDays, presentDays, bunkedDays, credits;
+    private int totalDays, presentDays, bunkedDays;
 
     @Ignore
     public OverallAttendanceEntry() {
     }
 
-    public OverallAttendanceEntry(long _ID, String subName, int totalDays, int presentDays, int bunkedDays, int credits) {
+    public OverallAttendanceEntry(long _ID, String subName, int totalDays, int presentDays, int bunkedDays) {
         this._ID = _ID;
         this.subName = subName;
         this.totalDays = totalDays;
         this.presentDays = presentDays;
         this.bunkedDays = bunkedDays;
-        this.credits = credits;
     }
 
     @Ignore
@@ -32,7 +31,6 @@ public class OverallAttendanceEntry {
         this.totalDays = totalDays;
         this.presentDays = presentDays;
         this.bunkedDays = bunkedDays;
-        this.credits = credits;
     }
 
     public long get_ID() {
@@ -73,13 +71,5 @@ public class OverallAttendanceEntry {
 
     public void setBunkedDays(int bunkedDays) {
         this.bunkedDays = bunkedDays;
-    }
-
-    public int getCredits() {
-        return credits;
-    }
-
-    public void setCredits(int credits) {
-        this.credits = credits;
     }
 }

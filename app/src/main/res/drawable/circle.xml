@@ -3,7 +3,7 @@
     android:shape="oval">
     <stroke
         android:width="2dp"
-        android:color="@color/accent"
+        android:color="?attr/colorAccent"
         android:dashWidth="2dp"
         android:dashGap="2dp" />
 

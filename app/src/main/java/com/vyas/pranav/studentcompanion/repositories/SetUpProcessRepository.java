@@ -43,6 +43,7 @@ public class SetUpProcessRepository {
     private static final String SHARED_PREF_NO_OF_LECTURES_PER_DAY = "NO_OF_LECTURES_PER_DAY";
     private static final String SHARED_PREF_LECTURE_START = "STARTING_TIME_OF_LECTURE";
     private static final String SHARED_PREF_LECTURE_END = "ENDING_TIME_OF_LECTURE";
+    private static final String SHARED_PREF_TUTORIAL = "TUTORIAL_DONE";
 
     private Context context;
     private SharedPreferences preferences;
@@ -105,28 +106,17 @@ public class SetUpProcessRepository {
         return preferences.getInt(SHARED_PREF_CURRENT_STEP, 1);
     }
 
-    public void setSubjectsInSharedPrefs(List<String> subjects, List<String> credits) {
-        List<String> finalList = new ArrayList<>();
-        for (int i = 0; i < subjects.size(); i++) {
-            String temp = subjects.get(i) + "::" + credits.get(i);
-            finalList.add(temp);
-        }
-        editor.putStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<String>(finalList));
+    public void setSubjectListInSharedPrefrences(List<String> subjects) {
+        editor.putStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<>(subjects));
         editor.apply();
     }
 
-    public List<String[]> getSubjectAndCredits() {
-        List<String[]> newTemp = new ArrayList<>();
-        List<String> subjectAndCredits = new ArrayList<>(preferences.getStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<String>()));
-        if (subjectAndCredits.isEmpty()) {
+    public List<String> getSubjectList() {
+        List<String> subjects = new ArrayList<>(preferences.getStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<String>()));
+        if (subjects.isEmpty()) {
             return new ArrayList<>();
         } else {
-            for (String x :
-                    subjectAndCredits) {
-                String[] entry = x.split("::");
-                newTemp.add(entry);
-            }
-            return newTemp;
+            return subjects;
         }
     }
 
@@ -137,16 +127,6 @@ public class SetUpProcessRepository {
     public void setCurrentDay(int currentDay) {
         editor.putInt(SHARED_PREF_CURRENT_DAY, currentDay);
         editor.apply();
-    }
-
-    public List<String> getSubjectsListOnly() {
-        List<String[]> subjectAndCredits = getSubjectAndCredits();
-        List<String> result = new ArrayList<>();
-        for (String[] x :
-                subjectAndCredits) {
-            result.add(x[0]);
-        }
-        return result;
     }
 
     public void setUpSemester(int semester) {
@@ -310,7 +290,7 @@ public class SetUpProcessRepository {
     public void initializeOverallAttendance() {
         AttendanceDao attendanceDao = AttendanceDatabase.getInstance(context).attendanceDao();
         OverallAttendanceDao overallAttendanceDao = OverallAttendanceDatabase.getInstance(context).overallAttendanceDao();
-        insertAllOverallAttendance(getSubjectsListOnly(), attendanceDao, overallAttendanceDao);
+        insertAllOverallAttendance(getSubjectList(), attendanceDao, overallAttendanceDao);
     }
 
     public void insertAllOverallAttendance(final List<String> subjectList, final AttendanceDao attendanceDao, final OverallAttendanceDao overallAttendanceDao) {
@@ -319,7 +299,6 @@ public class SetUpProcessRepository {
             public void run() {
                 for (int i = 0; i < subjectList.size(); i++) {
                     String subject = subjectList.get(i);
-                    int credits = getCreditsForSubject(subject);
                     OverallAttendanceEntry x = new OverallAttendanceEntry();
                     Date todayDate = new Date();
                     int presentDays = attendanceDao.getAttendedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), todayDate);
@@ -328,7 +307,6 @@ public class SetUpProcessRepository {
                     x.setTotalDays(totalDays);
                     x.setBunkedDays(bunkedDays);
                     x.setPresentDays(presentDays);
-                    x.setCredits(credits);
                     x.setSubName(subject);
                     overallAttendanceDao.insertOverall(x);
                     DailyJobForEditOverallAttendance.scheduleJob();
@@ -338,27 +316,12 @@ public class SetUpProcessRepository {
         });
     }
 
-    private int getCreditsForSubject(String subject) {
-        List<String> subjects = new ArrayList<>();
-        List<String> credits = new ArrayList<>();
-        List<String[]> subjectAndCredits = getSubjectAndCredits();
-        for (int i = 0; i < subjectAndCredits.size(); i++) {
-            String[] array = subjectAndCredits.get(i);
-            String subjectFromArray = array[0];
-            subjects.add(subjectFromArray);
-            String credit = array[1];
-            credits.add(credit);
-        }
-        int index = subjects.indexOf(subject);
-        return Integer.parseInt(credits.get(index));
-    }
-
     public void setUpAutoAttendanceDatabase() {
         final AutoAttendancePlaceDao autoAttendancePlaceDao = AutoAttendancePlacesDatabase.getInstance(context).autoAttendancePlaceDao();
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                List<String> subjectsListOnly = getSubjectsListOnly();
+                List<String> subjectsListOnly = getSubjectList();
                 for (int i = 0; i < subjectsListOnly.size(); i++) {
                     String subject = subjectsListOnly.get(i);
                     AutoAttendancePlaceEntry autoAttendancePlaceEntry = new AutoAttendancePlaceEntry();
@@ -368,6 +331,14 @@ public class SetUpProcessRepository {
                 }
             }
         });
-
     }
+
+    public boolean isTutorialDone() {
+        return preferences.getBoolean(SHARED_PREF_TUTORIAL, false);
+    }
+
+    public void setTutorialDone(boolean isDone) {
+        editor.putBoolean(SHARED_PREF_TUTORIAL, isDone).apply();
+    }
+
 }

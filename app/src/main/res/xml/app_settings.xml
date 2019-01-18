@@ -41,6 +41,7 @@
     <SwitchPreference
         android:defaultValue="@bool/pref_def_value_switch_enable_smart_silent"
         android:key="@string/pref_key_switch_enable_smart_silent"
+        android:icon="@drawable/ic_silent"
         android:summaryOff="@string/pref_summery_off_switch_enable_smart_silent"
         android:summaryOn="@string/pref_summery_on_switch_enable_smart_silent"
         android:title="@string/pref_title_switch_enable_smart_silent" />

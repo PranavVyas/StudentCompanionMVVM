@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -37,14 +36,10 @@ public class SetUpDetailsSemFragment extends Fragment {
     Button btnContinue;
     @BindView(R.id.et_set_up_details_sem_fragment_no_of_subjects)
     TextInputEditText etNoOfSubjects;
-    @BindView(R.id.et_set_up_details_sem_fragment_sem_no)
-    TextInputEditText etSemNo;
     @BindView(R.id.et_set_up_sem_details_no_of_lectures)
     TextInputEditText etNoOfLecturesPerDay;
     @BindView(R.id.linear_set_up_details_sem_container)
     LinearLayout linearContainer;
-    @BindView(R.id.text_input_set_up_details_sem_fragment_sem_no)
-    TextInputLayout inputSemNo;
     @BindView(R.id.text_input_set_up_details_sem_fragment_no_of_subjects)
     TextInputLayout inputSubject;
     @BindView(R.id.text_input_set_up_sem_details_no_of_lectures)
@@ -53,7 +48,6 @@ public class SetUpDetailsSemFragment extends Fragment {
     private SetUpViewModel setUpViewModel;
     private OnSubjectsSelectedListener listener;
 
-    private String semNo;
     private String noOfSubjects;
     private String noOfLecturesPerDay;
 
@@ -80,11 +74,10 @@ public class SetUpDetailsSemFragment extends Fragment {
 
     @OnClick(R.id.btn_set_up_details_sem_fragment_go)
     void goClicked() {
-        semNo = etSemNo.getText().toString().trim();
         noOfSubjects = etNoOfSubjects.getText().toString().trim();
         noOfLecturesPerDay = etNoOfLecturesPerDay.getText().toString().trim();
 
-        if (!validateSemNo() || !validateNoOfSubjects() || !validateNoOfLectures()) {
+        if (!validateNoOfSubjects() || !validateNoOfLectures()) {
             if (!validateNoOfLectures()) {
                 inputNoOfLectures.setError("Please enter valid No Of Lecture");
             } else {
@@ -97,40 +90,25 @@ public class SetUpDetailsSemFragment extends Fragment {
                 inputSubject.setErrorEnabled(false);
             }
 
-            if (!validateSemNo()) {
-                inputSemNo.setError("Please Enter valid sem No");
-            } else {
-                inputSemNo.setErrorEnabled(false);
-            }
             return;
         }
-        inputSemNo.setErrorEnabled(false);
         inputSubject.setErrorEnabled(false);
         inputNoOfLectures.setErrorEnabled(false);
-        setUpViewModel.setSemester(Integer.parseInt(semNo));
         setUpViewModel.setNoOfLecturesPerDay(Integer.parseInt(noOfLecturesPerDay));
         linearContainer.removeAllViews();
         for (int i = 0; i < Integer.parseInt(noOfSubjects); i++) {
             LinearLayout subjectDetailsContainer = new LinearLayout(getContext());
             subjectDetailsContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             subjectDetailsContainer.setOrientation(LinearLayout.HORIZONTAL);
-//            TextInputLayout input1 = new TextInputLayout(getContext());
-
-            EditText et = new EditText(getContext());
-            et.setHint("Subject Name " + (i + 1));
+            TextInputLayout textInputLayout = new TextInputLayout(getContext());
+            textInputLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            TextInputEditText et = new TextInputEditText(getContext());
+            et.setHint("Subject " + (i + 1) + " Name");
             et.setInputType(InputType.TYPE_CLASS_TEXT);
             et.setMaxLines(1);
-            et.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            subjectDetailsContainer.addView(et);
-
-//            input1.addView(et);
-
-            EditText et2 = new EditText(getContext());
-            et2.setHint("Credits of Subject " + (i + 1));
-            et2.setInputType(InputType.TYPE_CLASS_NUMBER);
-            et2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            subjectDetailsContainer.addView(et2);
-
+            et.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            textInputLayout.addView(et);
+            subjectDetailsContainer.addView(textInputLayout);
             linearContainer.addView(subjectDetailsContainer, i);
         }
         btnContinue.setEnabled(true);
@@ -147,25 +125,21 @@ public class SetUpDetailsSemFragment extends Fragment {
     void clickedContinue() {
         String noOfSubjects = etNoOfSubjects.getText().toString().trim();
         List<String> subjects = new ArrayList<>();
-        List<String> credits = new ArrayList<>();
         int noOfSubjectsNo = Integer.parseInt(noOfSubjects);
         for (int i = 0; i < noOfSubjectsNo; i++) {
             LinearLayout subjectDetailsContainer = (LinearLayout) linearContainer.getChildAt(i);
-            String strSubject = ((EditText) subjectDetailsContainer.getChildAt(0)).getText().toString().trim();
-            String strCredits = ((EditText) subjectDetailsContainer.getChildAt(1)).getText().toString().trim();
+            TextInputLayout textInputLayout = ((TextInputLayout) subjectDetailsContainer.getChildAt(0));
+            String strSubject = textInputLayout.getEditText().getText().toString().trim();
             if (strSubject.isEmpty()) {
                 Toast.makeText(getContext(), "Please Fill Subject " + (i / 2), Toast.LENGTH_SHORT).show();
+                textInputLayout.setError("Please insert correct details");
                 return;
+            } else {
+                textInputLayout.setErrorEnabled(false);
             }
             subjects.add(strSubject);
-            if (strCredits.isEmpty() || Integer.parseInt(strCredits) < 1) {
-                Toast.makeText(getContext(), "Please Fill Appropriate Credit for Subject " + (i / 2), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            credits.add(strCredits);
-
         }
-        setUpViewModel.setListSubjectAndCredits(subjects, credits);
+        setUpViewModel.setSubjectList(subjects);
         if (listener != null) {
             listener.onSubjectSelected();
         }
@@ -173,13 +147,6 @@ public class SetUpDetailsSemFragment extends Fragment {
 
     public void setOnSubjectSelectedListener(OnSubjectsSelectedListener listener) {
         this.listener = listener;
-    }
-
-    private boolean validateSemNo() {
-        if (semNo.isEmpty()) {
-            return false;
-        }
-        return Integer.valueOf(semNo) >= 1;
     }
 
     private boolean validateNoOfSubjects() {

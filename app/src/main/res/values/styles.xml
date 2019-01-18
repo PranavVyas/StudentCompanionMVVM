@@ -1,22 +1,12 @@
 <resources>
 
-    <style name="AppTheme" parent="MaterialDrawerTheme.Light">
-        <item name="colorPrimary">#42a5f5</item>
-        <item name="colorPrimaryDark">#42a5f5</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="table_background">#00ffffff</item>
-        <item name="normal_background">#42a5f5</item>
-        <item name="normal_background_dark">#0277bd</item>
-        <item name="gradient_background_normal">@drawable/gradient_blue_to_dark_blue</item>
-        <item name="android:fontFamily">@font/opensans_regular</item>
-
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="AppTheme.Night" parent="MaterialDrawerTheme">
-        <item name="table_background">#00616161</item>
-        <item name="normal_background">#737373</item>
-        <item name="normal_background_dark">#000000</item>
-        <item name="gradient_background_normal">@drawable/gradient_blue_to_dark_blue</item>
+    <style name="AppTheme.Night" parent="Theme.AppCompat.NoActionBar">
     </style>
 
 </resources>

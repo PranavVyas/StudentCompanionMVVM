@@ -2,7 +2,6 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
@@ -35,11 +34,17 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         getSupportActionBar().setTitle("Set Up");
         setUpViewModel = ViewModelProviders.of(this).get(SetUpViewModel.class);
         if (!setUpViewModel.isFirstRun()) {
-            Intent openMainActivity = new Intent(this, MainActivity.class);
-            startActivity(openMainActivity);
+            if (setUpViewModel.isTutorialDone()) {
+                Intent openMainActivity = new Intent(this, MainActivity.class);
+                startActivity(openMainActivity);
+            } else {
+                Intent openTutorial = new Intent(this, TutorialActivity.class);
+                startActivity(openTutorial);
+            }
             finish();
             return;
         }
+        setUpViewModel.init();
         executeSetUpStep(setUpViewModel.getCurrentStep());
     }
 
@@ -100,11 +105,10 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
     @Override
     public void onTimetableSelected() {
         setUpViewModel.saveHolidaysAndInitAttendance();
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, TutorialActivity.class);
         startActivity(intent);
         setUpViewModel.setFirstRun(false);
         finish();
-        Toast.makeText(this, "Database Initilized Done", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
@@ -36,9 +38,14 @@ public class SetUpDatesFragment extends Fragment {
     Button btnEndDate;
     @BindView(R.id.btn_set_up_dates_fragment_start_date)
     Button btnStartDate;
+    @BindView(R.id.et_set_up_dates_sem_no)
+    TextInputEditText etSemNo;
+    @BindView(R.id.text_input_set_up_dates_sem_no)
+    TextInputLayout inputSemNo;
 
     private OnDatesSetUpListener mCallback;
     private SetUpViewModel setUpViewModel;
+    private String semNo;
 
 
     public SetUpDatesFragment() {
@@ -63,14 +70,21 @@ public class SetUpDatesFragment extends Fragment {
 
     @OnClick(R.id.btn_set_up_dates_fragment_continue)
     void continueClicked() {
+        semNo = etSemNo.getText().toString().trim();
         if (setUpViewModel.getStartDate().equals("Select Starting Date")) {
             Toast.makeText(getContext(), "Select Starting date", Toast.LENGTH_SHORT).show();
         } else if (setUpViewModel.getEndDate().equals("Select Ending Date")) {
             Toast.makeText(getContext(), "Select Ending date", Toast.LENGTH_SHORT).show();
         } else if (getDifferenceInDates(setUpViewModel.getStartDate(), setUpViewModel.getEndDate()) < 15) {
             Toast.makeText(getContext(), "Difference between dates must be more than 15 Days\nEnding date must be after Starting date", Toast.LENGTH_SHORT).show();
-        } else if (mCallback != null) {
-            mCallback.onDatesSetUp();
+        } else if (!validateSemNo()) {
+            inputSemNo.setError("Please Input Correct Sem No");
+        } else {
+            inputSemNo.setErrorEnabled(false);
+            setSemNo();
+            if (mCallback != null) {
+                mCallback.onDatesSetUp();
+            }
         }
     }
 
@@ -115,10 +129,6 @@ public class SetUpDatesFragment extends Fragment {
         this.mCallback = mCallback;
     }
 
-    public interface OnDatesSetUpListener {
-        void onDatesSetUp();
-    }
-
     private int getDifferenceInDates(String startDate, String endDate) {
         Date start = ConverterUtils.convertStringToDate(startDate);
         Date end = ConverterUtils.convertStringToDate(endDate);
@@ -130,5 +140,21 @@ public class SetUpDatesFragment extends Fragment {
         long diffInMillis = endCal.getTimeInMillis() - startCal.getTimeInMillis();
         //Toast.makeText(getContext(), "Diff in days are "+days, Toast.LENGTH_SHORT).show();
         return (int) TimeUnit.MILLISECONDS.toDays(diffInMillis);
+    }
+
+    private boolean validateSemNo() {
+        if (semNo == null) {
+            return false;
+        } else if (semNo.isEmpty()) {
+            return false;
+        } else return Integer.valueOf(semNo) >= 1;
+    }
+
+    private void setSemNo() {
+        setUpViewModel.setSemester(Integer.valueOf(semNo));
+    }
+
+    public interface OnDatesSetUpListener {
+        void onDatesSetUp();
     }
 }

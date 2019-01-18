@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="table_background" format="color" />
-    <attr name="normal_background" format="color" />
-    <attr name="normal_background_dark" format="color" />
-
-    <attr name="gradient_background_normal" format="reference" />
+    <declare-styleable name="AppTheme">
+        <attr name="table_background" format="color" />
+    </declare-styleable>
 </resources>

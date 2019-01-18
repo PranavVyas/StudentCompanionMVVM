@@ -34,6 +34,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -44,9 +45,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AttendanceIndividualFragment extends Fragment {
     private static final String TAG = "AttendanceIndividualFra";
 
@@ -58,6 +56,8 @@ public class AttendanceIndividualFragment extends Fragment {
     FloatingActionButton btnOpenOtherAttendance;
     @BindView(R.id.progress_attendance_individul_fragment_main)
     ProgressBar mProgress;
+    @BindView(R.id.placeholder_attendance_individual_holidays)
+    ConstraintLayout placeHolderHoldidays;
 
     private AttendanceForDateViewModel attendanceViewModel;
     private OverallAttendanceForSubjectViewModel overallAttendanceViewModel;
@@ -161,8 +161,10 @@ public class AttendanceIndividualFragment extends Fragment {
 //                    skeletonScreen.hide();
                     mAdapter.setAttendanceForDate(attendanceEntries);
                     stopProgress();
+                    showHolidayPlaceHolder(false);
                     return;
                 }
+                showHolidayPlaceHolder(true);
                 //Holiday is here
                 stopProgress();
 //                skeletonScreen.hide();
@@ -194,5 +196,15 @@ public class AttendanceIndividualFragment extends Fragment {
         OverallAttendanceForSubjectViewModelFactory factory = new OverallAttendanceForSubjectViewModelFactory(subName, mOverallDb, mAttendanceDb, getContext().getApplicationContext());
         overallAttendanceViewModel = ViewModelProviders.of(getActivity(), factory).get(OverallAttendanceForSubjectViewModel.class);
         overallAttendanceViewModel.refreshOverallAttendance(subName);
+    }
+
+    private void showHolidayPlaceHolder(boolean isShown) {
+        if (isShown) {
+            rvMain.setVisibility(View.GONE);
+            placeHolderHoldidays.setVisibility(View.VISIBLE);
+        } else {
+            rvMain.setVisibility(View.VISIBLE);
+            placeHolderHoldidays.setVisibility(View.GONE);
+        }
     }
 }

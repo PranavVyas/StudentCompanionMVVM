@@ -79,6 +79,7 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
                 Toast.makeText(view.getContext(), "Subject is not available in the timetable", Toast.LENGTH_SHORT).show();
                 return;
             }
+            //TODO Add Animation here
             openDetail.putExtra(OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE, JsonOverallAttendance);
             view.getContext().startActivity(openDetail);
         }

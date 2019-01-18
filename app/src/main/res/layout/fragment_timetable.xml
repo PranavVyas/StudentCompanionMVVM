@@ -21,10 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:row_header_width="100dp"
-        app:selected_color="?attr/table_background"
         app:separator_color="#000000"
-        app:shadow_color="?attr/table_background"
         app:show_horizontal_separator="true"
-        app:show_vertical_separator="true"
-        app:unselected_color="?attr/table_background" />
+        app:show_vertical_separator="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,22 +4,19 @@ import android.app.Application;
 
 import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-public class AutoAttendanceSubjectListViewModel extends AndroidViewModel {
+public class TutorialViewModel extends AndroidViewModel {
 
     private SetUpProcessRepository setUpProcessRepository;
 
-    public AutoAttendanceSubjectListViewModel(@NonNull Application application) {
+    public TutorialViewModel(@NonNull Application application) {
         super(application);
         setUpProcessRepository = new SetUpProcessRepository(application);
-
     }
 
-    public List<String> getSubjectList() {
-        return setUpProcessRepository.getSubjectList();
+    public void setTutorialComplete(boolean isTutorialComplete) {
+        setUpProcessRepository.setTutorialDone(isTutorialComplete);
     }
 }

@@ -81,7 +81,7 @@ public class OverallAttendanceRepository {
             Logger.d("Context empty in refreshOverallAttendance");
         }
         SetUpProcessRepository setUpProcessRepository = new SetUpProcessRepository(application);
-        List<String> subList = setUpProcessRepository.getSubjectsListOnly();
+        List<String> subList = setUpProcessRepository.getSubjectList();
         for (int i = 0; i < subList.size(); i++) {
             String subject = subList.get(i);
             OverallAttendanceForSubjectRepository repository = new OverallAttendanceForSubjectRepository(application, subject);
