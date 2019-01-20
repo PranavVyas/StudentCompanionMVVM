@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.bookdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 
 import java.util.List;

@@ -26,6 +26,8 @@ public class NavigationDrawerUtil {
     public static final int ID_SETTINGS = 5;
     public static final int ID_MARKET_PLACE = 6;
     public static final int ID_MY_PROFILE = 7;
+    public static final int ID_ABOUT_APP = 8;
+    public static final int ID_ABOUT_DEVELOPER = 9;
     public static final int ID_SIGN_OUT = 10;
     public static final int ID_DELETE_ACCOUNT = 11;
 
@@ -116,6 +118,28 @@ public class NavigationDrawerUtil {
                         return false;
                     }
                 });
+        PrimaryDrawerItem aboutApp = new PrimaryDrawerItem()
+                .withIdentifier(ID_ABOUT_APP)
+                .withName("About this app")
+                .withIcon(R.mipmap.ic_launcher_round)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        mCallback.OnNavigationItemClicked(ID_ABOUT_APP);
+                        return false;
+                    }
+                });
+        PrimaryDrawerItem aboutDeveloper = new PrimaryDrawerItem()
+                .withIdentifier(ID_ABOUT_DEVELOPER)
+                .withName("About Developer")
+                .withIcon(R.drawable.ic_developer)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        mCallback.OnNavigationItemClicked(ID_ABOUT_DEVELOPER);
+                        return false;
+                    }
+                });
         PrimaryDrawerItem signOut = new PrimaryDrawerItem()
                 .withIdentifier(ID_SIGN_OUT)
                 .withName("Sign Out")
@@ -182,6 +206,8 @@ public class NavigationDrawerUtil {
                         marketplace,
                         myProfile,
                         settings,
+                        aboutApp,
+                        aboutDeveloper,
                         signOut,
                         deleteAccount
                 ).build();

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.github.angads25.toggle.model.ToggleableView;
 import com.github.angads25.toggle.widget.LabeledSwitch;
+import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 
@@ -47,16 +48,16 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
                 holder.switchPresent.performClick();
             }
         };
-//        holder.tvLectureNo.setOnClickListener(onClickListener);
         holder.itemView.setOnClickListener(onClickListener);
         holder.switchPresent.setOnToggledListener(new OnToggledListener() {
             @Override
             public void onSwitched(ToggleableView toggleableView, boolean isOn) {
-                //TODO Attach comment here for the if statement
                 if (listener != null) {
                     AttendanceEntry attendanceEntry = attendanceEntries.get(position);
                     attendanceEntry.setPresent(isOn);
                     listener.onAttendanceSwitchToggled(attendanceEntry);
+                } else {
+                    Logger.d("Listener is not init");
                 }
             }
         });

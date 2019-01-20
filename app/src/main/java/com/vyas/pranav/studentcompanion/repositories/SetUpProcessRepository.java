@@ -65,6 +65,7 @@ public class SetUpProcessRepository {
         }
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
+        editor.apply();
         this.context = context;
         holidayRepository = new HolidayRepository(context);
         timetableRepository = new TimetableRepository(context);

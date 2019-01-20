@@ -22,6 +22,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:row_header_width="100dp"
         app:separator_color="#000000"
+        app:selected_color="?attr/table_selected_cell"
+        app:shadow_color="?attr/table_selected_cell"
+        app:unselected_color="?attr/table_background"
         app:show_horizontal_separator="true"
         app:show_vertical_separator="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

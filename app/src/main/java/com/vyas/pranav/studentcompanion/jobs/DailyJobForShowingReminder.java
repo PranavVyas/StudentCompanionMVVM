@@ -1,6 +1,5 @@
 package com.vyas.pranav.studentcompanion.jobs;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +7,9 @@ import android.content.Intent;
 import com.evernote.android.job.DailyJob;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
+import com.google.firebase.auth.FirebaseAuth;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.services.AttendanceEditIntentService;
-import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
 import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.MainApp;
@@ -44,22 +43,21 @@ public class DailyJobForShowingReminder extends DailyJob {
     @NonNull
     @Override
     protected DailyJobResult onRunDailyJob(@NonNull Params params) {
-        sendNotification(getContext(), "Add Today's Attendance", "Please Add today's Attendance Now");
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            sendNotification(getContext(), "Add Today's Attendance", "Please Add today's Attendance Now", getOpenAppAction(), getMarkAllPresentAction(), getContentIntent());
+        } else {
+            sendNotification(getContext(), "Add Today's Attendance", "Please Log in and Add today's Attendance Now", getOpenAppAction(), null, getContentIntent());
+        }
         return DailyJobResult.SUCCESS;
     }
 
-    /**
-     * Gets action for notification
-     *
-     * @return Notification Action to open app
-     */
     private NotificationCompat.Action getOpenAppAction() {
-        Intent openAppIntent = new Intent(getContext(), MainActivity.class);
+        Intent openAppIntent = new Intent(getContext(), SignInActivity.class);
         PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.SHOW_REMINDER_JOB_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Open App Now", openAppFromNotification).build());
     }
 
-    private NotificationCompat.Action getMarkAllPresent() {
+    private NotificationCompat.Action getMarkAllPresentAction() {
         Intent markAllAttendance = new Intent(getContext(), AttendanceEditIntentService.class);
         PendingIntent markAllAttendancePendingIntent = PendingIntent.getService(getContext(), Constants.SHOW_REMINDER_JOB_RC_MARK_ATTENDANCE, markAllAttendance, PendingIntent.FLAG_UPDATE_CURRENT);
         return (new NotificationCompat.Action.Builder(R.drawable.ic_market_place, "I am present all day", markAllAttendancePendingIntent).build());
@@ -70,20 +68,22 @@ public class DailyJobForShowingReminder extends DailyJob {
         return PendingIntent.getActivity(getContext(), Constants.SHOW_REMINDER_JOB_RC_CONTENT_INTENT, intent, 0);
     }
 
-    private void sendNotification(Context context, String title, String desc) {
-        Notification notification = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
+    private void sendNotification(Context context, String title, String desc, NotificationCompat.Action action1, NotificationCompat.Action action2, PendingIntent contentIntent) {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(title)
                 .setContentText(desc)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setContentIntent(getContentIntent())
-                .addAction(getOpenAppAction())
-                .addAction(getMarkAllPresent())
-                .setAutoCancel(true)
-                .build();
+                .setContentIntent(contentIntent)
+                .addAction(action1)
+                .setAutoCancel(true);
 
-        NotificationManagerCompat.from(context).notify(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION, notification);
+        if (action2 != null) {
+            notificationBuilder.addAction(action2);
+        }
+
+        NotificationManagerCompat.from(context).notify(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION, notificationBuilder.build());
     }
 
 }

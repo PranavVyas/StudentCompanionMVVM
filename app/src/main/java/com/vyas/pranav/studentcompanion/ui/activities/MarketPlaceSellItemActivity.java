@@ -29,7 +29,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.bookdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;

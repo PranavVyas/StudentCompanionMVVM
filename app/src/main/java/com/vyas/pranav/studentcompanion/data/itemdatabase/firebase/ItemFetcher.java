@@ -1,4 +1,4 @@
-package com.vyas.pranav.studentcompanion.data.bookdatabase.firebase;
+package com.vyas.pranav.studentcompanion.data.itemdatabase.firebase;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

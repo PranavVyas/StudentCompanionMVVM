@@ -94,6 +94,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:16.0.5'
     //Permission Library
     implementation 'com.karumi:dexter:5.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
 
 }

@@ -22,7 +22,7 @@ import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.MarketPlaceSellRecyclerAdapter;
-import com.vyas.pranav.studentcompanion.data.bookdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.ui.activities.MarketPlaceSellItemActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;

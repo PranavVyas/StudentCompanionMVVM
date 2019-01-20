@@ -1,12 +1,17 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar">
         <item name="colorAccent">@color/colorSecondary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="table_background">@color/fui_transparent</item>
+        <item name="table_selected_cell">@color/tableSelectedCellColor</item>
     </style>
 
-    <style name="AppTheme.Night" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme.Night" parent="MaterialDrawerTheme">
+        <item name="colorAccent">@color/colorSecondaryDark</item>
+        <item name="table_background">@color/fui_transparent</item>
+        <item name="table_selected_cell">@color/tableSelectedCellColorDark</item>
     </style>
 
 </resources>

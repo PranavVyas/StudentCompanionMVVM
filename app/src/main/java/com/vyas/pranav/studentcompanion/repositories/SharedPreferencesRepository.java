@@ -27,6 +27,7 @@ public class SharedPreferencesRepository {
     public SharedPreferencesRepository(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
+        editor.apply();
         this.context = context;
     }
 

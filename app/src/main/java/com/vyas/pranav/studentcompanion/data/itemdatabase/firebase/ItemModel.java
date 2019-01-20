@@ -1,4 +1,4 @@
-package com.vyas.pranav.studentcompanion.data.bookdatabase.firebase;
+package com.vyas.pranav.studentcompanion.data.itemdatabase.firebase;
 
 public class ItemModel {
     String name, p_name, contact, category, extra_info, image_uri;

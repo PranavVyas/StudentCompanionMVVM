@@ -48,24 +48,25 @@ public class DailyJobForUnsilentAction extends Job {
     @NonNull
     @Override
     protected Result onRunJob(@NonNull Params params) {
-        sendNotification(getContext(), "Notification", "Device is unsilent now");
+        sendNotification(getContext(), "Notification", "Device is in Normal mode now");
         Intent toggleSilentIntent = new Intent(getContext(), ToggleSilentDeviceIntentService.class);
-        toggleSilentIntent.setAction("ACTION_UNSILENT_DEVICE");
+        toggleSilentIntent.setAction(Constants.INTENT_ACTION_UNSILENT_DEVICE);
         getContext().startService(toggleSilentIntent);
         return Result.SUCCESS;
     }
 
     private NotificationCompat.Action getOpenAppAction() {
         Intent openAppIntent = new Intent(getContext(), MainActivity.class);
-        PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.UNSILENT_ACTION_JOB_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.UNSILENT_JOB_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Open App Now", openAppFromNotification).build());
     }
 
-//    private NotificationCompat.Action getSilentAction() {
-//        Intent markAllAttendance = new Intent(getContext(), ToggleSilentDeviceIntentService.class);
-//        PendingIntent markAllAttendancePendingIntent = PendingIntent.getService(getContext(), Constants.UNSILENT_ACTION_JOB_RC_UNSILENT, markAllAttendance, PendingIntent.FLAG_UPDATE_CURRENT);
-//        return (new NotificationCompat.Action.Builder(R.drawable.ic_market_place, "I am present all day", markAllAttendancePendingIntent).build());
-//    }
+    private NotificationCompat.Action getSilentAction() {
+        Intent silentDevice = new Intent(getContext(), ToggleSilentDeviceIntentService.class);
+        silentDevice.setAction(Constants.INTENT_ACTION_SILENT_DEVICE);
+        PendingIntent silentDevicePendingIntent = PendingIntent.getService(getContext(), Constants.SILENT_JOB_RC_UNSILENT_ACTION, silentDevice, PendingIntent.FLAG_UPDATE_CURRENT);
+        return (new NotificationCompat.Action.Builder(R.drawable.ic_market_place, "Silent Device", silentDevicePendingIntent).build());
+    }
 
     private PendingIntent getContentIntent() {
         Intent intent = new Intent(getContext(), SignInActivity.class);
@@ -84,6 +85,6 @@ public class DailyJobForUnsilentAction extends Job {
                 .setAutoCancel(true)
                 .build();
 
-        NotificationManagerCompat.from(context).notify(Constants.UNSILENT_ACTION_JOB_RC_SHOW_NOTIFICATION, notification);
+        NotificationManagerCompat.from(context).notify(Constants.UNSILENT_JOB_RC_SHOW_NOTIFICATION, notification);
     }
 }

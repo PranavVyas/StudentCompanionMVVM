@@ -38,6 +38,7 @@ public class AppSettingsRepository {
         this.context = context;
         mPreference = PreferenceManager.getDefaultSharedPreferences(context);
         mEditor = mPreference.edit();
+        mEditor.apply();
     }
 
     public boolean isReminderEnabled() {

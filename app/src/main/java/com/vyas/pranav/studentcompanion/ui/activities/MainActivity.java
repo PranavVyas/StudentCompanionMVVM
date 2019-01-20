@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.Drawer;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
+import com.vyas.pranav.studentcompanion.ui.fragments.AboutDeveloperFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.AboutThisAppFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AppSettingsFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
@@ -140,6 +142,20 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 actionBar.setTitle("My Profile");
                 MyProfileFragment myProfileFragment = new MyProfileFragment();
                 swapFragment(myProfileFragment);
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                break;
+
+            case NavigationDrawerUtil.ID_ABOUT_APP:
+                actionBar.setTitle("About This App");
+                AboutThisAppFragment aboutThisAppFragment = new AboutThisAppFragment();
+                swapFragment(aboutThisAppFragment);
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                break;
+
+            case NavigationDrawerUtil.ID_ABOUT_DEVELOPER:
+                actionBar.setTitle("About Developer");
+                AboutDeveloperFragment aboutDeveloperFragment = new AboutDeveloperFragment();
+                swapFragment(aboutDeveloperFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 

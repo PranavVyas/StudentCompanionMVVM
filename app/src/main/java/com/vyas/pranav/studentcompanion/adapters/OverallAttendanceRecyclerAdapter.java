@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.ui.activities.OverallAttendanceDetailActivity;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
             return;
         }
             float presentPresent = (presentDays * 100) / totalDays;
-            int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * 0.25);
+        int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1 - Constants.ATTENDANCE_THRESHOLD));
             int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
             holder.tvAvailableToBunk.setText("Available to Bunk " + daysAvailableToBunk);
             holder.progressPresent.setProgressValue((int) presentPresent);

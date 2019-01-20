@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="AppTheme">
         <attr name="table_background" format="color" />
+        <attr name="table_selected_cell" format="color" />
     </declare-styleable>
 </resources>

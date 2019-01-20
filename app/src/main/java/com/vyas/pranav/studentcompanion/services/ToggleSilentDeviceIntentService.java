@@ -9,6 +9,7 @@ import android.os.Build;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 
 import androidx.annotation.Nullable;
 
@@ -22,11 +23,11 @@ public class ToggleSilentDeviceIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        if (intent.getAction().equals("ACTION_UNSILENT_DEVICE")) {
+        if (intent.getAction().equals(Constants.INTENT_ACTION_UNSILENT_DEVICE)) {
             Logger.d("Device is normal now");
             Toast.makeText(this, "Device is normal now", Toast.LENGTH_SHORT).show();
             setRingerMode(getApplicationContext(), AudioManager.RINGER_MODE_NORMAL);
-        } else if (intent.getAction().equals("ACTION_SILENT_DEVICE")) {
+        } else if (intent.getAction().equals(Constants.INTENT_ACTION_SILENT_DEVICE)) {
             Logger.d("Device is silent now");
             Toast.makeText(this, "Device is silent noe", Toast.LENGTH_SHORT).show();
             setRingerMode(getApplicationContext(), AudioManager.RINGER_MODE_SILENT);
@@ -37,6 +38,7 @@ public class ToggleSilentDeviceIntentService extends IntentService {
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT < 24 ||
                 (nm.isNotificationPolicyAccessGranted() && Build.VERSION.SDK_INT >= 24)) {
+            //We have permission to change device mode
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
             audioManager.setRingerMode(mode);
         }

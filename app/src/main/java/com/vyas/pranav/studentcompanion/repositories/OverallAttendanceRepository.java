@@ -2,7 +2,6 @@ package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
@@ -23,11 +22,6 @@ public class OverallAttendanceRepository {
     private Context application;
 
     public OverallAttendanceRepository(Context application) {
-        Logger.clearLogAdapters();
-        Logger.addLogAdapter(new AndroidLogAdapter());
-        if (application == null) {
-            Logger.d("Application context is null in OverallAttendanceRepository");
-        }
         OverallAttendanceDatabase mOverallDb = OverallAttendanceDatabase.getInstance(application);
         this.overallAttendanceDao = mOverallDb.overallAttendanceDao();
         AttendanceDatabase mAttendanceDb = AttendanceDatabase.getInstance(application);
@@ -87,24 +81,5 @@ public class OverallAttendanceRepository {
             OverallAttendanceForSubjectRepository repository = new OverallAttendanceForSubjectRepository(application, subject);
             repository.refreshOverallAttendanceForSubject(subject);
         }
-//        mExecutors.diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                overallAttendanceDao.getAllOverallAttendance().observeForever(new Observer<List<OverallAttendanceEntry>>() {
-//                    @Override
-//                    public void onChanged(List<OverallAttendanceEntry> overallAttendanceEntries) {
-//                        overallAttendanceDao.getAllOverallAttendance().removeObserver(this);
-//                        SetUpProcessRepository repo = new SetUpProcessRepository(application);
-//                        for (int i = 0; i < overallAttendanceEntries.size(); i++) {
-//                            OverallAttendanceEntry overallAttendanceEntry = overallAttendanceEntries.get(i);
-//                            String subName = overallAttendanceEntry.getSubName();
-//                            overallAttendanceEntry.setPresentDays(attendanceDao.getAttendedDaysForSubject(subName,ConverterUtils.convertStringToDate(repo.getStartingDate()),new Date()));
-//                            overallAttendanceEntry.setBunkedDays(attendanceDao.getBunkedDaysForSubject(subName,ConverterUtils.convertStringToDate(repo.getStartingDate()),new Date()));
-//                            updateOverallAttendance(overallAttendanceEntry);
-//                        }
-//                    }
-//                });
-//            }
-//        });
     }
 }

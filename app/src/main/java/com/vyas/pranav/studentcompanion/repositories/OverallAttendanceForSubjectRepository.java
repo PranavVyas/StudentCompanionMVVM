@@ -1,6 +1,7 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -10,6 +11,7 @@ import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAt
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.Date;
@@ -82,13 +84,23 @@ public class OverallAttendanceForSubjectRepository {
                                 overallAttendanceEntry.setTotalDays(totalDays);
                                 overallAttendanceEntry.setBunkedDays(bunkedDays);
                                 overallAttendanceEntry.setPresentDays(presentDays);
-                                overallAttendanceDao.updateOverall(overallAttendanceEntry);
+                                updateOverallAttendance(overallAttendanceEntry);
+                                checkForSmartCards(overallAttendanceEntry);
                             }
                         });
                     }
                 });
             }
         });
+    }
+
+    private void checkForSmartCards(OverallAttendanceEntry subjectAttendance) {
+        int totalDays = subjectAttendance.getTotalDays();
+        int bunkedDays = subjectAttendance.getBunkedDays();
+        int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1 - Constants.ATTENDANCE_THRESHOLD));
+        if (bunkedDays < daysTotalAvailableToBunk - Constants.FLEX_DAYS_EXTRA_TO_BUNK) {
+            Toast.makeText(applicationContext, "Days availabe to bunk is ", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.vyas.pranav.studentcompanion.data.bookdatabase.firebase.ItemFetcher;
+import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemFetcher;
 
 public class MarketPlaceRepository {
     private Context context;

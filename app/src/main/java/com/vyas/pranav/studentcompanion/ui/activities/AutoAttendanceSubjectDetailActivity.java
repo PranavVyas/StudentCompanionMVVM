@@ -367,7 +367,6 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     }
 
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;

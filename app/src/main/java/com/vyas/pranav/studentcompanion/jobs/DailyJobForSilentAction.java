@@ -39,6 +39,7 @@ public class DailyJobForSilentAction extends Job {
         }
         new JobRequest.Builder(TAG).setUpdateCurrent(false).setExact(timeInMillis).build().schedule();
     }
+    //TODO Remove this job when user signs out
 
     public static void cancelAllJobs() {
         if (!JobManager.instance().getAllJobRequestsForTag(TAG).isEmpty()) {
@@ -51,21 +52,22 @@ public class DailyJobForSilentAction extends Job {
     protected Result onRunJob(@NonNull Params params) {
         sendNotification(getContext(), "Notification", "Device is Silent Now...");
         Intent toggleSilentIntent = new Intent(getContext(), ToggleSilentDeviceIntentService.class);
-        toggleSilentIntent.setAction("ACTION_SILENT_DEVICE");
+        toggleSilentIntent.setAction(Constants.INTENT_ACTION_SILENT_DEVICE);
         getContext().startService(toggleSilentIntent);
         return Result.SUCCESS;
     }
 
     private NotificationCompat.Action getOpenAppAction() {
         Intent openAppIntent = new Intent(getContext(), MainActivity.class);
-        PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.UNSILENT_ACTION_JOB_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.SILENT_JOB_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Open App Now", openAppFromNotification).build());
     }
 
-    private NotificationCompat.Action getSilentAction() {
-        Intent silentDevice = new Intent(getContext(), ToggleSilentDeviceIntentService.class);
-        PendingIntent silentDevicePendingIntent = PendingIntent.getService(getContext(), Constants.SILENT_ACTION_JOB_RC_UNSILENT_ACTION, silentDevice, PendingIntent.FLAG_UPDATE_CURRENT);
-        return (new NotificationCompat.Action.Builder(R.drawable.ic_market_place, "Unsilent Device", silentDevicePendingIntent).build());
+    private NotificationCompat.Action getUnSilentAction() {
+        Intent unSilentDevice = new Intent(getContext(), ToggleSilentDeviceIntentService.class);
+        unSilentDevice.setAction(Constants.INTENT_ACTION_UNSILENT_DEVICE);
+        PendingIntent unSilentDevicePendingIntent = PendingIntent.getService(getContext(), Constants.SILENT_JOB_RC_UNSILENT_ACTION, unSilentDevice, PendingIntent.FLAG_UPDATE_CURRENT);
+        return (new NotificationCompat.Action.Builder(R.drawable.ic_market_place, "Unsilent Device", unSilentDevicePendingIntent).build());
     }
 
     private PendingIntent getContentIntent() {
@@ -82,11 +84,11 @@ public class DailyJobForSilentAction extends Job {
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setContentIntent(getContentIntent())
                 .addAction(getOpenAppAction())
-                .addAction(getSilentAction())
+                .addAction(getUnSilentAction())
                 .setAutoCancel(true)
                 .build();
 
-        NotificationManagerCompat.from(context).notify(Constants.SILENT_ACTION_JOB_RC_SHOW_NOTIFICATION, notification);
+        NotificationManagerCompat.from(context).notify(Constants.SILENT_JOB_RC_SHOW_NOTIFICATION, notification);
     }
 
 }

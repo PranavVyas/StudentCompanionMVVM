@@ -13,13 +13,16 @@
 
 
         <ImageView
-            android:id="@+id/imageView11"
-            android:layout_width="0dp"
-            android:layout_height="125dp"
-            android:src="?attr/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/image_my_profile_dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:elevation="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardView3"
+            app:layout_constraintEnd_toEndOf="@+id/cardView3"
+            app:layout_constraintStart_toStartOf="@+id/cardView3"
+            app:layout_constraintTop_toTopOf="@+id/cardView3"
+            tools:src="@tools:sample/avatars[12]" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView3"
@@ -29,7 +32,7 @@
             android:layout_marginTop="75dp"
             android:layout_marginEnd="16dp"
             app:cardCornerRadius="@dimen/card_radius_profile"
-            app:cardElevation="0dp"
+            app:cardElevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -72,15 +75,13 @@
         </androidx.cardview.widget.CardView>
 
         <ImageView
-            android:id="@+id/image_my_profile_dp"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/cardView3"
-            app:layout_constraintEnd_toEndOf="@+id/cardView3"
-            app:layout_constraintStart_toStartOf="@+id/cardView3"
-            app:layout_constraintTop_toTopOf="@+id/cardView3"
-            tools:src="@tools:sample/avatars[12]" />
+            android:id="@+id/imageView11"
+            android:layout_width="0dp"
+            android:layout_height="125dp"
+            android:src="?attr/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -90,7 +91,6 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
             app:cardCornerRadius="@dimen/card_radius_profile"
-            app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
