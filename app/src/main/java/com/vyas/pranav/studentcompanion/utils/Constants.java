@@ -4,6 +4,7 @@ public final class Constants {
 
     public static final float ATTENDANCE_THRESHOLD = 0.75f;
     public static final int FLEX_DAYS_EXTRA_TO_BUNK = 10;
+    public static final String KEY_SEND_DATA_TO_NOTIFICATION_CLASS_DATE = "NotificationFragmentToAllNotificationFragment";
     public static String DEFAULT_PLACE_ID = "NO_ID";
 
     public static final int REFRESH_GEO_FENCE_RC_OPEN_APP = 1000;

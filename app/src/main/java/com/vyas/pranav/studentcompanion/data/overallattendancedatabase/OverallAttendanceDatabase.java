@@ -23,7 +23,7 @@ public abstract class OverallAttendanceDatabase extends RoomDatabase {
     public static OverallAttendanceDatabase getInstance(Context context) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = Room.databaseBuilder(context
+                sInstance = Room.databaseBuilder(context.getApplicationContext()
                         , OverallAttendanceDatabase.class
                         , DB_NAME)
                         //.addCallback(roomCallback)

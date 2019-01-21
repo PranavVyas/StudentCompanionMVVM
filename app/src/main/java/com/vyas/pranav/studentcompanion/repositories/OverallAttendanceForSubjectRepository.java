@@ -1,12 +1,12 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
+import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationEntry;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
@@ -95,11 +95,22 @@ public class OverallAttendanceForSubjectRepository {
     }
 
     private void checkForSmartCards(OverallAttendanceEntry subjectAttendance) {
+        NotificationRepository notificationRepository = new NotificationRepository(applicationContext);
         int totalDays = subjectAttendance.getTotalDays();
         int bunkedDays = subjectAttendance.getBunkedDays();
         int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1 - Constants.ATTENDANCE_THRESHOLD));
-        if (bunkedDays < daysTotalAvailableToBunk - Constants.FLEX_DAYS_EXTRA_TO_BUNK) {
-            Toast.makeText(applicationContext, "Days availabe to bunk is ", Toast.LENGTH_SHORT).show();
+        if (daysTotalAvailableToBunk - bunkedDays < Constants.FLEX_DAYS_EXTRA_TO_BUNK) {
+            NotificationEntry notification = new NotificationEntry();
+            notification.setDate(new Date());
+            notification.set_ID(subjectAttendance.get_ID());
+            notification.setImageUrl(null);
+            notification.setTitle("Low Attendance");
+            notification.setSubtitle("Attendance is low in the Subject :" + subjectAttendance.getSubName());
+            notificationRepository.insertNotification(notification);
+            Logger.d("Low Attendance");
+        } else {
+            notificationRepository.deleteNotification(subjectAttendance.get_ID());
+            Logger.d("Enough Attendance");
         }
     }
 

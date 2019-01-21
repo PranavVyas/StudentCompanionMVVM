@@ -50,6 +50,8 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
         holder.tvPrice.setText("Rs. " + price + " \\-");
         GlideApp.with(holder.itemView.getContext())
                 .load(imageUri)
+                .placeholder(R.drawable.ic_market_place)
+                .error(R.drawable.ic_market_place)
                 .circleCrop()
                 .into(holder.image);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +72,8 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
                 tvDialogContact.setText(item.getP_name() + "\n No : " + item.getContact());
                 GlideApp.with(v)
                         .load(item.getImage_uri())
+                        .placeholder(R.drawable.ic_market_place)
+                        .error(R.drawable.ic_market_place)
                         .circleCrop()
                         .into(imageItem);
 

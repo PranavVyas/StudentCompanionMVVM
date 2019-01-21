@@ -27,7 +27,9 @@ public abstract class AttendanceDatabase extends RoomDatabase {
     public static AttendanceDatabase getInstance(Context context) {
         if (sInstance == null) {
             synchronized (LOCK) {
-                sInstance = Room.databaseBuilder(context.getApplicationContext(), AttendanceDatabase.class, DB_NAME)
+                sInstance = Room.databaseBuilder(context.getApplicationContext()
+                        , AttendanceDatabase.class
+                        , DB_NAME)
                         .fallbackToDestructiveMigration()
                         //.addCallback(callback)
                         .build();

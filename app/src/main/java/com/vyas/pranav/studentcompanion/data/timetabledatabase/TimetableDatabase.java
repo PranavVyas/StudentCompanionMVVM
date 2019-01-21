@@ -18,7 +18,8 @@ public abstract class TimetableDatabase extends RoomDatabase {
             synchronized (LOCK) {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         TimetableDatabase.class,
-                        DB_NAME).build();
+                        DB_NAME)
+                        .fallbackToDestructiveMigration().build();
             }
         }
         return sInstance;

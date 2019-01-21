@@ -25,11 +25,12 @@ public class NavigationDrawerUtil {
     public static final int ID_TIMETABLE = 4;
     public static final int ID_SETTINGS = 5;
     public static final int ID_MARKET_PLACE = 6;
-    public static final int ID_MY_PROFILE = 7;
-    public static final int ID_ABOUT_APP = 8;
-    public static final int ID_ABOUT_DEVELOPER = 9;
-    public static final int ID_SIGN_OUT = 10;
-    public static final int ID_DELETE_ACCOUNT = 11;
+    public static final int ID_NOTIFICATIONS = 7;
+    public static final int ID_MY_PROFILE = 8;
+    public static final int ID_ABOUT_APP = 9;
+    public static final int ID_ABOUT_DEVELOPER = 10;
+    public static final int ID_SIGN_OUT = 11;
+    public static final int ID_DELETE_ACCOUNT = 12;
 
     public static Drawer getMaterialDrawer(Activity context, Toolbar toolbar, FirebaseUser currUser) {
 
@@ -104,6 +105,17 @@ public class NavigationDrawerUtil {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         mCallback.OnNavigationItemClicked(ID_MARKET_PLACE);
+                        return false;
+                    }
+                });
+        PrimaryDrawerItem notifications = new PrimaryDrawerItem()
+                .withIdentifier(ID_NOTIFICATIONS)
+                .withName("Notifications")
+                .withIcon(R.drawable.ic_chat)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        mCallback.OnNavigationItemClicked(ID_NOTIFICATIONS);
                         return false;
                     }
                 });
@@ -206,6 +218,7 @@ public class NavigationDrawerUtil {
                         marketplace,
                         myProfile,
                         settings,
+                        notifications,
                         aboutApp,
                         aboutDeveloper,
                         signOut,

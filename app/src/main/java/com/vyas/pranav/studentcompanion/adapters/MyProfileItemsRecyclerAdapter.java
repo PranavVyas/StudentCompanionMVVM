@@ -41,6 +41,8 @@ public class MyProfileItemsRecyclerAdapter extends RecyclerView.Adapter<MyProfil
         holder.tvPrice.setText(item.getPrice() + " /- Rs");
         GlideApp.with(holder.itemView)
                 .load(item.getImage_uri())
+                .placeholder(R.drawable.ic_market_place)
+                .error(R.drawable.ic_market_place)
                 .circleCrop()
                 .into(holder.imageItem);
         View.OnClickListener clickListener = new View.OnClickListener() {

@@ -23,7 +23,8 @@ public abstract class HolidayDatabase extends RoomDatabase {
         if (sInstance == null) {
             sInstance = Room.databaseBuilder(context.getApplicationContext(),
                     HolidayDatabase.class,
-                    DB_NAME).build();
+                    DB_NAME)
+                    .fallbackToDestructiveMigration().build();
         }
         return sInstance;
     }

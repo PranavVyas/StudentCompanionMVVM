@@ -22,6 +22,7 @@ import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragmen
 import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.MarketPlaceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.MyProfileFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.NotificationFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
 import com.vyas.pranav.studentcompanion.utils.Constants;
@@ -135,6 +136,13 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 actionBar.setTitle("Settings");
                 AppSettingsFragment appSettingsFragment = new AppSettingsFragment();
                 swapFragment(appSettingsFragment);
+                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                break;
+
+            case NavigationDrawerUtil.ID_NOTIFICATIONS:
+                actionBar.setTitle("Notifications");
+                NotificationFragment notificationFragment = new NotificationFragment();
+                swapFragment(notificationFragment);
                 attendanceIndividualViewModel.setCurrentFragmentId(identifier);
                 break;
 

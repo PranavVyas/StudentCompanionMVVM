@@ -16,7 +16,9 @@ public abstract class AutoAttendancePlacesDatabase extends RoomDatabase {
         if (sInstance == null) {
             synchronized (LOCK) {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
-                        AutoAttendancePlacesDatabase.class, DB_NAME).build();
+                        AutoAttendancePlacesDatabase.class
+                        , DB_NAME)
+                        .fallbackToDestructiveMigration().build();
             }
         }
         return sInstance;
