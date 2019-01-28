@@ -2,4 +2,9 @@
 <resources>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
+    <dimen name="default_card_elevation">2dp</dimen>
+    <dimen name="dimen_margin_horizontal_auto_attendance_subject_detail">8dp</dimen>
+    <dimen name="dimen_bordered_tv_padding">4dp</dimen>
+    <dimen name="dimen_vertical_margin_auto_attendance_subject_detail">8dp</dimen>
+    <dimen name="dimen_margin_vertical_auto_attendance_subject_detail">8dp</dimen>
 </resources>

@@ -11,13 +11,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
@@ -25,6 +30,7 @@ import com.vyas.pranav.studentcompanion.adapters.MarketPlaceSellRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.ui.activities.MarketPlaceSellItemActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.viewmodels.MarketPlaceViewModel;
 
@@ -32,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.arch.core.util.Function;
 import androidx.fragment.app.Fragment;
@@ -43,6 +50,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 public class MarketPlaceFragment extends Fragment {
 
@@ -155,7 +165,35 @@ public class MarketPlaceFragment extends Fragment {
     @OnClick(R.id.floatingActionButton)
     void selectImage() {
         Intent openNewItem = new Intent(getContext(), MarketPlaceSellItemActivity.class);
-        startActivity(openNewItem);
+        startActivityForResult(openNewItem, Constants.RC_OPEN_MARKET_PLACE_NEW_AD);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == Constants.RC_OPEN_MARKET_PLACE_NEW_AD) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(getContext(), "Successfully Add to Database", Toast.LENGTH_SHORT).show();
+            } else if (resultCode == RESULT_CANCELED && data != null) {
+                String childPath = data.getStringExtra(MarketPlaceSellItemActivity.EXTRA_DOWNLOAD_URL);
+                Logger.d("Path of image is " + childPath);
+                if (childPath != null) {
+                    StorageReference ref = FirebaseStorage.getInstance().getReference().child(childPath);
+                    ref.delete().addOnSuccessListener(getActivity(), new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getContext(), "Removed from database", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(getActivity(), new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Error from database", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @OnClick(R.id.btn_marketplace_search)

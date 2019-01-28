@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +67,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -97,7 +97,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     @BindView(R.id.card_auto_attendance_subject_detail_current_detail)
     CardView cardCurrentDetails;
     @BindView(R.id.frame_auto_attendance_subject_detail_placeholder)
-    FrameLayout framePlaceHolder;
+    ConstraintLayout framePlaceHolder;
     @BindView(R.id.btn_auto_attendance_subject_detail_edit)
     Button btnEditPlace;
     @BindView(R.id.btn_frame_auto_attendance_subject_detail_placeholder_retry)

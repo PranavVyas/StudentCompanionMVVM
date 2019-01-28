@@ -1,6 +1,8 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AboutDeveloperFragment extends Fragment {
 
@@ -40,5 +43,33 @@ public class AboutDeveloperFragment extends Fragment {
                 .load(R.drawable.developer_image)
                 .circleCrop()
                 .into(imageDeveloper);
+    }
+
+    @OnClick(R.id.image_about_developer_github)
+    void githubClicked() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(getString(R.string.profile_url_github)));
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.image_about_developer_facebook)
+    void facebookClicked() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(getString(R.string.profile_url_facebook)));
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.image_about_developer_twitter)
+    void twitterClicked() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(getString(R.string.profile_url_twitter)));
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.image_about_developer_instagram)
+    void instagramClicked() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(getString(R.string.profile_url_instagram)));
+        startActivity(intent);
     }
 }

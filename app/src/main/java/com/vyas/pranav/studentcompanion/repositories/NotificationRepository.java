@@ -43,4 +43,8 @@ public class NotificationRepository {
     public LiveData<List<NotificationEntry>> getNotificationsAfter(Date date) {
         return notificationDao.getNotificationAfter(date);
     }
+
+    public LiveData<Integer> getCurentNotificationCount(Date date) {
+        return notificationDao.getCurrentNotificationCount(date);
+    }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.vyas.pranav.studentcompanion">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,7 +14,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:theme">
+        <activity
+            android:name=".ui.activities.OpenSourceInformationActivity"
+            android:parentActivityName=".ui.activities.MainActivity"></activity>
+        <!-- TODO Set AppTheme.Launcher at time of release -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -37,7 +43,6 @@
         <service android:name=".services.GeoFenceIntentService" />
         <service android:name=".services.AttendanceEditIntentService" />
         <service android:name=".services.ToggleSilentDeviceIntentService" />
-
 
         <activity
             android:name=".ui.activities.SignInActivity"
@@ -63,7 +68,6 @@
             android:name=".ui.activities.MarketPlaceSellItemActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivity" />
-
         <activity android:name=".ui.activities.TutorialActivity" />
     </application>
 

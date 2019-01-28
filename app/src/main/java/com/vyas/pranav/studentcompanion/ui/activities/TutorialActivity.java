@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep2Fragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep3Fragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep4Fragment;
@@ -45,6 +46,7 @@ public class TutorialActivity extends AppCompatActivity implements ViewPager.OnP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferencesRepository.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toturial);
         ButterKnife.bind(this);

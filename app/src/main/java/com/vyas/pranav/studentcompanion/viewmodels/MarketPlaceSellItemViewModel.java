@@ -3,6 +3,8 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 import android.app.Application;
 import android.net.Uri;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.UploadTask;
 
 import androidx.annotation.NonNull;
@@ -13,9 +15,19 @@ public class MarketPlaceSellItemViewModel extends AndroidViewModel {
     private Uri imageUri = null;
     private String downloadUri = null;
     private UploadTask uploadTask = null;
+    private FirebaseUser currUser = null;
 
     public MarketPlaceSellItemViewModel(@NonNull Application application) {
         super(application);
+        currUser = FirebaseAuth.getInstance().getCurrentUser();
+    }
+
+    public FirebaseUser getCurrUser() {
+        return currUser;
+    }
+
+    public void setCurrUser(FirebaseUser currUser) {
+        this.currUser = currUser;
     }
 
     public Uri getImageUri() {

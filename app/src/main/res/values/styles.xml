@@ -6,12 +6,22 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="table_background">@color/fui_transparent</item>
         <item name="table_selected_cell">@color/tableSelectedCellColor</item>
+        <item name="placeholder_background">@color/placeHolderBackground</item>
+        <item name="icon_tint_plane">#000000</item>
     </style>
 
     <style name="AppTheme.Night" parent="MaterialDrawerTheme">
-        <item name="colorAccent">@color/colorSecondaryDark</item>
+        <item name="colorAccent">@color/colorSecondaryNight</item>
+        <item name="colorPrimary">@color/colorPrimaryNight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
         <item name="table_background">@color/fui_transparent</item>
         <item name="table_selected_cell">@color/tableSelectedCellColorDark</item>
+        <item name="placeholder_background">@color/placeHolderBackgroundDark</item>
+        <item name="icon_tint_plane">#ffffff</item>
+    </style>
+
+    <style name="AppTheme.Launcher" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
 </resources>

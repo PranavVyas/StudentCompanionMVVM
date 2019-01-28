@@ -110,7 +110,6 @@ public class OverallAttendanceForSubjectRepository {
             Logger.d("Low Attendance");
         } else {
             notificationRepository.deleteNotification(subjectAttendance.get_ID());
-            Logger.d("Enough Attendance");
         }
     }
 

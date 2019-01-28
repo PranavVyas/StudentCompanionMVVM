@@ -13,6 +13,7 @@ import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.SetUpTimetableRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class SetUpTimetableFragment extends Fragment {
         rvTimetable.setLayoutManager(llm);
         rvTimetable.setAdapter(mAdapter);
         List<String> subjectList = setUpViewModel.getSubjectList();
-        subjectList.add(subjectList.size(), "No Lecture");
+        subjectList.add(subjectList.size(), Constants.DEFAULT_LECTURE);
         mAdapter.setSubjectsList(subjectList);
         mAdapter.setItem(setUpViewModel.getNoOfLecturesPerDay());
     }

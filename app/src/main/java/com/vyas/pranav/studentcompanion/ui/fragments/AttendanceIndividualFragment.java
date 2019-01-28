@@ -21,6 +21,7 @@ import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDataba
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.ui.activities.AttendanceIndividualActivity;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModel;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModelFactory;
@@ -28,6 +29,7 @@ import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceForSubjectVi
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceForSubjectViewModelFactory;
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceViewModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -156,10 +158,18 @@ public class AttendanceIndividualFragment extends Fragment {
         attendanceViewModel.getAttendanceForDate().observe(this, new Observer<List<AttendanceEntry>>() {
             @Override
             public void onChanged(final List<AttendanceEntry> attendanceEntries) {
+                List<AttendanceEntry> finalAttendance;
                 //      Logger.d("Received List is "+attendanceEntries.size());
                 if (!attendanceEntries.isEmpty()) {
 //                    skeletonScreen.hide();
-                    mAdapter.setAttendanceForDate(attendanceEntries);
+                    finalAttendance = new ArrayList<>();
+                    for (int i = 0; i < attendanceEntries.size(); i++) {
+                        AttendanceEntry attendance = attendanceEntries.get(i);
+                        if (!attendance.getSubjectName().equals(Constants.DEFAULT_LECTURE)) {
+                            finalAttendance.add(attendance);
+                        }
+                    }
+                    mAdapter.setAttendanceForDate(finalAttendance);
                     stopProgress();
                     showHolidayPlaceHolder(false);
                     return;

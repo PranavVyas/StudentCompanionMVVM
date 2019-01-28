@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.ui.fragments.AboutDeveloperFragment;
@@ -25,9 +26,11 @@ import com.vyas.pranav.studentcompanion.ui.fragments.MyProfileFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.NotificationFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
-import com.vyas.pranav.studentcompanion.utils.Constants;
+import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceIndividualViewModel;
+
+import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -37,6 +40,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         mDrawer = NavigationDrawerUtil.getMaterialDrawer(MainActivity.this, toolbarMainActivity, currUser);
         OnNavigationItemClicked(attendanceIndividualViewModel.getCurrentFragmentId());
         mDrawer.setSelection(attendanceIndividualViewModel.getCurrentFragmentId());
+        setLiveBadge();
     }
 
     @Override
@@ -247,6 +253,20 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
     private void dismissCallingNotificationIsAvailable() {
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
-        manager.cancel(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION);
+        manager.cancelAll();
+    }
+
+    public void setLiveBadge() {
+        LiveData<Integer> notificationCount = attendanceIndividualViewModel.getNotificationCount(ConverterUtils.convertDateToString(new Date()));
+        notificationCount.observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+//                PrimaryDrawerItem notificationItem = ((PrimaryDrawerItem) mDrawer.getDrawerItem(NavigationDrawerUtil.ID_NOTIFICATIONS));
+//                notificationItem.withBadge(integer);
+                mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder(integer.toString()));
+//                mDrawer.updateItem(notificationItem);
+                //TODO implement badge style here notificationItem.withBadgeStyle(new BadgeStyle());
+            }
+        });
     }
 }

@@ -6,7 +6,13 @@
     <color name="colorTextOnPrimary">#ffffff</color>
     <color name="colorTextOnSecondary">#000000</color>
     <!--<color name="backgroundNormal">#ffffff</color>-->
-    <color name="colorSecondaryDark">#009688</color>
+    <color name="colorSecondaryNight">#009688</color>
     <color name="tableSelectedCellColor">#FFD54F</color>
     <color name="tableSelectedCellColorDark">#9575CD</color>
+
+    <color name="placeHolderBackground">#FAFAFA</color>
+    <color name="placeHolderBackgroundDark">#615F5F</color>
+
+    <color name="colorPrimaryNight">#6200ea</color>
+    <color name="colorPrimaryDarkNight">#0A00B6</color>
 </resources>

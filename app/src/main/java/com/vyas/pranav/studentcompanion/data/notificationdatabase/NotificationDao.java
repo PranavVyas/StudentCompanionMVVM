@@ -23,4 +23,7 @@ public interface NotificationDao {
 
     @Query("DELETE FROM Notifications WHERE _ID = :id")
     void deleteNotification(long id);
+
+    @Query("SELECT COUNT(date) FROM Notifications WHERE date >= :date")
+    LiveData<Integer> getCurrentNotificationCount(Date date);
 }

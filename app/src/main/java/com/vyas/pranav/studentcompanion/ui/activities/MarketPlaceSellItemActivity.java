@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
@@ -52,6 +52,7 @@ import butterknife.OnClick;
 
 public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
+    public static final String EXTRA_DOWNLOAD_URL = "MarketPlaceSellingActivity.DownloadUri";
     private static final int RC_SELECT_IMAGE = 13579;
     @BindView(R.id.text_input_marketplace_sell_item_name)
     TextInputLayout inputName;
@@ -77,22 +78,22 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.spinner_marketplace_sell_item_category)
     Spinner spinnerCategory;
-    @BindView(R.id.btn_marketplace_sell_item_post_ad)
+    @BindView(R.id.btn_market_place_sell_item_post_ad)
     Button btnPostAd;
     @BindView(R.id.placeholder_marketplace_sell_item_no_connection)
     ConstraintLayout placeHOlderConnection;
     @BindView(R.id.image_placeholder_market_place_sell_item)
     ImageView imagePlaceHolder;
 
-    private String phoneNo, Name, Info, Price, userName, selectedCategory;
+    private String phoneNo, name, info, price, userName, selectedCategory;
     private Uri imageUri;
     private String downloadUri;
 
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
     private StorageReference mStorageReference = mStorage.getReference();
+    private StorageReference child;
     private FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
     private CollectionReference mCollectionReference = mFirestore.collection("sell");
-    private FirebaseAuth auth;
     private Snackbar sbar;
     private MarketPlaceSellItemViewModel marketPlaceSellItemViewModel;
     private UploadTask uploadTask;
@@ -100,15 +101,15 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferencesRepository.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market_place_sell_item);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Sell Item");
-        auth = FirebaseAuth.getInstance();
-        userName = auth.getCurrentUser().getDisplayName();
         marketPlaceSellItemViewModel = ViewModelProviders.of(this).get(MarketPlaceSellItemViewModel.class);
+        userName = marketPlaceSellItemViewModel.getCurrUser().getDisplayName();
         populateUI();
     }
 
@@ -150,32 +151,50 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         spinnerCategory.setAdapter(adapter);
     }
 
-    @OnClick(R.id.btn_marketplace_sell_item_post_ad)
+    @Override
+    public void onBackPressed() {
+        sendRemoveImageIntentIfAny();
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                retryClicked();
+            }
+        }, TimeUnit.SECONDS.toMillis(2));
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        sendRemoveImageIntentIfAny();
+        return super.onSupportNavigateUp();
+    }
+
+    @OnClick(R.id.btn_market_place_sell_item_post_ad)
     void postAdClicked() {
-        phoneNo = etPhone.getText().toString().trim();
-        Name = etName.getText().toString().trim();
-        Info = etInfo.getText().toString().trim();
-        Price = etPrice.getText().toString().trim();
+        //Here & is used which is known as EAGER OPERATOR in Java which makes sures that there is not any short circuit in the evaluation if && is used than if first is false others are not checked !!
+        if (validateInfo() & validatePhoneNo() & validateName() & validatePrice() & validateImageUri() & validateDownloadUri()) {
+            ItemModel item = new ItemModel();
+            item.setContact(phoneNo);
+            item.setExtra_info(info);
+            item.setImage_uri(downloadUri);
+            item.setPrice(Float.valueOf(price));
+            item.setP_name(userName);
+            item.setName(name);
+            item.setCategory(selectedCategory);
 
-        if (validateInfo() && validateName() && validatePhoneNo() && validatePrice() && validateImageUri() && validateDownloadUri()) {
-            inputInfo.setErrorEnabled(false);
-            inputName.setErrorEnabled(false);
-            inputPrice.setErrorEnabled(false);
-            inputPhone.setErrorEnabled(false);
-            ItemModel book = new ItemModel();
-            book.setContact(phoneNo);
-            book.setExtra_info(Info);
-            book.setImage_uri(downloadUri);
-            book.setPrice(Float.valueOf(Price));
-            book.setP_name(userName);
-            book.setName(Name);
-            book.setCategory(selectedCategory);
-
-            mCollectionReference.add(book).addOnSuccessListener(this, new OnSuccessListener<DocumentReference>() {
+            mCollectionReference.add(item).addOnSuccessListener(this, new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
                     Toast.makeText(MarketPlaceSellItemActivity.this, "Added to database", Toast.LENGTH_SHORT).show();
                     Logger.d("Successfully added to the database");
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(EXTRA_DOWNLOAD_URL, child.toString());
+                    setResult(RESULT_OK, resultIntent);
                     MarketPlaceSellItemActivity.this.finish();
                 }
             }).addOnFailureListener(this, new OnFailureListener() {
@@ -185,39 +204,15 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                     Toast.makeText(MarketPlaceSellItemActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
                 }
             });
-
         } else {
-            if (!validatePhoneNo()) {
-                inputPhone.setError("Input Correct Phone No");
-            } else {
-                inputPhone.setErrorEnabled(false);
-            }
-            if (!validatePrice()) {
-                inputPrice.setError("Input Correct Price");
-            } else {
-                inputPrice.setErrorEnabled(false);
-            }
-            if (!validateName()) {
-                inputName.setError("Input Correct Name");
-            } else {
-                inputName.setErrorEnabled(false);
-            }
-            if (!validateInfo()) {
-                inputInfo.setError("Input Valid Info");
-            } else {
-                inputInfo.setErrorEnabled(false);
-            }
-            if (!validateImageUri()) {
-                Toast.makeText(this, "Image is not selected", Toast.LENGTH_SHORT).show();
-            }
-            if (!validateDownloadUri()) {
-                Toast.makeText(this, "Image is not uploaded", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, "Some error occured", Toast.LENGTH_SHORT).show();
         }
     }
 
     private boolean validateDownloadUri() {
+        Logger.d("Validation of Download Uri executed");
         if (downloadUri == null) {
+            Toast.makeText(this, "Photo is not uploaded", Toast.LENGTH_SHORT).show();
             return false;
         }
         return !downloadUri.isEmpty();
@@ -225,6 +220,10 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     @OnClick(R.id.image_marketplace_sell_item_photo)
     void selectImage() {
+        if (!validateName()) {
+            Toast.makeText(this, "Input name first", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType("image/*");
 
@@ -259,7 +258,6 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                         }
                     }
                 });
-
             }
         }
     }
@@ -291,7 +289,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     }
 
     private void uploadImage() {
-        StorageReference child = mStorageReference.child("images/" + userName + "/items/" + Name + System.currentTimeMillis() + imageUri.getLastPathSegment());
+        child = mStorageReference.child("images/" + userName + "/items/" + name + System.currentTimeMillis() + imageUri.getLastPathSegment());
         uploadTask = child.putFile(imageUri);
         marketPlaceSellItemViewModel.setUploadTask(uploadTask);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -304,7 +302,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(MarketPlaceSellItemActivity.this, "Error while uploading image in database", Toast.LENGTH_SHORT).show();
-                Logger.d("FAiled due to " + e.getMessage());
+                Logger.d("Failed due to " + e.getMessage());
                 marketPlaceSellItemViewModel.setUploadTask(null);
                 btnPostAd.setEnabled(false);
             }
@@ -334,7 +332,6 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     private void showSnackbarProgress(long progress) {
         if (sbar != null) {
-
             if (sbar.isShown()) {
                 sbar.setText("Photo is uploading now (" + progress + " % Done)");
                 if (progress == 100) {
@@ -348,39 +345,81 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     }
 
     private boolean validateName() {
-        if (Name == null) {
+        name = etName.getText().toString().trim();
+        Logger.d("Validation of name executed");
+        if (name == null) {
+            inputName.setError("Input Correct Name");
             return false;
         }
-        return !Name.isEmpty();
+        if (name.isEmpty()) {
+            inputName.setError("Input Correct Name");
+            return false;
+        } else {
+            inputName.setErrorEnabled(false);
+            return true;
+        }
     }
 
     private boolean validateInfo() {
-        if (Info == null) {
+        info = etInfo.getText().toString().trim();
+        Logger.d("Validation of info executed");
+        if (info == null) {
+            inputInfo.setError("Input Valid Info");
             return false;
         }
-        return !Info.isEmpty();
+        if (info.isEmpty()) {
+            inputInfo.setError("Input Valid Info");
+            return false;
+        } else {
+            inputInfo.setErrorEnabled(false);
+            return true;
+        }
     }
 
     private boolean validatePrice() {
-        if (Price == null) {
+        price = etPrice.getText().toString().trim();
+        Logger.d("Validation of Price executed");
+        if (price == null) {
+            inputPrice.setError("Input Correct Price");
             return false;
         }
-        return !Price.isEmpty();
+        if (price.isEmpty()) {
+            inputPrice.setError("Input Correct Price");
+            return false;
+        } else {
+            inputPrice.setErrorEnabled(false);
+            return true;
+        }
     }
 
     private boolean validatePhoneNo() {
+        phoneNo = etPhone.getText().toString().trim();
+        Logger.d("Validation of phone no executed");
         if (phoneNo == null) {
+            inputPhone.setError("Input Correct Phone No");
             return false;
         }
         if (phoneNo.isEmpty()) {
+            inputPhone.setError("Input Correct Phone No");
             return false;
             //TODO Random phone no limits
         }
-        return phoneNo.length() >= 6 && phoneNo.length() <= 14;
+        if (!(phoneNo.length() >= 6) || !(phoneNo.length() <= 14)) {
+            inputPhone.setError("Input Correct Phone No");
+            return false;
+        }
+        inputPhone.setErrorEnabled(false);
+        return true;
     }
 
     private boolean validateImageUri() {
-        return imageUri != null;
+        Logger.d("Validation of Uri executed");
+        if (imageUri == null) {
+            return false;
+        } else {
+            Toast.makeText(this, "Image is not selected", Toast.LENGTH_SHORT).show();
+            return true;
+        }
     }
 
     private void showPlaceHOlder(boolean isShown) {
@@ -408,14 +447,16 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                retryClicked();
-            }
-        }, TimeUnit.SECONDS.toMillis(2));
+    private void sendRemoveImageIntentIfAny() {
+        if (child != null) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra(EXTRA_DOWNLOAD_URL, child.getPath());
+            setResult(RESULT_CANCELED, resultIntent);
+            Logger.d("Child is not null");
+        } else {
+            Logger.d("Child is null");
+        }
     }
+
+
 }

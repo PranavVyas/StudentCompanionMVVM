@@ -1,6 +1,6 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.ui.activities.OpenSourceInformationActivity;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 
 import androidx.annotation.NonNull;
@@ -18,9 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AboutThisAppFragment extends Fragment {
 
     @BindView(R.id.image_about_app_icon)
@@ -51,5 +49,11 @@ public class AboutThisAppFragment extends Fragment {
     void termsOfServicesClicked() {
         Toast.makeText(getContext(), "Will Implement here", Toast.LENGTH_SHORT).show();
         //TODO Implement TOS here
+    }
+
+    @OnClick(R.id.tv_about_app_open_source_license)
+    void openSourceLicensesClicked() {
+        Intent intent = new Intent(getContext(), OpenSourceInformationActivity.class);
+        startActivity(intent);
     }
 }

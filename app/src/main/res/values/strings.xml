@@ -34,7 +34,10 @@
 
     <string name="t_name_wlv_recycler_adapter_overall_attendance_detail">overall_attendance_detail.WLV_PROGRESS</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--about developer-->
+    <string name="profile_url_github">https://github.com/PranavVyas</string>
+    <string name="profile_url_facebook">https://www.facebook.com/pranav.vyas.330</string>
+    <string name="profile_url_twitter">https://twitter.com/PranavVyas99</string>
+    <string name="profile_url_instagram">https://www.instagram.com/pro_vyas4399</string>
 
 </resources>
