@@ -1,15 +1,13 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
@@ -118,16 +116,26 @@ public class MyProfileItemsRecyclerAdapter extends RecyclerView.Adapter<MyProfil
                 .circleCrop()
                 .into(imageItem);
 
-        new AlertDialog.Builder(context)
+        AlertDialog alertDialog = new AlertDialog.Builder(context)
                 .setView(alertView)
-                .setPositiveButton("Call Now", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent call = new Intent(Intent.ACTION_DIAL);
-                        call.setData(Uri.parse("tel:" + item.getContact()));
-                        context.startActivity(call);
-                    }
-                })
                 .show();
+
+        Button btnSold = alertDialog.findViewById(R.id.btn_marketplace_sell_item_action);
+        if (btnSold != null) {
+            btnSold.setText("Sold It!");
+            btnSold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        listener.onItemSoldClicked(item);
+                        alertDialog.dismiss();
+                    } else {
+                        throw new NullPointerException("Listener is not Attached properly");
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(context, "Button is empty", Toast.LENGTH_SHORT).show();
+        }
     }
 }

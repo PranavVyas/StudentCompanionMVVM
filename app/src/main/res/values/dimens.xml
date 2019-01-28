@@ -7,4 +7,7 @@
     <dimen name="dimen_bordered_tv_padding">4dp</dimen>
     <dimen name="dimen_vertical_margin_auto_attendance_subject_detail">8dp</dimen>
     <dimen name="dimen_margin_vertical_auto_attendance_subject_detail">8dp</dimen>
+    <dimen name="card_radius_profile">8dp</dimen>
+    <dimen name="custom_green_btn_radius">4dp</dimen>
+
 </resources>

@@ -1,13 +1,15 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
@@ -57,37 +59,7 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View alertView = LayoutInflater.from(v.getContext()).inflate(R.layout.item_holder_alert_dialog_marketplace_sell, null);
-                TextView tvDialogName = alertView.findViewById(R.id.tv_marketplace_sell_item_name);
-                TextView tvDialogPrice = alertView.findViewById(R.id.tv_marketplace_sell_item_price);
-                TextView tvDialogInfo = alertView.findViewById(R.id.tv_marketplace_sell_item_info);
-                TextView tvDialogContact = alertView.findViewById(R.id.tv_marketplace_sell_item_contact);
-                TextView tvDialogCategory = alertView.findViewById(R.id.tv_marketplace_sell_item_category);
-                ImageView imageItem = alertView.findViewById(R.id.image_marketplace_sell_item);
-
-                tvDialogCategory.setText(item.getCategory());
-                tvDialogName.setText(item.getName());
-                tvDialogInfo.setText(item.getExtra_info());
-                tvDialogPrice.setText(item.getPrice() + "//- Rs.");
-                tvDialogContact.setText(item.getP_name() + "\n No : " + item.getContact());
-                GlideApp.with(v)
-                        .load(item.getImage_uri())
-                        .placeholder(R.drawable.ic_market_place)
-                        .error(R.drawable.ic_market_place)
-                        .circleCrop()
-                        .into(imageItem);
-
-                new AlertDialog.Builder(v.getContext())
-                        .setView(alertView)
-                        .setPositiveButton("Call Now", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent call = new Intent(Intent.ACTION_DIAL);
-                                call.setData(Uri.parse("tel:" + item.getContact()));
-                                v.getContext().startActivity(call);
-                            }
-                        })
-                        .show();
+                showAlertDialog(v.getContext(), items.get(position));
             }
         });
         //TODO Set Place holder
@@ -117,6 +89,49 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
         public SellItemHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+    private void showAlertDialog(Context context, ItemModel item) {
+        View alertView = LayoutInflater.from(context).inflate(R.layout.item_holder_alert_dialog_marketplace_sell, null);
+        TextView tvDialogName = alertView.findViewById(R.id.tv_marketplace_sell_item_name);
+        TextView tvDialogPrice = alertView.findViewById(R.id.tv_marketplace_sell_item_price);
+        TextView tvDialogInfo = alertView.findViewById(R.id.tv_marketplace_sell_item_info);
+        TextView tvDialogContact = alertView.findViewById(R.id.tv_marketplace_sell_item_contact);
+        TextView tvDialogCategory = alertView.findViewById(R.id.tv_marketplace_sell_item_category);
+        ImageView imageItem = alertView.findViewById(R.id.image_marketplace_sell_item);
+
+        tvDialogCategory.setText(item.getCategory());
+        tvDialogName.setText(item.getName());
+        tvDialogInfo.setText(item.getExtra_info());
+        tvDialogPrice.setText(item.getPrice() + "//- Rs.");
+        tvDialogContact.setText(item.getP_name() + "\n No : " + item.getContact());
+        GlideApp.with(context)
+                .load(item.getImage_uri())
+                .placeholder(R.drawable.ic_market_place)
+                .error(R.drawable.ic_market_place)
+                .circleCrop()
+                .into(imageItem);
+
+        AlertDialog alertDialog = new AlertDialog.Builder(context)
+                .setView(alertView)
+                .show();
+        Button btnSold = alertDialog.findViewById(R.id.btn_marketplace_sell_item_action);
+        if (btnSold != null) {
+            btnSold.setText("Call Now!");
+            btnSold.setPadding(32, 0, 32, 0);
+            btnSold.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_phone, 0, 0, 0);
+            btnSold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent call = new Intent(Intent.ACTION_DIAL);
+                    call.setData(Uri.parse("tel:" + item.getContact()));
+                    v.getContext().startActivity(call);
+                    alertDialog.dismiss();
+                }
+            });
+        } else {
+            Toast.makeText(context, "Button is empty", Toast.LENGTH_SHORT).show();
         }
     }
 
