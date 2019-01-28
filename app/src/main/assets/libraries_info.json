@@ -1,0 +1,67 @@
+{
+  "name": "Student Companion",
+  "license": "MIT 2",
+  "extra_license": "lkjlkajsdlks",
+  "external_libraries": [
+    {
+      "name": "MaterialDrawer",
+      "license": "Copyright 2018 Mike Penz\n\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/mikepenz/MaterialDrawer"
+    },
+    {
+      "name": "Glide",
+      "license": "BSD, part MIT and Apache 2.0",
+      "url": "https://github.com/bumptech/glide"
+    },
+    {
+      "name": "ButterKnife",
+      "license": "Copyright 2013 Jake Wharton\n\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/JakeWharton/butterknife"
+    },
+    {
+      "name": "Gson",
+      "license": "Copyright 2008 Google Inc.\n\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/google/gson"
+    },
+    {
+      "name": "Debug-db",
+      "license": "Copyright (C) 2016 Amit Shekhar\n\nCopyright (C) 2011 Android Open Source Project\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/amitshekhariitbhu/Android-Debug-Database"
+    },
+    {
+      "name": "Logger",
+      "license": "Copyright 2018 Orhan Obut\n\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/orhanobut/logger"
+    },
+    {
+      "name": "WaveLoadingView",
+      "license": "Copyright 2016 Qi Tang\n\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, softwaredistributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/tangqi92/WaveLoadingView"
+    },
+    {
+      "name": "AndroidJob",
+      "license": "Copyright (c) 2007-2017 by Evernote Corporation, All rights reserved.\n\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/evernote/android-job"
+    },
+    {
+      "name": "Tableview",
+      "license": "Copyright (c) 2017 Evren Coskun\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the 'Software'), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED 'AS IS'adb , WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, \nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, \nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.",
+      "url": "https://github.com/evrencoskun/TableView"
+    },
+    {
+      "name": "CustomFloatingActionButton",
+      "license": " Custom Floating Action Button©\n\nCopyright 2017 Robert Levonyan\nUrl: https://github.com/robertlevonyan/materialChipView\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/robertlevonyan/customFloatingActionButton"
+    },
+    {
+      "name": "Dexter",
+      "license": "Copyright 2015 Karumi\n\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/Karumi/Dexter"
+    },
+    {
+      "name": "Toggle",
+      "license": "Copyright (C) 2018 Angad Singh\n\nLicensed under the Apache License, Version 2.0 (the 'License');\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an 'AS IS' BASIS, \nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.",
+      "url": "https://github.com/Angads25/android-toggle"
+    }
+  ]
+}
