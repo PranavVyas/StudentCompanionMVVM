@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-public class AttendanceIndividualViewModel extends AndroidViewModel {
+public class MainViewModel extends AndroidViewModel {
 
     private int currentFragmentId;
     private FirebaseUser currUser;
@@ -20,7 +20,7 @@ public class AttendanceIndividualViewModel extends AndroidViewModel {
     private Application application;
     private NotificationRepository notificationRepository;
 
-    public AttendanceIndividualViewModel(@NonNull Application application) {
+    public MainViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
         currentFragmentId = NavigationDrawerUtil.ID_TODAY_ATTENDANCE;

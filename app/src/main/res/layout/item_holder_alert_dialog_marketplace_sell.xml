@@ -24,19 +24,18 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Item Name :"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_marketplace_sell_item" />
 
     <TextView
         android:id="@+id/textView10"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Item Price :"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -47,7 +46,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Extra Info :"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
@@ -58,7 +57,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Contact Details :"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -68,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintBottom_toBottomOf="@+id/textView9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView9"
@@ -81,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintBottom_toBottomOf="@+id/textView10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView10"
@@ -94,12 +93,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView11"
         app:layout_constraintTop_toTopOf="@+id/textView11"
-        tools:text="Book For Semster 5" />
+        tools:text="Book For Semester 5" />
 
     <TextView
         android:id="@+id/tv_marketplace_sell_item_contact"
@@ -107,7 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView12"
         app:layout_constraintTop_toTopOf="@+id/textView12"
@@ -120,7 +119,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Category :"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -130,7 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintBottom_toBottomOf="@+id/textView22"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView22"
@@ -139,13 +138,13 @@
 
     <Button
         android:id="@+id/btn_marketplace_sell_item_action"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/btn_green"
         android:gravity="center"
         android:textColor="@android:color/white"
         android:textSize="18sp"

@@ -31,7 +31,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         setContentView(R.layout.activity_set_up);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Set Up");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         setUpViewModel = ViewModelProviders.of(this).get(SetUpViewModel.class);
         if (!setUpViewModel.isFirstRun()) {
             if (setUpViewModel.isTutorialDone()) {

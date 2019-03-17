@@ -33,10 +33,8 @@ public class HolidayRecyclerAdapter extends RecyclerView.Adapter<HolidayRecycler
             holder.tvName.setText("Holiday Name");
             holder.tvDay.setText("Day");
             holder.tvDate.setText("Date");
-            holder.tvNo.setText("No");
             return;
         }
-        holder.tvNo.setText("" + position);
         holder.tvDate.setText(ConverterUtils.convertDateToString(holidays.get(position - 1).getDate()));
         holder.tvDay.setText(holidays.get(position - 1).getDay());
         holder.tvName.setText(holidays.get(position - 1).getName());
@@ -53,8 +51,6 @@ public class HolidayRecyclerAdapter extends RecyclerView.Adapter<HolidayRecycler
     }
 
     class HolidayHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_recycler_holiday_fragment_no)
-        TextView tvNo;
         @BindView(R.id.tv_recycler_holiday_fragment_date)
         TextView tvDate;
         @BindView(R.id.tv_recycler_holiday_fragment_day)

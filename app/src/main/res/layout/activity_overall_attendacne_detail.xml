@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_blue_art_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -48,8 +49,8 @@
             android:background="@drawable/boardered_rounded_corner_rectangle"
             android:padding="4dp"
             android:textAlignment="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColor="?attr/body_text_custom_default_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +83,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="?attr/body_text_custom_default_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"
             app:layout_constraintEnd_toEndOf="@+id/imageView3"
@@ -95,7 +97,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="?attr/body_text_custom_default_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView5"
             app:layout_constraintEnd_toEndOf="@+id/imageView5"
@@ -108,7 +111,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="?attr/body_text_custom_default_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView4"
             app:layout_constraintEnd_toEndOf="@+id/imageView4"
@@ -121,13 +125,16 @@
             android:id="@+id/toolbar_overall_attendance_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="@android:color/white" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_toolbar_overall_attendance_detail"
+                style="@style/MyCustomToolbarTextView"
+                android:text="Overall Attendance" />
+        </androidx.appcompat.widget.Toolbar>
 
         <ImageView
             android:id="@+id/imageView"
@@ -146,6 +153,9 @@
             android:layout_marginTop="4dp"
             android:text="Total\nLectures"
             android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="?attr/body_text_custom_default_color"
+
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -158,6 +168,10 @@
             android:layout_marginTop="4dp"
             android:text="Present\nLectures"
             android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+
+            android:textColor="?attr/body_text_custom_default_color"
+
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/tv_overall_attendance_detail_present"
             app:layout_constraintStart_toStartOf="@+id/tv_overall_attendance_detail_present"
@@ -171,6 +185,8 @@
             android:layout_marginBottom="8dp"
             android:text="Bunked\nLectures"
             android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="?attr/body_text_custom_default_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView5"
@@ -185,6 +201,9 @@
             android:layout_marginBottom="8dp"
             android:text="Available\nto Bunk"
             android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textColor="?attr/body_text_custom_default_color"
+
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView4"
@@ -196,7 +215,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="?attr/body_text_custom_default_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -212,7 +232,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:text="Details"
-            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:textColor="?attr/body_text_custom_default_color"
             app:layout_constraintEnd_toStartOf="@+id/divider4"
             app:layout_constraintStart_toEndOf="@+id/divider3"
             app:layout_constraintTop_toBottomOf="@+id/progress_overall_attendance_detail" />
@@ -223,7 +244,7 @@
             android:layout_height="1dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="?android:attr/listDivider"
+            android:background="?attr/custom_component_color_default"
             app:layout_constraintBottom_toBottomOf="@+id/textView4"
             app:layout_constraintEnd_toStartOf="@+id/textView4"
             app:layout_constraintStart_toStartOf="parent"
@@ -235,7 +256,7 @@
             android:layout_height="1dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:background="?android:attr/listDivider"
+            android:background="?attr/custom_component_color_default"
             app:layout_constraintBottom_toBottomOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView4"

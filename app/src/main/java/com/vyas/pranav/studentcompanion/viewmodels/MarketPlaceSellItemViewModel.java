@@ -16,6 +16,7 @@ public class MarketPlaceSellItemViewModel extends AndroidViewModel {
     private String downloadUri = null;
     private UploadTask uploadTask = null;
     private FirebaseUser currUser = null;
+    private long progress = 0;
 
     public MarketPlaceSellItemViewModel(@NonNull Application application) {
         super(application);
@@ -52,5 +53,13 @@ public class MarketPlaceSellItemViewModel extends AndroidViewModel {
 
     public void setUploadTask(UploadTask uploadTask) {
         this.uploadTask = uploadTask;
+    }
+
+    public void setCurrProgress(long progress) {
+        this.progress = progress;
+    }
+
+    public long getProgress() {
+        return progress;
     }
 }

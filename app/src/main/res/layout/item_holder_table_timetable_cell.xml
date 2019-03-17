@@ -7,10 +7,10 @@
     <TextView
         android:id="@+id/tv_table_timetable_cell"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="8dp"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:layout_height="wrap_content"
-        tools:text="Cell">
-</TextView>
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textStyle="bold"
+        tools:text="Cell" />
 </LinearLayout>

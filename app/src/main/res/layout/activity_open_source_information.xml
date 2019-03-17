@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/gradient_blue_art_background"
     android:layout_height="match_parent"
     tools:context=".ui.activities.OpenSourceInformationActivity">
 
@@ -10,12 +11,16 @@
         android:id="@+id/toolbar_open_source_information"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_toolbar_open_source_information"
+            style="@style/MyCustomToolbarTextView"
+            android:text="License Information" />
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
         android:id="@+id/tv_open_source_information_app_name"
@@ -26,7 +31,8 @@
         android:layout_marginEnd="8dp"
         android:text="App : Student Companion"
         android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textColor="?attr/body_text_custom_default_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_open_source_information" />
@@ -39,6 +45,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
+        android:textColor="?attr/body_text_custom_default_color"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,6 +60,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
+        android:textColor="?attr/body_text_custom_default_color"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +74,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:textColor="?attr/body_text_custom_default_color"
         android:text="Exteranl Libraries and Photos Credits"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"

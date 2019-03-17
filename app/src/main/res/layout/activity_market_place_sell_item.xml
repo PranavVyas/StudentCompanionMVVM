@@ -2,22 +2,25 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_blue_art_background"
     tools:context=".ui.activities.MarketPlaceSellItemActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_marketplace_sell_item"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_toolbar_marketplace_sell_item"
+            style="@style/MyCustomToolbarTextView"
+            android:text="Sell Item" />
+    </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -27,156 +30,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_marketplace_sell_item">
 
-        <ScrollView
-            android:id="@+id/scrollView3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_marketplace_sell_item">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_input_marketplace_sell_item_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_marketplace_sell_item_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ems="10"
-                        android:hint="Item Name"
-                        android:inputType="textPersonName" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_input_marketplace_sell_item_item_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_sell_item_name">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_marketplace_sell_item_info"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ems="10"
-                        android:hint="Item Information"
-                        android:inputType="textPersonName" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Spinner
-                    android:id="@+id/spinner_marketplace_sell_item_category"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_sell_item_price"
-                    tools:listitem="@android:layout/simple_dropdown_item_1line" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_input_marketplace_sell_item_phone_no"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/spinner_marketplace_sell_item_category">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_marketplace_sell_item_phone_no"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ems="10"
-                        android:hint="Phone Number"
-                        android:inputType="phone" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <ImageView
-                    android:id="@+id/image_marketplace_sell_item_photo"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_sell_item_phone_no"
-                    tools:src="@tools:sample/backgrounds/scenic[14]" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_input_marketplace_sell_item_price"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_sell_item_item_info">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_marketplace_sell_item_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:ems="10"
-                        android:hint="Item Price"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/textView18"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Choose Image"
-                    app:layout_constraintEnd_toEndOf="@+id/image_marketplace_sell_item_photo"
-                    app:layout_constraintStart_toStartOf="@+id/image_marketplace_sell_item_photo"
-                    app:layout_constraintTop_toBottomOf="@+id/image_marketplace_sell_item_photo" />
-
-                <Button
-                    android:id="@+id/btn_market_place_sell_item_post_ad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="Post Ad"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/placeholder_marketplace_sell_item_no_connection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FAFAFA"
+            android:background="?attr/placeholder_background"
             android:visibility="invisible">
 
             <ImageView
@@ -206,6 +64,167 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_marketplace_sell_item">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_marketplace_sell_item_name"
+                    style="@style/MyCustomOutlinedBoxTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_marketplace_sell_item_name"
+                        style="@style/MyCustomMaterialEditTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:hint="Item Name"
+                        android:inputType="textPersonName"
+                        tools:text="Trial" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_marketplace_sell_item_item_info"
+                    style="@style/MyCustomOutlinedBoxTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_sell_item_name"
+                    tools:helperText="HIi there">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_marketplace_sell_item_info"
+                        style="@style/MyCustomMaterialEditTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:hint="Item Information"
+                        android:inputType="textPersonName"
+                        tools:text="Trial" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                    android:id="@+id/spinner_marketplace_sell_item_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_sell_item_price"
+                    tools:listitem="@layout/spinner_list_item_custom" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_marketplace_sell_item_phone_no"
+                    style="@style/MyCustomOutlinedBoxTextInput"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_marketplace_sell_item_category">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_marketplace_sell_item_phone_no"
+                        style="@style/MyCustomMaterialEditTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:hint="Phone Number"
+                        android:inputType="phone"
+                        tools:text="Trial" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/image_marketplace_sell_item_photo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_sell_item_phone_no"
+                    tools:src="@tools:sample/backgrounds/scenic[14]" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_marketplace_sell_item_price"
+                    style="@style/MyCustomOutlinedBoxTextInput"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_sell_item_item_info">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_marketplace_sell_item_price"
+                        style="@style/MyCustomMaterialEditTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:ems="10"
+                        android:hint="Item Price"
+                        android:inputType="number"
+                        tools:text="Trial" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_marketplace_sell_item_image_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Please select Image"
+                    android:textColor="?attr/body_text_custom_default_color"
+                    app:layout_constraintEnd_toEndOf="@+id/image_marketplace_sell_item_photo"
+                    app:layout_constraintStart_toStartOf="@+id/image_marketplace_sell_item_photo"
+                    app:layout_constraintTop_toBottomOf="@+id/image_marketplace_sell_item_photo" />
+
+                <Button
+                    android:id="@+id/btn_market_place_sell_item_post_ad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Post Ad"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_marketplace_sell_item_image_state" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
     </FrameLayout>
 
 

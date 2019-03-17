@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -28,12 +29,11 @@ import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
-import com.vyas.pranav.studentcompanion.viewmodels.AttendanceIndividualViewModel;
+import com.vyas.pranav.studentcompanion.viewmodels.MainViewModel;
 
 import java.util.Date;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -52,11 +52,12 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     Toolbar toolbarMainActivity;
     @BindView(R.id.frame_main_activity_container)
     FrameLayout frameFragmentContainer;
+    @BindView(R.id.tv_toolbar_main)
+    TextView tvTitle;
 
     private Drawer mDrawer;
-    private AttendanceIndividualViewModel attendanceIndividualViewModel;
+    private MainViewModel mainViewModel;
     private FragmentManager fragManager;
-    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +66,14 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbarMainActivity);
-        actionBar = getSupportActionBar();
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        actionBar = getSupportActionBar();
         fragManager = getSupportFragmentManager();
-        attendanceIndividualViewModel = ViewModelProviders.of(this).get(AttendanceIndividualViewModel.class);
-        FirebaseUser currUser = attendanceIndividualViewModel.getCurrUser();
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        FirebaseUser currUser = mainViewModel.getCurrUser();
         mDrawer = NavigationDrawerUtil.getMaterialDrawer(MainActivity.this, toolbarMainActivity, currUser);
-        OnNavigationItemClicked(attendanceIndividualViewModel.getCurrentFragmentId());
-        mDrawer.setSelection(attendanceIndividualViewModel.getCurrentFragmentId());
+        OnNavigationItemClicked(mainViewModel.getCurrentFragmentId());
+        mDrawer.setSelection(mainViewModel.getCurrentFragmentId());
         setLiveBadge();
     }
 
@@ -86,11 +88,12 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         if (mDrawer != null) {
             if (mDrawer.isDrawerOpen()) {
                 mDrawer.closeDrawer();
-            } else if (attendanceIndividualViewModel.getCurrentFragmentId() != NavigationDrawerUtil.ID_TODAY_ATTENDANCE) {
-                attendanceIndividualViewModel.setCurrentFragmentId(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
+            } else if (mainViewModel.getCurrentFragmentId() != NavigationDrawerUtil.ID_TODAY_ATTENDANCE) {
+                mainViewModel.setCurrentFragmentId(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
                 swapFragment(attendanceFragment);
-                actionBar.setTitle("Home");
+//                actionBar.setTitle("Home");
+                tvTitle.setText("Home");
                 mDrawer.setSelection(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
             } else {
                 super.onBackPressed();
@@ -104,73 +107,85 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     public void OnNavigationItemClicked(int identifier) {
         switch (identifier) {
             case NavigationDrawerUtil.ID_TODAY_ATTENDANCE:
-                actionBar.setTitle("Home");
+//                actionBar.setTitle("Home");
+                tvTitle.setText("Home");
+
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
                 swapFragment(attendanceFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_OVERALL_ATTENDANCE:
-                actionBar.setTitle("Overall Attendance");
+//                actionBar.setTitle("Overall Attendance");
+                tvTitle.setText("Overall Attendance");
+
                 OverallAttendanceFragment overallAttendanceFragment = new OverallAttendanceFragment();
                 swapFragment(overallAttendanceFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_HOLIDAYS:
-                actionBar.setTitle("Holidays");
+//                actionBar.setTitle("Holidays");
+                tvTitle.setText("Holidays");
                 HolidayFragment holidayFragment = new HolidayFragment();
                 swapFragment(holidayFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_TIMETABLE:
-                actionBar.setTitle("Timetable");
+//                actionBar.setTitle("Timetable");
+                tvTitle.setText("Timetable");
                 TimetableFragment timetableFragment = new TimetableFragment();
                 swapFragment(timetableFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_MARKET_PLACE:
-                actionBar.setTitle("Marketplace");
+//                actionBar.setTitle("Marketplace");
+                tvTitle.setText("Marketplace");
                 MarketPlaceFragment marketPlaceFragment = new MarketPlaceFragment();
                 swapFragment(marketPlaceFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_SETTINGS:
-                actionBar.setTitle("Settings");
+//                actionBar.setTitle("Settings");
+                tvTitle.setText("Settings");
                 AppSettingsFragment appSettingsFragment = new AppSettingsFragment();
                 swapFragment(appSettingsFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_NOTIFICATIONS:
-                actionBar.setTitle("Notifications");
+//                actionBar.setTitle("Notifications");
+                tvTitle.setText("Notifications");
                 NotificationFragment notificationFragment = new NotificationFragment();
                 swapFragment(notificationFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_MY_PROFILE:
-                actionBar.setTitle("My Profile");
+//                actionBar.setTitle("My Profile");
                 MyProfileFragment myProfileFragment = new MyProfileFragment();
+                tvTitle.setText("My Profile");
                 swapFragment(myProfileFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_ABOUT_APP:
-                actionBar.setTitle("About This App");
+//                actionBar.setTitle("About This App");
                 AboutThisAppFragment aboutThisAppFragment = new AboutThisAppFragment();
+                tvTitle.setText("About This App");
                 swapFragment(aboutThisAppFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_ABOUT_DEVELOPER:
-                actionBar.setTitle("About Developer");
+//                actionBar.setTitle("About Developer");
                 AboutDeveloperFragment aboutDeveloperFragment = new AboutDeveloperFragment();
+                tvTitle.setText("About Developer");
                 swapFragment(aboutDeveloperFragment);
-                attendanceIndividualViewModel.setCurrentFragmentId(identifier);
+                mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_SIGN_OUT:
@@ -206,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                                 AuthUI.getInstance().delete(MainActivity.this).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        attendanceIndividualViewModel.setCurrUser(null);
+                                        mainViewModel.setCurrUser(null);
                                         Toast.makeText(MainActivity.this, "Account Successfully Deleted...\nRedirecting to sign In Page...", Toast.LENGTH_SHORT).show();
                                         Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
                                         startActivity(startSignInActivity);
@@ -238,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                attendanceIndividualViewModel.setCurrUser(null);
+                mainViewModel.setCurrUser(null);
                 Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(startSignInActivity);
                 MainActivity.this.finish();
@@ -257,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     }
 
     public void setLiveBadge() {
-        LiveData<Integer> notificationCount = attendanceIndividualViewModel.getNotificationCount(ConverterUtils.convertDateToString(new Date()));
+        LiveData<Integer> notificationCount = mainViewModel.getNotificationCount(ConverterUtils.convertDateToString(new Date()));
         notificationCount.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {

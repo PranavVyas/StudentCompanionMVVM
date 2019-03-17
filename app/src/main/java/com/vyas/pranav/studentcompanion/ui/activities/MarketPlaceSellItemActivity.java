@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -84,6 +85,8 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     ConstraintLayout placeHOlderConnection;
     @BindView(R.id.image_placeholder_market_place_sell_item)
     ImageView imagePlaceHolder;
+    @BindView(R.id.tv_marketplace_sell_item_image_state)
+    TextView tvImageSelectionState;
 
     private String phoneNo, name, info, price, userName, selectedCategory;
     private Uri imageUri;
@@ -107,7 +110,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Sell Item");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         marketPlaceSellItemViewModel = ViewModelProviders.of(this).get(MarketPlaceSellItemViewModel.class);
         userName = marketPlaceSellItemViewModel.getCurrUser().getDisplayName();
         populateUI();
@@ -115,6 +118,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     private void populateUI() {
         setUpSpinner();
+        tvImageSelectionState.setText("Please choose Image");
         imageUri = marketPlaceSellItemViewModel.getImageUri();
         downloadUri = marketPlaceSellItemViewModel.getDownloadUri();
         GlideApp.with(this)
@@ -135,7 +139,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                 "Bicycle",
                 "Xerox"
         ));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_simple_custom_main, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -190,7 +194,8 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
             mCollectionReference.add(item).addOnSuccessListener(this, new OnSuccessListener<DocumentReference>() {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
-                    Toast.makeText(MarketPlaceSellItemActivity.this, "Added to database", Toast.LENGTH_SHORT).show();
+                    showSnackbar("Added to database");
+//                    Toast.makeText(MarketPlaceSellItemActivity.this, "Added to database", Toast.LENGTH_SHORT).show();
                     Logger.d("Successfully added to the database");
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra(EXTRA_DOWNLOAD_URL, child.toString());
@@ -201,18 +206,22 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Logger.d("Failed to add Due to : " + e.toString());
-                    Toast.makeText(MarketPlaceSellItemActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
+                    showSnackbar("Failed to add data");
+//                    Toast.makeText(MarketPlaceSellItemActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
                 }
             });
-        } else {
-            Toast.makeText(this, "Some error occured", Toast.LENGTH_SHORT).show();
         }
+//        else {
+//            showSnackbar("Some error occured");
+////            Toast.makeText(this, "Some error occured", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private boolean validateDownloadUri() {
         Logger.d("Validation of Download Uri executed");
         if (downloadUri == null) {
-            Toast.makeText(this, "Photo is not uploaded", Toast.LENGTH_SHORT).show();
+            showSnackbar("Photo is not uploaded");
+//            Toast.makeText(this, "Photo is not uploaded", Toast.LENGTH_SHORT).show();
             return false;
         }
         return !downloadUri.isEmpty();
@@ -221,7 +230,8 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     @OnClick(R.id.image_marketplace_sell_item_photo)
     void selectImage() {
         if (!validateName()) {
-            Toast.makeText(this, "Input name first", Toast.LENGTH_SHORT).show();
+            showSnackbar("Input name first");
+//            Toast.makeText(this, "Input name first", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -242,12 +252,17 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
         if (requestCode == RC_SELECT_IMAGE) {
             if (resultCode == RESULT_OK) {
+                if (downloadUri != null) {
+                    removeLastUploadedImage();
+                    //TODO Delete Previously Selecteed Image
+                }
                 imageUri = data.getData();
                 marketPlaceSellItemViewModel.setImageUri(imageUri);
                 GlideApp.with(this)
                         .load(imageUri).circleCrop()
                         .into(imageItem);
                 btnPostAd.setEnabled(false);
+                imageItem.setEnabled(false);
                 AppExecutors.getInstance().networkIO().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -264,27 +279,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     private void continueUploadImageIfAvailable() {
         if (marketPlaceSellItemViewModel.getUploadTask() != null) {
-            marketPlaceSellItemViewModel.getUploadTask().addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    getDownloadUrl(taskSnapshot);
-                    marketPlaceSellItemViewModel.setUploadTask(null);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(MarketPlaceSellItemActivity.this, "Error while uploading image in database", Toast.LENGTH_SHORT).show();
-                    Logger.d("FAiled due to " + e.getMessage());
-                    marketPlaceSellItemViewModel.setUploadTask(null);
-                    btnPostAd.setEnabled(false);
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                    showSnackbarProgress(progress);
-                }
-            });
+            startUpload();
         }
     }
 
@@ -292,7 +287,12 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         child = mStorageReference.child("images/" + userName + "/items/" + name + System.currentTimeMillis() + imageUri.getLastPathSegment());
         uploadTask = child.putFile(imageUri);
         marketPlaceSellItemViewModel.setUploadTask(uploadTask);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        startUpload();
+    }
+
+    private void startUpload() {
+        showSnackbar(marketPlaceSellItemViewModel.getProgress());
+        marketPlaceSellItemViewModel.getUploadTask().addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 getDownloadUrl(taskSnapshot);
@@ -301,7 +301,8 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MarketPlaceSellItemActivity.this, "Error while uploading image in database", Toast.LENGTH_SHORT).show();
+                showSnackbar("Error while uploading image in database");
+//                Toast.makeText(MarketPlaceSellItemActivity.this, "Error while uploading image in database", Toast.LENGTH_SHORT).show();
                 Logger.d("Failed due to " + e.getMessage());
                 marketPlaceSellItemViewModel.setUploadTask(null);
                 btnPostAd.setEnabled(false);
@@ -310,7 +311,11 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                 long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                showSnackbarProgress(progress);
+                marketPlaceSellItemViewModel.setCurrProgress(progress);
+                if (progress == 100) {
+                    marketPlaceSellItemViewModel.setCurrProgress(0);
+                }
+                showSnackbar(progress);
             }
         });
     }
@@ -322,15 +327,25 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     downloadUri = task.getResult().toString();
                     marketPlaceSellItemViewModel.setDownloadUri(downloadUri);
+                    tvImageSelectionState.setText("Selected Image!");
+                    btnPostAd.setEnabled(true);
+                    imageItem.setEnabled(true);
                 } else {
-                    Toast.makeText(MarketPlaceSellItemActivity.this, "Error While getting download link", Toast.LENGTH_SHORT).show();
+                    showSnackbar("Error While getting download link");
+                    imageItem.setEnabled(true);
+//                    Toast.makeText(MarketPlaceSellItemActivity.this, "Error While getting download link", Toast.LENGTH_SHORT).show();
                 }
-                btnPostAd.setEnabled(true);
             }
         });
     }
 
-    private void showSnackbarProgress(long progress) {
+    private void showSnackbar(String message) {
+        sbar = Snackbar.make(toolbar, message, Snackbar.LENGTH_SHORT);
+        sbar.show();
+
+    }
+
+    private void showSnackbar(long progress) {
         if (sbar != null) {
             if (sbar.isShown()) {
                 sbar.setText("Photo is uploading now (" + progress + " % Done)");
@@ -414,12 +429,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     private boolean validateImageUri() {
         Logger.d("Validation of Uri executed");
-        if (imageUri == null) {
-            return false;
-        } else {
-            Toast.makeText(this, "Image is not selected", Toast.LENGTH_SHORT).show();
-            return true;
-        }
+        return imageUri != null;
     }
 
     private void showPlaceHOlder(boolean isShown) {
@@ -449,12 +459,32 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     private void sendRemoveImageIntentIfAny() {
         if (child != null) {
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra(EXTRA_DOWNLOAD_URL, child.getPath());
-            setResult(RESULT_CANCELED, resultIntent);
-            Logger.d("Child is not null");
+            removeLastUploadedImage();
+//            Intent resultIntent = new Intent();
+//            resultIntent.putExtra(EXTRA_DOWNLOAD_URL, child.getPath());
+//            setResult(RESULT_CANCELED, resultIntent);
+//            Logger.d("Child is not null");
         } else {
             Logger.d("Child is null");
+        }
+    }
+
+    private void removeLastUploadedImage() {
+        String childPath = child.getPath();
+        Logger.d("Path of image is " + childPath);
+        if (childPath != null) {
+            StorageReference ref = FirebaseStorage.getInstance().getReference().child(childPath);
+            ref.delete().addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(MarketPlaceSellItemActivity.this, "Removed from database", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(this, new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(MarketPlaceSellItemActivity.this, "Error from database", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

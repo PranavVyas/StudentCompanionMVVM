@@ -186,9 +186,11 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     private void setSelectTimeStateFromViewModel() {
         boolean isEnabled = appSettingsViewModel.isReminderEnabled();
         if (isEnabled) {
-            findPreference(getString(R.string.pref_key_time_reminder_time)).setEnabled(true);
+            (findPreference(getString(R.string.pref_key_time_reminder_time))).setEnabled(true);
         } else {
-            findPreference(getString(R.string.pref_key_time_reminder_time)).setEnabled(false);
+            (findPreference(getString(R.string.pref_key_time_reminder_time))).setEnabled(false);
+//            CustomSwitchPreference customSwitchPreference = (CustomSwitchPreference) findPreference(getString(R.string.pref_key_time_reminder_time));
+//            customSwitchPreference.setSwitchState(false);
         }
     }
 

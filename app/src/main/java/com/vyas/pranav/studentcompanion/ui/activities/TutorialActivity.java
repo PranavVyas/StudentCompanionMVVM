@@ -50,6 +50,8 @@ public class TutorialActivity extends AppCompatActivity implements ViewPager.OnP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toturial);
         ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         tutorialViewModel = ViewModelProviders.of(this).get(TutorialViewModel.class);
         PagerAdapter adapter = new TutorialViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);

@@ -57,7 +57,7 @@ public class OpenSourceInformationActivity extends AppCompatActivity {
 
     private void populateUI() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Open Source Info");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         jsonString = loadJsonFromAsset();
         if (jsonString != null) {

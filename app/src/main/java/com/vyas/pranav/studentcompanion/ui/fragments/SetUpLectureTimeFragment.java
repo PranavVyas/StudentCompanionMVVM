@@ -6,13 +6,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.orhanobut.logger.AndroidLogAdapter;
+import com.google.android.material.button.MaterialButton;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
@@ -52,8 +51,6 @@ public class SetUpLectureTimeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpViewModel = ViewModelProviders.of(getActivity()).get(SetUpViewModel.class);
-        Logger.clearLogAdapters();
-        Logger.addLogAdapter(new AndroidLogAdapter());
         populateUI();
     }
 
@@ -73,12 +70,12 @@ public class SetUpLectureTimeFragment extends Fragment {
                 layout.setOrientation(LinearLayout.HORIZONTAL);
                 layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-                final Button btnStartTime = new Button(getContext());
+                final MaterialButton btnStartTime = new MaterialButton(getContext());
                 btnStartTime.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
                 btnStartTime.setText("Select start time");
                 layout.addView(btnStartTime, 0);
 
-                final Button btnEndTime = new Button(getContext());
+                final MaterialButton btnEndTime = new MaterialButton(getContext());
                 btnEndTime.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
                 btnEndTime.setText("Select end time");
                 layout.addView(btnEndTime, 1);
@@ -121,8 +118,8 @@ public class SetUpLectureTimeFragment extends Fragment {
             } else {
                 LinearLayout linearLayout = (LinearLayout) linearContainer.getChildAt(i);
 
-                String startTimeStr = ((Button) linearLayout.getChildAt(0)).getText().toString();
-                String endTimeStr = ((Button) linearLayout.getChildAt(1)).getText().toString();
+                String startTimeStr = ((MaterialButton) linearLayout.getChildAt(0)).getText().toString();
+                String endTimeStr = ((MaterialButton) linearLayout.getChildAt(1)).getText().toString();
 
                 if (!startTimeStr.contains(":") || !endTimeStr.contains(":")) {
                     Toast.makeText(getContext(), "Please Select time for All the Lectures", Toast.LENGTH_SHORT).show();

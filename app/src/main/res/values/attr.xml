@@ -5,5 +5,17 @@
         <attr name="table_selected_cell" format="color" />
         <attr name="placeholder_background" format="color" />
         <attr name="icon_tint_plane" format="color" />
+        <attr name="text_default_color_custom" format="color" />
+        <attr name="custom_background_default_color" format="color" />
+        <attr name="body_text_custom_default_color" format="color" />
+        <attr name="custom_component_color_default" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="SwitchPreferenceCustom">
+        <attr name="summaryOn_custom" format="string" />
+        <attr name="summaryOff_custom" format="string" />
+        <attr name="switchTextOn_custom" format="string" />
+        <attr name="switchTextOff_custom" format="string" />
+        <attr name="disableDependentsState_custom" format="boolean" />
     </declare-styleable>
 </resources>

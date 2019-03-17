@@ -6,11 +6,11 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
@@ -116,11 +116,10 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
         AlertDialog alertDialog = new AlertDialog.Builder(context)
                 .setView(alertView)
                 .show();
-        Button btnSold = alertDialog.findViewById(R.id.btn_marketplace_sell_item_action);
+        MaterialButton btnSold = alertDialog.findViewById(R.id.btn_marketplace_sell_item_action);
         if (btnSold != null) {
             btnSold.setText("Call Now!");
-            btnSold.setPadding(32, 0, 32, 0);
-            btnSold.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_phone, 0, 0, 0);
+            btnSold.setIcon(context.getResources().getDrawable(R.drawable.ic_phone));
             btnSold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

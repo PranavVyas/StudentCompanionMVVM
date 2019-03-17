@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="MaterialDrawerTheme.Light.DarkToolbar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorAccent">@color/colorSecondary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -8,20 +8,66 @@
         <item name="table_selected_cell">@color/tableSelectedCellColor</item>
         <item name="placeholder_background">@color/placeHolderBackground</item>
         <item name="icon_tint_plane">#000000</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
+        <item name="colorOnPrimary">#ffffff</item>
+        <!--<item name="android:fontFamily">@font/manrope_regular</item>-->
+        <!--<item name="android:textViewStyle">@style/MyMaterialTextView</item>-->
+        <item name="text_default_color_custom">#ffffff</item>
+        <item name="custom_background_default_color">#ffffff</item>
+        <item name="body_text_custom_default_color">#ffffff</item>
+        <item name="custom_component_color_default">#ffffff</item>
     </style>
 
-    <style name="AppTheme.Night" parent="MaterialDrawerTheme">
+    <style name="AppTheme.Night" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorAccent">@color/colorSecondaryNight</item>
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
         <item name="table_background">@color/fui_transparent</item>
         <item name="table_selected_cell">@color/tableSelectedCellColorDark</item>
         <item name="placeholder_background">@color/placeHolderBackgroundDark</item>
+        <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
         <item name="icon_tint_plane">#ffffff</item>
+        <item name="colorOnPrimary">#ffffff</item>
+        <item name="text_default_color_custom">#000000</item>
+        <item name="body_text_custom_default_color">#000000</item>
+        <item name="custom_background_default_color">#000000</item>
+        <item name="custom_component_color_default">#000000</item>
     </style>
 
     <style name="AppTheme.Launcher" parent="AppTheme">
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
+
+    <style name="MyMaterialTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/material_font</item>
+    </style>
+
+    <style name="MyCustomOutlinedBoxTextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/md_white_1000</item>
+        <item name="errorTextColor">@color/accent</item>
+        <item name="android:textColorHint">@color/md_white_1000</item>
+        <item name="helperTextTextColor">@color/md_white_1000</item>
+    </style>
+
+    <style name="MyCustomMaterialEditTextInput" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textColor">?attr/custom_component_color_default</item>
+    </style>
+
+    <style name="MyCustomToolbarTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">?attr/text_default_color_custom</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="MyCustomMaterialToolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:minHeight">?actionBarSize</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
 
 </resources>

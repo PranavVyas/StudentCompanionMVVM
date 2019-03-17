@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
-import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.DateConverter;
@@ -40,7 +40,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -55,7 +54,7 @@ public class AttendanceIndividualFragment extends Fragment {
     @BindView(R.id.tv_attendance_individual_date)
     TextView tvDate;
     @BindView(R.id.btn_attendance_individual_fragment_other_attendance)
-    FloatingActionButton btnOpenOtherAttendance;
+    Button btnOpenOtherAttendance;
     @BindView(R.id.progress_attendance_individul_fragment_main)
     ProgressBar mProgress;
     @BindView(R.id.placeholder_attendance_individual_holidays)
@@ -145,8 +144,8 @@ public class AttendanceIndividualFragment extends Fragment {
         rvMain.setLayoutManager(lm);
 //        skeletonScreen = Skeleton.bind(rvMain).adapter(mAdapter).load(R.layout.item_holder_recycler_indivdual_attendance_shimmer).count(3).show();
         mAdapter.setHasStableIds(true);
-        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), lm.getOrientation());
-        rvMain.addItemDecoration(decoration);
+//        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), lm.getOrientation());
+//        rvMain.addItemDecoration(decoration);
         startProgress();
         rvMain.setAdapter(mAdapter);
     }

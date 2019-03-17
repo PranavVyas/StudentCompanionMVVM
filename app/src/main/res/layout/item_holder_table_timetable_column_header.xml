@@ -8,10 +8,10 @@
         android:id="@+id/tv_table_timetable_column_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:gravity="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         tools:text="ColumnHeader">
 
     </TextView>

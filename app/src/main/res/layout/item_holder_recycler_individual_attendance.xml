@@ -1,59 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_margin="4dp">
 
-    <TextView
-        android:id="@+id/tv_recycler_individual_attendance_leture_no"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_recycler_individual_attendance_subject_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Lecture 1" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_recycler_individual_attendance_subject_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/switch_recycler_individual_attendance_present"
-        app:layout_constraintStart_toEndOf="@+id/tv_recycler_individual_attendance_leture_no"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Engineering Mathematics 2" />
+        <TextView
+            android:id="@+id/tv_recycler_individual_attendance_leture_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            android:textSize="@dimen/default_text_size_regular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_recycler_individual_attendance_subject_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Lecture 1" />
 
-    <com.github.angads25.toggle.widget.LabeledSwitch
-        android:id="@+id/switch_recycler_individual_attendance_present"
-        android:layout_width="85dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        app:colorBorder="?attr/colorAccent"
-        app:colorOn="?attr/colorAccent"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_recycler_individual_attendance_subject_name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:textOff="Absent"
-        app:textOn="Present"
-        tools:on="false" />
+        <TextView
+            android:id="@+id/tv_recycler_individual_attendance_subject_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="@dimen/default_text_size_regular"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/switch_recycler_individual_attendance_present"
+            app:layout_constraintStart_toEndOf="@+id/tv_recycler_individual_attendance_leture_no"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Engineering Mathematics 2" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.github.angads25.toggle.widget.LabeledSwitch
+            android:id="@+id/switch_recycler_individual_attendance_present"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:colorBorder="?attr/colorAccent"
+            app:colorOn="?attr/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_recycler_individual_attendance_subject_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:textOff="Absent"
+            app:textOn="Present"
+            tools:on="false" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

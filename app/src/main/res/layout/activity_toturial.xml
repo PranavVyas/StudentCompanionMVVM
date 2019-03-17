@@ -4,23 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_blue_art_background"
     tools:context=".ui.activities.TutorialActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_tutorial"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_toolbar_tutorial"
+            style="@style/MyCustomToolbarTextView"
+            android:text="Tutorial" />
+    </androidx.appcompat.widget.Toolbar>
 
     <Button
         android:id="@+id/btn_tutorial_previous"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Previous"
@@ -30,7 +34,7 @@
 
     <Button
         android:id="@+id/btn_tutorial_next"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Next"

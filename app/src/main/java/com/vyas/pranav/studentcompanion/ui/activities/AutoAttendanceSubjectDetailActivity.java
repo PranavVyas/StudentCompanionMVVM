@@ -124,7 +124,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Edit GeoFence");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
         checkForPermissionAndContinue();

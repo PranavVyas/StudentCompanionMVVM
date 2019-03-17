@@ -13,16 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
@@ -38,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.arch.core.util.Function;
 import androidx.fragment.app.Fragment;
@@ -135,7 +130,7 @@ public class MarketPlaceFragment extends Fragment {
     }
 
     private void setUpSpinner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_simple_custom_main, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
         spinnerCategory.setSelection(marketPlaceViewModel.getSelectedCategory());
@@ -174,22 +169,22 @@ public class MarketPlaceFragment extends Fragment {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(getContext(), "Successfully Add to Database", Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED && data != null) {
-                String childPath = data.getStringExtra(MarketPlaceSellItemActivity.EXTRA_DOWNLOAD_URL);
-                Logger.d("Path of image is " + childPath);
-                if (childPath != null) {
-                    StorageReference ref = FirebaseStorage.getInstance().getReference().child(childPath);
-                    ref.delete().addOnSuccessListener(getActivity(), new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(getContext(), "Removed from database", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnFailureListener(getActivity(), new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getContext(), "Error from database", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+//                String childPath = data.getStringExtra(MarketPlaceSellItemActivity.EXTRA_DOWNLOAD_URL);
+//                Logger.d("Path of image is " + childPath);
+//                if (childPath != null) {
+//                    StorageReference ref = FirebaseStorage.getInstance().getReference().child(childPath);
+//                    ref.delete().addOnSuccessListener(getActivity(), new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void aVoid) {
+//                            Toast.makeText(getContext(), "Removed from database", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }).addOnFailureListener(getActivity(), new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Toast.makeText(getContext(), "Error from database", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                }
             }
         }
 

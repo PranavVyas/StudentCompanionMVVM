@@ -26,7 +26,8 @@ public class AttendanceIndividualActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Attendance Details");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//        getSupportActionBar().setTitle("Attendance Details");
         Intent receivedData = getIntent();
         if (receivedData != null) {
             if (receivedData.hasExtra(EXTRA_DATE)) {

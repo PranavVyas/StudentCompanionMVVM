@@ -4,20 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@drawable/gradient_blue_art_background"
     tools:context=".ui.activities.AutoAttendanceSubjectDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_auto_attendance_subjet_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_toolbar_auto_attendance_subjet_detail"
+            style="@style/MyCustomToolbarTextView"
+            android:text="Edit GeoFence" />
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
         android:id="@+id/tv_auto_attendance_subject_detail_subject"
@@ -26,10 +29,12 @@
         android:layout_marginStart="@dimen/dimen_margin_horizontal_auto_attendance_subject_detail"
         android:layout_marginTop="@dimen/dimen_margin_vertical_auto_attendance_subject_detail"
         android:layout_marginEnd="@dimen/dimen_margin_horizontal_auto_attendance_subject_detail"
-        android:padding="@dimen/dimen_bordered_tv_padding"
         android:background="@drawable/boardered_rounded_corner_rectangle"
+        android:padding="@dimen/dimen_bordered_tv_padding"
         android:textAlignment="center"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textColor="?attr/body_text_custom_default_color"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +53,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_auto_attendance_subject_detail_current_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -72,6 +77,8 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:text="Current Place"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -83,6 +90,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Name : "
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -93,6 +102,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Address :"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_auto_attendance_subject_detail_name" />
 
@@ -103,6 +114,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="No Place Selected"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintBottom_toBottomOf="@+id/textView14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView14"
@@ -115,13 +127,14 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView15"
                 app:layout_constraintTop_toTopOf="@+id/textView15"
                 tools:text="No Place Selected" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <fragment
         android:id="@+id/mapFragment"

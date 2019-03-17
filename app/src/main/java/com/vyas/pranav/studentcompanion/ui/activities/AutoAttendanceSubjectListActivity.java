@@ -36,7 +36,7 @@ public class AutoAttendanceSubjectListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Select Subject");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
         autoAttendanceSubjectListViewModel = ViewModelProviders.of(this).get(AutoAttendanceSubjectListViewModel.class);

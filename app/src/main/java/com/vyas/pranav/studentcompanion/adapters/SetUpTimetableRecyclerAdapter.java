@@ -73,7 +73,7 @@ public class SetUpTimetableRecyclerAdapter extends RecyclerView.Adapter<SetUpTim
         SetUpTimetableHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            adapter = new ArrayAdapter<>(itemView.getContext(), android.R.layout.simple_spinner_item, subjectsList);
+            adapter = new ArrayAdapter<>(itemView.getContext(), R.layout.spinner_simple_custom_main, subjectsList);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
