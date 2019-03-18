@@ -60,7 +60,7 @@ public class DailyJobForSilentAction extends Job {
     private NotificationCompat.Action getOpenAppAction() {
         Intent openAppIntent = new Intent(getContext(), MainActivity.class);
         PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.SILENT_JOB_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Open App Now", openAppFromNotification).build());
+        return (new NotificationCompat.Action.Builder(R.drawable.logo_forground, "Open App Now", openAppFromNotification).build());
     }
 
     private NotificationCompat.Action getUnSilentAction() {
@@ -77,7 +77,7 @@ public class DailyJobForSilentAction extends Job {
 
     private void sendNotification(Context context, String title, String desc) {
         Notification notification = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.logo_forground)
                 .setContentTitle(title)
                 .setContentText(desc)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

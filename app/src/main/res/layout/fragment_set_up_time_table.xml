@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.SetUpTimetableFragment"
     tools:layout_editor_absoluteY="25dp">
 
@@ -43,7 +44,7 @@
         android:background="@drawable/boardered_rounded_corner_rectangle"
         android:padding="4dp"
         android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine6.White"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

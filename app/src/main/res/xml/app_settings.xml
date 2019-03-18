@@ -1,50 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:andriod="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.vyas.pranav.studentcompanion.utils.CustomSwitchPreference
-        android:defaultValue="true"
-        android:icon="@drawable/ic_reminder"
-        android:key="@string/pref_key_switch_enable_reminder"
+        app:defaultValue="true"
+        app:icon="@drawable/ic_reminder"
+        app:key="@string/pref_key_switch_enable_reminder"
         app:summaryOff="@string/pref_summery_off_switch_enable_reminder"
-        app:summaryOn_custom="@string/pref_summery_on_switch_enable_reminder"
-        android:title="@string/pref_title_switch_enable_reminder" />
+        app:summaryOn="@string/pref_summery_on_switch_enable_reminder"
+        app:title="@string/pref_title_switch_enable_reminder" />
 
     <!--suppress AndroidElementNotAllowed-->
     <com.vyas.pranav.studentcompanion.utils.TimePreference
         android:defaultValue="@integer/pref_def_value_time_reminder_time"
+        android:layout="@layout/custom_item_preference_full"
         android:key="@string/pref_key_time_reminder_time"
         andriod:icon="@drawable/ic_clock"
         android:title="@string/pref_title_time_reminder_time" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:icon="@drawable/ic_enable_auto_attendance"
-        android:key="@string/pref_key_switch_enable_auto_attendance"
-        android:summaryOff="@string/pref_summery_off_switch_enable_auto_attendance"
-        android:summaryOn="@string/pref_summery_on_switch_enable_auto_attendance"
-        android:title="@string/pref_title_switch_enable_auto_attendance" />
+    <com.vyas.pranav.studentcompanion.utils.CustomSwitchPreference
+        app:defaultValue="false"
+        app:icon="@drawable/ic_enable_auto_attendance"
+        app:key="@string/pref_key_switch_enable_auto_attendance"
+        app:summaryOff="@string/pref_summery_off_switch_enable_auto_attendance"
+        app:summaryOn="@string/pref_summery_on_switch_enable_auto_attendance"
+        app:title="@string/pref_title_switch_enable_auto_attendance" />
 
-    <SwitchPreference
-        android:defaultValue="@bool/pref_def_value_switch_enable_night_mode"
-        android:icon="@drawable/ic_night_mode"
-        android:key="@string/pref_key_switch_enable_night_mode"
-        android:summaryOff="@string/pref_summery_off_switch_enable_night_mode"
-        android:summaryOn="@string/pref_summery_on_switch_enable_night_mode"
-        android:title="@string/pref_title_switch_enable_night_mode" />
+    <com.vyas.pranav.studentcompanion.utils.CustomSwitchPreference
+        app:defaultValue="@bool/pref_def_value_switch_enable_night_mode"
+        app:icon="@drawable/ic_night_mode"
+        app:key="@string/pref_key_switch_enable_night_mode"
+        app:summaryOff="@string/pref_summery_off_switch_enable_night_mode"
+        app:summaryOn="@string/pref_summery_on_switch_enable_night_mode"
+        app:title="@string/pref_title_switch_enable_night_mode" />
 
     <Preference
         android:icon="@drawable/ic_auto_attendance_map"
+        android:layout="@layout/custom_item_preference_full"
         android:key="@string/pref_key_select_places_auto_attendance"
         android:title="@string/pref_select_places_auto_attendance" />
 
-    <SwitchPreference
-        android:defaultValue="@bool/pref_def_value_switch_enable_smart_silent"
-        android:key="@string/pref_key_switch_enable_smart_silent"
-        android:icon="@drawable/ic_silent"
-        android:summaryOff="@string/pref_summery_off_switch_enable_smart_silent"
-        android:summaryOn="@string/pref_summery_on_switch_enable_smart_silent"
-        android:title="@string/pref_title_switch_enable_smart_silent" />
+    <com.vyas.pranav.studentcompanion.utils.CustomSwitchPreference
+        app:defaultValue="@bool/pref_def_value_switch_enable_smart_silent"
+        app:icon="@drawable/ic_silent"
+        app:key="@string/pref_key_switch_enable_smart_silent"
+        app:summaryOff="@string/pref_summery_off_switch_enable_smart_silent"
+        app:summaryOn="@string/pref_summery_on_switch_enable_smart_silent"
+        app:title="@string/pref_title_switch_enable_smart_silent" />
 
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

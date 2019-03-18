@@ -37,12 +37,11 @@
     <TextView
         android:id="@+id/textView7"
         android:layout_width="0dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:textColor="?attr/body_text_custom_default_color"
+        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
         android:text="Helllo There!\n Welcome to Student Compainion app. The app where you can do your regular things with ease. For Getting started just sign in and if you don't have account associated with the email ID or gmail we will ask you to sign up which takes less than 30 secconds!\nWe Only NEED THE INFORMATION SO THAT WE CAN KNOW HOW MANY PEOPLE ARE USING AND ACCESSING OUR SERVERS,I WILL NEVER POST IT TO ANYONE ELSE."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -96,7 +96,7 @@ public class DailyJobForRefreshGeoFence extends DailyJob implements GoogleApiCli
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext(), "NOTIFICATION_MAIN")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.logo_forground)
                 .setContentTitle("Refreshed GeoFences")
                 .setContentText("Geofences refreshed now")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -115,6 +115,6 @@ public class DailyJobForRefreshGeoFence extends DailyJob implements GoogleApiCli
     private NotificationCompat.Action getOpenAppAction() {
         Intent openAppIntent = new Intent(getContext(), MainActivity.class);
         PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.REFRESH_GEO_FENCE_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Open App", openAppFromNotification).build());
+        return (new NotificationCompat.Action.Builder(R.drawable.logo_forground, "Open App", openAppFromNotification).build());
     }
 }

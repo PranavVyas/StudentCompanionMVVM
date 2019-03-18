@@ -3,18 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    tools:background="@drawable/gradient_blue_art_background"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_recycler_auto_attendance_list_subject_no"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        android:textColor="?attr/body_text_custom_default_color"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="4dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="1" />
 
     <TextView
@@ -25,8 +28,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="?attr/body_text_custom_default_color"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_recycler_auto_attendance_list_subject_no"

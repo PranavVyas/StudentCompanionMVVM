@@ -18,6 +18,24 @@ public class TimetableViewModel extends AndroidViewModel {
     private TimetableRepository timetableRepository;
     private SetUpProcessRepository setUpProcessRepository;
     private int lecturesPerDay;
+    private boolean isProductiveViewOn = false;
+    private int currentPage = 0;
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
+    public boolean isProductiveViewOn() {
+        return isProductiveViewOn;
+    }
+
+    public void setProductiveViewOn(boolean productiveViewOn) {
+        isProductiveViewOn = productiveViewOn;
+    }
 
     public TimetableViewModel(@NonNull Application application) {
         super(application);

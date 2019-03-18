@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.TutorialStep2Fragment">
 
 
@@ -15,8 +16,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="Auto Attendance"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine5.White"
         android:textAlignment="center"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +30,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
         android:text="Auto Attendance is a unique feature of this app which automates the work of attendance marking by using clever combination of WiFi, Mobile Network and GPS(Rarely) with the GeoFence Technology provided by Google\n\nThis Feature is still in Beta phase so It might be unstable\n\nDue to Policy of Google, I CAN'T SAVE ANY DATA OF THE LOCATION OF USER ANYWHERE so This Feature needs Active Internet Connection and Location Services On At the running time \n\nPlease Read the Privacy Policy Of the App from button below, By Pressing Next You are agreeing to same"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,8 +56,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintTop_toBottomOf="@+id/textView19"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

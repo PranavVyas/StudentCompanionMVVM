@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:background="@drawable/gradient_blue_art_background"
+    tools:background="?attr/custom_background_main"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.MarketPlaceFragment">
 

@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.evrencoskun.tableview.TableView;
+import com.github.angads25.toggle.interfaces.OnToggledListener;
+import com.github.angads25.toggle.model.ToggleableView;
+import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.TimetableTableAdapter;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
@@ -20,19 +23,30 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.vyas.pranav.studentcompanion.utils.Constants.EXTRA_TIMETABLE_DAY;
+import static com.vyas.pranav.studentcompanion.utils.Constants.EXTRA_TIMETABLE_DAY_KEY;
 
 public class TimetableFragment extends Fragment {
     @BindView(R.id.table_timetable_fragment_main)
     TableView tableTimetable;
+    @BindView(R.id.switch_fragment_timetable_productive_view)
+    LabeledSwitch switchProductiveView;
+    @BindView(R.id.viewpager_fragment_timetable_day_switcher)
+    ViewPager viewPagerDaySwitcher;
 
     private TimetableTableAdapter mAdapter;
     private TimetableViewModel timetableViewModel;
     private int lecturesPerDay;
+    private int currentPage = 0;
+    private boolean isProductiveViewOn = false;
 
     public TimetableFragment() {
     }
@@ -56,7 +70,10 @@ public class TimetableFragment extends Fragment {
         mAdapter = new TimetableTableAdapter(getContext());
         timetableViewModel = ViewModelProviders.of(getActivity()).get(TimetableViewModel.class);
         lecturesPerDay = timetableViewModel.getLecturesPerDay();
+        currentPage = timetableViewModel.getCurrentPage();
+        isProductiveViewOn = timetableViewModel.isProductiveViewOn();
 
+        switchProductiveView.setOn(isProductiveViewOn);
         final LiveData<List<TimetableEntry>> timetableEntriesLiveData = timetableViewModel.getTimetableEntries();
         timetableEntriesLiveData.observe(this, new Observer<List<TimetableEntry>>() {
             @Override
@@ -107,8 +124,111 @@ public class TimetableFragment extends Fragment {
                 List<String> lectureNo = getColumnHeaders(lecturesPerDay);
                 tableTimetable.setAdapter(mAdapter);
                 mAdapter.setAllItems(lectureNo, weekDays, daysLectures);
-                //tableTimetable.setColumnWidth(1,LinearLayout.LayoutParams.WRAP_CONTENT);
-                //tableTimetable.setColumnWidth(2,LinearLayout.LayoutParams.WRAP_CONTENT);
+                loadDataInViewPager(daysLectures, lectureNo);
+                refreshView();
+            }
+        });
+
+        switchProductiveView.setOnToggledListener(new OnToggledListener() {
+            @Override
+            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
+                isProductiveViewOn = isOn;
+                refreshView();
+                timetableViewModel.setProductiveViewOn(isOn);
+            }
+        });
+    }
+
+    private void loadDataInViewPager(List<List<String>> daysLectures, List<String> lectureNo) {
+        viewPagerDaySwitcher.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPage = position;
+                timetableViewModel.setCurrentPage(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        viewPagerDaySwitcher.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+            @NonNull
+            @Override
+            public Fragment getItem(int position) {
+                TimetableDayFragment dayFrag = new TimetableDayFragment();
+                switch (position) {
+                    case 0:
+                        Bundle mondayBundle = new Bundle();
+                        mondayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(0));
+                        mondayBundle.putString(EXTRA_TIMETABLE_DAY, "Monday");
+                        dayFrag.setArguments(mondayBundle);
+                        return dayFrag;
+
+                    case 1:
+                        Bundle tuesdayBundle = new Bundle();
+                        tuesdayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(1));
+                        tuesdayBundle.putString(EXTRA_TIMETABLE_DAY, "Tuesday");
+                        dayFrag.setArguments(tuesdayBundle);
+                        return dayFrag;
+
+                    case 2:
+                        Bundle wednesdayBundle = new Bundle();
+                        wednesdayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(2));
+                        wednesdayBundle.putString(EXTRA_TIMETABLE_DAY, "Wednesday");
+                        dayFrag.setArguments(wednesdayBundle);
+                        return dayFrag;
+
+                    case 3:
+                        Bundle thursdayBundle = new Bundle();
+                        thursdayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(3));
+                        thursdayBundle.putString(EXTRA_TIMETABLE_DAY, "Thursday");
+                        dayFrag.setArguments(thursdayBundle);
+                        return dayFrag;
+
+                    case 4:
+                        Bundle fridayBundle = new Bundle();
+                        fridayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(4));
+                        fridayBundle.putString(EXTRA_TIMETABLE_DAY, "Friday");
+                        dayFrag.setArguments(fridayBundle);
+                        return dayFrag;
+                }
+                return null;
+
+            }
+
+            @Override
+            public int getCount() {
+                return 5;
+            }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position) {
+                    case 0:
+                        return "Monday";
+
+                    case 1:
+                        return "Tuesday";
+
+                    case 2:
+                        return "Wednesday";
+
+                    case 3:
+                        return "Thursday";
+
+                    case 4:
+                        return "Friday";
+
+                    default:
+                        return "Default Day";
+                }
             }
         });
     }
@@ -125,5 +245,15 @@ public class TimetableFragment extends Fragment {
             columnHeader.add(header);
         }
         return columnHeader;
+    }
+
+    private void refreshView() {
+        if (isProductiveViewOn) {
+            viewPagerDaySwitcher.setVisibility(View.GONE);
+            tableTimetable.setVisibility(View.VISIBLE);
+        } else {
+            viewPagerDaySwitcher.setVisibility(View.VISIBLE);
+            tableTimetable.setVisibility(View.GONE);
+        }
     }
 }

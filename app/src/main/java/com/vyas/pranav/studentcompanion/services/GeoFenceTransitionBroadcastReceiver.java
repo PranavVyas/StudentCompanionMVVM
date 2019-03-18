@@ -78,7 +78,7 @@ public class GeoFenceTransitionBroadcastReceiver extends BroadcastReceiver {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "NOTIFICATION_MAIN")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.logo_forground)
                 .setContentTitle("Entered")
                 .setContentText("Entered in GepFences Now")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -97,7 +97,7 @@ public class GeoFenceTransitionBroadcastReceiver extends BroadcastReceiver {
     private NotificationCompat.Action getOpenAppAction(Context context) {
         Intent openAppIntent = new Intent(context, MainActivity.class);
         PendingIntent openAppFromNotification = PendingIntent.getActivity(context, RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Title", openAppFromNotification).build());
+        return (new NotificationCompat.Action.Builder(R.drawable.logo_forground, "Title", openAppFromNotification).build());
     }
 
 }

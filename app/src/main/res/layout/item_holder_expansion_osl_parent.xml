@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    tools:background="?attr/custom_background_main"
     android:orientation="vertical">
 
     <TextView
@@ -13,9 +14,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_marginBottom="4dp"
-        android:textColor="?attr/body_text_custom_default_color"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/image_expansion_osl_parent_arrow"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_arrow_down"
-        android:tint="?attr/icon_tint_plane"
+        android:tint="?attr/custom_component_color_default"
         app:layout_constraintBottom_toBottomOf="@+id/tv_expansion_osl_parent_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_expansion_osl_parent_name"

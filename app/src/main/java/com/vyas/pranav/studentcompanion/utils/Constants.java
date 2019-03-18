@@ -27,4 +27,7 @@ public final class Constants {
     public static final String INTENT_ACTION_UNSILENT_DEVICE = "ACTION_UNSILENT_DEVICE";
     public static final String INTENT_ACTION_SILENT_DEVICE = "ACTION_SILENT_DEVICE";
     public static final int RC_OPEN_MARKET_PLACE_NEW_AD = 101;
+
+    public static final String EXTRA_TIMETABLE_DAY_KEY = "EXTRA_TIMETABLE_DAY_KEY";
+    public static final String EXTRA_TIMETABLE_DAY = "EXTRA_TIMETABLE_DAY";
 }

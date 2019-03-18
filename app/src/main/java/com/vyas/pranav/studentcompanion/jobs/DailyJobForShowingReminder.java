@@ -54,7 +54,7 @@ public class DailyJobForShowingReminder extends DailyJob {
     private NotificationCompat.Action getOpenAppAction() {
         Intent openAppIntent = new Intent(getContext(), SignInActivity.class);
         PendingIntent openAppFromNotification = PendingIntent.getActivity(getContext(), Constants.SHOW_REMINDER_JOB_RC_OPEN_APP, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return (new NotificationCompat.Action.Builder(R.drawable.ic_launcher_foreground, "Open App Now", openAppFromNotification).build());
+        return (new NotificationCompat.Action.Builder(R.drawable.logo_forground, "Open App Now", openAppFromNotification).build());
     }
 
     private NotificationCompat.Action getMarkAllPresentAction() {
@@ -70,7 +70,7 @@ public class DailyJobForShowingReminder extends DailyJob {
 
     private void sendNotification(Context context, String title, String desc, NotificationCompat.Action action1, NotificationCompat.Action action2, PendingIntent contentIntent) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.logo_forground)
                 .setContentTitle(title)
                 .setContentText(desc)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

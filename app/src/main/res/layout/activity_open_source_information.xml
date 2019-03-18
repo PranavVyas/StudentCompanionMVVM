@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/gradient_blue_art_background"
+    android:background="?attr/custom_background_main"
     android:layout_height="match_parent"
     tools:context=".ui.activities.OpenSourceInformationActivity">
 
@@ -31,8 +31,7 @@
         android:layout_marginEnd="8dp"
         android:text="App : Student Companion"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        android:textColor="?attr/body_text_custom_default_color"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine6.White"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_open_source_information" />
@@ -45,9 +44,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
-        android:textColor="?attr/body_text_custom_default_color"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:textStyle="bold"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_open_source_information_app_name" />
@@ -60,9 +57,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
-        android:textColor="?attr/body_text_custom_default_color"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:textStyle="bold"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_open_source_information_license" />
@@ -74,7 +69,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:textColor="?attr/body_text_custom_default_color"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
         android:text="Exteranl Libraries and Photos Credits"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"

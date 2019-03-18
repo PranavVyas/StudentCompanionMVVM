@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_blue_art_background"
+    android:background="?attr/custom_background_main"
     tools:context=".ui.activities.AutoAttendanceSubjectDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -32,9 +32,7 @@
         android:background="@drawable/boardered_rounded_corner_rectangle"
         android:padding="@dimen/dimen_bordered_tv_padding"
         android:textAlignment="center"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:textColor="?attr/body_text_custom_default_color"
-        android:textStyle="bold"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine6.White"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,8 +75,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:text="Current Place"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textStyle="bold"
+                style="@style/MyMaterialTextView.SmallTextViewBody1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -90,8 +87,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Name : "
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textStyle="bold"
+                style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
@@ -102,8 +98,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Address :"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textStyle="bold"
+                style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_auto_attendance_subject_detail_name" />
 
@@ -114,7 +109,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="No Place Selected"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                style="@style/MyMaterialTextView.SmallTextViewBody2"
                 app:layout_constraintBottom_toBottomOf="@+id/textView14"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView14"
@@ -127,7 +122,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                style="@style/MyMaterialTextView.SmallTextViewBody2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView15"

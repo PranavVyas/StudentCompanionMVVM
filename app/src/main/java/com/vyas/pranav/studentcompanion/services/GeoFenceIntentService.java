@@ -82,7 +82,7 @@ public class GeoFenceIntentService extends IntentService {
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplication(), "NOTIFICATION_MAIN")
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.logo_forground)
                 .setContentTitle("GeoFence")
                 .setContentText("Entered Geo fence For Subject " + subjectName)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

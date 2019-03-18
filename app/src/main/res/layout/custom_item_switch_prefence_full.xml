@@ -1,33 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2006 The Android Open Source Project
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-          http://www.apache.org/licenses/LICENSE-2.0
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
---><!-- Layout for a Preference in a PreferenceActivity. The
-     Preference is able to place a specific widget for its particular
-     type in the "widget_frame" layout. -->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
+    android:paddingStart="?android:attr/scrollbarSize"
     android:paddingEnd="?android:attr/scrollbarSize">
 
     <ImageView
         android:id="@android:id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_width="50dp"
+        android:layout_height="50sp"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        tools:srcCompat="@tools:sample/avatars[10]" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dip"
         android:layout_marginTop="6dip"
@@ -41,8 +33,9 @@
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+            android:fontFamily="@font/manrope_semibold"
             android:singleLine="true"
-            android:textAppearance="?attr/text_default_color_custom"
             tools:text="Trial" />
 
         <TextView
@@ -50,21 +43,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"
+            style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+            android:textSize="12sp"
             android:layout_alignStart="@android:id/title"
             android:maxLines="4"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?attr/text_default_color_custom"
             tools:text="Trial" />
     </RelativeLayout>
-    <!-- Preference should place its actual preference widget here. -->
-    <!--<LinearLayout android:id="@android:id/widget_frame"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:gravity="center_vertical"-->
-    <!--android:orientation="vertical" >-->
+
     <com.github.angads25.toggle.widget.LabeledSwitch
         android:id="@+id/custom_switch_widget_switch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <!--</LinearLayout>-->
+        android:layout_height="wrap_content"
+        app:colorBorder="?attr/colorAccent"
+        app:colorOn="?attr/colorAccent" />
 </LinearLayout>

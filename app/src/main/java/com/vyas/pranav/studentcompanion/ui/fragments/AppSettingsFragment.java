@@ -39,7 +39,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.app_settings);
+        setPreferencesFromResource(R.xml.app_settings, rootKey);
     }
 
     @Override

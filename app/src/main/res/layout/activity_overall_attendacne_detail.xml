@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_blue_art_background">
+    android:background="?attr/custom_background_main">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -41,6 +41,7 @@
 
         <TextView
             android:id="@+id/tv_overall_attendance_detail_subject"
+            style="@style/MyMaterialTextView.MediumTextViewHeadLine5.White"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -49,8 +50,6 @@
             android:background="@drawable/boardered_rounded_corner_rectangle"
             android:padding="4dp"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:textColor="?attr/body_text_custom_default_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,11 +79,10 @@
 
         <TextView
             android:id="@+id/tv_overall_attendance_detail_present"
+            style="@style/MyMaterialTextView.SmallTextViewBody2.White"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="?attr/body_text_custom_default_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView3"
             app:layout_constraintEnd_toEndOf="@+id/imageView3"
@@ -94,11 +92,10 @@
 
         <TextView
             android:id="@+id/tv_overall_attendance_detail_bunked"
+            style="@style/MyMaterialTextView.SmallTextViewBody2.White"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="?attr/body_text_custom_default_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView5"
             app:layout_constraintEnd_toEndOf="@+id/imageView5"
@@ -108,11 +105,10 @@
 
         <TextView
             android:id="@+id/tv_overall_attendance_detail_left_bunk"
+            style="@style/MyMaterialTextView.SmallTextViewBody2.White"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="?attr/body_text_custom_default_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView4"
             app:layout_constraintEnd_toEndOf="@+id/imageView4"
@@ -148,14 +144,12 @@
 
         <TextView
             android:id="@+id/textView2"
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Total\nLectures"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="?attr/body_text_custom_default_color"
-
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/imageView"
@@ -163,15 +157,12 @@
 
         <TextView
             android:id="@+id/textView5"
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Present\nLectures"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-
-            android:textColor="?attr/body_text_custom_default_color"
-
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/tv_overall_attendance_detail_present"
             app:layout_constraintStart_toStartOf="@+id/tv_overall_attendance_detail_present"
@@ -185,8 +176,7 @@
             android:layout_marginBottom="8dp"
             android:text="Bunked\nLectures"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="?attr/body_text_custom_default_color"
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView5"
@@ -201,9 +191,7 @@
             android:layout_marginBottom="8dp"
             android:text="Available\nto Bunk"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:textColor="?attr/body_text_custom_default_color"
-
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView4"
@@ -212,11 +200,10 @@
 
         <TextView
             android:id="@+id/tv_overall_attendance_detail_total"
+            style="@style/MyMaterialTextView.SmallTextViewBody2.White"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            android:textColor="?attr/body_text_custom_default_color"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -226,14 +213,13 @@
 
         <TextView
             android:id="@+id/textView4"
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:text="Details"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:textColor="?attr/body_text_custom_default_color"
             app:layout_constraintEnd_toStartOf="@+id/divider4"
             app:layout_constraintStart_toEndOf="@+id/divider3"
             app:layout_constraintTop_toBottomOf="@+id/progress_overall_attendance_detail" />

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.AboutThisAppFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,8 +33,7 @@
             android:layout_marginEnd="8dp"
             android:text="Student Companion"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
-            android:textStyle="bold"
+            style="@style/MyMaterialTextView.MediumTextViewHeadLine5.White"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_about_app_icon" />
@@ -59,7 +59,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Version"
-            android:textSize="12sp"
+            style="@style/MyMaterialTextView.SmallTextViewBody2.White"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider6" />
@@ -69,7 +69,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1.0.0"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/textView33"
             app:layout_constraintStart_toStartOf="@+id/textView33"
             app:layout_constraintTop_toBottomOf="@+id/textView33" />
@@ -82,7 +83,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Last Update"
-            android:textSize="12sp"
+            style="@style/MyMaterialTextView.SmallTextViewBody2.White"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView34" />
@@ -92,7 +93,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="February 2019"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/textView35"
             app:layout_constraintStart_toStartOf="@+id/textView35"
             app:layout_constraintTop_toBottomOf="@+id/textView35" />
@@ -105,7 +107,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
             android:text="Student Companion is an app with aim of  making student life easier in mind."
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -119,6 +121,7 @@
             android:layout_marginEnd="8dp"
             android:text="Terms of Services"
             android:textStyle="italic"
+            android:textColor="?attr/text_default_color_custom"
             app:layout_constraintBottom_toBottomOf="@+id/tv_about_app_open_source_license"
             app:layout_constraintEnd_toStartOf="@+id/divider"
             app:layout_constraintStart_toStartOf="parent"
@@ -132,7 +135,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Developer"
-            android:textSize="12sp"
+            style="@style/MyMaterialTextView.SmallTextViewBody2.White"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView36" />
@@ -143,8 +146,8 @@
             android:layout_height="wrap_content"
             android:text="Pranav Vyas"
             android:textAlignment="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:textSize="18sp"
+            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/textView39"
             app:layout_constraintStart_toStartOf="@+id/textView39"
             app:layout_constraintTop_toBottomOf="@+id/textView39" />
@@ -159,6 +162,7 @@
             android:layout_marginBottom="8dp"
             android:text="Open Source License"
             android:textStyle="italic"
+            android:textColor="?attr/text_default_color_custom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/divider"

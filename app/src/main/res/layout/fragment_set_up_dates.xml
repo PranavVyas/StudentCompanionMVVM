@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.SetUpDatesFragment">
 
 
@@ -26,6 +27,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
         android:text="My Semester is from"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="to"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
         app:layout_constraintEnd_toEndOf="@+id/btn_set_up_dates_fragment_start_date"
         app:layout_constraintStart_toStartOf="@+id/btn_set_up_dates_fragment_start_date"
         app:layout_constraintTop_toBottomOf="@+id/btn_set_up_dates_fragment_start_date" />
@@ -68,6 +71,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        style="@style/MyCustomOutlinedBoxTextInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_set_up_dates_fragment_end_date">
@@ -77,6 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Semester No"
+            style="@style/MyCustomMaterialEditTextInput"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

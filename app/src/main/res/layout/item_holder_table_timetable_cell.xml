@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textStyle="bold"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
         tools:text="Cell" />
 </LinearLayout>

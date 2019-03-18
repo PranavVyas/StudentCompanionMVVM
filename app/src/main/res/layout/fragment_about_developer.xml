@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    tools:background="?attr/custom_background_main"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.AboutDeveloperFragment">
 
@@ -46,9 +47,7 @@
                     android:layout_marginEnd="8dp"
                     android:text="Pranav Vyas"
                     android:textAlignment="center"
-                    android:textAppearance="@android:style/TextAppearance.Large"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
+                    style="@style/MyMaterialTextView.MediumTextViewHeadLine5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -61,8 +60,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="Surat, Gujarat, India"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                    android:textSize="12sp"
+                    style="@style/MyMaterialTextView.SmallTextViewBody2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView13"
@@ -75,6 +73,7 @@
                     android:layout_height="0dp"
                     android:layout_marginStart="8dp"
                     android:src="@drawable/ic_location"
+                    android:tint="?attr/icon_tint_plane"
                     app:layout_constraintBottom_toBottomOf="@+id/textView44"
                     app:layout_constraintEnd_toStartOf="@+id/textView44"
                     app:layout_constraintHorizontal_chainStyle="packed"
@@ -121,6 +120,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="Current"
+                    style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -134,8 +134,7 @@
                     android:layout_marginBottom="8dp"
                     android:text="B.Tech (Chemical Enginering)\n(3rd Year)\nSVNIT,Surat\nGujarat - 395007\nIndia"
                     android:textAlignment="center"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:textSize="14sp"
+                    style="@style/MyMaterialTextView.SmallTextViewBody2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -168,7 +167,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="Socials"
-                    android:textSize="12sp"
+                    style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
