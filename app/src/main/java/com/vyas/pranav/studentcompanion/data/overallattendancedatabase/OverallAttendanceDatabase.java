@@ -18,7 +18,7 @@ public abstract class OverallAttendanceDatabase extends RoomDatabase {
 //            insertFakeData(sInstance);
 //        }
 //    };
-    private static String DB_NAME = "OverallAttendanceDatabase";
+    public static String DB_NAME = "OverallAttendanceDatabase";
 
     public static OverallAttendanceDatabase getInstance(Context context) {
         if (sInstance == null) {

@@ -26,6 +26,7 @@ import com.vyas.pranav.studentcompanion.ui.fragments.MarketPlaceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.MyProfileFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.NotificationFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.ResourcesFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
@@ -185,6 +186,15 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 AboutDeveloperFragment aboutDeveloperFragment = new AboutDeveloperFragment();
                 tvTitle.setText("About Developer");
                 swapFragment(aboutDeveloperFragment);
+                mainViewModel.setCurrentFragmentId(identifier);
+                break;
+
+
+            case NavigationDrawerUtil.ID_RESOURCES:
+//                actionBar.setTitle("About Developer");
+                ResourcesFragment resourcesFragment = new ResourcesFragment();
+                tvTitle.setText("Resources");
+                swapFragment(resourcesFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
                 break;
 

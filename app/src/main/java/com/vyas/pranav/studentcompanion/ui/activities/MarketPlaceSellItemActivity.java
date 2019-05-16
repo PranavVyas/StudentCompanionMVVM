@@ -254,7 +254,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 if (downloadUri != null) {
                     removeLastUploadedImage();
-                    //TODO Delete Previously Selecteed Image
+                    //TODO Delete Previously Selected Image
                 }
                 imageUri = data.getData();
                 marketPlaceSellItemViewModel.setImageUri(imageUri);
@@ -487,6 +487,4 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
             });
         }
     }
-
-
 }

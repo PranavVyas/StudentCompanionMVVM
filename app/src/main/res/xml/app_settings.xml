@@ -49,4 +49,16 @@
         app:summaryOn="@string/pref_summery_on_switch_enable_smart_silent"
         app:title="@string/pref_title_switch_enable_smart_silent" />
 
+    <Preference
+        android:icon="@drawable/ic_auto_attendance_map"
+        android:key="@string/pref_key_backup_database"
+        android:layout="@layout/custom_item_preference_full"
+        android:title="@string/pref_backup_database" />
+
+    <Preference
+        android:icon="@drawable/ic_auto_attendance_map"
+        android:key="@string/pref_key_restore_database"
+        android:layout="@layout/custom_item_preference_full"
+        android:title="@string/pref_restore_database" />
+
 </androidx.preference.PreferenceScreen>

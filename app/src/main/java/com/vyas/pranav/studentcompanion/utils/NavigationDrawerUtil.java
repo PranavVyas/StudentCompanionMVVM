@@ -31,6 +31,7 @@ public class NavigationDrawerUtil {
     public static final int ID_ABOUT_DEVELOPER = 10;
     public static final int ID_SIGN_OUT = 11;
     public static final int ID_DELETE_ACCOUNT = 12;
+    public static final int ID_RESOURCES = 13;
 
     public static Drawer getMaterialDrawer(Activity context, Toolbar toolbar, FirebaseUser currUser) {
 
@@ -186,6 +187,18 @@ public class NavigationDrawerUtil {
             profile.withIcon(context.getResources().getDrawable(R.drawable.ic_profile));
         }
 
+        PrimaryDrawerItem resources = new PrimaryDrawerItem()
+                .withIdentifier(ID_RESOURCES)
+                .withName("Resources")
+                .withIcon(R.drawable.ic_bookshelf)
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        mCallback.OnNavigationItemClicked(ID_RESOURCES);
+                        return false;
+                    }
+                });
+
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(context)
                 .withHeaderBackground(R.drawable.account_background_new)
@@ -222,7 +235,8 @@ public class NavigationDrawerUtil {
                         aboutApp,
                         aboutDeveloper,
                         signOut,
-                        deleteAccount
+                        deleteAccount,
+                        resources
                 ).build();
         return drawer;
     }
