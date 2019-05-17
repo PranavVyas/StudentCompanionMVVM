@@ -17,10 +17,47 @@ public class UploadBookViewModel extends AndroidViewModel {
     private UploadTask uploadTask = null;
     private FirebaseUser currUser = null;
     private long progress = 0;
+    private String authorName, bookName, subject, extraInfo, downloadUriString;
 
     public UploadBookViewModel(@NonNull Application application) {
         super(application);
         currUser = FirebaseAuth.getInstance().getCurrentUser();
+    }
+
+    public void setProgress(long progress) {
+        this.progress = progress;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getExtraInfo() {
+        return extraInfo;
+    }
+
+    public void setExtraInfo(String extraInfo) {
+        this.extraInfo = extraInfo;
     }
 
     public FirebaseUser getCurrUser() {
@@ -61,5 +98,13 @@ public class UploadBookViewModel extends AndroidViewModel {
 
     public long getProgress() {
         return progress;
+    }
+
+    public String getDownloadUriString() {
+        return downloadUriString;
+    }
+
+    public void setDownloadUriString(String downloadUriString) {
+        this.downloadUriString = downloadUriString;
     }
 }

@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_upload_book">
 
         <ScrollView
-            android:id="@+id/scrollView4"
+            android:id="@+id/scroll_upload_book_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
@@ -55,12 +55,33 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:enabled="false"
                     android:text="Upload"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/btn_upload_book_select_book"
                     app:layout_constraintVertical_bias="1.0" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_upload_book_extra_info"
+                    style="@style/MyCustomOutlinedBoxTextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_upload_book_subject">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_upload_book_extra_info"
+                        style="@style/MyCustomMaterialEditTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Extra Information" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_input_upload_book_book_name"
@@ -89,7 +110,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Select Book"
+                    android:text="Select Document"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_upload_book_status" />
@@ -97,15 +118,17 @@
                 <TextView
                     android:id="@+id/tv_upload_book_status"
                     style="@style/MyMaterialTextView.SmallTextViewBody2.White"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:text="Please Select Document"
+                    android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.571"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_input_upload_book_subject"
-                    tools:text="Book not uploaded yet" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_upload_book_extra_info" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_input_upload_book_author_name"
@@ -154,11 +177,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?attr/placeholder_background"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/scrollView4">
+            app:layout_constraintTop_toTopOf="@+id/scroll_upload_book_container">
 
             <ImageView
                 android:id="@+id/image_placeholder_upload_book"

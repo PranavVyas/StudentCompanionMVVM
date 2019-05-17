@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.firebase.BookModel;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.GlideApp;
 import com.vyas.pranav.studentcompanion.viewmodels.UploadBookViewModel;
 
 import java.util.concurrent.TimeUnit;
@@ -53,6 +56,8 @@ public class UploadBookActivity extends AppCompatActivity {
     TextInputLayout inputBookName;
     @BindView(R.id.text_input_upload_book_subject)
     TextInputLayout inputSubject;
+    @BindView(R.id.text_input_upload_book_extra_info)
+    TextInputLayout inputExtaInfo;
 
     @BindView(R.id.et_upload_book_author_name)
     TextInputEditText etAuthorName;
@@ -60,6 +65,8 @@ public class UploadBookActivity extends AppCompatActivity {
     TextInputEditText etBookName;
     @BindView(R.id.et_upload_book_subject)
     TextInputEditText etSubject;
+    @BindView(R.id.et_upload_book_extra_info)
+    TextInputEditText etExtraInfo;
 
     @BindView(R.id.toolbar_upload_book)
     Toolbar toolbar;
@@ -73,8 +80,12 @@ public class UploadBookActivity extends AppCompatActivity {
     Button btnSelectBook;
     @BindView(R.id.placeholder_upload_book_no_connection)
     ConstraintLayout placeHolderConnection;
+    @BindView(R.id.scroll_upload_book_container)
+    ScrollView scrollContainer;
+    @BindView(R.id.image_placeholder_upload_book)
+    ImageView imagePlaceHolder;
 
-    private String authorName, bookName, subject, bookUploadUrl, bookPhotoUrl, userName;
+    private String authorName, bookName, subject, userName, extraInfo;
     private Uri selectedBookUri;
     private UploadBookViewModel uploadBookViewModel;
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
@@ -92,8 +103,17 @@ public class UploadBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_book);
         ButterKnife.bind(this);
         uploadBookViewModel = ViewModelProviders.of(this).get(UploadBookViewModel.class);
-        userName = uploadBookViewModel.getCurrUser().getDisplayName();
+        initData();
         setUpUi();
+    }
+
+    private void initData() {
+        userName = uploadBookViewModel.getCurrUser().getDisplayName();
+        downloadBookUrl = uploadBookViewModel.getDownloadUri();
+        bookName = uploadBookViewModel.getBookName();
+        authorName = uploadBookViewModel.getAuthorName();
+        subject = uploadBookViewModel.getSubject();
+        extraInfo = uploadBookViewModel.getExtraInfo();
     }
 
     private void setUpUi() {
@@ -101,6 +121,16 @@ public class UploadBookActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         continueUploadDocumentIfAvailable();
+        if (validateDownloadUrl()) {
+            uploadStatus.setText("Selected successfully");
+            btnPostDocument.setEnabled(true);
+        } else {
+            btnPostDocument.setEnabled(false);
+            uploadStatus.setText("Please Select Document");
+        }
+        GlideApp.with(this)
+                .load(R.drawable.image_no_connection_placeholder)
+                .into(imagePlaceHolder);
     }
 
     private void continueUploadDocumentIfAvailable() {
@@ -145,6 +175,9 @@ public class UploadBookActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_upload_book_select_book)
     void selectBookClicked() {
+        validateExtraInfo();
+        validateAuthorName();
+        validateSubject();
         if (validateName() | validateSelectedUri()) {
             String[] mimeTypes =
                     {"application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
@@ -201,6 +234,7 @@ public class UploadBookActivity extends AppCompatActivity {
     private void startUploadingDocument() {
         if (validateSelectedUri()) {
             child = mStorageReference.child("books/" + userName + "/items/" + bookName + System.currentTimeMillis() + selectedBookUri.getLastPathSegment());
+            uploadBookViewModel.setDownloadUriString(child.toString());
             uploadTask = child.putFile(selectedBookUri);
             uploadBookViewModel.setUploadTask(uploadTask);
             uploadDocument();
@@ -209,19 +243,41 @@ public class UploadBookActivity extends AppCompatActivity {
 
     private void uploadDocument() {
         showSnackbar(uploadBookViewModel.getProgress());
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                btnSelectBook.setEnabled(false);
+
+            }
+        });
+        uploadStatus.setText("Uploading Now...");
         uploadBookViewModel.getUploadTask().addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 getDownloadUrl(taskSnapshot);
                 uploadBookViewModel.setUploadTask(null);
+                AppExecutors.getInstance().mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnSelectBook.setEnabled(true);
+
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                showSnackbar("Error while uploading image in database");
+                showSnackbar("Error while uploading document in database");
 //                Toast.makeText(MarketPlaceSellItemActivity.this, "Error while uploading image in database", Toast.LENGTH_SHORT).show();
                 Logger.d("Failed due to " + e.getMessage());
                 uploadBookViewModel.setUploadTask(null);
+                AppExecutors.getInstance().mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnSelectBook.setEnabled(true);
+
+                    }
+                });
                 btnPostDocument.setEnabled(false);
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -236,9 +292,6 @@ public class UploadBookActivity extends AppCompatActivity {
             }
         });
     }
-
-    //TODO set place holder right way
-    //TODO show error while something is wrong in TextInputLayout
 
     private void getDownloadUrl(UploadTask.TaskSnapshot taskSnapshot) {
         taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -286,9 +339,9 @@ public class UploadBookActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_upload_book_upload)
     void uploadBookClicked() {
-        if (validateName() & validateAuthorName() & validateSubject() & validateDownloadUrl()) {
+        if (validateName() & validateAuthorName() & validateSubject() & validateDownloadUrl() & validateExtraInfo()) {
             BookModel book = new BookModel();
-            book.setExtra_info(".mll");
+            book.setExtra_info(extraInfo);
             book.setUploader_name(userName);
             book.setBook_name(bookName);
             book.setDownload_url(downloadBookUrl);
@@ -299,11 +352,10 @@ public class UploadBookActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentReference documentReference) {
                     showSnackbar("Added to database");
-//                    Toast.makeText(MarketPlaceSellItemActivity.this, "Added to database", Toast.LENGTH_SHORT).show();
                     Logger.d("Successfully added to the database");
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra(EXTRA_DOWNLOAD_URL_DOCUMENT, child.toString());
-                    setResult(RESULT_OK, resultIntent);
+                    resultIntent.putExtra(EXTRA_DOWNLOAD_URL_DOCUMENT, uploadBookViewModel.getDownloadUriString());
+                    UploadBookActivity.this.setResult(RESULT_OK, resultIntent);
                     UploadBookActivity.this.finish();
                 }
             }).addOnFailureListener(this, new OnFailureListener() {
@@ -315,7 +367,19 @@ public class UploadBookActivity extends AppCompatActivity {
                 }
             });
         } else {
-            showSnackbar("Errrrrrrrrrrrrrr");
+            showSnackbar("Error while uploading");
+        }
+    }
+
+    private boolean validateExtraInfo() {
+        extraInfo = etExtraInfo.getText().toString().trim();
+        uploadBookViewModel.setExtraInfo(extraInfo);
+        if (extraInfo.isEmpty()) {
+            inputExtaInfo.setError("Extra info is not Given, write N/A if not available");
+            return false;
+        } else {
+            inputExtaInfo.setErrorEnabled(false);
+            return true;
         }
     }
 
@@ -325,21 +389,42 @@ public class UploadBookActivity extends AppCompatActivity {
         }
         return !downloadBookUrl.isEmpty();
     }
+    //TODO if device is rotataed than the details are gone and we have to upload the document again solve that problem by putting download url in teh viewmodel adn retrive it when device is rotated adn check if it is null or not
 
     private boolean validateSubject() {
         subject = etSubject.getText().toString().trim();
-        return !subject.isEmpty();
-
+        uploadBookViewModel.setSubject(subject);
+        if (subject.isEmpty()) {
+            inputSubject.setError("Subject can not be empty");
+            return false;
+        } else {
+            inputSubject.setErrorEnabled(false);
+            return true;
+        }
     }
 
     private boolean validateAuthorName() {
         authorName = etAuthorName.getText().toString().trim();
-        return !authorName.isEmpty();
+        uploadBookViewModel.setAuthorName(authorName);
+        if (authorName.isEmpty()) {
+            inputAuthorName.setError("Author can not be empty");
+            return false;
+        } else {
+            inputAuthorName.setErrorEnabled(false);
+            return true;
+        }
     }
 
     private boolean validateName() {
         bookName = etBookName.getText().toString().trim();
-        return !bookName.isEmpty();
+        uploadBookViewModel.setBookName(bookName);
+        if (bookName.isEmpty()) {
+            inputBookName.setError("Book name can not be empty");
+            return false;
+        } else {
+            inputBookName.setErrorEnabled(false);
+            return true;
+        }
     }
 
     private void sendRemoveDocumentIntentIfAny() {
@@ -379,8 +464,10 @@ public class UploadBookActivity extends AppCompatActivity {
             public void run() {
                 if (isShown) {
                     placeHolderConnection.setVisibility(View.VISIBLE);
+                    scrollContainer.setVisibility(View.GONE);
                 } else {
                     placeHolderConnection.setVisibility(View.GONE);
+                    scrollContainer.setVisibility(View.VISIBLE);
                 }
             }
         });

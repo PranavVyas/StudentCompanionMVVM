@@ -82,6 +82,7 @@
     <!--Material Edit Text-->
     <style name="MyCustomMaterialEditTextInput" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
         <item name="android:textColor">?attr/custom_component_color_default</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <!--Custom Toolbar TextView-->

@@ -55,6 +55,7 @@ public class DigitalLibraryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //TODO set parent Activity for back action and also set as single top activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         digitalLibraryViewModel = ViewModelProviders.of(this).get(DigitalLibraryViewModel.class);
         setUpUi();
     }

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,6 +88,8 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     ImageView imagePlaceHolder;
     @BindView(R.id.tv_marketplace_sell_item_image_state)
     TextView tvImageSelectionState;
+    @BindView(R.id.scroll_market_place_sell_item_container)
+    ScrollView scrollContainer;
 
     private String phoneNo, name, info, price, userName, selectedCategory;
     private Uri imageUri;
@@ -438,8 +441,10 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
             public void run() {
                 if (isShown) {
                     placeHOlderConnection.setVisibility(View.VISIBLE);
+                    scrollContainer.setVisibility(View.GONE);
                 } else {
                     placeHOlderConnection.setVisibility(View.GONE);
+                    scrollContainer.setVisibility(View.VISIBLE);
                 }
             }
         });
