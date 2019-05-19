@@ -19,13 +19,20 @@
         android:theme="@style/AppTheme"
         tools:replace="android:theme">
         <activity
+            android:name=".ui.activities.ContainerActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.MainActivity" />
+        <activity
             android:name=".ui.activities.UploadBookActivity"
-            android:parentActivityName=".ui.activities.DigitalLibraryActivity"></activity>
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.DigitalLibraryActivity" />
         <activity
             android:name=".ui.activities.DigitalLibraryActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.OpenSourceInformationActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivity" /> <!-- TODO Set AppTheme.Launcher at time of release -->
         <uses-library
             android:name="org.apache.http.legacy"
@@ -40,11 +47,14 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".ui.activities.OverallAttendanceDetailActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.AttendanceIndividualActivity"
             android:parentActivityName=".ui.activities.MainActivity" />
-        <activity android:name=".ui.activities.SetUpActivity" />
+        <activity
+            android:name=".ui.activities.SetUpActivity"
+            android:launchMode="singleTop" />
 
         <service android:name=".services.EditOverallAttendanceIntentService" />
         <service android:name=".services.GeoFenceIntentService" />

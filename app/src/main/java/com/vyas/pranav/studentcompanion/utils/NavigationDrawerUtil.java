@@ -21,17 +21,17 @@ public class NavigationDrawerUtil {
 
     public static final int ID_TODAY_ATTENDANCE = 1;
     public static final int ID_OVERALL_ATTENDANCE = 2;
-    public static final int ID_HOLIDAYS = 3;
-    public static final int ID_TIMETABLE = 4;
+    //    public static final int ID_HOLIDAYS = 3;
+//    public static final int ID_TIMETABLE = 4;
     public static final int ID_SETTINGS = 5;
-    public static final int ID_MARKET_PLACE = 6;
+    //    public static final int ID_MARKET_PLACE = 6;
     public static final int ID_NOTIFICATIONS = 7;
     public static final int ID_MY_PROFILE = 8;
     public static final int ID_ABOUT_APP = 9;
     public static final int ID_ABOUT_DEVELOPER = 10;
     public static final int ID_SIGN_OUT = 11;
     public static final int ID_DELETE_ACCOUNT = 12;
-    public static final int ID_RESOURCES = 13;
+    public static final int ID_RESOURCES = 3;
 
     public static Drawer getMaterialDrawer(Activity context, Toolbar toolbar, FirebaseUser currUser) {
 
@@ -65,28 +65,28 @@ public class NavigationDrawerUtil {
                         return false;
                     }
                 });
-        PrimaryDrawerItem holidays = new PrimaryDrawerItem()
-                .withIdentifier(ID_HOLIDAYS)
-                .withName("Holidays")
-                .withIcon(R.drawable.ic_holidays)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_HOLIDAYS);
-                        return false;
-                    }
-                });
-        PrimaryDrawerItem timetable = new PrimaryDrawerItem()
-                .withIdentifier(ID_TIMETABLE)
-                .withName("Timetable")
-                .withIcon(R.drawable.ic_timetable)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_TIMETABLE);
-                        return false;
-                    }
-                });
+//        PrimaryDrawerItem holidays = new PrimaryDrawerItem()
+//                .withIdentifier(ID_HOLIDAYS)
+//                .withName("Holidays")
+//                .withIcon(R.drawable.ic_holidays)
+//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+//                    @Override
+//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+//                        mCallback.OnNavigationItemClicked(ID_HOLIDAYS);
+//                        return false;
+//                    }
+//                });
+//        PrimaryDrawerItem timetable = new PrimaryDrawerItem()
+//                .withIdentifier(ID_TIMETABLE)
+//                .withName("Timetable")
+//                .withIcon(R.drawable.ic_timetable)
+//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+//                    @Override
+//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+//                        mCallback.OnNavigationItemClicked(ID_TIMETABLE);
+//                        return false;
+//                    }
+//                });
         PrimaryDrawerItem settings = new PrimaryDrawerItem()
                 .withIdentifier(ID_SETTINGS)
                 .withName("Settings")
@@ -98,17 +98,17 @@ public class NavigationDrawerUtil {
                         return false;
                     }
                 });
-        PrimaryDrawerItem marketplace = new PrimaryDrawerItem()
-                .withIdentifier(ID_MARKET_PLACE)
-                .withName("Buy/Sell Items")
-                .withIcon(R.drawable.ic_market_place)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_MARKET_PLACE);
-                        return false;
-                    }
-                });
+//        PrimaryDrawerItem marketplace = new PrimaryDrawerItem()
+//                .withIdentifier(ID_MARKET_PLACE)
+//                .withName("Buy/Sell Items")
+//                .withIcon(R.drawable.ic_market_place)
+//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+//                    @Override
+//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+//                        mCallback.OnNavigationItemClicked(ID_MARKET_PLACE);
+//                        return false;
+//                    }
+//                });
         PrimaryDrawerItem notifications = new PrimaryDrawerItem()
                 .withIdentifier(ID_NOTIFICATIONS)
                 .withName("Notifications")
@@ -226,17 +226,17 @@ public class NavigationDrawerUtil {
                 .addDrawerItems(
                         todayAttendance,
                         overallAttendance,
-                        holidays,
-                        timetable,
-                        marketplace,
+                        resources,
+//                        holidays,
+//                        timetable,
+//                        marketplace,
                         myProfile,
                         settings,
                         notifications,
                         aboutApp,
                         aboutDeveloper,
                         signOut,
-                        deleteAccount,
-                        resources
+                        deleteAccount
                 ).build();
         return drawer;
     }

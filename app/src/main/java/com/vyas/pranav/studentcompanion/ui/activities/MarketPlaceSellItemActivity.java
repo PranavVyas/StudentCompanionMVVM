@@ -103,6 +103,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     private Snackbar sbar;
     private MarketPlaceSellItemViewModel marketPlaceSellItemViewModel;
     private UploadTask uploadTask;
+    private String childRefString;
 
 
     @Override
@@ -121,7 +122,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     private void populateUI() {
         setUpSpinner();
-        tvImageSelectionState.setText("Please choose Image");
+        refreshStatus();
         imageUri = marketPlaceSellItemViewModel.getImageUri();
         downloadUri = marketPlaceSellItemViewModel.getDownloadUri();
         GlideApp.with(this)
@@ -201,7 +202,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 //                    Toast.makeText(MarketPlaceSellItemActivity.this, "Added to database", Toast.LENGTH_SHORT).show();
                     Logger.d("Successfully added to the database");
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra(EXTRA_DOWNLOAD_URL, child.toString());
+                    resultIntent.putExtra(EXTRA_DOWNLOAD_URL, marketPlaceSellItemViewModel.getChildRefString());
                     setResult(RESULT_OK, resultIntent);
                     MarketPlaceSellItemActivity.this.finish();
                 }
@@ -290,6 +291,8 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         child = mStorageReference.child("images/" + userName + "/items/" + name + System.currentTimeMillis() + imageUri.getLastPathSegment());
         uploadTask = child.putFile(imageUri);
         marketPlaceSellItemViewModel.setUploadTask(uploadTask);
+        marketPlaceSellItemViewModel.setChildRefString(child.toString());
+        marketPlaceSellItemViewModel.setProgress(0);
         startUpload();
     }
 
@@ -330,14 +333,16 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     downloadUri = task.getResult().toString();
                     marketPlaceSellItemViewModel.setDownloadUri(downloadUri);
-                    tvImageSelectionState.setText("Selected Image!");
+                    marketPlaceSellItemViewModel.setProgress(100);
                     btnPostAd.setEnabled(true);
                     imageItem.setEnabled(true);
                 } else {
                     showSnackbar("Error While getting download link");
                     imageItem.setEnabled(true);
+                    marketPlaceSellItemViewModel.setProgress(-1);
 //                    Toast.makeText(MarketPlaceSellItemActivity.this, "Error While getting download link", Toast.LENGTH_SHORT).show();
                 }
+                refreshStatus();
             }
         });
     }
@@ -492,4 +497,15 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
             });
         }
     }
+
+    private void refreshStatus() {
+        if (marketPlaceSellItemViewModel.getProgress() == -1) {
+            tvImageSelectionState.setText("Please Select Image");
+        } else if (marketPlaceSellItemViewModel.getProgress() == 100) {
+            tvImageSelectionState.setText("Successfully Selected Image");
+        } else {
+            tvImageSelectionState.setText("Uploading Image Now...");
+        }
+    }
+
 }

@@ -21,13 +21,10 @@ import com.vyas.pranav.studentcompanion.ui.fragments.AboutDeveloperFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AboutThisAppFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AppSettingsFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.MarketPlaceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.MyProfileFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.NotificationFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.ResourcesFragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.viewmodels.MainViewModel;
@@ -124,30 +121,30 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 swapFragment(overallAttendanceFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
                 break;
-
-            case NavigationDrawerUtil.ID_HOLIDAYS:
-//                actionBar.setTitle("Holidays");
-                tvTitle.setText("Holidays");
-                HolidayFragment holidayFragment = new HolidayFragment();
-                swapFragment(holidayFragment);
-                mainViewModel.setCurrentFragmentId(identifier);
-                break;
-
-            case NavigationDrawerUtil.ID_TIMETABLE:
-//                actionBar.setTitle("Timetable");
-                tvTitle.setText("Timetable");
-                TimetableFragment timetableFragment = new TimetableFragment();
-                swapFragment(timetableFragment);
-                mainViewModel.setCurrentFragmentId(identifier);
-                break;
-
-            case NavigationDrawerUtil.ID_MARKET_PLACE:
-//                actionBar.setTitle("Marketplace");
-                tvTitle.setText("Marketplace");
-                MarketPlaceFragment marketPlaceFragment = new MarketPlaceFragment();
-                swapFragment(marketPlaceFragment);
-                mainViewModel.setCurrentFragmentId(identifier);
-                break;
+//
+//            case NavigationDrawerUtil.ID_HOLIDAYS:
+////                actionBar.setTitle("Holidays");
+//                tvTitle.setText("Holidays");
+//                HolidayFragment holidayFragment = new HolidayFragment();
+//                swapFragment(holidayFragment);
+//                mainViewModel.setCurrentFragmentId(identifier);
+//                break;
+//
+//            case NavigationDrawerUtil.ID_TIMETABLE:
+////                actionBar.setTitle("Timetable");
+//                tvTitle.setText("Timetable");
+//                TimetableFragment timetableFragment = new TimetableFragment();
+//                swapFragment(timetableFragment);
+//                mainViewModel.setCurrentFragmentId(identifier);
+//                break;
+//
+//            case NavigationDrawerUtil.ID_MARKET_PLACE:
+////                actionBar.setTitle("Marketplace");
+//                tvTitle.setText("Marketplace");
+//                MarketPlaceFragment marketPlaceFragment = new MarketPlaceFragment();
+//                swapFragment(marketPlaceFragment);
+//                mainViewModel.setCurrentFragmentId(identifier);
+//                break;
 
             case NavigationDrawerUtil.ID_SETTINGS:
 //                actionBar.setTitle("Settings");

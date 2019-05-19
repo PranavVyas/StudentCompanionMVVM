@@ -26,10 +26,19 @@ public class MarketPlaceViewModel extends AndroidViewModel {
     private CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("sell");
     private Query mQuery = collectionReference.whereEqualTo("category", categories.get(selectedCategory));
     private FirestoreQueryLiveData queryLiveData;
+    private String childSting;
 
     public MarketPlaceViewModel(@NonNull Application application) {
         super(application);
         queryLiveData = new FirestoreQueryLiveData(mQuery);
+    }
+
+    public String getChildSting() {
+        return childSting;
+    }
+
+    public void setChildSting(String childSting) {
+        this.childSting = childSting;
     }
 
     public FirestoreQueryLiveData getNewQueryLiveDataIfChanged(String searchStr, String selectedCategory) {

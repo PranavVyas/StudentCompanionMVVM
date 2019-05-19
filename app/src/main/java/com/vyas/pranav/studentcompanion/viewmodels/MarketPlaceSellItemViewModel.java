@@ -16,11 +16,24 @@ public class MarketPlaceSellItemViewModel extends AndroidViewModel {
     private String downloadUri = null;
     private UploadTask uploadTask = null;
     private FirebaseUser currUser = null;
-    private long progress = 0;
+    private long progress = -1;
+    private String childRefString;
 
     public MarketPlaceSellItemViewModel(@NonNull Application application) {
         super(application);
         currUser = FirebaseAuth.getInstance().getCurrentUser();
+    }
+
+    public String getChildRefString() {
+        return childRefString;
+    }
+
+    public void setChildRefString(String childRefString) {
+        this.childRefString = childRefString;
+    }
+
+    public void setProgress(long progress) {
+        this.progress = progress;
     }
 
     public FirebaseUser getCurrUser() {

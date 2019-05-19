@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.ui.activities.ContainerActivity;
 import com.vyas.pranav.studentcompanion.ui.activities.DigitalLibraryActivity;
 
 import androidx.annotation.NonNull;
@@ -42,8 +43,30 @@ public class ResourcesFragment extends Fragment {
         Logger.d("OnDigitalLibraryClicked");
         Intent openDigitalLibrary = new Intent(getContext(), DigitalLibraryActivity.class);
         startActivity(openDigitalLibrary);
-        //TODO Create Logic for Digital Library starting
     }
+
+    @OnClick(R.id.card_resources_fragment_timetable)
+    void timetableClicked() {
+        Logger.d("On Timetable Clicked");
+        Intent intent = new Intent(getContext(), ContainerActivity.class);
+        intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.TIME_TABLE);
+        getContext().startActivity(intent);
+    }
+
+    @OnClick(R.id.card_resources_fragment_buy_sell)
+    void marketpplaceClicked() {
+        Intent intent = new Intent(getContext(), ContainerActivity.class);
+        intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.MARKETPLACE_ACTIVITY);
+        getContext().startActivity(intent);
+    }
+
+    @OnClick(R.id.card_resources_fragment_holidays)
+    void holidayClicked() {
+        Intent intent = new Intent(getContext(), ContainerActivity.class);
+        intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.HOLIDAYS);
+        getContext().startActivity(intent);
+    }
+
 
 
 }
