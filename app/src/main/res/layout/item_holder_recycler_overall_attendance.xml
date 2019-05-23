@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_recycler_overall_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
@@ -24,37 +25,38 @@
             app:wlv_borderWidth="1dp"
             app:wlv_round_rectangle="true"
             app:wlv_shapeType="circle"
-            tools:wlv_titleCenter="50 %"
             app:wlv_titleCenterColor="@android:color/white"
             app:wlv_titleCenterSize="20sp"
             app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
             app:wlv_titleCenterStrokeWidth="1dp"
             app:wlv_triangle_direction="north"
             app:wlv_waveAmplitude="60"
-            app:wlv_waveColor="?attr/colorAccent" />
+            app:wlv_waveColor="?attr/colorAccent"
+            tools:wlv_titleCenter="50 %" />
 
         <TextView
             android:id="@+id/tv_recycler_overall_attendance_subject"
+            style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="center"
-            style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/progress_recycler_overall_attendance_present_percent"
-            app:layout_constraintTop_toTopOf="@+id/progress_recycler_overall_attendance_present_percent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Engineering Mathematics 2" />
 
         <TextView
             android:id="@+id/tv_recycler_overall_attendance_available_to_bunk"
+            style="@style/MyMaterialTextView.SmallTextViewBody1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            style="@style/MyMaterialTextView.SmallTextViewBody1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/progress_recycler_overall_attendance_present_percent"

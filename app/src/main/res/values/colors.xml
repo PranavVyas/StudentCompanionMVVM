@@ -13,6 +13,10 @@
     <color name="placeHolderBackground">#FAFAFA</color>
     <color name="placeHolderBackgroundDark">#615F5F</color>
 
-    <color name="colorPrimaryNight">#6200ea</color>
-    <color name="colorPrimaryDarkNight">#0A00B6</color>
+    <color name="colorPrimaryNight">#FF9800</color>
+    <color name="colorPrimaryDarkNight">#FFA000</color>
+
+    <color name="colorDangerOverallAttendance">#FFCCBC</color>
+    <color name="colorWarningOverallAttendance">#FFF9C4</color>
+    <color name="colorSafeOverallAttendance">#C8E6C9</color>
 </resources>

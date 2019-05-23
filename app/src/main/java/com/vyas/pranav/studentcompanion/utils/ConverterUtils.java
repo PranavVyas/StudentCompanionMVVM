@@ -128,7 +128,6 @@ public class ConverterUtils {
         calendar.set(GregorianCalendar.MONTH, monthNumber - 1);
         calendar.set(GregorianCalendar.YEAR, year);
         int dayOfYear = calendar.get(GregorianCalendar.DAY_OF_YEAR);
-        //TODO Logger.d("Received Date : " + date + "\tDay is : " + day + "\tMOnth is " + monthNumber + "\tYear : " + year + "\tDay Of The Year : " + dayOfYear);
         return new CustomDate(day, monthNumber, year, dayOfYear);
     }
 

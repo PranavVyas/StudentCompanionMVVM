@@ -12,8 +12,6 @@ import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.DateConverter;
@@ -77,17 +75,12 @@ public class AttendanceIndividualFragment extends Fragment {
         setUpDatabase();
         setUpRecyclerView();
         Date date = new Date();
-        Logger.clearLogAdapters();
-        Logger.addLogAdapter(new AndroidLogAdapter());
-        Logger.d("Current Date is " + date);
         date = ConverterUtils.convertStringToDate(ConverterUtils.convertDateToString(date));
         model = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
-        Logger.d("Current Date after changing is " + date);
         if (getArguments() != null) {
             String dateStr = getArguments().getString(AttendanceIndividualActivity.EXTRA_DATE);
             date = ConverterUtils.convertStringToDate(dateStr);
             btnOpenOtherAttendance.setVisibility(View.GONE);
-            Logger.d("Received date is " + date);
         }
         setUpIndividualAttendance(date);
         tvDate.setText(ConverterUtils.convertDateToString(date) + "\n" + ConverterUtils.getDayOfWeek(date));
@@ -125,7 +118,7 @@ public class AttendanceIndividualFragment extends Fragment {
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH));
-        //TODO [ENHANCEMENT] Set title of date picker
+        datePickerDialog.setTitle("Choose Date");
         datePickerDialog.getDatePicker().setMaxDate(DateConverter.toTimeStamp(new Date()));
         datePickerDialog.getDatePicker().setMinDate(DateConverter.toTimeStamp(model.getStartingDate()));
         datePickerDialog.show();
@@ -151,16 +144,13 @@ public class AttendanceIndividualFragment extends Fragment {
     }
 
     private void setUpIndividualAttendance(Date date) {
-        //Logger.d("Received Date is "+date);
         AttendanceForDateViewModelFactory factory = new AttendanceForDateViewModelFactory(mAttendanceDb, date);
         attendanceViewModel = ViewModelProviders.of(getActivity(), factory).get(AttendanceForDateViewModel.class);
         attendanceViewModel.getAttendanceForDate().observe(this, new Observer<List<AttendanceEntry>>() {
             @Override
             public void onChanged(final List<AttendanceEntry> attendanceEntries) {
                 List<AttendanceEntry> finalAttendance;
-                //      Logger.d("Received List is "+attendanceEntries.size());
                 if (!attendanceEntries.isEmpty()) {
-//                    skeletonScreen.hide();
                     finalAttendance = new ArrayList<>();
                     for (int i = 0; i < attendanceEntries.size(); i++) {
                         AttendanceEntry attendance = attendanceEntries.get(i);
@@ -174,9 +164,7 @@ public class AttendanceIndividualFragment extends Fragment {
                     return;
                 }
                 showHolidayPlaceHolder(true);
-                //Holiday is here
                 stopProgress();
-//                skeletonScreen.hide();
             }
         });
         /*TODO [PROBABLE BUG] Might be needed to refresh all the overall attendance(Which depends on the attendance database updated) as updating the attendance database and refreshing attendance happens simultaniously

@@ -5,6 +5,11 @@
     <item
         android:id="@+id/menu_digital_library_sync"
         android:icon="@android:drawable/stat_notify_sync"
-        android:title="Sync"
-        app:showAsAction="always" />
+        android:title="Sync Now"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_digital_library_auto_sync"
+        android:title="Auto Sync"
+        app:showAsAction="never" />
 </menu>

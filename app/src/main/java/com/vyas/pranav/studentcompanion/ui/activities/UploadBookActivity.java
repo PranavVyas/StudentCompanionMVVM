@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.firebase.BookModel;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
@@ -100,6 +101,7 @@ public class UploadBookActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferencesRepository.setUserTheme(this);
         setContentView(R.layout.activity_upload_book);
         ButterKnife.bind(this);
         uploadBookViewModel = ViewModelProviders.of(this).get(UploadBookViewModel.class);
@@ -213,7 +215,6 @@ public class UploadBookActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 selectedBookUri = data.getData();
                 uploadBookViewModel.setImageUri(selectedBookUri);
-                //TODO Set button state as done in MarketplaceSellingItemActivity
                 AppExecutors.getInstance().networkIO().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -389,7 +390,6 @@ public class UploadBookActivity extends AppCompatActivity {
         }
         return !downloadBookUrl.isEmpty();
     }
-    //TODO if device is rotataed than the details are gone and we have to upload the document again solve that problem by putting download url in teh viewmodel adn retrive it when device is rotated adn check if it is null or not
 
     private boolean validateSubject() {
         subject = etSubject.getText().toString().trim();

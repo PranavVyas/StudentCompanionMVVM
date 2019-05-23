@@ -1,10 +1,12 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.evrencoskun.tableview.TableView;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.LiveData;
@@ -30,6 +33,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.vyas.pranav.studentcompanion.utils.Constants.EXTRA_TIMETABLE_DAY;
 import static com.vyas.pranav.studentcompanion.utils.Constants.EXTRA_TIMETABLE_DAY_KEY;
@@ -256,4 +260,26 @@ public class TimetableFragment extends Fragment {
             tableTimetable.setVisibility(View.GONE);
         }
     }
+
+    @OnClick(R.id.btn_timetable_frag_sem_info)
+    void semInfoClicked() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.item_holder_alert_dialog_sem_info, null, false);
+        TextView tvSemNo = dialogView.findViewById(R.id.tv_holder_dialog_sem_info_sem);
+        TextView tvStartDate = dialogView.findViewById(R.id.tv_holder_dialog_sem_info_start_date);
+        TextView tvEndDate = dialogView.findViewById(R.id.tv_holder_dialog_sem_info_end_date);
+        tvSemNo.setText(":  " + timetableViewModel.getSemInfo());
+        tvStartDate.setText(":  " + timetableViewModel.getStartDate());
+        tvEndDate.setText(":  " + timetableViewModel.getEndDate());
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.setTitle("Semester Information");
+        dialogBuilder.create().show();
+    }
+
 }

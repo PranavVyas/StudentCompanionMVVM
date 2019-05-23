@@ -1,165 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".ui.fragments.ResourcesFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:maxWidth="420dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_resources_fragment_digital_library"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
-            <ImageView
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_resources_fragment_digital_library"
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/image_digital_library" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="8dp">
 
-            <TextView
-                android:id="@+id/textView41"
-                style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/shape_mask_textview_gradient"
-                android:text="Digital Library"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
-        </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/image_digital_library" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_resources_fragment_buy_sell"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_resources_fragment_digital_library">
+                <TextView
+                    android:id="@+id/textView41"
+                    style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shape_mask_textview_gradient"
+                    android:text="Digital Library"
+                    android:textAlignment="center" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <ImageView
-                android:id="@+id/imageView13"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_resources_fragment_buy_sell"
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/image_marketplace" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="8dp">
 
-            <TextView
-                android:id="@+id/textView42"
-                style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/shape_mask_textview_gradient"
-                android:gravity="center"
-                android:text="Buy/Sell Items"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
+                <ImageView
+                    android:id="@+id/imageView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/image_marketplace" />
 
-        </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/textView42"
+                    style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shape_mask_textview_gradient"
+                    android:gravity="center"
+                    android:text="Buy/Sell Items" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_resources_fragment_timetable"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_resources_fragment_buy_sell">
+            </com.google.android.material.card.MaterialCardView>
 
-            <ImageView
-                android:id="@+id/imageView15"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_resources_fragment_timetable"
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/image_timetable" />
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="8dp">
 
-            <TextView
-                android:id="@+id/textView46"
-                style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
+                <ImageView
+                    android:id="@+id/imageView15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image_timetable" />
+
+                <TextView
+                    android:id="@+id/textView46"
+                    style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shape_mask_textview_gradient"
+                    android:gravity="center"
+                    android:text="Time Table" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_resources_fragment_holidays"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/shape_mask_textview_gradient"
-                android:gravity="center"
-                android:text="Time Table" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="8dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_resources_fragment_holidays"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_resources_fragment_timetable">
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="156dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image_holiday" />
 
-            <ImageView
-                android:id="@+id/imageView11"
-                android:layout_width="wrap_content"
-                android:layout_height="156dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/image_holiday" />
+                <TextView
+                    android:id="@+id/textView47"
+                    style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shape_mask_textview_gradient"
+                    android:gravity="center"
+                    android:text="Holidays" />
 
-            <TextView
-                android:id="@+id/textView47"
-                style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/shape_mask_textview_gradient"
-                android:gravity="center"
-                android:text="Holidays" />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

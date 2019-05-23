@@ -3,7 +3,6 @@ package com.vyas.pranav.studentcompanion.repositories;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
@@ -58,11 +57,6 @@ public class SetUpProcessRepository {
     private List<TimetableEntry> Friday;
 
     public SetUpProcessRepository(Context context) {
-        Logger.clearLogAdapters();
-        Logger.addLogAdapter(new AndroidLogAdapter());
-        if (context == null) {
-            Logger.d("Context is empty in SetUpRepository");
-        }
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
         editor.apply();

@@ -56,8 +56,9 @@ public class SetUpLectureTimeFragment extends Fragment {
 
     private void populateUI() {
         noOfLecturesPerDay = setUpViewModel.getNoOfLecturesPerDay();
-
         linearContainer.removeAllViews();
+        linearContainer.setPadding(4, 4, 4, 4);
+
         for (int i = 0; i < noOfLecturesPerDay * 2; i++) {
             if (i % 2 == 0) {
                 TextView tv = new TextView(getContext());
@@ -68,6 +69,8 @@ public class SetUpLectureTimeFragment extends Fragment {
             } else {
                 LinearLayout layout = new LinearLayout(getContext());
                 layout.setOrientation(LinearLayout.HORIZONTAL);
+                layout.setPadding(4, 4, 4, 4);
+                layout.setDividerPadding(4);
                 layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
                 final MaterialButton btnStartTime = new MaterialButton(getContext());
@@ -76,10 +79,11 @@ public class SetUpLectureTimeFragment extends Fragment {
                 layout.addView(btnStartTime, 0);
 
                 final MaterialButton btnEndTime = new MaterialButton(getContext());
-                btnEndTime.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+                btnEndTime.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
                 btnEndTime.setText("Select end time");
                 layout.addView(btnEndTime, 1);
 
+                int finalI = i;
                 btnStartTime.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -89,6 +93,7 @@ public class SetUpLectureTimeFragment extends Fragment {
                                 btnStartTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i + ":" + i1)));
                             }
                         }, 0, 0, false);
+                        timePickerDialog.setTitle("Choose Starting Time for Lecture " + ((finalI / 2) + 1));
                         timePickerDialog.show();
                     }
                 });
@@ -102,6 +107,7 @@ public class SetUpLectureTimeFragment extends Fragment {
                                 btnEndTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i + ":" + i1)));
                             }
                         }, 0, 0, false);
+                        timePickerDialog.setTitle("Choose Ending Time for Lecture " + ((finalI / 2) + 1));
                         timePickerDialog.show();
                     }
                 });

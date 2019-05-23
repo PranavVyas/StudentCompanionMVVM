@@ -22,6 +22,8 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
     public static final String EXTRA_OVERALL_ATTENDANCE = "OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE";
     @BindView(R.id.progress_overall_attendance_detail)
     WaveLoadingView progressSubject;
+    @BindView(R.id.progress_overall_attendance_detail_max_attendance)
+    WaveLoadingView progressSubjectMax;
     @BindView(R.id.tv_overall_attendance_detail_bunked)
     TextView tvBunkedDays;
     @BindView(R.id.tv_overall_attendance_detail_left_bunk)
@@ -65,5 +67,8 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
         int precentPercent = (entry.getPresentDays() * 100) / entry.getTotalDays();
         progressSubject.setProgressValue(precentPercent);
         progressSubject.setCenterTitle(precentPercent + " %");
+        int maxAttendance = (int) Math.ceil(((entry.getTotalDays() - entry.getBunkedDays()) * 100.0) / entry.getTotalDays());
+        progressSubjectMax.setProgressValue(maxAttendance);
+        progressSubjectMax.setCenterTitle(maxAttendance + " %");
     }
 }

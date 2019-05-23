@@ -17,6 +17,7 @@
         <item name="body_text_custom_default_color">#ffffff</item>
         <item name="custom_component_color_default">#ffffff</item>
         <item name="custom_background_main">@drawable/gradient_blue_art_background</item>
+        <item name="custom_info_background">#ffffff</item>
 
         <!--Material Drawer Attributes-->
         <item name="material_drawer_header_selection_text">
@@ -43,6 +44,7 @@
         <item name="custom_background_default_color">#000000</item>
         <item name="custom_component_color_default">#ffffff</item>
         <item name="custom_background_main">@drawable/creative_background</item>
+        <item name="custom_info_background">#616161</item>
 
         <!--Material Drawer Attributes-->
         <item name="material_drawer_background">@color/material_drawer_dark_background</item>

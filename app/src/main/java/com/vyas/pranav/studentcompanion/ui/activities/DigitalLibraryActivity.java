@@ -1,10 +1,14 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -14,25 +18,29 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.DigitalLibraryRecyclerAdapter;
+import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.firebase.BookModel;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.viewmodels.DigitalLibraryViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DigitalLibraryActivity extends AppCompatActivity {
+public class DigitalLibraryActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @BindView(R.id.recycler_digital_library_list)
     RecyclerView rvList;
@@ -50,14 +58,26 @@ public class DigitalLibraryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferencesRepository.setUserTheme(this);
         setContentView(R.layout.activity_digital_library);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        //TODO set parent Activity for back action and also set as single top activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         digitalLibraryViewModel = ViewModelProviders.of(this).get(DigitalLibraryViewModel.class);
         setUpUi();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
     }
 
     private void setUpUi() {
@@ -91,7 +111,6 @@ public class DigitalLibraryActivity extends AppCompatActivity {
         }
     }
 
-
     @OnClick(R.id.fab_digital_library_upload_book)
     void onFabClicked() {
         Intent intent = new Intent(this, UploadBookActivity.class);
@@ -105,10 +124,66 @@ public class DigitalLibraryActivity extends AppCompatActivity {
                 onSyncClicked();
                 break;
 
+            case R.id.menu_digital_library_auto_sync:
+                showAlertDialogForAutoSync();
+                break;
+
             default:
                 Toast.makeText(this, "Invalid Selection", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showAlertDialogForAutoSync() {
+        View view = LayoutInflater.from(this).inflate(R.layout.item_holder_alert_dialog_auto_sync, null, false);
+        TextView status = view.findViewById(R.id.tv_holder_atert_dialog_auto_sync);
+        status.setText("Current Status : " + (digitalLibraryViewModel.getStateOfAutoSync() ? "Enabled" : "Disabled"));
+        AlertDialog dialog = new AlertDialog.Builder(this)
+//                .setTitle("Auto Sync")
+//                .setPositiveButton("Enable it", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        digitalLibraryViewModel.changeAutoSync(true);
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .setNegativeButton("Disable it", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        digitalLibraryViewModel.changeAutoSync(false);
+//                        dialog.dismiss();
+//                    }
+//                })
+//                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                })
+                .setView(view)
+                .setCancelable(false)
+                .create();
+        dialog.show();
+        dialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_enable).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                digitalLibraryViewModel.changeAutoSync(true);
+                dialog.dismiss();
+            }
+        });
+        dialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_disable).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                digitalLibraryViewModel.changeAutoSync(false);
+                dialog.dismiss();
+            }
+        });
     }
 
     private void setUpRecyclerView() {
@@ -121,14 +196,18 @@ public class DigitalLibraryActivity extends AppCompatActivity {
 
     //TODO add automatic switch to auto sync
 
+
     private void onSyncClicked() {
         Toast.makeText(this, "Sync Clicked", Toast.LENGTH_SHORT).show();
         CollectionReference booksRef = FirebaseFirestore.getInstance().collection("digitalLibrary");
         FirestoreQueryLiveData liveBooksData = new FirestoreQueryLiveData(booksRef);
+        liveBooksData.removeObservers(this);
         liveBooksData.observe(this, new Observer<QuerySnapshot>() {
             @Override
             public void onChanged(QuerySnapshot queryDocumentSnapshots) {
-                liveBooksData.removeObserver(this);
+                if (!digitalLibraryViewModel.getStateOfAutoSync()) {
+                    liveBooksData.removeObserver(this);
+                }
                 List<BookModel> booksFirestore = queryDocumentSnapshots.toObjects(BookModel.class);
                 List<DigitalLibraryEntry> booksDb = new ArrayList<>();
                 for (int i = 0; i < booksFirestore.size(); i++) {
@@ -145,5 +224,12 @@ public class DigitalLibraryActivity extends AppCompatActivity {
                 digitalLibraryViewModel.replaceAllBooks(booksDb);
             }
         });
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(SharedPreferencesUtils.SHARED_PREF_AUTO_SYNC_DIGITAL_LIBRARY)) {
+            onSyncClicked();
+        }
     }
 }

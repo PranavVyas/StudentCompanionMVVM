@@ -26,5 +26,4 @@ public interface DigitalLibraryDao {
     @Query("SELECT * FROM  `Digital Library` WHERE bookName LIKE :searchName")
     LiveData<List<DigitalLibraryEntry>> getBookByName(String searchName);
 
-    //TODO Add methods to access books by their properties
 }

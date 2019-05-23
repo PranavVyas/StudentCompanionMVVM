@@ -2,6 +2,7 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.app.Application;
 
+import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.repositories.DigitalLibraryRepository;
 
@@ -14,10 +15,12 @@ import androidx.lifecycle.LiveData;
 public class DigitalLibraryViewModel extends AndroidViewModel {
 
     private DigitalLibraryRepository repository;
+    private SharedPreferencesUtils sharedPreferencesUtils;
 
     public DigitalLibraryViewModel(@NonNull Application application) {
         super(application);
         repository = new DigitalLibraryRepository(application);
+        sharedPreferencesUtils = new SharedPreferencesUtils(application);
     }
 
     public LiveData<List<DigitalLibraryEntry>> getAllBooks() {
@@ -37,4 +40,13 @@ public class DigitalLibraryViewModel extends AndroidViewModel {
         searchName = "%" + searchName + "%";
         return repository.getBookByName(searchName);
     }
+
+    public void changeAutoSync(boolean isEnabled) {
+        sharedPreferencesUtils.changeAutoSync(isEnabled);
+    }
+
+    public boolean getStateOfAutoSync() {
+        return sharedPreferencesUtils.getStateOfAutoSync();
+    }
+
 }

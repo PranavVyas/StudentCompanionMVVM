@@ -73,11 +73,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         OnNavigationItemClicked(mainViewModel.getCurrentFragmentId());
         mDrawer.setSelection(mainViewModel.getCurrentFragmentId());
         setLiveBadge();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         dismissCallingNotificationIsAvailable();
     }
 
@@ -90,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 mainViewModel.setCurrentFragmentId(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
                 swapFragment(attendanceFragment);
-//                actionBar.setTitle("Home");
                 tvTitle.setText("Home");
                 mDrawer.setSelection(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
             } else {
@@ -105,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     public void OnNavigationItemClicked(int identifier) {
         switch (identifier) {
             case NavigationDrawerUtil.ID_TODAY_ATTENDANCE:
-//                actionBar.setTitle("Home");
                 tvTitle.setText("Home");
 
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
@@ -114,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_OVERALL_ATTENDANCE:
-//                actionBar.setTitle("Overall Attendance");
                 tvTitle.setText("Overall Attendance");
 
                 OverallAttendanceFragment overallAttendanceFragment = new OverallAttendanceFragment();
@@ -147,7 +139,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 //                break;
 
             case NavigationDrawerUtil.ID_SETTINGS:
-//                actionBar.setTitle("Settings");
                 tvTitle.setText("Settings");
                 AppSettingsFragment appSettingsFragment = new AppSettingsFragment();
                 swapFragment(appSettingsFragment);
@@ -155,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_NOTIFICATIONS:
-//                actionBar.setTitle("Notifications");
                 tvTitle.setText("Notifications");
                 NotificationFragment notificationFragment = new NotificationFragment();
                 swapFragment(notificationFragment);
@@ -163,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_MY_PROFILE:
-//                actionBar.setTitle("My Profile");
                 MyProfileFragment myProfileFragment = new MyProfileFragment();
                 tvTitle.setText("My Profile");
                 swapFragment(myProfileFragment);
@@ -171,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_ABOUT_APP:
-//                actionBar.setTitle("About This App");
                 AboutThisAppFragment aboutThisAppFragment = new AboutThisAppFragment();
                 tvTitle.setText("About This App");
                 swapFragment(aboutThisAppFragment);
@@ -179,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_ABOUT_DEVELOPER:
-//                actionBar.setTitle("About Developer");
                 AboutDeveloperFragment aboutDeveloperFragment = new AboutDeveloperFragment();
                 tvTitle.setText("About Developer");
                 swapFragment(aboutDeveloperFragment);
@@ -188,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
 
             case NavigationDrawerUtil.ID_RESOURCES:
-//                actionBar.setTitle("About Developer");
                 ResourcesFragment resourcesFragment = new ResourcesFragment();
                 tvTitle.setText("Resources");
                 swapFragment(resourcesFragment);

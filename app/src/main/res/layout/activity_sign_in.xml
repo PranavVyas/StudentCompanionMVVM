@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_blue_art_background"
+    android:background="?attr/custom_background_main"
     tools:context=".ui.activities.SignInActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -36,14 +36,56 @@
 
     <TextView
         android:id="@+id/textView7"
+        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
-        android:text="Helllo There!\n Welcome to Student Compainion app. The app where you can do your regular things with ease. For Getting started just sign in and if you don't have account associated with the email ID or gmail we will ask you to sign up which takes less than 30 secconds!\nWe Only NEED THE INFORMATION SO THAT WE CAN KNOW HOW MANY PEOPLE ARE USING AND ACCESSING OUR SERVERS,I WILL NEVER POST IT TO ANYONE ELSE."
+        android:text="Hello There!"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView14" />
+
+    <ImageView
+        android:id="@+id/imageView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_sign_in_activity" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_sign_in_activity"
+        app:srcCompat="@drawable/ic_logo" />
+
+    <TextView
+        android:id="@+id/textView57"
+        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Welcome to Student Companion app. The app where you can do your regular things with ease. For Getting started just sign in and if you don't have account associated with the email ID or G-mail I will ask you to sign up which takes less than 30 seconds!"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView58"
+        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="We Only NEED THE INFORMATION SO THAT WE CAN KNOW HOW MANY PEOPLE ARE USING AND ACCESSING OUR SERVERS,I WILL NEVER POST IT TO ANYONE ELSE."
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView57" />
 </androidx.constraintlayout.widget.ConstraintLayout>

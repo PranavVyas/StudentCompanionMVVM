@@ -205,9 +205,8 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         }).setMessage("Location Permission is needed for setting up GeoFences\nPlease give permission through settings")
                 .setTitle("Permission Denied")
                 .setCancelable(false)
-                .setIcon(R.drawable.ic_bookshelf)
+                .setIcon(R.drawable.ic_info_black)
                 .show();
-        //TODO Change Icon later
     }
 
     private boolean isLocationProviderAvailable() {

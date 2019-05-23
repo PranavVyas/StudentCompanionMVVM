@@ -10,6 +10,7 @@
         <attr name="body_text_custom_default_color" format="color" />
         <attr name="custom_component_color_default" format="color" />
         <attr name="custom_background_main" format="reference" />
+        <attr name="custom_info_background" format="color" />
     </declare-styleable>
 
     <declare-styleable name="SwitchPreferenceCustom">

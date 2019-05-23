@@ -258,7 +258,6 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 if (downloadUri != null) {
                     removeLastUploadedImage();
-                    //TODO Delete Previously Selected Image
                 }
                 imageUri = data.getData();
                 marketPlaceSellItemViewModel.setImageUri(imageUri);
@@ -425,9 +424,8 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         if (phoneNo.isEmpty()) {
             inputPhone.setError("Input Correct Phone No");
             return false;
-            //TODO Random phone no limits
         }
-        if (!(phoneNo.length() >= 6) || !(phoneNo.length() <= 14)) {
+        if (!(phoneNo.length() >= 10) || !(phoneNo.length() <= 12)) {
             inputPhone.setError("Input Correct Phone No");
             return false;
         }

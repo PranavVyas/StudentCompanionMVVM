@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/textView52"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Auto Sync"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView54"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Do you want to Enable Automatic Sync?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView56" />
+
+    <TextView
+        android:id="@+id/textView56"
+        style="@style/MyMaterialTextView.SmallTextViewBody2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Enabling Auto Sync will cause use of more mobile data and cpu usage as it will automatically update it self when there is any change in db including new document uploaded or removed Automatic Sync needs and active internet connection and will guarantee latest updates"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView52" />
+
+    <TextView
+        android:id="@+id/tv_holder_atert_dialog_auto_sync"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView54"
+        tools:text="Current Status : Enabled" />
+
+    <Button
+        android:id="@+id/btn_holder_atert_dialog_auto_sync_cancel"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Cancel"
+        app:layout_constraintEnd_toStartOf="@+id/btn_holder_atert_dialog_auto_sync_disable"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_holder_atert_dialog_auto_sync" />
+
+    <Button
+        android:id="@+id/btn_holder_atert_dialog_auto_sync_disable"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Disable"
+        app:layout_constraintEnd_toStartOf="@+id/btn_holder_atert_dialog_auto_sync_enable"
+        app:layout_constraintStart_toEndOf="@+id/btn_holder_atert_dialog_auto_sync_cancel"
+        app:layout_constraintTop_toTopOf="@+id/btn_holder_atert_dialog_auto_sync_cancel" />
+
+    <Button
+        android:id="@+id/btn_holder_atert_dialog_auto_sync_enable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Enable"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_holder_atert_dialog_auto_sync_disable"
+        app:layout_constraintTop_toTopOf="@+id/btn_holder_atert_dialog_auto_sync_cancel" />
+</androidx.constraintlayout.widget.ConstraintLayout>

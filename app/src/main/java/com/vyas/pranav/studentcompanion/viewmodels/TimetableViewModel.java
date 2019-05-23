@@ -60,4 +60,17 @@ public class TimetableViewModel extends AndroidViewModel {
     public int getLecturesPerDay() {
         return lecturesPerDay;
     }
+
+    public int getSemInfo() {
+        return setUpProcessRepository.getSemester();
+    }
+
+    public String getStartDate() {
+        return setUpProcessRepository.getStartingDate();
+    }
+
+    public String getEndDate() {
+        return setUpProcessRepository.getEndingDate();
+    }
+
 }

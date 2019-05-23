@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
@@ -24,6 +25,7 @@ import me.itangqi.waveloadingview.WaveLoadingView;
 public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<OverallAttendanceRecyclerAdapter.OverallAttendanceHolder> {
 
     private List<OverallAttendanceEntry> overallAttendanceEntries;
+
     @NonNull
     @Override
     public OverallAttendanceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,23 +35,34 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
 
     @Override
     public void onBindViewHolder(@NonNull OverallAttendanceHolder holder, int position) {
-            holder.tvSubject.setText(overallAttendanceEntries.get(position).getSubName());
-            int presentDays = overallAttendanceEntries.get(position).getPresentDays();
-            int bunkedDays = overallAttendanceEntries.get(position).getBunkedDays();
-            int totalDays = overallAttendanceEntries.get(position).getTotalDays();
+        holder.tvSubject.setText(overallAttendanceEntries.get(position).getSubName());
+        int presentDays = overallAttendanceEntries.get(position).getPresentDays();
+        int bunkedDays = overallAttendanceEntries.get(position).getBunkedDays();
+        int totalDays = overallAttendanceEntries.get(position).getTotalDays();
         if (totalDays == 0) {
             holder.tvAvailableToBunk.setText("Subject is not in the timetable");
             holder.progressPresent.setProgressValue(100);
             holder.progressPresent.setCenterTitle("100 %");
             return;
         }
-            float presentPresent = (presentDays * 100) / totalDays;
+        float presentPresent = (presentDays * 100) / totalDays;
         int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1 - Constants.ATTENDANCE_THRESHOLD));
-            int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
-            holder.tvAvailableToBunk.setText("Available to Bunk " + daysAvailableToBunk);
-            holder.progressPresent.setProgressValue((int) presentPresent);
-            holder.progressPresent.setCenterTitle((int) presentPresent + " %");
-
+        int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
+        holder.tvAvailableToBunk.setText("Available to Bunk " + daysAvailableToBunk);
+        holder.progressPresent.setProgressValue((int) presentPresent);
+        holder.progressPresent.setCenterTitle((int) presentPresent + " %");
+        if (presentPresent > 90) {
+            holder.cardMain.setBackgroundResource(R.color.colorSafeOverallAttendance);
+            return;
+        }
+        if (presentPresent > 75) {
+            holder.cardMain.setBackgroundResource(R.color.colorWarningOverallAttendance);
+            return;
+        }
+        if (presentPresent < 76) {
+            holder.cardMain.setBackgroundResource(R.color.colorDangerOverallAttendance);
+            return;
+        }
     }
 
     @Override
@@ -64,6 +77,8 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
         TextView tvAvailableToBunk;
         @BindView(R.id.tv_recycler_overall_attendance_subject)
         TextView tvSubject;
+        @BindView(R.id.card_recycler_overall_main)
+        MaterialCardView cardMain;
 
         OverallAttendanceHolder(@NonNull View itemView) {
             super(itemView);

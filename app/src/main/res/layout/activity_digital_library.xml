@@ -38,7 +38,7 @@
             style="@style/MyCustomMaterialEditTextInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint" />
+            android:hint="Search keyword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -53,6 +53,20 @@
         app:layout_constraintStart_toEndOf="@+id/text_input_digital_library_search_container"
         app:layout_constraintTop_toTopOf="@+id/text_input_digital_library_search_container" />
 
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fab_digital_library_upload_book"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fab_digital_library_upload_book"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/shape_rounded_corner_background" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_digital_library_list"
         android:layout_width="0dp"
@@ -61,23 +75,51 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imageView12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_digital_library_search_container" />
+        app:layout_constraintTop_toBottomOf="@+id/text_input_digital_library_search_container"
+        tools:listitem="@layout/item_holder_recycler_digital_library_book_holder">
 
-    <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
         android:id="@+id/fab_digital_library_upload_book"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:fabIcon="@drawable/ic_settings"
-        app:fabText="Upload New Book!"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Upload"
+        app:icon="@drawable/ic_file_upload"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:useCompatPadding="true" />
+        app:layout_constraintEnd_toEndOf="@+id/imageView12" />
+
+    <View
+        android:id="@+id/divider8"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/browser_actions_title_color"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView12"
+        app:layout_constraintEnd_toStartOf="@+id/fab_digital_library_upload_book"
+        app:layout_constraintTop_toTopOf="@+id/imageView12" />
+
+    <TextView
+        android:id="@+id/textView59"
+        style="@style/MyMaterialTextView.SmallTextViewBody2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="Make sure to Sync for Latest Result from 3 dotted menu"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView12"
+        app:layout_constraintEnd_toStartOf="@+id/divider8"
+        app:layout_constraintStart_toStartOf="@+id/imageView12"
+        app:layout_constraintTop_toTopOf="@+id/imageView12" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

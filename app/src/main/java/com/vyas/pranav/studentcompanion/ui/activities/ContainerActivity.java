@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.MarketPlaceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
@@ -32,6 +33,7 @@ public class ContainerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferencesRepository.setUserTheme(this);
         setContentView(R.layout.activity_container);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
