@@ -101,6 +101,9 @@ dependencies {
     implementation 'com.github.iammert:ExpandableLayout:1.4.1'
 
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
+    //Fetch for downloading
+    implementation "androidx.tonyodev.fetch2:xfetch2:3.1.1"
+
 
 
 }
