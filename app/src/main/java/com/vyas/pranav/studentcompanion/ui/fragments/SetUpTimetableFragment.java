@@ -73,7 +73,6 @@ public class SetUpTimetableFragment extends Fragment {
 
     private void setUpRecyclerView() {
         mAdapter = new SetUpTimetableRecyclerAdapter();
-        mAdapter.setHasStableIds(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rvTimetable.setLayoutManager(llm);
         rvTimetable.setAdapter(mAdapter);

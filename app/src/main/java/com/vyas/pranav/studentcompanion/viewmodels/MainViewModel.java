@@ -1,9 +1,12 @@
 package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForSilentAction;
+import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
@@ -49,4 +52,15 @@ public class MainViewModel extends AndroidViewModel {
         return notificationRepository.getCurentNotificationCount(ConverterUtils.convertStringToDate(dateStr));
     }
 
+    public void removePendingJobs() {
+        DailyJobForSilentAction.cancelAllJobs();
+        Toast.makeText(application, "Removed all Jobs for Silent Action", Toast.LENGTH_SHORT).show();
+    }
+
+    public void restartAllPendingJobs() {
+        AppSettingsRepository repository = new AppSettingsRepository(application);
+        if (repository.isSmartSilentEnabled()) {
+            repository.enableAutoSilentDevice();
+        }
+    }
 }

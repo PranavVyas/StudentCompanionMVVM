@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
@@ -21,12 +22,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
+import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.MarketPlaceSellRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.ui.activities.MarketPlaceSellItemActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.Constants;
+import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.viewmodels.MarketPlaceViewModel;
 
@@ -59,6 +62,8 @@ public class MarketPlaceFragment extends Fragment {
     Spinner spinnerCategory;
     @BindView(R.id.text_input_marketplace_search_query)
     TextInputLayout inputSearchTag;
+    @BindView(R.id.floatingActionButton)
+    FloatingActionButton fab;
 
     private MarketPlaceSellRecyclerAdapter mAdapter;
     private FirebaseFirestore mFirestore;
@@ -89,10 +94,10 @@ public class MarketPlaceFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    void showSnackbar(String message) {
+        Snackbar.make(fab, message, Snackbar.LENGTH_LONG).show();
     }
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -100,6 +105,15 @@ public class MarketPlaceFragment extends Fragment {
         marketPlaceViewModel = ViewModelProviders.of(getActivity()).get(MarketPlaceViewModel.class);
         populateUI();
         getLiveData();
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (!ConverterUtils.hasInternetAccess(getContext())) {
+                    showSnackbar("Internet not available. Latest sync Failed");
+                }
+            }
+        });
+
     }
 
     private void populateUI() {
@@ -151,7 +165,6 @@ public class MarketPlaceFragment extends Fragment {
 
     private void setUpRecyclerView() {
         mAdapter = new MarketPlaceSellRecyclerAdapter();
-        mAdapter.setHasStableIds(true);
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rvResults.setAdapter(mAdapter);
         rvResults.setLayoutManager(llm);

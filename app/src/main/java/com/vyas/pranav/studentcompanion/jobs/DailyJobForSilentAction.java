@@ -41,10 +41,14 @@ public class DailyJobForSilentAction extends Job {
     }
     //TODO Remove this job when user signs out
 
+
     public static void cancelAllJobs() {
         if (!JobManager.instance().getAllJobRequestsForTag(TAG).isEmpty()) {
             JobManager.instance().cancelAllForTag(TAG);
         }
+    }
+
+    public static void getAllJobs() {
     }
 
     @NonNull

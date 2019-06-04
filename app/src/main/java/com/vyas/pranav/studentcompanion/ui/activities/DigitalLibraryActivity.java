@@ -188,14 +188,10 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
 
     private void setUpRecyclerView() {
         mAdapter = new DigitalLibraryRecyclerAdapter();
-        mAdapter.setHasStableIds(true);
         LinearLayoutManager llm = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rvList.setAdapter(mAdapter);
         rvList.setLayoutManager(llm);
     }
-
-    //TODO add automatic switch to auto sync
-
 
     private void onSyncClicked() {
         Toast.makeText(this, "Sync Clicked", Toast.LENGTH_SHORT).show();

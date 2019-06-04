@@ -135,10 +135,6 @@ public class AttendanceIndividualFragment extends Fragment {
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         lm.setOrientation(RecyclerView.VERTICAL);
         rvMain.setLayoutManager(lm);
-//        skeletonScreen = Skeleton.bind(rvMain).adapter(mAdapter).load(R.layout.item_holder_recycler_indivdual_attendance_shimmer).count(3).show();
-        mAdapter.setHasStableIds(true);
-//        DividerItemDecoration decoration = new DividerItemDecoration(getContext(), lm.getOrientation());
-//        rvMain.addItemDecoration(decoration);
         startProgress();
         rvMain.setAdapter(mAdapter);
     }

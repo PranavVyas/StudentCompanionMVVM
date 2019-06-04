@@ -81,7 +81,6 @@ public class AllNotificationFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rvMain.setLayoutManager(llm);
         mAdapter = new NotificationsRecyclerAdapter();
-        mAdapter.setHasStableIds(true);
         rvMain.setAdapter(mAdapter);
     }
 

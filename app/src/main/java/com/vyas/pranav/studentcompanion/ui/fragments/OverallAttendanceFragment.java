@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.OverallAttendanceRecyclerAdapter;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class OverallAttendanceFragment extends Fragment {
 
@@ -50,7 +52,6 @@ public class OverallAttendanceFragment extends Fragment {
 
     private void setUpRecyclerView() {
         mAdapter = new OverallAttendanceRecyclerAdapter();
-        mAdapter.setHasStableIds(true);
         rvOverallAttendance.setAdapter(mAdapter);
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         lm.setOrientation(RecyclerView.VERTICAL);
@@ -65,5 +66,10 @@ public class OverallAttendanceFragment extends Fragment {
                 mAdapter.setOverallAttendanceEntries(overallAttendanceEntries);
             }
         });
+    }
+
+    @OnClick(R.id.button2)
+    void clickedINfoButton() {
+        Toast.makeText(getContext(), "Please Click on the Subject card to know more!", Toast.LENGTH_SHORT).show();
     }
 }

@@ -90,7 +90,6 @@ public class MyProfileFragment extends Fragment {
 
     private void setUpRecyclerView() {
         mAdapter = new MyProfileItemsRecyclerAdapter();
-        mAdapter.setHasStableIds(true);
         mAdapter.setOnItemSoldButtonClickListener(new MyProfileItemsRecyclerAdapter.OnItemSoldButtonClickListener() {
             @Override
             public void onItemSoldClicked(ItemModel item) {

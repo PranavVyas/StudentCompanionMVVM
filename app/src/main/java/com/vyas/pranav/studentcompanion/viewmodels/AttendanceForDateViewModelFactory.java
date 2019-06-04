@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-//TODO [EXPERIMENT] Try AndroidViewModelFactory later
 public class AttendanceForDateViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final AttendanceDatabase mAttendanceDb;

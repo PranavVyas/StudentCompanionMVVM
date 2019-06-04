@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 mainViewModel.setCurrUser(null);
                 Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(startSignInActivity);
+                mainViewModel.removePendingJobs();
                 MainActivity.this.finish();
             }
         });

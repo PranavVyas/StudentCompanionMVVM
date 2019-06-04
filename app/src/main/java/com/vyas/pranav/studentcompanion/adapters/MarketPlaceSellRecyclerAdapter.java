@@ -62,7 +62,6 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
                 showAlertDialog(v.getContext(), items.get(position));
             }
         });
-        //TODO Set Place holder
     }
 
     @Override

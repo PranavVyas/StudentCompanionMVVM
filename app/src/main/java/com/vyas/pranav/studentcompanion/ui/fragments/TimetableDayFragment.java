@@ -60,7 +60,6 @@ public class TimetableDayFragment extends Fragment {
     private void setUpRecycler() {
         rvDays.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         mAdapter = new TimetableDayRecyclerAdapter();
-        mAdapter.setHasStableIds(true);
         rvDays.setAdapter(mAdapter);
         mAdapter.setData(lectures);
     }
