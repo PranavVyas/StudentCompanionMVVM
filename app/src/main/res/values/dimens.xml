@@ -10,5 +10,6 @@
     <dimen name="card_radius_profile">8dp</dimen>
     <dimen name="custom_green_btn_radius">4dp</dimen>
     <dimen name="default_text_size_regular">16sp</dimen>
+    <dimen name="card_elevation_lvl_2">4dp</dimen>
 
 </resources>

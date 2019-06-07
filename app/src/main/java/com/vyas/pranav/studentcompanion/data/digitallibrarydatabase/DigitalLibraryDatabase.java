@@ -13,7 +13,7 @@ import androidx.room.TypeConverters;
 @TypeConverters(DateConverter.class)
 public abstract class DigitalLibraryDatabase extends RoomDatabase {
 
-    private static final String DB_NAME = "DigitalLibraryDb";
+    public static final String DB_NAME = "DigitalLibraryDb";
     private static final Object LOCK = new Object();
     private static DigitalLibraryDatabase sInstance;
 
@@ -24,7 +24,7 @@ public abstract class DigitalLibraryDatabase extends RoomDatabase {
         synchronized (LOCK) {
             sInstance = Room.databaseBuilder(context.getApplicationContext(),
                     DigitalLibraryDatabase.class,
-                    DB_NAME)
+                    context.getExternalFilesDir(null).getPath() + DB_NAME)
                     .fallbackToDestructiveMigration()
                     .build();
         }

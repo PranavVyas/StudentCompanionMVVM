@@ -42,7 +42,7 @@
                     android:layout_gravity="center|bottom"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/shape_mask_textview_gradient"
+                    android:background="?attr/gradient_resources_text_view"
                     android:text="Digital Library"
                     android:textAlignment="center" />
             </com.google.android.material.card.MaterialCardView>
@@ -71,7 +71,7 @@
                     android:layout_gravity="center|bottom"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/shape_mask_textview_gradient"
+                    android:background="?attr/gradient_resources_text_view"
                     android:gravity="center"
                     android:text="Buy/Sell Items" />
 
@@ -101,7 +101,7 @@
                     android:layout_gravity="center|bottom"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/shape_mask_textview_gradient"
+                    android:background="?attr/gradient_resources_text_view"
                     android:gravity="center"
                     android:text="Time Table" />
             </com.google.android.material.card.MaterialCardView>
@@ -131,7 +131,7 @@
                     android:layout_gravity="center|bottom"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/shape_mask_textview_gradient"
+                    android:background="?attr/gradient_resources_text_view"
                     android:gravity="center"
                     android:text="Holidays" />
 

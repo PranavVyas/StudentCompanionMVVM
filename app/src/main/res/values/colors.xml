@@ -1,21 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200ea</color>
-    <color name="colorPrimaryDark">#0A00B6</color>
-    <color name="colorSecondary">#ff4081</color>
-    <color name="colorTextOnPrimary">#ffffff</color>
-    <color name="colorTextOnSecondary">#000000</color>
-    <!--<color name="backgroundNormal">#ffffff</color>-->
-    <color name="colorSecondaryNight">#009688</color>
-    <color name="tableSelectedCellColor">#FFD54F</color>
-    <color name="tableSelectedCellColorDark">#9575CD</color>
+    <!-- LIGHT THEME-->
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <color name="colorPrimaryVarient">#3700B3</color>
+    <color name="colorSecondary">#03DAC6</color>
+    <color name="colorSecondaryVarient">#018786</color>
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorError">#B00020</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorOnBackground">#000000</color>
+    <color name="colorOnSurface">#000000</color>
+    <color name="colorOnError">#FFFFFF</color>
 
+    <!--CUSTOM PARAMETERS-->
     <color name="placeHolderBackground">#FAFAFA</color>
-    <color name="placeHolderBackgroundDark">#615F5F</color>
+    <color name="tableSelectedCellColor">#FFD54F</color>
 
-    <color name="colorPrimaryNight">#FF9800</color>
-    <color name="colorPrimaryDarkNight">#FFA000</color>
+    <!-- NIGHT THEME-->
+    <color name="colorPrimaryNight">#BB86FC</color>
+    <color name="colorPrimaryDarkNight">#9C27B0</color>
+    <color name="colorPrimaryVarientNight">#3700B3</color>
+    <color name="colorSecondaryNight">#03DAC6</color>
+    <color name="colorSecondaryVarientNight">#03DAC6</color>
+    <color name="colorBackgroundNight">#121212</color>
+    <color name="colorSurfaceNight">#121212</color>
+    <color name="colorErrorNight">#CF6679</color>
+    <color name="colorOnPrimaryNight">#000000</color>
+    <color name="colorOnSecondaryNight">#000000</color>
+    <color name="colorOnBackgroundNight">#FFFFFF</color>
+    <color name="colorOnSurfaceNight">#FFFFFF</color>
+    <color name="colorOnErrorNight">#000000</color>
 
+    <!--CUSTOM PARAMETRS-->
+    <color name="placeHolderBackgroundNight">#1F1F1F</color>
+    <color name="tableSelectedCellColorNight">#9575CD</color>
+
+    <!--OVERALL ATTENDACE CARD COLOR-->
     <color name="colorDangerOverallAttendance">#FFCCBC</color>
     <color name="colorWarningOverallAttendance">#FFF9C4</color>
     <color name="colorSafeOverallAttendance">#C8E6C9</color>

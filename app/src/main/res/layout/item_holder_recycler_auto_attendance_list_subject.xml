@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/tv_recycler_auto_attendance_list_subject_no"
-        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -28,7 +28,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
-        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_recycler_auto_attendance_list_subject_no"

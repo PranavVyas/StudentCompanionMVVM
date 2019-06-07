@@ -6,7 +6,12 @@ import android.net.NetworkInfo;
 import android.text.format.DateFormat;
 import android.util.Log;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
@@ -21,7 +26,12 @@ import java.util.concurrent.TimeUnit;
 
 public class ConverterUtils {
 
+    public static final int FILE_NOT_FOUND_SRC = -1;
+
     private static final String TAG = "ConverterUtils";
+    private static final int FILE_NOT_CREATED_DEST = -2;
+    private static final int UNKNOWN_ERROR = -3;
+
     /**
      * Convert string to date.
      *
@@ -422,5 +432,31 @@ public class ConverterUtils {
             Log.d(TAG, "No network available!");
         }
         return false;
+    }
+
+    public static int copy(String srcStr, String dstStr) throws IOException {
+        File src = new File(srcStr);
+        if (!src.exists()) {
+            return FILE_NOT_FOUND_SRC;
+        }
+        File dst = new File(dstStr);
+        if (dst.exists()) {
+            boolean newFile = dst.createNewFile();
+            if (!newFile) {
+                return FILE_NOT_CREATED_DEST;
+            }
+            try (InputStream in = new FileInputStream(src)) {
+                try (OutputStream out = new FileOutputStream(dst)) {
+                    // Transfer bytes from in to out
+                    byte[] buf = new byte[1024];
+                    int len;
+                    while ((len = in.read(buf)) > 0) {
+                        out.write(buf, 0, len);
+                    }
+                    return 0;
+                }
+            }
+        }
+        return UNKNOWN_ERROR;
     }
 }

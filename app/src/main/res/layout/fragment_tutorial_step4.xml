@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.TutorialStep4Fragment">
+    <!--tools:background="?attr/custom_background_main"-->
 
     <TextView
         android:id="@+id/textView29"
@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:text="Night Mode"
         android:textAlignment="center"
-        style="@style/MyMaterialTextView.MediumTextViewHeadLine5.White"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
         android:layout_marginEnd="8dp"
         android:text="Student Companion takes care of not only attendance but you, App has dark mode option which can be enabled from Setting\n\nDark Mode helps to reduce eye strain in dark places while saving you some battery (In AMOLED Screens, as said by Google ,The dark mode saves battery in some screen technologies like AMOLED)\n\nAnother reason for this mode is It looks Cool! ;)"
         android:textStyle="italic"
-        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView29" />

@@ -16,14 +16,14 @@ import androidx.room.TypeConverters;
 public abstract class HolidayDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
-    private static final String DB_NAME = "HolidayDatabase";
+    public static final String DB_NAME = "HolidayDatabase";
     private static HolidayDatabase sInstance;
 
     public static HolidayDatabase getInstance(Context context) {
         if (sInstance == null) {
             sInstance = Room.databaseBuilder(context.getApplicationContext(),
                     HolidayDatabase.class,
-                    DB_NAME)
+                    context.getExternalFilesDir(null).getPath() + DB_NAME)
                     .fallbackToDestructiveMigration().build();
         }
         return sInstance;

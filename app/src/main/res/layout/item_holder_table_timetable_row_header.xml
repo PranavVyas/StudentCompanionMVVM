@@ -11,7 +11,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:layout_height="wrap_content"
-        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
         tools:text="RowHeader">
 
     </TextView>

@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/custom_background_main"
     tools:context=".ui.activities.MarketPlaceSellItemActivity">
+    <!--android:background="?attr/custom_background_main"-->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_marketplace_sell_item"
         android:layout_width="0dp"
+        style="@style/MyCustomMaterialToolbar"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                style="@style/MyCustomMaterialButton"
                 android:layout_marginBottom="24dp"
                 android:text="Retry"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -199,7 +201,7 @@
 
                 <TextView
                     android:id="@+id/tv_marketplace_sell_item_image_state"
-                    style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+                    style="@style/MyMaterialTextView.SmallTextViewBody1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -217,6 +219,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="Post Ad"
+                    style="@style/MyCustomMaterialButton"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.TutorialStep5Fragment">
+    <!--tools:background="?attr/custom_background_main"-->
 
     <ImageView
         android:id="@+id/imageView7"
@@ -28,7 +28,7 @@
         android:layout_marginEnd="8dp"
         android:text="Smart Silent"
         android:textAlignment="center"
-        style="@style/MyMaterialTextView.MediumTextViewHeadLine5.White"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
         android:layout_marginEnd="8dp"
         android:text="Based on the time that has been set up by you for lectures the phone will automatically go in the silent mode when the lecture starts and will come back to normal when it finishes, So no worrys of phone ringing in the lecture!"
         android:textStyle="italic"
-        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView25" />
@@ -58,7 +58,7 @@
         android:layout_marginBottom="8dp"
         android:text="Phew ! Well That was a lot of thing just done! But Hey You earner your reward! Please proceed to use app now !,While you were going throught the toturial I have initlised the attendance for you so If that is not finished (Rarely Happens) Just Give me a Minute!"
         android:textStyle="italic"
-        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:background="?attr/custom_background_main"
     android:orientation="vertical">
+    <!--tools:background="?attr/custom_background_main"-->
 
     <TextView
         android:id="@+id/tv_recycler_holiday_fragment_date"
@@ -16,7 +16,7 @@
         android:layout_marginBottom="4dp"
         android:text="10/12/2018"
         android:textAlignment="center"
-        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_recycler_holiday_fragment_day"
@@ -31,7 +31,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
         android:textAlignment="center"
-        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
         android:layout_marginBottom="4dp"
         android:text="Sunday"
         android:textAlignment="center"
-        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_recycler_holiday_fragment_name"
         app:layout_constraintStart_toEndOf="@+id/tv_recycler_holiday_fragment_date"

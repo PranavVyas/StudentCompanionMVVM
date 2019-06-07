@@ -161,15 +161,9 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
 //                    }
 //                })
                 .setView(view)
-                .setCancelable(false)
+                .setCancelable(true)
                 .create();
         dialog.show();
-        dialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
         dialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_enable).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.AttendanceIndividualFragment">
+    <!--tools:background="?attr/custom_background_main"-->
 
     <TextView
         android:id="@+id/tv_attendance_individual_date"
@@ -17,7 +17,7 @@
         android:background="@drawable/boardered_rounded_corner_rectangle"
         android:padding="4dp"
         android:textAlignment="center"
-        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
 
     <Button
         android:id="@+id/btn_attendance_individual_fragment_other_attendance"
-        style="@style/Widget.MaterialComponents.Button.Icon"
+        style="@style/MyCustomMaterialButtonIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

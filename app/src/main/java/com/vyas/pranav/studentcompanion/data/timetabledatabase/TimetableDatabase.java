@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 public abstract class TimetableDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
-    private static final String DB_NAME = "TimetableDatabase";
+    public static final String DB_NAME = "TimetableDatabase";
     private static TimetableDatabase sInstance;
 
     public static TimetableDatabase getInstance(Context context) {
@@ -18,7 +18,7 @@ public abstract class TimetableDatabase extends RoomDatabase {
             synchronized (LOCK) {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         TimetableDatabase.class,
-                        DB_NAME)
+                        context.getExternalFilesDir(null).getPath() + DB_NAME)
                         .fallbackToDestructiveMigration().build();
             }
         }

@@ -138,7 +138,7 @@
 
     <Button
         android:id="@+id/btn_marketplace_sell_item_action"
-        style="@style/Widget.MaterialComponents.Button.Icon"
+        style="@style/MyCustomMaterialButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"

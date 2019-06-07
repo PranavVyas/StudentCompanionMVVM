@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.TimetableFragment">
 
     <FrameLayout
@@ -42,8 +41,9 @@
             app:separator_color="#000000"
             app:shadow_color="?attr/table_selected_cell"
             app:show_horizontal_separator="true"
-            app:show_vertical_separator="true"
-            app:unselected_color="?attr/table_background" />
+            app:unselected_color="?attr/table_background"
+            app:show_vertical_separator="true" />
+
     </FrameLayout>
 
     <com.github.angads25.toggle.widget.LabeledSwitch
@@ -61,7 +61,7 @@
 
     <TextView
         android:id="@+id/textView18"
-        style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -74,7 +74,7 @@
 
     <Button
         android:id="@+id/btn_timetable_frag_sem_info"
-        style="@style/Widget.MaterialComponents.Button.Icon"
+        style="@style/MyCustomMaterialButtonIcon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

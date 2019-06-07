@@ -14,7 +14,7 @@ import androidx.room.TypeConverters;
 public abstract class AttendanceDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object();
-    private static final String DB_NAME = "AttendanceDatabase";
+    public static final String DB_NAME = "AttendanceDatabase";
     private static AttendanceDatabase sInstance;
 //    private static RoomDatabase.Callback callback = new RoomDatabase.Callback() {
 //        @Override
@@ -29,7 +29,7 @@ public abstract class AttendanceDatabase extends RoomDatabase {
             synchronized (LOCK) {
                 sInstance = Room.databaseBuilder(context.getApplicationContext()
                         , AttendanceDatabase.class
-                        , DB_NAME)
+                        , context.getExternalFilesDir(null).getPath() + DB_NAME)
                         .fallbackToDestructiveMigration()
                         //.addCallback(callback)
                         .build();

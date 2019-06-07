@@ -4,13 +4,15 @@
         <attr name="table_background" format="color" />
         <attr name="table_selected_cell" format="color" />
         <attr name="placeholder_background" format="color" />
-        <attr name="icon_tint_plane" format="color" />
-        <attr name="text_default_color_custom" format="color" />
-        <attr name="custom_background_default_color" format="color" />
-        <attr name="body_text_custom_default_color" format="color" />
+        <attr name="icon_custom_tint" format="color" />
+        <!--<attr name="text_default_color_custom" format="color" />-->
+        <!--<attr name="custom_background_default_color" format="color" />-->
+        <!--<attr name="body_text_custom_default_color" format="color" />-->
         <attr name="custom_component_color_default" format="color" />
-        <attr name="custom_background_main" format="reference" />
-        <attr name="custom_info_background" format="color" />
+        <!--<attr name="custom_background_main" format="reference" />-->
+        <!--<attr name="custom_info_background" format="color" />-->
+        <attr name="toolbar_text_view_color" format="color" />
+        <attr name="gradient_resources_text_view" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="SwitchPreferenceCustom">

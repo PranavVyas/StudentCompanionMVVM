@@ -8,5 +8,4 @@
     android:ellipsize="marquee"
     android:singleLine="true"
     android:textAlignment="inherit"
-    android:textColor="@color/md_white_1000"
     tools:text="Trial" />

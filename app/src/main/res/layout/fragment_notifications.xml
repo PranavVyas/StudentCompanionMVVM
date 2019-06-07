@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.NotificationFragment">
+    <!--tools:background="?attr/custom_background_main"-->
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs_notifiations_frag_viewpager_tab"

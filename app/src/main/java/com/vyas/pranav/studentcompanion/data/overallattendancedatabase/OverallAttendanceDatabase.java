@@ -25,7 +25,7 @@ public abstract class OverallAttendanceDatabase extends RoomDatabase {
             synchronized (LOCK) {
                 sInstance = Room.databaseBuilder(context.getApplicationContext()
                         , OverallAttendanceDatabase.class
-                        , DB_NAME)
+                        , context.getExternalFilesDir(null).getPath() + DB_NAME)
                         //.addCallback(roomCallback)
                         .fallbackToDestructiveMigration().build();
             }

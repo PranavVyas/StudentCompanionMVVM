@@ -13,7 +13,7 @@ import androidx.room.TypeConverters;
 @TypeConverters(DateConverter.class)
 public abstract class NotificationDatabase extends RoomDatabase {
 
-    private static final String DB_NAME = "NotificationDatabase";
+    public static final String DB_NAME = "NotificationDatabase";
     private static final Object LOCK = new Object();
     private static NotificationDatabase sInstance;
 
@@ -22,7 +22,7 @@ public abstract class NotificationDatabase extends RoomDatabase {
             synchronized (LOCK) {
                 sInstance = Room.databaseBuilder(context.getApplicationContext(),
                         NotificationDatabase.class,
-                        DB_NAME)
+                        context.getExternalFilesDir(null).getPath() + DB_NAME)
                         .fallbackToDestructiveMigration().build();
             }
         }

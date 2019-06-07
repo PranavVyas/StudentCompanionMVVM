@@ -19,10 +19,12 @@ import com.google.android.gms.location.places.Places;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.repositories.GeoFencingRepository;
 import com.vyas.pranav.studentcompanion.ui.activities.AutoAttendanceSubjectListActivity;
@@ -34,6 +36,7 @@ import com.vyas.pranav.studentcompanion.viewmodels.AppSettingsViewModel;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.List;
 
@@ -347,11 +350,48 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     }
 
     private void exportDatabaseFile(Context context) {
-        String dirName = "backup_" + String.valueOf(ConverterUtils.getCurrentTimeInMillis()) + "_";
-        copyData(
-                context.getDatabasePath(OverallAttendanceDatabase.DB_NAME).getPath(),
-                Environment.getExternalStorageDirectory().getPath() + "/Download/" + dirName + OverallAttendanceDatabase.DB_NAME
-        );
+//        String dirName = "backup_" + String.valueOf(ConverterUtils.getCurrentTimeInMillis()) + "_";
+//        copyData(
+//                context.getDatabasePath(OverallAttendanceDatabase.DB_NAME).getPath(),
+//                Environment.getExternalStorageDirectory().getPath() + "/Download/" + dirName + OverallAttendanceDatabase.DB_NAME
+//        );
+        Dexter.withActivity(getActivity())
+                .withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            Toast.makeText(context, "Starting", Toast.LENGTH_SHORT).show();
+                            try {
+                                Logger.d("Result is : " + ConverterUtils.copy(
+                                        context.getExternalFilesDir(null).getPath() + AttendanceDatabase.DB_NAME,
+                                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath() + "BackUp/" + AttendanceDatabase.DB_NAME
+                                ));
+
+
+                                Toast.makeText(context, "Ending", Toast.LENGTH_SHORT).show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Logger.d("Error ud : " + e.getMessage());
+                            }
+                        } else {
+                            StringBuilder permission = new StringBuilder();
+                            for (PermissionDeniedResponse deniedResponse :
+                                    report.getDeniedPermissionResponses()) {
+                                permission.append(deniedResponse.getPermissionName());
+                            }
+                            Toast.makeText(context, "Permissions Missing :\n" + permission.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .check();
+
 //        copyData(
 //                context.getDatabasePath(OverallAttendanceDatabase.DB_NAME + "-shm").getPath(),
 //                OverallAttendanceDatabase.DB_NAME + "-shm"

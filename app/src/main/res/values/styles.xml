@@ -4,20 +4,35 @@
         <item name="colorAccent">@color/colorSecondary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVarient</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVarient</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+
+        <!--MISC-->
         <item name="homeAsUpIndicator">@drawable/ic_arrow_back</item>
         <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
-        <item name="colorOnPrimary">#ffffff</item>
 
+        <!--CUSTOM PARAMETERS-->
         <item name="table_background">@color/fui_transparent</item>
         <item name="table_selected_cell">@color/tableSelectedCellColor</item>
         <item name="placeholder_background">@color/placeHolderBackground</item>
-        <item name="icon_tint_plane">#000000</item>
-        <item name="text_default_color_custom">#ffffff</item>
-        <item name="custom_background_default_color">#ffffff</item>
-        <item name="body_text_custom_default_color">#ffffff</item>
-        <item name="custom_component_color_default">#ffffff</item>
-        <item name="custom_background_main">@drawable/gradient_blue_art_background</item>
-        <item name="custom_info_background">#ffffff</item>
+        <item name="icon_custom_tint">#000000</item>
+        <!--<item name="text_default_color_custom">#000000</item>-->
+        <!--<item name="custom_background_default_color">#f5f5f5</item>-->
+        <!--<item name="body_text_custom_default_color">#ffffff</item>-->
+        <item name="custom_component_color_default">#000000</item>
+        <!--<item name="custom_info_background">#ffffff</item>-->
+        <!--<item name="custom_background_main">@drawable/creative_background</item>-->
+        <item name="toolbar_text_view_color">#FFFFFF</item>
+        <item name="gradient_resources_text_view">@drawable/shape_mask_textview_gradient_white
+        </item>
 
         <!--Material Drawer Attributes-->
         <item name="material_drawer_header_selection_text">
@@ -29,22 +44,39 @@
     </style>
 
     <style name="AppTheme.Night" parent="Theme.MaterialComponents.NoActionBar">
+
         <item name="colorAccent">@color/colorSecondaryNight</item>
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
-        <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
-        <item name="colorOnPrimary">#ffffff</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVarientNight</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryNight</item>
+        <item name="colorSecondary">@color/colorSecondaryNight</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVarientNight</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryNight</item>
+        <item name="colorError">@color/colorErrorNight</item>
+        <item name="colorOnError">@color/colorOnErrorNight</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundNight</item>
+        <item name="colorSurface">@color/colorSurfaceNight</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceNight</item>
 
+        <!--MISC-->
+        <!--<item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>-->
+
+        <!--CUSTOM PARAMETERS-->
         <item name="table_background">@color/fui_transparent</item>
-        <item name="table_selected_cell">@color/tableSelectedCellColorDark</item>
-        <item name="placeholder_background">@color/placeHolderBackgroundDark</item>
-        <item name="icon_tint_plane">#ffffff</item>
-        <item name="text_default_color_custom">#ffffff</item>
-        <item name="body_text_custom_default_color">#F8F8F8</item>
-        <item name="custom_background_default_color">#000000</item>
+        <item name="table_selected_cell">@color/colorSecondary</item>
+        <item name="placeholder_background">@color/placeHolderBackgroundNight</item>
+        <item name="icon_custom_tint">#ffffff</item>
+        <!--<item name="text_default_color_custom">#ffffff</item>-->
+        <!--<item name="body_text_custom_default_color">#F8F8F8</item>-->
+        <!--<item name="custom_background_default_color">#1E1E1E</item>-->
         <item name="custom_component_color_default">#ffffff</item>
-        <item name="custom_background_main">@drawable/creative_background</item>
-        <item name="custom_info_background">#616161</item>
+        <!--<item name="custom_background_main">@drawable/creative_background</item>-->
+        <!--<item name="custom_info_background">#1F1F1F</item>-->
+        <item name="toolbar_text_view_color">#000000</item>
+        <item name="gradient_resources_text_view">@drawable/shape_mask_textview_gradient_black
+        </item>
+
 
         <!--Material Drawer Attributes-->
         <item name="material_drawer_background">@color/material_drawer_dark_background</item>
@@ -58,7 +90,7 @@
         <item name="material_drawer_selected">@color/material_drawer_dark_selected</item>
         <item name="material_drawer_selected_legacy">@color/material_drawer_dark_selected_legacy
         </item>
-        <item name="material_drawer_selected_text">@color/material_drawer_dark_selected_text</item>
+        <item name="material_drawer_selected_text">@color/colorPrimaryNight</item>
         <item name="material_drawer_header_selection_text">
             @color/material_drawer_dark_header_selection_text
         </item>
@@ -75,30 +107,30 @@
     <!--Customized Themes-->
     <!--Outlined Text Input Layout-->
     <style name="MyCustomOutlinedBoxTextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/md_white_1000</item>
+        <!--<item name="boxStrokeColor">@color/md_white_1000</item>-->
         <item name="errorTextColor">@color/accent</item>
-        <item name="android:textColorHint">@color/md_white_1000</item>
-        <item name="helperTextTextColor">@color/md_white_1000</item>
+        <!--<item name="android:textColorHint">@color/md_white_1000</item>-->
+        <!--<item name="helperTextTextColor">@color/md_white_1000</item>-->
     </style>
 
     <!--Material Edit Text-->
     <style name="MyCustomMaterialEditTextInput" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
-        <item name="android:textColor">?attr/custom_component_color_default</item>
-        <item name="android:maxLines">1</item>
+        <!--<item name="android:textColor">?attr/custom_component_color_default</item>-->
+        <item name="android:singleLine">true</item>
     </style>
 
     <!--Custom Toolbar TextView-->
     <style name="MyCustomToolbarTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:textColor">?attr/text_default_color_custom</item>
+        <item name="android:textColor">?attr/toolbar_text_view_color</item>
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
-        <item name="android:fontFamily">@font/manrope_extrabold</item>
+        <item name="android:fontFamily">@font/product_sans_bold</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 
     <!--Custom Material Toolbar-->
-    <style name="MyCustomMaterialToolbar" parent="Widget.MaterialComponents.Toolbar">
+    <style name="MyCustomMaterialToolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:minHeight">?actionBarSize</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">0dp</item>
@@ -110,15 +142,6 @@
     </style>
 
     <!--Small Custom TextViews-->
-    <style name="MyMaterialTextView.SmallTextViewBody2.White" parent="MyMaterialTextView">
-        <item name="android:textColor">?attr/text_default_color_custom</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
-    </style>
-
-    <style name="MyMaterialTextView.SmallTextViewBody1.White" parent="MyMaterialTextView">
-        <item name="android:textColor">?attr/text_default_color_custom</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
-    </style>
 
     <style name="MyMaterialTextView.SmallTextViewBody2" parent="MyMaterialTextView">
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
@@ -134,6 +157,7 @@
 
     <style name="MyMaterialTextView.SmallTextViewBody1.Bold" parent="MyMaterialTextView.SmallTextViewBody1">
         <item name="android:textStyle">bold</item>
+
     </style>
 
     <!--Medium Custom TextViews-->
@@ -156,25 +180,22 @@
         </item>
     </style>
 
-    <style name="MyMaterialTextView.MediumTextViewHeadLine6.White" parent="MyMaterialTextView">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">?attr/text_default_color_custom</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6
-        </item>
+    <!--CUSTOM BUTTONS-->
+    <style name="MyCustomMaterialButtonIcon" parent="Widget.MaterialComponents.Button.Icon">
+        <item name="backgroundTint">?attr/colorSecondaryVariant</item>
     </style>
 
-    <style name="MyMaterialTextView.MediumTextViewHeadLine5.White" parent="MyMaterialTextView">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">?attr/text_default_color_custom</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline5
-        </item>
+    <style name="MyCustomMaterialButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">?attr/colorSecondaryVariant</item>
     </style>
-
-    <style name="MyMaterialTextView.MediumTextViewHeadLine4.White" parent="MyMaterialTextView">
-        <item name="android:textColor">?attr/text_default_color_custom</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline4
-        </item>
-    </style>
-
 </resources>
+
+    <!--<style name="MyMaterialTextView.MediumTextViewHeadLine6.White" parent="MyMaterialTextView">--><!--<item name="android:textStyle">bold</item>--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6--><!--</item>--><!--</style>-->
+
+    <!--<style name="MyMaterialTextView.MediumTextViewHeadLine5.White" parent="MyMaterialTextView">--><!--<item name="android:textStyle">bold</item>--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline5--><!--</item>--><!--</style>-->
+
+    <!--<style name="MyMaterialTextView.MediumTextViewHeadLine4.White" parent="MyMaterialTextView">--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textStyle">bold</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline4--><!--</item>--><!--</style>-->
+
+    <!--<style name="MyMaterialTextView.SmallTextViewBody2.White" parent="MyMaterialTextView">--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>--><!--</style>-->
+
+    <!--<style name="MyMaterialTextView.SmallTextViewBody1.White" parent="MyMaterialTextView">--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>--><!--</style>-->

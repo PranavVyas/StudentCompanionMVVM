@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.TimetableDayFragment">
+    <!--tools:background="?attr/custom_background_main"-->
 
     <TextView
         android:id="@+id/tv_fragment_timetable_day_day"
-        style="@style/MyMaterialTextView.MediumTextViewHeadLine6.White"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

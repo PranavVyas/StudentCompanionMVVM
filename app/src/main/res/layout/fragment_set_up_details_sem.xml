@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="?attr/custom_background_main"
     tools:context=".ui.fragments.SetUpDetailsSemFragment">
+    <!--tools:background="?attr/custom_background_main"-->
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_set_up_details_sem_fragment_no_of_subjects"
@@ -59,6 +59,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:text="Go"
+        style="@style/MyCustomMaterialButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_input_set_up_sem_details_no_of_lectures" />
@@ -91,6 +92,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
         android:text="Continue"
+        style="@style/MyCustomMaterialButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_set_up_details_dem_previous" />
@@ -103,6 +105,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
         android:text="Previous"
+        style="@style/MyCustomMaterialButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_set_up_details_dem_continue"
         app:layout_constraintStart_toStartOf="parent" />

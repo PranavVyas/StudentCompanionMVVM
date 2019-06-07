@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/custom_background_main"
     tools:context=".ui.activities.TutorialActivity">
+    <!--android:background="?attr/custom_background_main"-->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_tutorial"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
+        style="@style/MyCustomMaterialToolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -28,7 +29,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Previous"
-        android:textColor="?attr/custom_component_color_default"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_tutorial_next"
         app:layout_constraintStart_toStartOf="parent" />
@@ -39,7 +39,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Next"
-        android:textColor="?attr/custom_component_color_default"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_tutorial_previous" />

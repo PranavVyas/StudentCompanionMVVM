@@ -28,19 +28,18 @@
 
         <TextView
             android:id="@android:id/title"
-            style="@style/MyMaterialTextView.SmallTextViewBody1.White"
+            style="@style/MyMaterialTextView.SmallTextViewBody1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:fontFamily="@font/manrope_semibold"
             android:singleLine="true"
             android:textColor="@color/custom_preference_textview_color"
             tools:text="Trial" />
 
         <TextView
             android:id="@android:id/summary"
-            style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+            style="@style/MyMaterialTextView.SmallTextViewBody2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"

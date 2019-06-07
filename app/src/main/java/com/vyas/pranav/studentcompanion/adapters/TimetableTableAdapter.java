@@ -59,7 +59,6 @@ public class TimetableTableAdapter extends AbstractTableAdapter<String, String, 
         ColumnHeaderViewHolder viewHolder = (ColumnHeaderViewHolder) holder;
         String columnHeader = (String) columnHeaderItemModel;
         viewHolder.tvColumnHeader.setText(columnHeader);
-        viewHolder.itemView.setBackgroundColor(R.attr.table_background);
         viewHolder.itemView.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
         viewHolder.tvColumnHeader.requestLayout();
     }

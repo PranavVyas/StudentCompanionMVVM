@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/custom_background_main"
     tools:context=".ui.activities.SignInActivity">
+    <!--android:background="?attr/custom_background_main"-->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_sign_in_activity"
         android:layout_width="match_parent"
+        style="@style/MyCustomMaterialToolbar"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +30,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        style="@style/MyCustomMaterialButton"
         android:text="Sign In"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,7 +38,7 @@
 
     <TextView
         android:id="@+id/textView7"
-        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -63,7 +65,7 @@
 
     <TextView
         android:id="@+id/textView57"
-        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -77,7 +79,7 @@
 
     <TextView
         android:id="@+id/textView58"
-        style="@style/MyMaterialTextView.SmallTextViewBody2.White"
+        style="@style/MyMaterialTextView.SmallTextViewBody2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.holder.StringHolder;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.ui.fragments.AboutDeveloperFragment;
@@ -73,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         OnNavigationItemClicked(mainViewModel.getCurrentFragmentId());
         mDrawer.setSelection(mainViewModel.getCurrentFragmentId());
         setLiveBadge();
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.d("Received Path is : " + this.getExternalFilesDir(null).getPath() + "\n abs path : " + this.getExternalFilesDir(null).getAbsolutePath());
         dismissCallingNotificationIsAvailable();
     }
 

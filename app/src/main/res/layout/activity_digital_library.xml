@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/custom_background_main"
     tools:context=".ui.activities.DigitalLibraryActivity">
+    <!--android:background="?attr/custom_background_main"-->
 
 
     <androidx.appcompat.widget.Toolbar
@@ -46,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        style="@style/MyCustomMaterialButton"
         android:layout_marginEnd="8dp"
         android:text="Search"
         app:layout_constraintBottom_toBottomOf="@+id/text_input_digital_library_search_container"
@@ -85,7 +86,7 @@
 
     <Button
         android:id="@+id/fab_digital_library_upload_book"
-        style="@style/Widget.MaterialComponents.Button.Icon"
+        style="@style/MyCustomMaterialButtonIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -102,7 +103,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
-        android:background="@color/browser_actions_title_color"
+        android:background="?attr/custom_component_color_default"
         app:layout_constraintBottom_toBottomOf="@+id/imageView12"
         app:layout_constraintEnd_toStartOf="@+id/fab_digital_library_upload_book"
         app:layout_constraintTop_toTopOf="@+id/imageView12" />
