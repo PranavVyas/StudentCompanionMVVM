@@ -9,16 +9,34 @@ import android.widget.Toast;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DigitalLibraryRecyclerAdapter extends RecyclerView.Adapter<DigitalLibraryRecyclerAdapter.BookHolder> {
+public class DigitalLibraryRecyclerAdapter extends ListAdapter<DigitalLibraryEntry, DigitalLibraryRecyclerAdapter.BookHolder> {
 
-    private List<DigitalLibraryEntry> listOfBooks;
+    private static final DiffUtil.ItemCallback<DigitalLibraryEntry> diffCallback = new DiffUtil.ItemCallback<DigitalLibraryEntry>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull DigitalLibraryEntry oldItem, @NonNull DigitalLibraryEntry newItem) {
+            return oldItem.get_ID() == newItem.get_ID();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull DigitalLibraryEntry oldItem, @NonNull DigitalLibraryEntry newItem) {
+            return oldItem.getBookUrl().equals(newItem.getBookUrl()) &&
+                    oldItem.getAuthorName().equals(newItem.getAuthorName()) &&
+                    oldItem.getBookName().equals(newItem.getBookName()) &&
+                    oldItem.getSubject().equals(newItem.getSubject()) &&
+                    oldItem.getExtraInfo().equals(newItem.getExtraInfo());
+        }
+    };
+
+    public DigitalLibraryRecyclerAdapter() {
+        super(diffCallback);
+    }
 
     @NonNull
     @Override
@@ -29,22 +47,12 @@ public class DigitalLibraryRecyclerAdapter extends RecyclerView.Adapter<DigitalL
 
     @Override
     public void onBindViewHolder(@NonNull BookHolder holder, int position) {
-        DigitalLibraryEntry book = listOfBooks.get(position);
+        DigitalLibraryEntry book = getItem(position);
         holder.tvAuthorName.setText(book.getAuthorName());
         holder.tvBookName.setText(book.getBookName());
         holder.tvSubject.setText(book.getSubject());
         holder.tvNo.setText((position + 1) + ".");
         holder.tvExtraInfo.setText(book.getExtraInfo());
-    }
-
-    @Override
-    public int getItemCount() {
-        return (listOfBooks == null) ? 0 : listOfBooks.size();
-    }
-
-    public void refreshList(List<DigitalLibraryEntry> listOfBooks) {
-        this.listOfBooks = listOfBooks;
-        notifyDataSetChanged();
     }
 
     class BookHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -67,7 +75,7 @@ public class DigitalLibraryRecyclerAdapter extends RecyclerView.Adapter<DigitalL
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Link is : " + listOfBooks.get(getAdapterPosition()).getBookUrl(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(v.getContext(), "Link is : " + getItem(getAdapterPosition()).getBookUrl(), Toast.LENGTH_SHORT).show();
         }
     }
 }

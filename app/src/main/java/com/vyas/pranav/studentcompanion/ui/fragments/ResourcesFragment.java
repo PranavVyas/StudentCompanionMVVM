@@ -1,6 +1,7 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -35,14 +36,15 @@ public class ResourcesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     @OnClick(R.id.card_resources_fragment_digital_library)
     void digitalLibraryClicked() {
         Logger.d("OnDigitalLibraryClicked");
         Intent openDigitalLibrary = new Intent(getContext(), DigitalLibraryActivity.class);
-        startActivity(openDigitalLibrary);
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
+                .toBundle();
+        startActivity(openDigitalLibrary, bundle);
     }
 
     @OnClick(R.id.card_resources_fragment_timetable)
@@ -50,23 +52,26 @@ public class ResourcesFragment extends Fragment {
         Logger.d("On Timetable Clicked");
         Intent intent = new Intent(getContext(), ContainerActivity.class);
         intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.TIME_TABLE);
-        getContext().startActivity(intent);
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
+                .toBundle();
+        startActivity(intent, bundle);
     }
 
     @OnClick(R.id.card_resources_fragment_buy_sell)
     void marketpplaceClicked() {
         Intent intent = new Intent(getContext(), ContainerActivity.class);
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
+                .toBundle();
         intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.MARKETPLACE_ACTIVITY);
-        getContext().startActivity(intent);
+        startActivity(intent, bundle);
     }
 
     @OnClick(R.id.card_resources_fragment_holidays)
     void holidayClicked() {
         Intent intent = new Intent(getContext(), ContainerActivity.class);
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
+                .toBundle();
         intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.HOLIDAYS);
-        getContext().startActivity(intent);
+        startActivity(intent, bundle);
     }
-
-
-
 }

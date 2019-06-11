@@ -134,6 +134,8 @@ fabric.properties
 google-services.json
 
 app/src/main/res/values/key.xml
+app/release
+
 
 
 # End of https://www.gitignore.io/api/androidstudio

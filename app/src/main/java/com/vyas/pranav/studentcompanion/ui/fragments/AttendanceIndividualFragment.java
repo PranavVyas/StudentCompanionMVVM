@@ -1,6 +1,7 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
+import android.app.ActivityOptions;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -111,7 +112,8 @@ public class AttendanceIndividualFragment extends Fragment {
                         String selectedDate = ConverterUtils.formatDateStringFromCalender(day, month, year);
                         Intent intent = new Intent(getContext(), AttendanceIndividualActivity.class);
                         intent.putExtra(AttendanceIndividualActivity.EXTRA_DATE, selectedDate);
-                        getContext().startActivity(intent);
+                        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+                        startActivity(intent, bundle);
                         //Toast.makeText(getContext(), "i = "+i+" i1 = "+i1+" i2 = "+i2, Toast.LENGTH_SHORT).show();
                     }
                 },
@@ -154,7 +156,7 @@ public class AttendanceIndividualFragment extends Fragment {
                             finalAttendance.add(attendance);
                         }
                     }
-                    mAdapter.setAttendanceForDate(finalAttendance);
+                    mAdapter.submitList(finalAttendance);
                     stopProgress();
                     showHolidayPlaceHolder(false);
                     return;

@@ -45,4 +45,8 @@
     <string name="profile_url_twitter">https://twitter.com/PranavVyas99</string>
     <string name="profile_url_instagram">https://www.instagram.com/pro_vyas4399</string>
 
+    <string name="trans_overall_attendance_progress">overall_progress_transition</string>
+    <string name="trans_overall_attendance_sub_name">overall_sub_name_transition</string>
+
+
 </resources>

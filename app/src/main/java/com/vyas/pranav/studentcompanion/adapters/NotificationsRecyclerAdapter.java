@@ -11,16 +11,33 @@ import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationEn
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationsRecyclerAdapter extends RecyclerView.Adapter<NotificationsRecyclerAdapter.NotificationHolder> {
+public class NotificationsRecyclerAdapter extends ListAdapter<NotificationEntry, NotificationsRecyclerAdapter.NotificationHolder> {
 
-    private List<NotificationEntry> notifications;
+    public static final DiffUtil.ItemCallback<NotificationEntry> diffCallback = new DiffUtil.ItemCallback<NotificationEntry>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull NotificationEntry oldItem, @NonNull NotificationEntry newItem) {
+            return oldItem.get_ID() == newItem.get_ID();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull NotificationEntry oldItem, @NonNull NotificationEntry newItem) {
+            return (oldItem.getDate().equals(newItem.getDate())) &&
+                    (oldItem.getImageUrl().equals(newItem.getImageUrl())) &&
+                    (oldItem.getSubtitle().equals(newItem.getSubtitle())) &&
+                    (oldItem.getTitle().equals(newItem.getTitle()));
+        }
+    };
+
+    public NotificationsRecyclerAdapter() {
+        super(diffCallback);
+    }
 
     @NonNull
     @Override
@@ -30,7 +47,7 @@ public class NotificationsRecyclerAdapter extends RecyclerView.Adapter<Notificat
 
     @Override
     public void onBindViewHolder(@NonNull NotificationHolder holder, int position) {
-        NotificationEntry notification = notifications.get(position);
+        NotificationEntry notification = getItem(position);
         holder.tvDate.setText(ConverterUtils.convertDateToString(notification.getDate()));
         holder.tvTitle.setText(notification.getTitle());
         holder.tvSubtitle.setText(notification.getSubtitle());
@@ -40,16 +57,6 @@ public class NotificationsRecyclerAdapter extends RecyclerView.Adapter<Notificat
                 .placeholder(R.drawable.ic_caution)
                 .circleCrop()
                 .into(holder.imageItem);
-    }
-
-    @Override
-    public int getItemCount() {
-        return (notifications == null) ? 0 : notifications.size();
-    }
-
-    public void setNotifications(List<NotificationEntry> notifications) {
-        this.notifications = notifications;
-        notifyDataSetChanged();
     }
 
     class NotificationHolder extends RecyclerView.ViewHolder {

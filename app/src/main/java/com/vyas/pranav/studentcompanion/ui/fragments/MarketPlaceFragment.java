@@ -16,9 +16,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
@@ -66,8 +64,6 @@ public class MarketPlaceFragment extends Fragment {
     FloatingActionButton fab;
 
     private MarketPlaceSellRecyclerAdapter mAdapter;
-    private FirebaseFirestore mFirestore;
-    private CollectionReference mCollectionReference;
     private AppExecutors mExecutors = AppExecutors.getInstance();
 
     private MarketPlaceViewModel marketPlaceViewModel;
@@ -95,7 +91,7 @@ public class MarketPlaceFragment extends Fragment {
     }
 
     void showSnackbar(String message) {
-        Snackbar.make(fab, message, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(inputSearchTag, message, Snackbar.LENGTH_LONG).show();
     }
 
 
@@ -246,7 +242,7 @@ public class MarketPlaceFragment extends Fragment {
             @Override
             public void onChanged(List<ItemModel> itemModels) {
                 if (itemModels != null) {
-                    mAdapter.setItems(itemModels);
+                    mAdapter.submitList(itemModels);
                 }
             }
         });

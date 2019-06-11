@@ -32,9 +32,9 @@ public class ContainerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         SharedPreferencesRepository.setUserTheme(this);
         setContentView(R.layout.activity_container);
+        super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -53,6 +53,7 @@ public class ContainerActivity extends AppCompatActivity {
         switch (receivedData) {
             case TIME_TABLE:
                 TimetableFragment timetableFragment = new TimetableFragment();
+//                timetableFragment.setEnterTransition();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_container_activity_container, timetableFragment, "TIME_TABLE")
                         .commit();

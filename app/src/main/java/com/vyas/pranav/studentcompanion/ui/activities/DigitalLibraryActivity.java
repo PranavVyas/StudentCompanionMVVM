@@ -1,5 +1,6 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter;
 
 public class DigitalLibraryActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -66,6 +68,23 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         digitalLibraryViewModel = ViewModelProviders.of(this).get(DigitalLibraryViewModel.class);
         setUpUi();
+
+//        //TODO do something about recyclerview not transitioning
+//        Slide slide = new Slide(Gravity.RIGHT);
+//        slide.setInterpolator(
+//                AnimationUtils.loadInterpolator(this,
+//                        android.R.interpolator.linear_out_slow_in));
+//        slide.addTarget(etSearch);
+//        slide.addTarget(inputSearch);
+//        slide.addTarget(R.id.btn_digital_library_search);
+//        slide.addTarget(rvList);
+//        slide.addTarget(R.id.textView59);
+//        slide.addTarget(R.id.imageView12);
+//        slide.addTarget(R.id.divider8);
+//        slide.addTarget(R.id.fab_digital_library_upload_book);
+////        slide.setDuration(TimeUnit.SECONDS.toMillis(20));
+//        getWindow().setEnterTransition(android.R.transition.slide_right);
+        searchClicked();
     }
 
     @Override
@@ -98,14 +117,14 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
             digitalLibraryViewModel.getAllBooks().observe(this, new Observer<List<DigitalLibraryEntry>>() {
                 @Override
                 public void onChanged(List<DigitalLibraryEntry> digitalLibraryEntries) {
-                    mAdapter.refreshList(digitalLibraryEntries);
+                    mAdapter.submitList(digitalLibraryEntries);
                 }
             });
         } else {
             digitalLibraryViewModel.getBookByName(searchTerm).observe(this, new Observer<List<DigitalLibraryEntry>>() {
                 @Override
                 public void onChanged(List<DigitalLibraryEntry> digitalLibraryEntries) {
-                    mAdapter.refreshList(digitalLibraryEntries);
+                    mAdapter.submitList(digitalLibraryEntries);
                 }
             });
         }
@@ -113,8 +132,9 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
 
     @OnClick(R.id.fab_digital_library_upload_book)
     void onFabClicked() {
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         Intent intent = new Intent(this, UploadBookActivity.class);
-        startActivity(intent);
+        startActivity(intent, bundle);
     }
 
     @Override
@@ -183,7 +203,8 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
     private void setUpRecyclerView() {
         mAdapter = new DigitalLibraryRecyclerAdapter();
         LinearLayoutManager llm = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        rvList.setAdapter(mAdapter);
+        SlideInLeftAnimationAdapter mAdapterAnimated = new SlideInLeftAnimationAdapter(mAdapter);
+        rvList.setAdapter(mAdapterAnimated);
         rvList.setLayoutManager(llm);
     }
 

@@ -76,7 +76,7 @@ public class MyProfileFragment extends Fragment {
                     ids.add(documents.get(i).getId());
                     items.add(documents.get(i).toObject(ItemModel.class));
                 }
-                mAdapter.setItems(items);
+                mAdapter.submitList(items);
             }
         });
         FirebaseUser currUser = myProfileViewModel.getCurrUser();

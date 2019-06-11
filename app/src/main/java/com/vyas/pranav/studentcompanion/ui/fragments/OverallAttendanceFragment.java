@@ -56,14 +56,17 @@ public class OverallAttendanceFragment extends Fragment {
         LinearLayoutManager lm = new LinearLayoutManager(getContext());
         lm.setOrientation(RecyclerView.VERTICAL);
         rvOverallAttendance.setLayoutManager(lm);
+//        SkidRightLayoutManager mSkidRightLayoutManager = new SkidRightLayoutManager(1.5f, 0.85f);
+//        rvOverallAttendance.setLayoutManager(mSkidRightLayoutManager);
+
     }
 
     private void setUpOverallAttendance() {
         mViewModel = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
-        mViewModel.getAllOverallAttendance().observe(this, new Observer<List<OverallAttendanceEntry>>() {
+        mViewModel.getAllOverallAttendance().observe(getActivity(), new Observer<List<OverallAttendanceEntry>>() {
             @Override
             public void onChanged(List<OverallAttendanceEntry> overallAttendanceEntries) {
-                mAdapter.setOverallAttendanceEntries(overallAttendanceEntries);
+                mAdapter.submitList(overallAttendanceEntries);
             }
         });
     }

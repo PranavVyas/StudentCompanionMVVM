@@ -13,19 +13,36 @@ import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<AttendanceIndividualRecyclerAdapter.AttendanceIndividualHolder> {
+public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceEntry, AttendanceIndividualRecyclerAdapter.AttendanceIndividualHolder> {
     private static final String TAG = "AttendanceIndividualRec";
 
-    private List<AttendanceEntry> attendanceEntries;
     private onAttendanceSwitchToggleListener listener;
+
+    public static final DiffUtil.ItemCallback<AttendanceEntry> diffCallback = new DiffUtil.ItemCallback<AttendanceEntry>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull AttendanceEntry oldItem, @NonNull AttendanceEntry newItem) {
+            return oldItem.get_ID() == newItem.get_ID();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull AttendanceEntry oldItem, @NonNull AttendanceEntry newItem) {
+            return (oldItem.getDate().equals(newItem.getDate())) &&
+                    (oldItem.getLectureNo() == newItem.getLectureNo()) &&
+                    (oldItem.getSubjectName().equals(newItem.getSubjectName())) &&
+                    (oldItem.isPresent() == newItem.isPresent());
+        }
+    };
+
+    public AttendanceIndividualRecyclerAdapter() {
+        super(diffCallback);
+    }
 
     @NonNull
     @Override
@@ -40,10 +57,11 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
 //            holder.itemView.setVisibility(View.GONE);
 //            return;
 //        }
-        Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceEntries.get(position).getLectureNo());
-        holder.tvLectureNo.setText("Lecture " + attendanceEntries.get(position).getLectureNo());
-        holder.tvSubjectName.setText(attendanceEntries.get(position).getSubjectName());
-        holder.switchPresent.setOn(attendanceEntries.get(position).isPresent());
+        AttendanceEntry attendanceOfDay = getItem(position);
+        Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceOfDay.getLectureNo());
+        holder.tvLectureNo.setText("Lecture " + attendanceOfDay.getLectureNo());
+        holder.tvSubjectName.setText(attendanceOfDay.getSubjectName());
+        holder.switchPresent.setOn(attendanceOfDay.isPresent());
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -56,7 +74,7 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
             @Override
             public void onSwitched(ToggleableView toggleableView, boolean isOn) {
                 if (listener != null) {
-                    AttendanceEntry attendanceEntry = attendanceEntries.get(position);
+                    AttendanceEntry attendanceEntry = attendanceOfDay;
                     attendanceEntry.setPresent(isOn);
                     listener.onAttendanceSwitchToggled(attendanceEntry);
                 } else {
@@ -64,17 +82,6 @@ public class AttendanceIndividualRecyclerAdapter extends RecyclerView.Adapter<At
                 }
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return (attendanceEntries == null) ? 0 : attendanceEntries.size();
-    }
-
-    public void setAttendanceForDate(List<AttendanceEntry> attendanceEntries) {
-        this.attendanceEntries = new ArrayList<>();
-        this.attendanceEntries = attendanceEntries;
-        notifyDataSetChanged();
     }
 
     public void setOnAttendanceSwitchToggledListener(onAttendanceSwitchToggleListener listener) {

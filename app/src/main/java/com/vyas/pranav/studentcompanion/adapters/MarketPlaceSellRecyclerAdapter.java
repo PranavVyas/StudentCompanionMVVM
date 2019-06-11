@@ -15,17 +15,36 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketPlaceSellRecyclerAdapter.SellItemHolder> {
+public class MarketPlaceSellRecyclerAdapter extends ListAdapter<ItemModel, MarketPlaceSellRecyclerAdapter.SellItemHolder> {
 
-    private List<ItemModel> items;
+    private static final DiffUtil.ItemCallback<ItemModel> diffCallback = new DiffUtil.ItemCallback<ItemModel>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull ItemModel oldItem, @NonNull ItemModel newItem) {
+            return oldItem.getImage_uri().equals(newItem.getImage_uri());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull ItemModel oldItem, @NonNull ItemModel newItem) {
+            return (oldItem.getCategory().equals(newItem.getCategory())) &&
+                    (oldItem.getContact().equals(newItem.getContact())) &&
+                    (oldItem.getExtra_info().equals(newItem.getExtra_info())) &&
+                    (oldItem.getName().equals(newItem.getName())) &&
+                    (oldItem.getP_name().equals(newItem.getP_name())) &&
+                    (oldItem.getPrice() == newItem.getPrice());
+        }
+    };
+
+    public MarketPlaceSellRecyclerAdapter() {
+        super(diffCallback);
+    }
 
     @NonNull
     @Override
@@ -36,11 +55,11 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
 
     @Override
     public void onBindViewHolder(@NonNull SellItemHolder holder, int position) {
-        ItemModel item = items.get(position);
+        ItemModel item = getItem(position);
         String name = item.getName();
         String pName = item.getP_name();
         Float price = item.getPrice();
-        Uri imageUri = Uri.parse(items.get(position).getImage_uri());
+        Uri imageUri = Uri.parse(item.getImage_uri());
         if (name == null) {
             name = "No Name";
         }
@@ -59,19 +78,9 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertDialog(v.getContext(), items.get(position));
+                showAlertDialog(v.getContext(), item);
             }
         });
-    }
-
-    @Override
-    public int getItemCount() {
-        return (items == null) ? 0 : items.size();
-    }
-
-    public void setItems(List<ItemModel> items) {
-        this.items = items;
-        notifyDataSetChanged();
     }
 
     class SellItemHolder extends RecyclerView.ViewHolder {
@@ -111,7 +120,6 @@ public class MarketPlaceSellRecyclerAdapter extends RecyclerView.Adapter<MarketP
                 .error(R.drawable.ic_market_place)
                 .circleCrop()
                 .into(imageItem);
-
         AlertDialog alertDialog = new AlertDialog.Builder(context)
                 .setView(alertView)
                 .show();

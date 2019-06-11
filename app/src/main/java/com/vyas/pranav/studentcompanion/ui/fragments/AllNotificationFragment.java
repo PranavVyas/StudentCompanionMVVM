@@ -72,7 +72,7 @@ public class AllNotificationFragment extends Fragment {
         notificationTillDate.observe(this, new Observer<List<NotificationEntry>>() {
             @Override
             public void onChanged(List<NotificationEntry> notificationEntries) {
-                mAdapter.setNotifications(notificationEntries);
+                mAdapter.submitList(notificationEntries);
             }
         });
     }
@@ -89,7 +89,7 @@ public class AllNotificationFragment extends Fragment {
         allNotifications.observe(this, new Observer<List<NotificationEntry>>() {
             @Override
             public void onChanged(List<NotificationEntry> notificationEntries) {
-                mAdapter.setNotifications(notificationEntries);
+                mAdapter.submitList(notificationEntries);
             }
         });
     }

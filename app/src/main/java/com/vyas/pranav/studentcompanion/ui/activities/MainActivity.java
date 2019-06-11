@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +42,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -89,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 mainViewModel.setCurrentFragmentId(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
                 swapFragment(attendanceFragment);
+//              fragment.setExitTransition(new Fade(Fade.OUT));
+//                getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_activity_container, attendanceFragment)
+//                        .commit();
                 tvTitle.setText("Home");
                 mDrawer.setSelection(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
             } else {
@@ -260,7 +266,15 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     }
 
     private void swapFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_activity_container, fragment)
+        fragment.setEnterTransition(new Slide(Gravity.RIGHT));
+        fragment.setExitTransition(new Slide(Gravity.LEFT));
+        fragment.setReturnTransition(new Slide(Gravity.LEFT));
+        fragment.setReenterTransition(new Slide(Gravity.RIGHT));
+        fragment.setAllowEnterTransitionOverlap(false);
+        fragment.setAllowReturnTransitionOverlap(false);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
+        fragmentTransaction.replace(R.id.frame_main_activity_container, fragment)
                 .commit();
     }
 

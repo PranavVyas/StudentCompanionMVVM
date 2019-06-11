@@ -13,18 +13,38 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyProfileItemsRecyclerAdapter extends RecyclerView.Adapter<MyProfileItemsRecyclerAdapter.MyProfileItemHolder> {
+public class MyProfileItemsRecyclerAdapter extends ListAdapter<ItemModel, MyProfileItemsRecyclerAdapter.MyProfileItemHolder> {
 
-    private List<ItemModel> items;
     private OnItemSoldButtonClickListener listener;
+
+    private static final DiffUtil.ItemCallback<ItemModel> diffCallback = new DiffUtil.ItemCallback<ItemModel>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull ItemModel oldItem, @NonNull ItemModel newItem) {
+            return oldItem.getImage_uri().equals(newItem.getImage_uri());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull ItemModel oldItem, @NonNull ItemModel newItem) {
+            return (oldItem.getCategory().equals(newItem.getCategory())) &&
+                    (oldItem.getContact().equals(newItem.getContact())) &&
+                    (oldItem.getExtra_info().equals(newItem.getExtra_info())) &&
+                    (oldItem.getName().equals(newItem.getName())) &&
+                    (oldItem.getP_name().equals(newItem.getP_name())) &&
+                    (oldItem.getPrice() == newItem.getPrice());
+        }
+    };
+
+    public MyProfileItemsRecyclerAdapter() {
+        super(diffCallback);
+    }
 
     @NonNull
     @Override
@@ -34,7 +54,7 @@ public class MyProfileItemsRecyclerAdapter extends RecyclerView.Adapter<MyProfil
 
     @Override
     public void onBindViewHolder(@NonNull MyProfileItemHolder holder, int position) {
-        ItemModel item = items.get(position);
+        ItemModel item = getItem(position);
         holder.tvName.setText(item.getName());
         holder.tvPrice.setText(item.getPrice() + " /- Rs");
         GlideApp.with(holder.itemView)
@@ -60,16 +80,6 @@ public class MyProfileItemsRecyclerAdapter extends RecyclerView.Adapter<MyProfil
                 }
             });
         }
-    }
-
-    @Override
-    public int getItemCount() {
-        return items == null ? 0 : items.size();
-    }
-
-    public void setItems(List<ItemModel> items) {
-        this.items = items;
-        notifyDataSetChanged();
     }
 
     public void setOnItemSoldButtonClickListener(OnItemSoldButtonClickListener listener) {

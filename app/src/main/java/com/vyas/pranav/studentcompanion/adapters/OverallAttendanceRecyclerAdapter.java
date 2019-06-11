@@ -1,6 +1,10 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +18,34 @@ import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAt
 import com.vyas.pranav.studentcompanion.ui.activities.OverallAttendanceDetailActivity;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.itangqi.waveloadingview.WaveLoadingView;
 
-public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<OverallAttendanceRecyclerAdapter.OverallAttendanceHolder> {
+public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttendanceEntry, OverallAttendanceRecyclerAdapter.OverallAttendanceHolder> {
 
-    private List<OverallAttendanceEntry> overallAttendanceEntries;
+    public static final DiffUtil.ItemCallback<OverallAttendanceEntry> diffCallback = new DiffUtil.ItemCallback<OverallAttendanceEntry>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull OverallAttendanceEntry oldItem, @NonNull OverallAttendanceEntry newItem) {
+            return oldItem.get_ID() == newItem.get_ID();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull OverallAttendanceEntry oldItem, @NonNull OverallAttendanceEntry newItem) {
+            return (oldItem.getSubName().equals(newItem.getSubName())) &&
+                    (oldItem.getPresentDays() == newItem.getPresentDays()) &&
+                    (oldItem.getBunkedDays() == newItem.getBunkedDays()) &&
+                    (oldItem.getTotalDays() == newItem.getTotalDays());
+        }
+    };
+
+    public OverallAttendanceRecyclerAdapter() {
+        super(diffCallback);
+    }
 
     @NonNull
     @Override
@@ -35,10 +56,11 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
 
     @Override
     public void onBindViewHolder(@NonNull OverallAttendanceHolder holder, int position) {
-        holder.tvSubject.setText(overallAttendanceEntries.get(position).getSubName());
-        int presentDays = overallAttendanceEntries.get(position).getPresentDays();
-        int bunkedDays = overallAttendanceEntries.get(position).getBunkedDays();
-        int totalDays = overallAttendanceEntries.get(position).getTotalDays();
+        OverallAttendanceEntry item = getItem(position);
+        holder.tvSubject.setText(item.getSubName());
+        int presentDays = item.getPresentDays();
+        int bunkedDays = item.getBunkedDays();
+        int totalDays = item.getTotalDays();
         if (totalDays == 0) {
             holder.tvAvailableToBunk.setText("Subject is not in the timetable");
             holder.progressPresent.setProgressValue(100);
@@ -65,11 +87,6 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return (overallAttendanceEntries == null) ? 0 : overallAttendanceEntries.size();
-    }
-
     class OverallAttendanceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.progress_recycler_overall_attendance_present_percent)
         WaveLoadingView progressPresent;
@@ -90,19 +107,17 @@ public class OverallAttendanceRecyclerAdapter extends RecyclerView.Adapter<Overa
         public void onClick(View view) {
             Intent openDetail = new Intent(view.getContext(), OverallAttendanceDetailActivity.class);
             Gson gson = new Gson();
-            String JsonOverallAttendance = gson.toJson(overallAttendanceEntries.get(getAdapterPosition()));
-            if (overallAttendanceEntries.get(getAdapterPosition()).getTotalDays() == 0) {
+            String JsonOverallAttendance = gson.toJson(getItem(getAdapterPosition()));
+            if (getItem(getAdapterPosition()).getTotalDays() == 0) {
                 Toast.makeText(view.getContext(), "Subject is not available in the timetable", Toast.LENGTH_SHORT).show();
                 return;
             }
-            //TODO Add Animation here
-            openDetail.putExtra(OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE, JsonOverallAttendance);
-            view.getContext().startActivity(openDetail);
-        }
-    }
 
-    public void setOverallAttendanceEntries(List<OverallAttendanceEntry> overallAttendanceEntries) {
-        this.overallAttendanceEntries = overallAttendanceEntries;
-        notifyDataSetChanged();
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((Activity) view.getContext(),
+                    Pair.create(progressPresent, progressPresent.getTransitionName()),
+                    Pair.create(tvSubject, tvSubject.getTransitionName())).toBundle();
+            openDetail.putExtra(OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE, JsonOverallAttendance);
+            view.getContext().startActivity(openDetail, bundle);
+        }
     }
 }
