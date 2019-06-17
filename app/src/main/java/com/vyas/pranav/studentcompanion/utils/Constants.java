@@ -30,4 +30,7 @@ public final class Constants {
 
     public static final String EXTRA_TIMETABLE_DAY_KEY = "EXTRA_TIMETABLE_DAY_KEY";
     public static final String EXTRA_TIMETABLE_DAY = "EXTRA_TIMETABLE_DAY";
+    public static final int EVENTS_SHOW_NOTIFICATION = 1012;
+    public static final int SHOW_NOTIFICATION_RC_CONTENT_INTENT = 1013;
+    public static final int SHOW_NOTIFICATION_RC_OPEN_APP = 1014;
 }

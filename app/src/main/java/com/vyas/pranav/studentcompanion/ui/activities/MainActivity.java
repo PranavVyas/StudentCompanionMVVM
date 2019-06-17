@@ -1,6 +1,7 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
 import android.app.ActivityManager;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,12 +12,22 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
@@ -35,17 +46,6 @@ import com.vyas.pranav.studentcompanion.viewmodels.MainViewModel;
 
 import java.util.Date;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -227,7 +227,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                                         mainViewModel.setCurrUser(null);
                                         Toast.makeText(MainActivity.this, "Account Successfully Deleted...\nRedirecting to sign In Page...", Toast.LENGTH_SHORT).show();
                                         Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
-                                        startActivity(startSignInActivity);
+                                        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle();
+                                        startActivity(startSignInActivity, bundle);
                                         ((ActivityManager) MainActivity.this.getSystemService(Context.ACTIVITY_SERVICE)).clearApplicationUserData();
                                         MainActivity.this.finish();
                                     }
@@ -285,15 +286,28 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
     public void setLiveBadge() {
         LiveData<Integer> notificationCount = mainViewModel.getNotificationCount(ConverterUtils.convertDateToString(new Date()));
-        notificationCount.observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-//                PrimaryDrawerItem notificationItem = ((PrimaryDrawerItem) mDrawer.getDrawerItem(NavigationDrawerUtil.ID_NOTIFICATIONS));
-//                notificationItem.withBadge(integer);
-                mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder(integer.toString()));
-//                mDrawer.updateItem(notificationItem);
-                //TODO implement badge style here notificationItem.withBadgeStyle(new BadgeStyle());
-            }
-        });
+//        notificationCount.observe(this, new Observer<Integer>() {
+//            @Override
+//            public void onChanged(Integer integer) {
+////                PrimaryDrawerItem notificationItem = ((PrimaryDrawerItem) mDrawer.getDrawerItem(NavigationDrawerUtil.ID_NOTIFICATIONS));
+////                notificationItem.withBadge(integer);
+//                mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder(integer.toString()));
+////                mDrawer.updateItem(notificationItem);
+//                TODO implement badge style here notificationItem.withBadgeStyle(new BadgeStyle());
+//            }
+////        });
+//        NotificationsViewModel notificationsViewModel = ViewModelProviders.of(this).get(NotificationsViewModel.class);
+//        SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils(this);
+//        notificationsViewModel.getAllNotifications().observe(this, new Observer<List<NotificationEntry>>() {
+//            @Override
+//            public void onChanged(List<NotificationEntry> notificationEntries) {
+//                int currentNotis = notificationEntries.size();
+//                int previousNotis = sharedPreferencesUtils.getCurrentNotis();
+////                PrimaryDrawerItem notificationItem = ((PrimaryDrawerItem) mDrawer.getDrawerItem(NavigationDrawerUtil.ID_NOTIFICATIONS));
+////                notificationItem.withBadge(currentNotis - previousNotis);
+//                mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder((String.valueOf(currentNotis-previousNotis))));
+////                mDrawer.updateItem(notificationItem);
+//            }
+//        });
     }
 }

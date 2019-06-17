@@ -1,7 +1,15 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Slide;
+import android.view.Gravity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
@@ -11,9 +19,6 @@ import com.vyas.pranav.studentcompanion.ui.fragments.SetUpLectureTimeFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpTimetableFragment;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -35,11 +40,13 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         setUpViewModel = ViewModelProviders.of(this).get(SetUpViewModel.class);
         if (!setUpViewModel.isFirstRun()) {
             if (setUpViewModel.isTutorialDone()) {
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
                 Intent openMainActivity = new Intent(this, MainActivity.class);
-                startActivity(openMainActivity);
+                startActivity(openMainActivity, bundle);
             } else {
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
                 Intent openTutorial = new Intent(this, TutorialActivity.class);
-                startActivity(openTutorial);
+                startActivity(openTutorial, bundle);
             }
             finish();
             return;
@@ -52,6 +59,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         switch (step) {
             case 1:
                 SetUpDatesFragment setUpDatesFragment = new SetUpDatesFragment();
+                addAnimationsToFragment(setUpDatesFragment);
                 setUpDatesFragment.setOnDatesSetUpListener(this);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_setup_activity_container, setUpDatesFragment)
@@ -60,6 +68,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
 
             case 2:
                 SetUpDetailsSemFragment setUpDetailsSemFragment = new SetUpDetailsSemFragment();
+                addAnimationsToFragment(setUpDetailsSemFragment);
                 setUpDetailsSemFragment.setOnSubjectSelectedListener(this);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_setup_activity_container, setUpDetailsSemFragment)
@@ -68,6 +77,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
 
             case 3:
                 SetUpLectureTimeFragment setUpLectureTimeFragment = new SetUpLectureTimeFragment();
+                addAnimationsToFragment(setUpLectureTimeFragment);
                 setUpLectureTimeFragment.setOnLectureTimeSelectedListener(this);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_setup_activity_container, setUpLectureTimeFragment)
@@ -76,12 +86,22 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
 
             case 4:
                 SetUpTimetableFragment setUpTimetableFragment = new SetUpTimetableFragment();
+                addAnimationsToFragment(setUpTimetableFragment);
                 setUpTimetableFragment.setOnTimeTableSelectedListener(this);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_setup_activity_container, setUpTimetableFragment)
                         .commit();
                 break;
         }
+    }
+
+    private void addAnimationsToFragment(Fragment fragment) {
+        fragment.setEnterTransition(new Slide(Gravity.RIGHT));
+        fragment.setExitTransition(new Slide(Gravity.LEFT));
+        fragment.setReturnTransition(new Slide(Gravity.LEFT));
+        fragment.setReenterTransition(new Slide(Gravity.RIGHT));
+        fragment.setAllowEnterTransitionOverlap(false);
+        fragment.setAllowReturnTransitionOverlap(false);
     }
 
     @Override
@@ -105,8 +125,9 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
     @Override
     public void onTimetableSelected() {
         setUpViewModel.saveHolidaysAndInitAttendance();
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         Intent intent = new Intent(this, TutorialActivity.class);
-        startActivity(intent);
+        startActivity(intent, bundle);
         setUpViewModel.setFirstRun(false);
         finish();
     }

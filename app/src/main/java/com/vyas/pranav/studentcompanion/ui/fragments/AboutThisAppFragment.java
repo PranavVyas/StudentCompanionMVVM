@@ -1,5 +1,6 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,13 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.activities.OpenSourceInformationActivity;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -53,7 +55,8 @@ public class AboutThisAppFragment extends Fragment {
 
     @OnClick(R.id.tv_about_app_open_source_license)
     void openSourceLicensesClicked() {
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
         Intent intent = new Intent(getContext(), OpenSourceInformationActivity.class);
-        startActivity(intent);
+        startActivity(intent, bundle);
     }
 }

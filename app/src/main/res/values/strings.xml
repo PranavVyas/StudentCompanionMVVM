@@ -37,6 +37,13 @@
     <string name="pref_key_restore_database" translatable="false">SHARED_PREF_RESTORE_DATABASE</string>
     <string name="pref_restore_database">Restore Database</string>
 
+    <string name="pref_list_notification_label_event">Events</string>
+    <string name="pref_list_notification_label_new_item_shop">New Items in Shop</string>
+    <string name="pref_key_list_notification_event">SHARED_PREF_NOTIFICATION_EVENT</string>
+    <string name="pref_key_list_notification_new_item_shop">SHARED_PREF_NOTIFICATION_NEW_ITEM_SHOP</string>
+    <string name="pref_list_notification_title">Notifications</string>
+    <string name="pref_key_list_notification">SHRED_PREF_NOTIFICATION</string>
+
     <string name="t_name_wlv_recycler_adapter_overall_attendance_detail">overall_attendance_detail.WLV_PROGRESS</string>
 
     <!--about developer-->

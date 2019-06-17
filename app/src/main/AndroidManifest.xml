@@ -19,6 +19,10 @@
         android:theme="@style/AppTheme"
         tools:replace="android:theme">
         <activity
+            android:name=".ui.activities.NotificationPreferenceActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.MainActivity" />
+        <activity
             android:name=".ui.activities.ContainerActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivity" />
@@ -60,6 +64,13 @@
         <service android:name=".services.GeoFenceIntentService" />
         <service android:name=".services.AttendanceEditIntentService" />
         <service android:name=".services.ToggleSilentDeviceIntentService" />
+        <service
+            android:name=".services.NotificationFcmService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".ui.activities.SignInActivity"

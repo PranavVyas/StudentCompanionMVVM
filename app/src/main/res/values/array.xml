@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="pref_list_notification_lables">
+        <item>@string/pref_list_notification_label_event</item>
+        <item>@string/pref_list_notification_label_new_item_shop</item>
+    </array>
+
+    <array name="pref_list_notification_values">
+        <item>@string/pref_key_list_notification_event</item>
+        <item>@string/pref_key_list_notification_new_item_shop</item>
+    </array>
+</resources>

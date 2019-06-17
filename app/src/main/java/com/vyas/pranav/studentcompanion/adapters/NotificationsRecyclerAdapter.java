@@ -6,32 +6,31 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationEntry;
-import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
-import com.vyas.pranav.studentcompanion.utils.GlideApp;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationsRecyclerAdapter extends ListAdapter<NotificationEntry, NotificationsRecyclerAdapter.NotificationHolder> {
+public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirestoreModel, NotificationsRecyclerAdapter.NotificationHolder> {
 
-    public static final DiffUtil.ItemCallback<NotificationEntry> diffCallback = new DiffUtil.ItemCallback<NotificationEntry>() {
+    public static final DiffUtil.ItemCallback<NotificationFirestoreModel> diffCallback = new DiffUtil.ItemCallback<NotificationFirestoreModel>() {
         @Override
-        public boolean areItemsTheSame(@NonNull NotificationEntry oldItem, @NonNull NotificationEntry newItem) {
-            return oldItem.get_ID() == newItem.get_ID();
+        public boolean areItemsTheSame(@NonNull NotificationFirestoreModel oldItem, @NonNull NotificationFirestoreModel newItem) {
+            return oldItem.getUrl() == newItem.getUrl();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull NotificationEntry oldItem, @NonNull NotificationEntry newItem) {
+        public boolean areContentsTheSame(@NonNull NotificationFirestoreModel oldItem, @NonNull NotificationFirestoreModel newItem) {
             return (oldItem.getDate().equals(newItem.getDate())) &&
-                    (oldItem.getImageUrl().equals(newItem.getImageUrl())) &&
-                    (oldItem.getSubtitle().equals(newItem.getSubtitle())) &&
-                    (oldItem.getTitle().equals(newItem.getTitle()));
+                    (oldItem.getShort_info().equals(newItem.getShort_info())) &&
+                    (oldItem.getVenue().equals(newItem.getVenue()) &&
+                            (oldItem.getName().equals(newItem.getName())));
         }
     };
 
@@ -47,26 +46,27 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationEntry,
 
     @Override
     public void onBindViewHolder(@NonNull NotificationHolder holder, int position) {
-        NotificationEntry notification = getItem(position);
-        holder.tvDate.setText(ConverterUtils.convertDateToString(notification.getDate()));
-        holder.tvTitle.setText(notification.getTitle());
-        holder.tvSubtitle.setText(notification.getSubtitle());
-        GlideApp.with(holder.itemView)
-                .load(notification.getImageUrl())
-                .error(R.drawable.ic_caution)
-                .placeholder(R.drawable.ic_caution)
-                .circleCrop()
-                .into(holder.imageItem);
+        NotificationFirestoreModel notification = getItem(position);
+        holder.tvDate.setText(notification.getDate());
+        holder.tvName.setText(notification.getName());
+        holder.tvShortInfo.setText(notification.getShort_info());
+//        GlideApp.with(holder.itemView)
+//                .load(null)
+//                .error(R.drawable.ic_caution)
+//                .placeholder(R.drawable.ic_caution)
+//                .circleCrop()
+//                .into(holder.imageItem);
+        //TODO load image here
     }
 
     class NotificationHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.image_recycler_notification_photo)
         ImageView imageItem;
-        @BindView(R.id.tv_recycler_notification_title)
-        TextView tvTitle;
-        @BindView(R.id.tv_recycler_notification_subtitle)
-        TextView tvSubtitle;
+        @BindView(R.id.tv_recycler_notification_name)
+        TextView tvName;
+        @BindView(R.id.tv_recycler_notification_short_info)
+        TextView tvShortInfo;
         @BindView(R.id.tv_recycler_notification_date)
         TextView tvDate;
 

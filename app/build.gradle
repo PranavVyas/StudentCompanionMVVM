@@ -51,20 +51,20 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.android.support:multidex:1.0.3'
 
     //Material Drawer
-    implementation 'com.mikepenz:materialdrawer:6.1.1'
+    implementation 'com.mikepenz:materialdrawer:6.1.2'
 
     //required support lib modules for material drawer
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
-    implementation 'com.google.android.material:material:1.1.0-alpha02'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
+    implementation 'com.google.android.material:material:1.1.0-alpha07'
 
     //Glide Image Loading library
     implementation 'com.github.bumptech.glide:glide:4.8.0'
@@ -75,12 +75,12 @@ dependencies {
     annotationProcessor 'com.android.support:support-annotations:28.0.0'
 
     //ButterKnife
-    implementation 'com.jakewharton:butterknife:9.0.0-rc2'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0-rc2'
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
     //Room Android
-    implementation 'androidx.room:room-runtime:2.1.0-alpha03'
-    annotationProcessor "androidx.room:room-compiler:2.1.0-alpha03"
+    implementation 'androidx.room:room-runtime:2.1.0'
+    annotationProcessor "androidx.room:room-compiler:2.1.0"
 
     //Livedata and ViewModel Android
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
@@ -99,10 +99,10 @@ dependencies {
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
 
     //Firebase Analytics
-    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
 
     //Firebase Realtime Database
-    implementation 'com.google.firebase:firebase-database:16.0.5'
+    implementation 'com.google.firebase:firebase-database:17.0.0'
 
     //Preference Fragment Compat
     implementation 'androidx.preference:preference:1.0.0'
@@ -114,14 +114,14 @@ dependencies {
     implementation 'com.evrencoskun.library:tableview:0.8.8'
 
     //Firebase AuthUI
-    implementation 'com.firebaseui:firebase-ui-auth:4.3.0'
+    implementation 'com.firebaseui:firebase-ui-auth:5.0.0'
 
     //RecyclerView Animations
     implementation 'com.ethanhua:skeleton:1.1.2'
     implementation 'io.supercharge:shimmerlayout:2.1.0'
 
     //Places Api
-    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.google.android.gms:play-services-places:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     //Custom Floating Action Button
@@ -131,10 +131,10 @@ dependencies {
     implementation 'com.github.angads25:toggle:1.1.0'
 
     //Firestore
-    implementation 'com.google.firebase:firebase-firestore:17.1.5'
+    implementation 'com.google.firebase:firebase-firestore:19.0.2'
 
     //Firebase Storage
-    implementation 'com.google.firebase:firebase-storage:16.0.5'
+    implementation 'com.google.firebase:firebase-storage:17.0.0'
 
     //Permission Library
     implementation 'com.karumi:dexter:5.0.0'
@@ -142,5 +142,7 @@ dependencies {
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

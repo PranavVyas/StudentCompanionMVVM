@@ -61,4 +61,10 @@
         android:layout="@layout/custom_item_preference_full"
         android:title="@string/pref_restore_database" />
 
+    <Preference
+        android:icon="@drawable/ic_auto_attendance_map"
+        android:key="@string/pref_key_list_notification"
+        android:layout="@layout/custom_item_preference_full"
+        android:title="@string/pref_list_notification_title" />
+
 </androidx.preference.PreferenceScreen>

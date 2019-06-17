@@ -1,7 +1,5 @@
 package com.vyas.pranav.studentcompanion.data.notificationdatabase;
 
-import java.util.Date;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -10,30 +8,33 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "Notifications")
 public class NotificationEntry {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     private long _ID;
-    private String title, subtitle, imageUrl;
-    private Date date;
+    private String name, date, short_info;
+    private String url = "";
+    private String venue = "";
 
     @Ignore
     public NotificationEntry() {
     }
 
-    public NotificationEntry(long _ID, String title, String subtitle, String imageUrl, Date date) {
+    public NotificationEntry(long _ID, String name, String url, String date, String short_info, String venue) {
         this._ID = _ID;
-        this.title = title;
-        this.subtitle = subtitle;
-        this.imageUrl = imageUrl;
+        this.name = name;
+        this.url = url;
         this.date = date;
+        this.short_info = short_info;
+        this.venue = venue;
     }
 
     @Ignore
-    public NotificationEntry(String title, String subtitle, String imageUrl, Date date) {
-        this.title = title;
-        this.subtitle = subtitle;
-        this.imageUrl = imageUrl;
+    public NotificationEntry(String name, String url, String date, String short_info, String venue) {
+        this.name = name;
+        this.url = url;
         this.date = date;
+        this.short_info = short_info;
+        this.venue = venue;
     }
 
     public long get_ID() {
@@ -44,36 +45,44 @@ public class NotificationEntry {
         this._ID = _ID;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getSubtitle() {
-        return subtitle;
+    public String getUrl() {
+        return url;
     }
 
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getShort_info() {
+        return short_info;
+    }
+
+    public void setShort_info(String short_info) {
+        this.short_info = short_info;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
     }
 }
 

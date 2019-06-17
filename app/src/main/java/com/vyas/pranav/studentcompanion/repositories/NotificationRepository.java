@@ -2,15 +2,17 @@ package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
+import com.google.firebase.firestore.Query;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationDao;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationDatabase;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 
 import java.util.Date;
 import java.util.List;
-
-import androidx.lifecycle.LiveData;
 
 public class NotificationRepository {
     private Context context;
@@ -47,4 +49,9 @@ public class NotificationRepository {
     public LiveData<Integer> getCurentNotificationCount(Date date) {
         return notificationDao.getCurrentNotificationCount(date);
     }
+
+    public FirestoreQueryLiveData getLiveFirestoreData(Query query) {
+        return new FirestoreQueryLiveData(query);
+    }
+
 }

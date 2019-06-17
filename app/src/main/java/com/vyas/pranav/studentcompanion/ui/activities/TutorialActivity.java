@@ -1,18 +1,10 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
-
-import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
-import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep2Fragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep3Fragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep4Fragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep5Fragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStepFragment;
-import com.vyas.pranav.studentcompanion.viewmodels.TutorialViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +16,16 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
+import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
+import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep2Fragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep3Fragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep4Fragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStep5Fragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.TutorialStepFragment;
+import com.vyas.pranav.studentcompanion.viewmodels.TutorialViewModel;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -101,8 +103,9 @@ public class TutorialActivity extends AppCompatActivity implements ViewPager.OnP
     }
 
     private void startMainActivity() {
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         Intent startMain = new Intent(this, MainActivity.class);
-        startActivity(startMain);
+        startActivity(startMain, bundle);
         tutorialViewModel.setTutorialComplete(true);
         finish();
     }

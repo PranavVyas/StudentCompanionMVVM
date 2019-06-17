@@ -25,7 +25,7 @@
             tools:srcCompat="@tools:sample/avatars[1]" />
 
         <TextView
-            android:id="@+id/tv_recycler_notification_title"
+            android:id="@+id/tv_recycler_notification_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -37,7 +37,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_recycler_notification_subtitle"
+            android:id="@+id/tv_recycler_notification_short_info"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             style="@style/MyMaterialTextView.SmallTextViewBody2"
@@ -47,8 +47,8 @@
             android:layout_marginTop="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tv_recycler_notification_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_notification_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_recycler_notification_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_notification_name"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
@@ -58,10 +58,10 @@
             android:layout_marginEnd="8dp"
             android:text="12/12/2012"
             style="@style/MyMaterialTextView.SmallTextViewBody2"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_recycler_notification_title"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_recycler_notification_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/tv_recycler_notification_title"
-            app:layout_constraintTop_toTopOf="@+id/tv_recycler_notification_title" />
+            app:layout_constraintStart_toEndOf="@+id/tv_recycler_notification_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_recycler_notification_name" />
 
         <Button
             android:id="@+id/btn_recycler_notification_details"
@@ -72,8 +72,8 @@
             android:text="More"
             style="@style/MyCustomMaterialButton"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_recycler_notification_subtitle"
-            app:layout_constraintStart_toStartOf="@+id/tv_recycler_notification_subtitle"
-            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_notification_subtitle" />
+            app:layout_constraintEnd_toEndOf="@+id/tv_recycler_notification_short_info"
+            app:layout_constraintStart_toStartOf="@+id/tv_recycler_notification_short_info"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_notification_short_info" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

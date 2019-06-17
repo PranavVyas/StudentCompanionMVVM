@@ -1,7 +1,13 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
@@ -15,10 +21,6 @@ import com.vyas.pranav.studentcompanion.viewmodels.SignInViewModel;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -57,7 +59,7 @@ public class SignInActivity extends AppCompatActivity {
                     //new AuthUI.IdpConfig.FacebookBuilder().build(),
                     //new AuthUI.IdpConfig.TwitterBuilder().build()
             );
-
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
             // Create and launch sign-in intent
             startActivityForResult(
                     AuthUI.getInstance()
@@ -66,10 +68,11 @@ public class SignInActivity extends AppCompatActivity {
                             .setIsSmartLockEnabled(false)
                             .setLogo(R.drawable.ic_logo)
                             .build(),
-                    RC_SIGN_IN);
+                    RC_SIGN_IN, bundle);
         } else {
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
             Intent startSetUp = new Intent(this, SetUpActivity.class);
-            startActivity(startSetUp);
+            startActivity(startSetUp, bundle);
             finish();
         }
     }
@@ -88,8 +91,9 @@ public class SignInActivity extends AppCompatActivity {
             // Successfully signed in
             if (resultCode == RESULT_OK) {
                 showSnackbar("User Signed In");
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
                 Intent startSetUp = new Intent(this, SetUpActivity.class);
-                startActivity(startSetUp);
+                startActivity(startSetUp, bundle);
                 finish();
             } else {
                 // Sign in failed

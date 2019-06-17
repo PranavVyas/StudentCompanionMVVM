@@ -1,6 +1,7 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,6 +13,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.arch.core.util.Function;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,14 +45,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.arch.core.util.Function;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -169,7 +171,8 @@ public class MarketPlaceFragment extends Fragment {
     @OnClick(R.id.floatingActionButton)
     void selectImage() {
         Intent openNewItem = new Intent(getContext(), MarketPlaceSellItemActivity.class);
-        startActivityForResult(openNewItem, Constants.RC_OPEN_MARKET_PLACE_NEW_AD);
+        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+        startActivityForResult(openNewItem, Constants.RC_OPEN_MARKET_PLACE_NEW_AD, bundle);
     }
 
     @Override

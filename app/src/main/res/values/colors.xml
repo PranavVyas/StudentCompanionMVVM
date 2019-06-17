@@ -37,6 +37,7 @@
     <!--CUSTOM PARAMETRS-->
     <color name="placeHolderBackgroundNight">#1F1F1F</color>
     <color name="tableSelectedCellColorNight">#9575CD</color>
+    <color name="lightBackgroundNight">#1E1E1E</color>
 
     <!--OVERALL ATTENDACE CARD COLOR-->
     <color name="colorDangerOverallAttendance">#FFCCBC</color>

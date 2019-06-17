@@ -9,6 +9,10 @@ import androidx.preference.PreferenceManager;
 public class SharedPreferencesUtils {
 
     public static final String SHARED_PREF_AUTO_SYNC_DIGITAL_LIBRARY = "AUTO_SYNC_IN_DIGITAL_LIBRARY";
+    public static final String SHARED_PREF_KEY_EVENT_NOTIFICATION = "NOTIFICATION_FOR_EVENT";
+    public static final String SHARED_PREF_KEY_NEW_ITEM_NOTIFICATION = "NOTIFICATION_FOR_NEW_ITEM";
+    private static final String SHARED_PREF_CURRENT_NOTIFICATION = "CURRENT_NOTIFICATIONS";
+
 
     private Context context;
     private SharedPreferences preferences;
@@ -21,6 +25,32 @@ public class SharedPreferencesUtils {
         this.context = context;
     }
 
+    public int getCurrentNotis() {
+        return preferences.getInt(SHARED_PREF_CURRENT_NOTIFICATION, 0);
+    }
+
+    public void setCurrentNotis(int notis) {
+        editor.putInt(SHARED_PREF_CURRENT_NOTIFICATION, notis);
+        editor.apply();
+    }
+
+    public boolean isEventNotificationEnabed() {
+        return preferences.getBoolean(SHARED_PREF_KEY_EVENT_NOTIFICATION, false);
+    }
+
+    public boolean isNewItemShopNotificationEnabled() {
+        return preferences.getBoolean(SHARED_PREF_KEY_NEW_ITEM_NOTIFICATION, false);
+    }
+
+    public void setNotificationForEvent(boolean isEnabled) {
+        editor.putBoolean(SHARED_PREF_KEY_EVENT_NOTIFICATION, isEnabled);
+        editor.apply();
+    }
+
+    public void setNotificationForNewItemInShop(boolean isEnabled) {
+        editor.putBoolean(SHARED_PREF_KEY_NEW_ITEM_NOTIFICATION, isEnabled);
+        editor.apply();
+    }
 
     public void changeAutoSync(boolean isEnabled) {
         editor.putBoolean(SHARED_PREF_AUTO_SYNC_DIGITAL_LIBRARY, isEnabled);

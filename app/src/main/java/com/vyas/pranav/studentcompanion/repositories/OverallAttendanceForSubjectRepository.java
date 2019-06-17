@@ -2,6 +2,9 @@ package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
@@ -15,9 +18,6 @@ import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.Date;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 public class OverallAttendanceForSubjectRepository {
     private OverallAttendanceDao overallAttendanceDao;
@@ -101,11 +101,13 @@ public class OverallAttendanceForSubjectRepository {
         int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1 - Constants.ATTENDANCE_THRESHOLD));
         if (daysTotalAvailableToBunk - bunkedDays < Constants.FLEX_DAYS_EXTRA_TO_BUNK) {
             NotificationEntry notification = new NotificationEntry();
-            notification.setDate(new Date());
+            notification.setDate(ConverterUtils.convertDateToString(new Date()));
             notification.set_ID(subjectAttendance.get_ID());
-            notification.setImageUrl(null);
-            notification.setTitle("Low Attendance");
-            notification.setSubtitle("Attendance is low in the Subject :" + subjectAttendance.getSubName());
+            notification.setUrl("-1");
+            notification.setVenue("-1");
+            //TODO never set null to url
+            notification.setName("Low Attendance");
+            notification.setShort_info("Attendance is low in the Subject :" + subjectAttendance.getSubName());
             notificationRepository.insertNotification(notification);
             Logger.d("Low Attendance");
         } else {
