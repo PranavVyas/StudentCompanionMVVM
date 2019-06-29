@@ -51,18 +51,6 @@
 
     <Preference
         android:icon="@drawable/ic_auto_attendance_map"
-        android:key="@string/pref_key_backup_database"
-        android:layout="@layout/custom_item_preference_full"
-        android:title="@string/pref_backup_database" />
-
-    <Preference
-        android:icon="@drawable/ic_auto_attendance_map"
-        android:key="@string/pref_key_restore_database"
-        android:layout="@layout/custom_item_preference_full"
-        android:title="@string/pref_restore_database" />
-
-    <Preference
-        android:icon="@drawable/ic_auto_attendance_map"
         android:key="@string/pref_key_list_notification"
         android:layout="@layout/custom_item_preference_full"
         android:title="@string/pref_list_notification_title" />

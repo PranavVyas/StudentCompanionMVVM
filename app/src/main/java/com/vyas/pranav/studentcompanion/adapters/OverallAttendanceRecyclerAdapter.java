@@ -2,6 +2,7 @@ package com.vyas.pranav.studentcompanion.adapters;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
@@ -11,22 +12,27 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.card.MaterialCardView;
-import com.google.gson.Gson;
-import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
-import com.vyas.pranav.studentcompanion.ui.activities.OverallAttendanceDetailActivity;
-import com.vyas.pranav.studentcompanion.utils.Constants;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
+import com.google.gson.Gson;
+import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
+import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.ui.activities.OverallAttendanceDetailActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.itangqi.waveloadingview.WaveLoadingView;
 
 public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttendanceEntry, OverallAttendanceRecyclerAdapter.OverallAttendanceHolder> {
+
+    private SharedPreferencesUtils sharedPreferencesUtils;
+    private int currentAttendance = 0;
+
 
     public static final DiffUtil.ItemCallback<OverallAttendanceEntry> diffCallback = new DiffUtil.ItemCallback<OverallAttendanceEntry>() {
         @Override
@@ -47,11 +53,20 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         super(diffCallback);
     }
 
+
     @NonNull
     @Override
     public OverallAttendanceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_holder_recycler_overall_attendance, parent, false);
         return new OverallAttendanceHolder(view);
+    }
+
+    private int getCurrentAttendanceCriteria(Context context) {
+        if (sharedPreferencesUtils == null) {
+            sharedPreferencesUtils = new SharedPreferencesUtils(context);
+            currentAttendance = sharedPreferencesUtils.getCurrentAttendanceCriteria();
+        }
+        return currentAttendance;
     }
 
     @Override
@@ -61,6 +76,7 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         int presentDays = item.getPresentDays();
         int bunkedDays = item.getBunkedDays();
         int totalDays = item.getTotalDays();
+        int currentAttendanceCriteria = getCurrentAttendanceCriteria(holder.itemView.getContext());
         if (totalDays == 0) {
             holder.tvAvailableToBunk.setText("Subject is not in the timetable");
             holder.progressPresent.setProgressValue(100);
@@ -68,7 +84,7 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
             return;
         }
         float presentPresent = (presentDays * 100) / totalDays;
-        int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1 - Constants.ATTENDANCE_THRESHOLD));
+        int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (currentAttendanceCriteria / 100.0f)));
         int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
         holder.tvAvailableToBunk.setText("Available to Bunk " + daysAvailableToBunk);
         holder.progressPresent.setProgressValue((int) presentPresent);

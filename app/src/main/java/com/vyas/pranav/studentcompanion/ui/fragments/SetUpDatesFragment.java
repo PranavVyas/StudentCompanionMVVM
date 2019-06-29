@@ -1,6 +1,7 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,8 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.vyas.pranav.studentcompanion.R;
@@ -20,10 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,6 +47,10 @@ public class SetUpDatesFragment extends Fragment {
     TextInputEditText etSemNo;
     @BindView(R.id.text_input_set_up_dates_sem_no)
     TextInputLayout inputSemNo;
+    @BindView(R.id.tv_set_up_dates_attendance_percent)
+    TextView tvAttendancePercent;
+    @BindView(R.id.seek_set_up_dates_attendance_crieteria)
+    SeekBar seekBarAttendance;
 
     private OnDatesSetUpListener mCallback;
     private SetUpViewModel setUpViewModel;
@@ -66,6 +75,25 @@ public class SetUpDatesFragment extends Fragment {
         setUpViewModel = ViewModelProviders.of(getActivity()).get(SetUpViewModel.class);
         btnStartDate.setText(setUpViewModel.getStartDate());
         btnEndDate.setText(setUpViewModel.getEndDate());
+        seekBarAttendance.setProgress(setUpViewModel.getCurrentAttendanceCriteria());
+        tvAttendancePercent.setText(setUpViewModel.getCurrentAttendanceCriteria() + " %");
+        seekBarAttendance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                tvAttendancePercent.setText(i + " %");
+                setUpViewModel.setCurrentAttendanceCriteria(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     @OnClick(R.id.btn_set_up_dates_fragment_continue)
@@ -90,7 +118,7 @@ public class SetUpDatesFragment extends Fragment {
 
     @OnClick(R.id.btn_set_up_dates_fragment_start_date)
     void selectStartingDate() {
-        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+        MaterialStyledDatePickerDialog.OnDateSetListener listener = new MaterialStyledDatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 String startDateStr = ConverterUtils.formatDateStringFromCalender(i2, i1 + 1, i);
@@ -101,10 +129,10 @@ public class SetUpDatesFragment extends Fragment {
         showDatePickerDialog(listener);
     }
 
-    //TODO Use ViewModel afterwards
+    @SuppressLint("RestrictedApi")
     @OnClick(R.id.btn_set_up_dates_fragment_end_date)
     void selectEndingDate() {
-        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+        MaterialStyledDatePickerDialog.OnDateSetListener listener = new MaterialStyledDatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 String endDateStr = ConverterUtils.formatDateStringFromCalender(i2, i1 + 1, i);
@@ -115,12 +143,13 @@ public class SetUpDatesFragment extends Fragment {
         showDatePickerDialog(listener);
     }
 
+    @SuppressLint("RestrictedApi")
     private void showDatePickerDialog(DatePickerDialog.OnDateSetListener mListener) {
         Calendar now = Calendar.getInstance();
         int year = now.get(Calendar.YEAR);
         int month = now.get(Calendar.MONTH);
         int day = now.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), mListener, year, month, day);
+        MaterialStyledDatePickerDialog datePickerDialog = new MaterialStyledDatePickerDialog(getContext(), mListener, year, month, day);
         datePickerDialog.setTitle("Pick date Now");
         datePickerDialog.show();
     }
@@ -136,7 +165,7 @@ public class SetUpDatesFragment extends Fragment {
         startCal.setTime(start);
         Calendar endCal = Calendar.getInstance();
         endCal.setTime(end);
-
+        //TODO take diff of date from here and use it in another todo
         long diffInMillis = endCal.getTimeInMillis() - startCal.getTimeInMillis();
         //Toast.makeText(getContext(), "Diff in days are "+days, Toast.LENGTH_SHORT).show();
         return (int) TimeUnit.MILLISECONDS.toDays(diffInMillis);

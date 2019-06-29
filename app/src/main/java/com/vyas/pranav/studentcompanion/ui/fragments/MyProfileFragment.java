@@ -1,11 +1,20 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -18,13 +27,6 @@ import com.vyas.pranav.studentcompanion.utils.GlideApp;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -70,13 +72,17 @@ public class MyProfileFragment extends Fragment {
             public void onChanged(QuerySnapshot queryDocumentSnapshots) {
 //                List<ItemModel> items = queryDocumentSnapshots.toObjects(ItemModel.class);
                 List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
-                items = new ArrayList<>();
-                ids = new ArrayList<>();
+
+                //TODO
+                items = queryDocumentSnapshots.toObjects(ItemModel.class);
+                List<Pair> listOfPairs = new ArrayList<>();
                 for (int i = 0; i < documents.size(); i++) {
-                    ids.add(documents.get(i).getId());
-                    items.add(documents.get(i).toObject(ItemModel.class));
+                    listOfPairs.add(Pair.create(
+                            documents.get(i).getId(),
+                            items.get(i)
+                    ));
                 }
-                mAdapter.submitList(items);
+                mAdapter.submitList(listOfPairs);
             }
         });
         FirebaseUser currUser = myProfileViewModel.getCurrUser();
@@ -92,8 +98,8 @@ public class MyProfileFragment extends Fragment {
         mAdapter = new MyProfileItemsRecyclerAdapter();
         mAdapter.setOnItemSoldButtonClickListener(new MyProfileItemsRecyclerAdapter.OnItemSoldButtonClickListener() {
             @Override
-            public void onItemSoldClicked(ItemModel item) {
-                myProfileViewModel.deleteItem(ids.get(items.indexOf(item)));
+            public void onItemSoldClicked(String id) {
+                myProfileViewModel.deleteItem(id);
             }
         });
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);

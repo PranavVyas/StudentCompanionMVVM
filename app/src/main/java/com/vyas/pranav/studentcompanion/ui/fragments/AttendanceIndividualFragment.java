@@ -1,8 +1,8 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +13,16 @@ import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.DateConverter;
@@ -33,14 +43,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -100,12 +102,13 @@ public class AttendanceIndividualFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("RestrictedApi")
     @OnClick(R.id.btn_attendance_individual_fragment_other_attendance)
     void openDatePicker() {
         Calendar now = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
+        MaterialStyledDatePickerDialog datePickerDialog = new MaterialStyledDatePickerDialog(
                 getContext(),
-                new DatePickerDialog.OnDateSetListener() {
+                new MaterialStyledDatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int i1, int day) {
                         int month = i1 + 1;
@@ -188,7 +191,7 @@ public class AttendanceIndividualFragment extends Fragment {
     }
 
     private void setUpOverallAttendance(String subName) {
-        OverallAttendanceForSubjectViewModelFactory factory = new OverallAttendanceForSubjectViewModelFactory(subName, mOverallDb, mAttendanceDb, getContext().getApplicationContext());
+        OverallAttendanceForSubjectViewModelFactory factory = new OverallAttendanceForSubjectViewModelFactory(subName, mOverallDb, mAttendanceDb, getContext());
         overallAttendanceViewModel = ViewModelProviders.of(getActivity(), factory).get(OverallAttendanceForSubjectViewModel.class);
         overallAttendanceViewModel.refreshOverallAttendance(subName);
     }

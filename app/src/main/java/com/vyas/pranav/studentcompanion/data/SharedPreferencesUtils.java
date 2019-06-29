@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 
+import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
+
 public class SharedPreferencesUtils {
 
     public static final String SHARED_PREF_AUTO_SYNC_DIGITAL_LIBRARY = "AUTO_SYNC_IN_DIGITAL_LIBRARY";
@@ -60,5 +62,9 @@ public class SharedPreferencesUtils {
 
     public boolean getStateOfAutoSync() {
         return preferences.getBoolean(SHARED_PREF_AUTO_SYNC_DIGITAL_LIBRARY, false);
+    }
+
+    public int getCurrentAttendanceCriteria() {
+        return preferences.getInt(SetUpProcessRepository.KEY_ATTENDANCE_CRITERIA, 0);
     }
 }

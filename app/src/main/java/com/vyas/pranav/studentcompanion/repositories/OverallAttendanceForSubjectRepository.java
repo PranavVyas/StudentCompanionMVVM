@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationEntry;
@@ -25,10 +26,12 @@ public class OverallAttendanceForSubjectRepository {
     private String subject;
     private AppExecutors mExecutors;
     private Context applicationContext;
+    private SharedPreferencesUtils sharedPreferencesUtils;
 
     public OverallAttendanceForSubjectRepository(Context applicationContext, OverallAttendanceDatabase mOverallDb, AttendanceDatabase mAttendanceDb, String subject) {
         overallAttendanceDao = mOverallDb.overallAttendanceDao();
         attendanceDao = mAttendanceDb.attendanceDao();
+        sharedPreferencesUtils = new SharedPreferencesUtils(applicationContext);
         this.subject = subject;
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
@@ -98,7 +101,8 @@ public class OverallAttendanceForSubjectRepository {
         NotificationRepository notificationRepository = new NotificationRepository(applicationContext);
         int totalDays = subjectAttendance.getTotalDays();
         int bunkedDays = subjectAttendance.getBunkedDays();
-        int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1 - Constants.ATTENDANCE_THRESHOLD));
+        int attendanceCriteria = sharedPreferencesUtils.getCurrentAttendanceCriteria();
+        int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (attendanceCriteria / 100.0f)));
         if (daysTotalAvailableToBunk - bunkedDays < Constants.FLEX_DAYS_EXTRA_TO_BUNK) {
             NotificationEntry notification = new NotificationEntry();
             notification.setDate(ConverterUtils.convertDateToString(new Date()));

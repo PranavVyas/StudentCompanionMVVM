@@ -11,39 +11,35 @@ public class AutoAttendancePlaceEntry {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     private long _ID;
-    private String placeId, subject;
+    private String subject;
+    private double lat, lang;
+
 
     @Ignore
-    public AutoAttendancePlaceEntry(String placeId, String subject) {
-        this.placeId = placeId;
+    public AutoAttendancePlaceEntry(String subject, double lat, double lang) {
         this.subject = subject;
+        this.lat = lat;
+        this.lang = lang;
     }
+
 
     @Ignore
     public AutoAttendancePlaceEntry() {
     }
 
-    public AutoAttendancePlaceEntry(@NonNull long _ID, String placeId, String subject) {
-        this._ID = _ID;
-        this.placeId = placeId;
-        this.subject = subject;
-    }
-
-    @NonNull
     public long get_ID() {
         return _ID;
     }
 
-    public void set_ID(@NonNull long _ID) {
+    public AutoAttendancePlaceEntry(long _ID, String subject, double lat, double lang) {
         this._ID = _ID;
+        this.subject = subject;
+        this.lat = lat;
+        this.lang = lang;
     }
 
-    public String getPlaceId() {
-        return placeId;
-    }
-
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
+    public void set_ID(long _ID) {
+        this._ID = _ID;
     }
 
     public String getSubject() {
@@ -52,5 +48,21 @@ public class AutoAttendancePlaceEntry {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLang() {
+        return lang;
+    }
+
+    public void setLang(double lang) {
+        this.lang = lang;
     }
 }

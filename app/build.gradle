@@ -108,7 +108,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.0.0'
 
     //Evernote Job Scheduler
-    implementation 'com.evernote:android-job:1.3.0-alpha09'
+    implementation 'com.evernote:android-job:1.3.0-rc1'
 
     //TableView for TimeTable
     implementation 'com.evrencoskun.library:tableview:0.8.8'
@@ -121,7 +121,7 @@ dependencies {
     implementation 'io.supercharge:shimmerlayout:2.1.0'
 
     //Places Api
-    implementation 'com.google.android.gms:play-services-places:16.1.0'
+//    implementation 'com.google.android.gms:play-services-places:16.1.0'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     //Custom Floating Action Button
@@ -138,11 +138,27 @@ dependencies {
 
     //Permission Library
     implementation 'com.karumi:dexter:5.0.0'
+
+    // Stetho core
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    //If you want to add a network helper
+    implementation 'com.facebook.stetho:stetho-okhttp:1.5.0'
+
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
     implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation "androidx.work:work-runtime:2.0.1"
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
+
+    implementation 'com.google.android.gms:play-services-awareness:16.0.0'
+
+    implementation ('com.schibstedspain.android:leku:6.2.1') {
+        exclude group: 'com.google.android.gms'
+        exclude group: 'androidx.appcompat'
+    }
 
 }
 apply plugin: 'com.google.gms.google-services'

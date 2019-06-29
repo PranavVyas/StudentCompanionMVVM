@@ -2,10 +2,8 @@ package com.vyas.pranav.studentcompanion.utils;
 
 public final class Constants {
 
-    public static final float ATTENDANCE_THRESHOLD = 0.75f;
     public static final int FLEX_DAYS_EXTRA_TO_BUNK = 10;
     public static final String KEY_SEND_DATA_TO_NOTIFICATION_CLASS_DATE = "NotificationFragmentToAllNotificationFragment";
-    public static final String DEFAULT_PLACE_ID = "NO_ID";
     public static final String DEFAULT_LECTURE = "No Lecture";
 
     public static final int REFRESH_GEO_FENCE_RC_OPEN_APP = 1000;
@@ -26,11 +24,20 @@ public final class Constants {
 
     public static final String INTENT_ACTION_UNSILENT_DEVICE = "ACTION_UNSILENT_DEVICE";
     public static final String INTENT_ACTION_SILENT_DEVICE = "ACTION_SILENT_DEVICE";
-    public static final int RC_OPEN_MARKET_PLACE_NEW_AD = 101;
+    public static final int RC_OPEN_MARKET_PLACE_NEW_AD = 1020;
 
     public static final String EXTRA_TIMETABLE_DAY_KEY = "EXTRA_TIMETABLE_DAY_KEY";
     public static final String EXTRA_TIMETABLE_DAY = "EXTRA_TIMETABLE_DAY";
     public static final int EVENTS_SHOW_NOTIFICATION = 1012;
     public static final int SHOW_NOTIFICATION_RC_CONTENT_INTENT = 1013;
     public static final int SHOW_NOTIFICATION_RC_OPEN_APP = 1014;
+    public static final int RC_SETTINGS_SILENT_DEVICE = 1015;
+    public static final String KEY_FENCE_LOCATION = "KEY_FENCE_LOCATION";
+    public static final int RC_OPEN_PLACE_PICKER_CUSTOM = 1016;
+    public static final int RC_LOCATION_RECEIVED = 1017;
+    public static final double DEFAULT_LANG = 0.0;
+    public static final double DEFAULT_LAT = 0.0;
+    public static final String FENCE_RECEIVER_ACTION = "com.vyas.pranav.studentcompanion.ACTION_FENCE_INTENT";
+    public static final int RC_SEND_FENCE_BROADCAST = 1018;
+    public static final int FENCE_CALLBACK_NOTIFICATION = 1019;
 }

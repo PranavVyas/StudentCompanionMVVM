@@ -10,16 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
-import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
-import com.vyas.pranav.studentcompanion.utils.GlideApp;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.utils.GlideApp;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -120,7 +122,7 @@ public class MarketPlaceSellRecyclerAdapter extends ListAdapter<ItemModel, Marke
                 .error(R.drawable.ic_market_place)
                 .circleCrop()
                 .into(imageItem);
-        AlertDialog alertDialog = new AlertDialog.Builder(context)
+        AlertDialog alertDialog = new MaterialAlertDialogBuilder(context)
                 .setView(alertView)
                 .show();
         MaterialButton btnSold = alertDialog.findViewById(R.id.btn_marketplace_sell_item_action);

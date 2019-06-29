@@ -3,6 +3,10 @@ package com.vyas.pranav.studentcompanion.repositories;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
+
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
@@ -26,10 +30,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.preference.PreferenceManager;
-
 public class SetUpProcessRepository {
 
     private static final String SHARED_PREF_ENDING_SEM = "END_SEM_DATE_STRING";
@@ -43,6 +43,7 @@ public class SetUpProcessRepository {
     private static final String SHARED_PREF_LECTURE_START = "STARTING_TIME_OF_LECTURE";
     private static final String SHARED_PREF_LECTURE_END = "ENDING_TIME_OF_LECTURE";
     private static final String SHARED_PREF_TUTORIAL = "TUTORIAL_DONE";
+    public static final String KEY_ATTENDANCE_CRITERIA = "SHARED_PREF_ATTENDANCE_CRITERIA";
 
     private Context context;
     private SharedPreferences preferences;
@@ -320,9 +321,10 @@ public class SetUpProcessRepository {
                 for (int i = 0; i < subjectsListOnly.size(); i++) {
                     String subject = subjectsListOnly.get(i);
                     AutoAttendancePlaceEntry autoAttendancePlaceEntry = new AutoAttendancePlaceEntry();
-                    autoAttendancePlaceEntry.setPlaceId(Constants.DEFAULT_PLACE_ID);
                     autoAttendancePlaceEntry.setSubject(subject);
-                    autoAttendancePlaceDao.insertNewPlaceId(autoAttendancePlaceEntry);
+                    autoAttendancePlaceEntry.setLat(Constants.DEFAULT_LAT);
+                    autoAttendancePlaceEntry.setLang(Constants.DEFAULT_LANG);
+                    autoAttendancePlaceDao.insertNewPlaceEntry(autoAttendancePlaceEntry);
                 }
             }
         });
@@ -336,4 +338,11 @@ public class SetUpProcessRepository {
         editor.putBoolean(SHARED_PREF_TUTORIAL, isDone).apply();
     }
 
+    public int getCurrentAttendanceCriteria() {
+        return preferences.getInt(KEY_ATTENDANCE_CRITERIA, 0);
+    }
+
+    public void setCurrentAttendanceCriteria(int progress) {
+        editor.putInt(KEY_ATTENDANCE_CRITERIA, progress).apply();
+    }
 }

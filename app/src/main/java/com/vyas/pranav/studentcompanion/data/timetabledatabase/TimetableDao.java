@@ -1,7 +1,5 @@
 package com.vyas.pranav.studentcompanion.data.timetabledatabase;
 
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -9,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import java.util.List;
 
 @Dao
 public interface TimetableDao {
@@ -27,9 +27,12 @@ public interface TimetableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTimeTableEntry(TimetableEntry newTimetableEntry);
 
-    @Query("SELECT * FROM  TimeTable ORDER BY _ID")
+    @Query("SELECT * FROM TimeTable ORDER BY _ID")
     LiveData<List<TimetableEntry>> getFullTimetable();
 
     @Delete
     void deleteTimetableEntry(TimetableEntry timetableEntry);
+
+    @Query("SELECT * FROM TimeTable WHERE subName = :subject")
+    LiveData<List<TimetableEntry>> getTimetableForSubject(String subject);
 }

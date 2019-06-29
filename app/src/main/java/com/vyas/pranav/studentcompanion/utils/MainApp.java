@@ -8,16 +8,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.widget.ImageView;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.bumptech.glide.Glide;
 import com.evernote.android.job.JobManager;
+import com.facebook.stetho.Stetho;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.jobs.JobsCreator;
-
-import androidx.multidex.MultiDexApplication;
 
 public class MainApp extends MultiDexApplication {
     public static final String NOTIFICATION_CHANNEL_ID = "NOTIFICATION_MAIN";
@@ -27,6 +28,8 @@ public class MainApp extends MultiDexApplication {
         super.onCreate();
 
         createNotificationChannels();
+        Stetho.initializeWithDefaults(this);
+
         JobManager.create(this).addJobCreator(new JobsCreator());
         //initialize and create the image loader logic
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {

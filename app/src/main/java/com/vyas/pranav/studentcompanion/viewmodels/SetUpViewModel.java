@@ -2,6 +2,10 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
 import com.vyas.pranav.studentcompanion.repositories.TimetableRepository;
@@ -9,10 +13,6 @@ import com.vyas.pranav.studentcompanion.utils.Generators;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 import static com.vyas.pranav.studentcompanion.utils.ConverterUtils.getDayFromInt;
 
@@ -30,6 +30,7 @@ public class SetUpViewModel extends AndroidViewModel {
 
     private SetUpProcessRepository repository;
     private TimetableRepository timetableRepository;
+    private int attendanceCriteria = 0;
 
     public SetUpViewModel(@NonNull Application application) {
         super(application);
@@ -46,6 +47,7 @@ public class SetUpViewModel extends AndroidViewModel {
         currentDay = repository.getCurrentDay();
         semester = repository.getSemester();
         noOfLecturesPerDay = repository.getNoOfLecturesPerDay();
+        attendanceCriteria = repository.getCurrentAttendanceCriteria();
     }
 
     public String getStartDate() {
@@ -173,4 +175,12 @@ public class SetUpViewModel extends AndroidViewModel {
         repository.setTutorialDone(isDone);
     }
 
+    public int getCurrentAttendanceCriteria() {
+        return attendanceCriteria;
+    }
+
+    public void setCurrentAttendanceCriteria(int progress) {
+        this.attendanceCriteria = progress;
+        repository.setCurrentAttendanceCriteria(progress);
+    }
 }

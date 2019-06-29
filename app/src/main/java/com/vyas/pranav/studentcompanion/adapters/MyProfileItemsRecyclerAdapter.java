@@ -1,6 +1,7 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
 import android.content.Context;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,42 +10,67 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
-import com.vyas.pranav.studentcompanion.utils.GlideApp;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.utils.GlideApp;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyProfileItemsRecyclerAdapter extends ListAdapter<ItemModel, MyProfileItemsRecyclerAdapter.MyProfileItemHolder> {
+public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileItemsRecyclerAdapter.MyProfileItemHolder> {
 
     private OnItemSoldButtonClickListener listener;
 
-    private static final DiffUtil.ItemCallback<ItemModel> diffCallback = new DiffUtil.ItemCallback<ItemModel>() {
+    public static final DiffUtil.ItemCallback<Pair> diffCallback = new DiffUtil.ItemCallback<Pair>() {
         @Override
-        public boolean areItemsTheSame(@NonNull ItemModel oldItem, @NonNull ItemModel newItem) {
-            return oldItem.getImage_uri().equals(newItem.getImage_uri());
+        public boolean areItemsTheSame(@NonNull Pair oldItem, @NonNull Pair newItem) {
+            return oldItem.first.toString().equals(newItem.first.toString());
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull ItemModel oldItem, @NonNull ItemModel newItem) {
-            return (oldItem.getCategory().equals(newItem.getCategory())) &&
-                    (oldItem.getContact().equals(newItem.getContact())) &&
-                    (oldItem.getExtra_info().equals(newItem.getExtra_info())) &&
-                    (oldItem.getName().equals(newItem.getName())) &&
-                    (oldItem.getP_name().equals(newItem.getP_name())) &&
-                    (oldItem.getPrice() == newItem.getPrice());
+        public boolean areContentsTheSame(@NonNull Pair oldItem, @NonNull Pair newItem) {
+            ItemModel oldItemModel = (ItemModel) oldItem.second;
+            ItemModel newItemModel = (ItemModel) newItem.second;
+
+            return (oldItemModel.getCategory().equals(newItemModel.getCategory())) &&
+                    (oldItemModel.getContact().equals(newItemModel.getContact())) &&
+                    (oldItemModel.getExtra_info().equals(newItemModel.getExtra_info())) &&
+                    (oldItemModel.getName().equals(newItemModel.getName())) &&
+                    (oldItemModel.getImage_uri()).equals(newItemModel.getImage_uri()) &&
+                    (oldItemModel.getP_name().equals(newItemModel.getP_name())) &&
+                    (oldItemModel.getPrice() == newItemModel.getPrice());
         }
     };
 
     public MyProfileItemsRecyclerAdapter() {
         super(diffCallback);
     }
+//    private static final DiffUtil.ItemCallback<ItemModel> diffCallback = new DiffUtil.ItemCallback<ItemModel>() {
+//        @Override
+//        public boolean areItemsTheSame(@NonNull ItemModel oldItem, @NonNull ItemModel newItem) {
+//            return oldItem.getImage_uri().equals(newItem.getImage_uri());
+//        }
+//
+//        @Override
+//        public boolean areContentsTheSame(@NonNull ItemModel oldItem, @NonNull ItemModel newItem) {
+//            return (oldItem.getCategory().equals(newItem.getCategory())) &&
+//                    (oldItem.getContact().equals(newItem.getContact())) &&
+//                    (oldItem.getExtra_info().equals(newItem.getExtra_info())) &&
+//                    (oldItem.getName().equals(newItem.getName())) &&
+//                    (oldItem.getP_name().equals(newItem.getP_name())) &&
+//                    (oldItem.getPrice() == newItem.getPrice());
+//        }
+//    };
+//
+//    public MyProfileItemsRecyclerAdapter() {
+//        super(diffCallback);
+//    }
 
     @NonNull
     @Override
@@ -54,9 +80,10 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<ItemModel, MyProf
 
     @Override
     public void onBindViewHolder(@NonNull MyProfileItemHolder holder, int position) {
-        ItemModel item = getItem(position);
+        ItemModel item = (ItemModel) getItem(position).second;
         holder.tvName.setText(item.getName());
         holder.tvPrice.setText(item.getPrice() + " /- Rs");
+        String idOfItem = getItem(position).first.toString();
         GlideApp.with(holder.itemView)
                 .load(item.getImage_uri())
                 .placeholder(R.drawable.ic_market_place)
@@ -66,7 +93,7 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<ItemModel, MyProf
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertDialog(item, v.getContext());
+                showAlertDialog(item, idOfItem, v.getContext());
             }
         };
         holder.tvPrice.setOnClickListener(clickListener);
@@ -76,7 +103,7 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<ItemModel, MyProf
             holder.btnSold.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onItemSoldClicked(item);
+                    listener.onItemSoldClicked(idOfItem);
                 }
             });
         }
@@ -86,28 +113,7 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<ItemModel, MyProf
         this.listener = listener;
     }
 
-    public interface OnItemSoldButtonClickListener {
-        void onItemSoldClicked(ItemModel item);
-    }
-
-    class MyProfileItemHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.tv_recycler_profile_item_price)
-        TextView tvPrice;
-        @BindView(R.id.tv_recycler_profile_item_name)
-        TextView tvName;
-        @BindView(R.id.image_recycler_profile_item_photo)
-        ImageView imageItem;
-        @BindView(R.id.btn_recycler_profile_item_sold)
-        Button btnSold;
-
-        public MyProfileItemHolder(@NonNull View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
-    private void showAlertDialog(ItemModel item, Context context) {
+    private void showAlertDialog(ItemModel item, String id, Context context) {
         View alertView = LayoutInflater.from(context).inflate(R.layout.item_holder_alert_dialog_marketplace_sell, null);
         TextView tvDialogName = alertView.findViewById(R.id.tv_marketplace_sell_item_name);
         TextView tvDialogPrice = alertView.findViewById(R.id.tv_marketplace_sell_item_price);
@@ -137,7 +143,7 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<ItemModel, MyProf
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        listener.onItemSoldClicked(item);
+                        listener.onItemSoldClicked(id);
                         alertDialog.dismiss();
                     } else {
                         throw new NullPointerException("Listener is not Attached properly");
@@ -147,5 +153,26 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<ItemModel, MyProf
         } else {
             Toast.makeText(context, "Button is empty", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    class MyProfileItemHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tv_recycler_profile_item_price)
+        TextView tvPrice;
+        @BindView(R.id.tv_recycler_profile_item_name)
+        TextView tvName;
+        @BindView(R.id.image_recycler_profile_item_photo)
+        ImageView imageItem;
+        @BindView(R.id.btn_recycler_profile_item_sold)
+        Button btnSold;
+
+        public MyProfileItemHolder(@NonNull View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    public interface OnItemSoldButtonClickListener {
+        void onItemSoldClicked(String id);
     }
 }

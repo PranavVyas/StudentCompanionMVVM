@@ -1,18 +1,22 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -48,7 +52,7 @@ public class DigitalLibraryRecyclerAdapter extends ListAdapter<DigitalLibraryEnt
     @Override
     public void onBindViewHolder(@NonNull BookHolder holder, int position) {
         DigitalLibraryEntry book = getItem(position);
-        holder.tvAuthorName.setText(book.getAuthorName());
+        holder.tvAuthorName.setText("By: " + book.getAuthorName());
         holder.tvBookName.setText(book.getBookName());
         holder.tvSubject.setText(book.getSubject());
         holder.tvNo.setText((position + 1) + ".");
@@ -75,7 +79,19 @@ public class DigitalLibraryRecyclerAdapter extends ListAdapter<DigitalLibraryEnt
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Link is : " + getItem(getAdapterPosition()).getBookUrl(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(v.getContext(), "Link is : " + getItem(getAdapterPosition()).getBookUrl(), Toast.LENGTH_SHORT).show();
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext());
+            builder.setTitle("Attention!")
+                    .setMessage("Link Provided with this document is going to open now in browser. You can download file with normal downloader! I am planing to add download manager later!!")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse(getItem(getAdapterPosition()).getBookUrl()));
+                            v.getContext().startActivity(openLink);
+                            dialogInterface.dismiss();
+                        }
+                    });
+            builder.create().show();
         }
     }
 }

@@ -2,22 +2,28 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.app.Application;
 
-import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
+import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
+import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
+
+import java.util.List;
 
 public class AppSettingsViewModel extends AndroidViewModel {
 
     private boolean isReminderEnabled;
     private boolean isAutoAttendanceEnabled;
     private int reminderTime;
+    private LiveData<List<AutoAttendancePlaceEntry>> autoAttendancePlaceEntryLiveData;
 
     private AppSettingsRepository appSettingsRepository;
 
     public AppSettingsViewModel(@NonNull Application application) {
         super(application);
         appSettingsRepository = new AppSettingsRepository(application);
+        autoAttendancePlaceEntryLiveData = appSettingsRepository.getAutoAtttendanceLiveData();
     }
 
     public boolean isReminderEnabled() {
@@ -52,11 +58,19 @@ public class AppSettingsViewModel extends AndroidViewModel {
         appSettingsRepository.toggleNightMode();
     }
 
-    public void setRefreshGeoFence(boolean isScheduled) {
-        appSettingsRepository.setGeoFenceRefreshing(isScheduled);
-    }
+//    public void setRefreshGeoFence(boolean isScheduled) {
+//        appSettingsRepository.setGeoFenceRefreshing(isScheduled);
+//    }
 
     public void toggleSmartSilent() {
         appSettingsRepository.toggleSmartSilent();
+    }
+
+    public void registerFence() {
+
+    }
+
+    public LiveData<List<AutoAttendancePlaceEntry>> getAutoAttendanceLiveData() {
+        return autoAttendancePlaceEntryLiveData;
     }
 }

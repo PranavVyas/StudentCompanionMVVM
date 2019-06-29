@@ -1,17 +1,16 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -19,19 +18,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,34 +45,26 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.schibstedspain.leku.LocationPickerActivity;
+import com.schibstedspain.leku.LocationPickerActivityKt;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
+import com.vyas.pranav.studentcompanion.utils.AutoAttendanceHelper;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.viewmodels.AutoAttendanceSubjectDetailViewModel;
 import com.vyas.pranav.studentcompanion.viewmodels.AutoAttendanceSubjectDetailViewModelFactory;
 
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -82,11 +75,6 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         , GoogleApiClient.OnConnectionFailedListener
         , OnMapReadyCallback {
 
-    private static final int RC_LOCATION_ACCESS = 3000;
-    private static final int RC_CHANGE_LOCATION = 4000;
-    private static final int RC_LOCATION_RECEIVED = 120;
-    @BindView(R.id.tv_auto_attendance_subject_detail_address)
-    TextView tvAddress;
     @BindView(R.id.tv_auto_attendance_subject_detail_name)
     TextView tvName;
     @BindView(R.id.tv_auto_attendance_subject_detail_subject)
@@ -105,9 +93,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
 
     private GoogleApiClient mClient;
     private AutoAttendanceSubjectDetailViewModel autoAttendanceSubjectDetailViewModel;
-    private LiveData<AutoAttendancePlaceEntry> placeIdOFSubject;
     private String currSubject;
-    private AutoAttendancePlaceEntry currPlace;
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private LocationRequest mLocationRequest;
@@ -115,6 +101,9 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     private Marker mCurrentLocationMarker;
     private Circle geoFenceLimits;
     private PendingIntent locationUpdatePendingIntent;
+    private LiveData<AutoAttendancePlaceEntry> placeEntry;
+    private AutoAttendancePlaceEntry currPlaceEntry;
+    private AutoAttendanceHelper helper = new AutoAttendanceHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,27 +114,8 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        Logger.clearLogAdapters();
-        Logger.addLogAdapter(new AndroidLogAdapter());
         checkForPermissionAndContinue();
-        currPlace = null;
-    }
-
-    private void setUpGoogleMap() {
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
-        mapFragment.getMapAsync(this);
-        geoFenceLimits = null;
-    }
-
-    private void setUpGoogleClient() {
-//        mClient = autoAttendanceSubjectDetailViewModel.getGoogleClient();
-        mClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(this, this)
-                .build();
+        currPlaceEntry = null;
     }
 
     private void checkForPermissionAndContinue() {
@@ -166,10 +136,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
                     public void onPermissionDenied(PermissionDeniedResponse response) {
                         if (response.isPermanentlyDenied()) {
                             openSettingsDialog();
-                        } else {
-                            finish();
                         }
-//                        checkForPermissionAndContinue();
                     }
 
                     @Override
@@ -177,14 +144,33 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
                         token.continuePermissionRequest();
                     }
                 }).check();
-//        if (ActivityCompat.checkSelfPermission(AutoAttendanceSubjectDetailActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION};
-//            ActivityCompat.requestPermissions(this, permissions, RC_LOCATION_ACCESS);
-//        }
+    }
+
+    private void setUpGoogleMap() {
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+            geoFenceLimits = null;
+        }
+    }
+
+    private void setUpGoogleClient() {
+//        mClient = autoAttendanceSubjectDetailViewModel.getGoogleClient();
+        mClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .enableAutoManage(this, this)
+                .build();
+    }
+
+    @OnClick(R.id.btn_frame_auto_attendance_subject_detail_placeholder_show_location)
+    void clickedshowLocation() {
+        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
     }
 
     private void openSettingsDialog() {
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -202,7 +188,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
                 dialog.dismiss();
                 AutoAttendanceSubjectDetailActivity.this.finish();
             }
-        }).setMessage("Location Permission is needed for setting up GeoFences\nPlease give permission through settings")
+        }).setMessage("\u25CF Location Permission is needed for setting up GeoFences\n\u25CF Please give permission through settings")
                 .setTitle("Permission Denied")
                 .setCancelable(false)
                 .setIcon(R.drawable.ic_info_black)
@@ -210,13 +196,11 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     }
 
     private boolean isLocationProviderAvailable() {
-        //TODO Implement this method
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     private void showNoLocationPlaceHolder(boolean isShown) {
-        //TODO Implement Later
         if (isShown) {
             cardCurrentDetails.setVisibility(View.GONE);
             btnEditPlace.setVisibility(View.GONE);
@@ -244,39 +228,20 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
             if (intent.hasExtra(EXTRA_SUBJECT_NAME)) {
                 currSubject = intent.getStringExtra(EXTRA_SUBJECT_NAME);
                 tvSubject.setText("Subject : " + currSubject);
-                placeIdOFSubject = autoAttendanceSubjectDetailViewModel.getPlaceIdOFSubject(currSubject);
-                placeIdOFSubject.observe(this, new Observer<AutoAttendancePlaceEntry>() {
+                placeEntry = autoAttendanceSubjectDetailViewModel.getPlaceEntryOfSubject(currSubject);
+                placeEntry.observe(this, new Observer<AutoAttendancePlaceEntry>() {
                     @Override
                     public void onChanged(AutoAttendancePlaceEntry placeEntry) {
                         if (placeEntry != null) {
-                            currPlace = placeEntry;
-                            String id = placeEntry.getPlaceId();
-                            if (!id.equals(Constants.DEFAULT_PLACE_ID)) {
-                                final PendingResult<PlaceBuffer> placeById = Places.GeoDataApi.getPlaceById(mClient, id);
-                                placeById.setResultCallback(new ResultCallback<PlaceBuffer>() {
-                                    @Override
-                                    public void onResult(@NonNull PlaceBuffer places) {
-                                        if (places.getStatus().isSuccess()) {
-                                            if (places.getStatus().isCanceled()) {
-                                                Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
-                                                return;
-                                            } else if (places.getStatus().isInterrupted()) {
-                                                Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Interrupted", Toast.LENGTH_SHORT).show();
-                                                return;
-                                            }
-                                            Logger.d("Data Changed New data is \nAddress is :" + places.get(0).getAddress() + "\nName is :" + places.get(0).getName());
-                                            autoAttendanceSubjectDetailViewModel.setCurrAddress(places.get(0).getAddress() + "");
-                                            autoAttendanceSubjectDetailViewModel.setCurrName(places.get(0).getName() + "");
-                                            refreshTextViewData();
-                                            showGeoFenceCircleInMap(places.get(0).getLatLng());
-                                            places.release();
-                                        } else {
-                                            Logger.d("Error Occurred");
-                                            Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Error Occured", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+                            currPlaceEntry = placeEntry;
+                            if ((placeEntry.getLang() == Constants.DEFAULT_LANG) &&
+                                    (placeEntry.getLat() == Constants.DEFAULT_LAT)) {
+                                tvName.setText("\u25CF No Place Selected!\n\u25CF You will not be able to use Auto Attendance Feature if no place is selected!\n\u25CF Select place now!");
+                                Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "First Add Subject Places to the subject location", Toast.LENGTH_SHORT).show();
+                                return;
                             }
+                            showGeoFenceCircleInMap(placeEntry.getLat(), placeEntry.getLang());
+                            tvName.setText("\u25CF Successfully set Location of Subject : " + currSubject + "\n\u25CF You will be able to use Auto Attendance Feature!\n\u25CF Please Note that Auto Attendance Feature is still in beta phase so it might be inaccurate sometimes");
                         }
                     }
                 });
@@ -284,32 +249,44 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         }
     }
 
-    private void refreshTextViewData() {
-        tvAddress.setText(autoAttendanceSubjectDetailViewModel.getCurrAddress());
-        tvName.setText(autoAttendanceSubjectDetailViewModel.getCurrName());
-    }
-
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Logger.d("Google Client Connected");
         AutoAttendanceSubjectDetailViewModelFactory factory = new AutoAttendanceSubjectDetailViewModelFactory(this, mClient);
         autoAttendanceSubjectDetailViewModel = ViewModelProviders.of(this, factory).get(AutoAttendanceSubjectDetailViewModel.class);
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.getFusedLocationProviderClient(this).requestLocationUpdates(getLocationRequest(), getLocationUpdatePendingIntent()).addOnSuccessListener(this, new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        LocationServices.getFusedLocationProviderClient(AutoAttendanceSubjectDetailActivity.this)
+                                .requestLocationUpdates(getLocationRequest(), getLocationUpdatePendingIntent())
+                                .addOnSuccessListener(AutoAttendanceSubjectDetailActivity.this, new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Successful Location available", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(AutoAttendanceSubjectDetailActivity.this, new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Failed due to : " + e.toString(), Toast.LENGTH_SHORT).show();
+                                        Logger.d("Failed due to : " + e.toString());
+                                    }
+                                });
+                    }
 
-                }
-            }).addOnFailureListener(this, new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Failed due to : " + e.toString(), Toast.LENGTH_SHORT).show();
-                    Logger.d("Failed due to : " + e.toString());
-                }
-            });
-        }
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Location Access is needed!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
         if (mClient != null) {
             populateUI(getIntent());
         }
@@ -327,32 +304,55 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
 
     @OnClick(R.id.btn_auto_attendance_subject_detail_edit)
     void editBtnClicked() {
-        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-        try {
-            Intent changeData = intentBuilder.build(this);
-            startActivityForResult(changeData, RC_CHANGE_LOCATION);
-        } catch (GooglePlayServicesRepairableException e) {
-            Logger.d("Please Update Google Play services");
-            Toast.makeText(this, "Please Update Google Play services", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            Logger.d("Please Install Google Play Services");
-            Toast.makeText(this, "Please Install Google Play Services", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
+//        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+//        try {
+//            Intent changeData = intentBuilder.build(this);
+//            startActivityForResult(changeData, RC_CHANGE_LOCATION);
+//        } catch (GooglePlayServicesRepairableException e) {
+//            Logger.d("Please Update Google Play services");
+//            Toast.makeText(this, "Please Update Google Play services", Toast.LENGTH_SHORT).show();
+//            e.printStackTrace();
+//        } catch (GooglePlayServicesNotAvailableException e) {
+//            Logger.d("Please Install Google Play Services");
+//            Toast.makeText(this, "Please Install Google Play Services", Toast.LENGTH_SHORT).show();
+//            e.printStackTrace();
+//        }
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                .setMessage("\u25CF You will be redirected to select place where you would be at the time of lecture/lab.\u25CF No need to be perfect here, A location in the radius of 35 meter is valid")
+                .setTitle("Edit Configured Place")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        Intent locationPickerIntent = new LocationPickerActivity.Builder()
+                                .withGeolocApiKey(getString(R.string.api_key))
+                                .withDefaultLocaleSearchZone()
+                                .shouldReturnOkOnBackPressed()
+                                .withStreetHidden()
+                                .withCityHidden()
+                                .withZipCodeHidden()
+                                .withGoogleTimeZoneEnabled()
+                                .withUnnamedRoadHidden()
+                                .build(AutoAttendanceSubjectDetailActivity.this);
+                        startActivityForResult(locationPickerIntent, Constants.RC_OPEN_PLACE_PICKER_CUSTOM);
+                    }
+                });
+        builder.create().show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_CHANGE_LOCATION && resultCode == RESULT_OK) {
+        if (requestCode == Constants.RC_OPEN_PLACE_PICKER_CUSTOM && resultCode == RESULT_OK) {
             if (data != null) {
-                Place place = PlacePicker.getPlace(this, data);
-                currPlace.setPlaceId(place.getId());
-                autoAttendanceSubjectDetailViewModel.updatePlaceId(currPlace);
-                autoAttendanceSubjectDetailViewModel.refreshAllGeoFences();
-                //autoAttendanceSubjectDetailViewModel.refreshGeoFences(place);
+                double lat = data.getDoubleExtra(LocationPickerActivityKt.LATITUDE, 0.0);
+                double lang = data.getDoubleExtra(LocationPickerActivityKt.LONGITUDE, 0.0);
+                Logger.d("Lat: " + lat + "\nLang: " + lang);
+                currPlaceEntry.setLang(lang);
+                currPlaceEntry.setLat(lat);
+                autoAttendanceSubjectDetailViewModel.refreshFenceInDb(currPlaceEntry);
+                helper.updateOrRemoveFenceForSubject(true, currSubject, lat, lang);
+                //TODO update Fence in real life
             } else {
                 Toast.makeText(this, "Error Occurred While Retrieving Data", Toast.LENGTH_SHORT).show();
             }
@@ -365,33 +365,37 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         LocationServices.getFusedLocationProviderClient(this).removeLocationUpdates(getLocationUpdatePendingIntent());
     }
 
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                //Location Permission already granted
-                setUpGoogleClient();
-                map.setMyLocationEnabled(true);
-            } else {
-                //TODO Request Location Permission
-                Toast.makeText(this, "Please provide location services...", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            setUpGoogleClient();
-            map.setMyLocationEnabled(true);
-        }
+        setUpGoogleClient();
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        map.setMyLocationEnabled(true);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Please provide location services...", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
     }
 
-    private void showGeoFenceCircleInMap(LatLng centerPosition) {
+    private void showGeoFenceCircleInMap(double lat, double lang) {
         if (geoFenceLimits != null) {
             geoFenceLimits.remove();
         }
         CircleOptions circleOptions = new CircleOptions()
-                .center(centerPosition)
+                .center(new LatLng(lat, lang))
                 .strokeColor(Color.argb(50, 70, 70, 70))
                 .fillColor(Color.argb(100, 150, 150, 150))
                 .radius(100);
@@ -403,7 +407,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
             return locationUpdatePendingIntent;
         }
         Intent locationIntent = new Intent(this, LocationUpdateReceiver.class);
-        locationUpdatePendingIntent = PendingIntent.getBroadcast(this, RC_LOCATION_RECEIVED, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        locationUpdatePendingIntent = PendingIntent.getBroadcast(this, Constants.RC_LOCATION_RECEIVED, locationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         return locationUpdatePendingIntent;
     }
 
@@ -419,7 +423,6 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     }
 
     class LocationUpdateReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if (LocationResult.hasResult(intent)) {
@@ -439,10 +442,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
                 //move map camera
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 40.0f));
             }
-//            if(LocationAvailability.hasLocationAvailability(intent)){
-//                LocationAvailability locationAvailability = LocationAvailability.extractLocationAvailability(intent);
-//                locationAvailability.
-//            }
+
         }
     }
 }

@@ -2,17 +2,18 @@ package com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore;
 
 public class NotificationFirestoreModel {
 
-    private String name, date, short_info;
+    private String name, date, short_info, image_url;
     private String url = "";
     private String venue = "";
 
     public NotificationFirestoreModel() {
     }
 
-    public NotificationFirestoreModel(String name, String date, String short_info, String url, String venue) {
+    public NotificationFirestoreModel(String name, String date, String short_info, String image_url, String url, String venue) {
         this.name = name;
         this.date = date;
         this.short_info = short_info;
+        this.image_url = image_url;
         this.url = url;
         this.venue = venue;
     }
@@ -55,5 +56,13 @@ public class NotificationFirestoreModel {
 
     public void setVenue(String venue) {
         this.venue = venue;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 }

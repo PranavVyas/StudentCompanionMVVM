@@ -91,8 +91,6 @@ public class NotificationFcmService extends FirebaseMessagingService {
                 });
             }
         });
-        //TODO add notification link opening while click on more button
-
     }
 
     private PendingIntent getContentIntent() {
@@ -137,14 +135,12 @@ public class NotificationFcmService extends FirebaseMessagingService {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setContentIntent(getContentIntent())
-                //TODO set BigIcon Here
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText("New Item Added: " + name + "\n Seller Name : " + sellerName + "\nCategory: " + category))
+                        .bigText("New Item Added: " + name + "\nSeller Name : " + sellerName + "\nCategory: " + category))
                 .addAction(getOpenAppAction())
                 .setAutoCancel(true);
 
         NotificationManagerCompat.from(getApplicationContext()).notify(Constants.EVENTS_SHOW_NOTIFICATION, notificationBuilder.build());
     }
-
 
 }

@@ -21,6 +21,7 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
@@ -158,7 +159,7 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
         View view = LayoutInflater.from(this).inflate(R.layout.item_holder_alert_dialog_auto_sync, null, false);
         TextView status = view.findViewById(R.id.tv_holder_atert_dialog_auto_sync);
         status.setText("Current Status : " + (digitalLibraryViewModel.getStateOfAutoSync() ? "Enabled" : "Disabled"));
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
 //                .setTitle("Auto Sync")
 //                .setPositiveButton("Enable it", new DialogInterface.OnClickListener() {
 //                    @Override

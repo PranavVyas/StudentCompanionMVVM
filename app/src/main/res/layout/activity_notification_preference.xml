@@ -22,87 +22,151 @@
             android:text="Notifications" />
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/textView61"
-        style="@style/MyMaterialTextView.SmallTextViewBody1"
+    <FrameLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Please Check the boxes which you want to get notified"
+        android:layout_height="0dp"
+        android:background="?attr/placeholder_background"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_notification_preference" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_notification_preference">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/checkbox_notifications_event"
-        style="@style/Widget.MaterialComponents.CompoundButton.CheckBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/product_sans_regular"
-        android:text="Events"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView61" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/placeholder_notification_preference_no_connection"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/placeholder_background"
+            android:visibility="visible">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/checkbox_notifications_new_item"
-        style="@style/Widget.MaterialComponents.CompoundButton.CheckBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/product_sans_regular"
-        android:text="New Item in shop"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/carddsds" />
+            <ImageView
+                android:id="@+id/image_placeholder_notification_preference"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.19999999"
+                tools:srcCompat="@drawable/image_no_connection_placeholder" />
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/carddsds"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/checkbox_notifications_event"
-        app:layout_constraintStart_toStartOf="@+id/checkbox_notifications_event"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications_event">
+            <Button
+                android:id="@+id/btn_placeholder_notification_preference_no_connection_retry"
+                style="@style/MyCustomMaterialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="24dp"
+                android:text="Retry"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/textView63"
-            style="@style/MyMaterialTextView.SmallTextViewBody2"
+        <ScrollView
+            android:id="@+id/scroll_notification_preference"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Check the box if you want to get notified for new events happening in the collage" />
-    </com.google.android.material.card.MaterialCardView>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_notification_preference"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/checkbox_notifications_new_item"
-        app:layout_constraintStart_toStartOf="@+id/checkbox_notifications_new_item"
-        app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications_new_item">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView64"
-            style="@style/MyMaterialTextView.SmallTextViewBody2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Check the box if you want to get notified when someone puts ad on the app in the store" />
-    </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/textView61"
+                    style="@style/MyMaterialTextView.SmallTextViewBody1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Please Check the boxes which you want to get notified"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/carddsds"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications_event">
+
+                    <TextView
+                        android:id="@+id/textView63"
+                        style="@style/MyMaterialTextView.SmallTextViewBody2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="Check the box if you want to get notified for new events happening in the collage" />
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/checkbox_notifications_event"
+                    style="@style/Widget.MaterialComponents.CompoundButton.CheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:text="Events"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView61" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/checkbox_notifications_new_item"
+                    style="@style/Widget.MaterialComponents.CompoundButton.CheckBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/product_sans_regular"
+                    android:text="New Item in shop"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/carddsds" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications_new_item">
+
+                    <TextView
+                        android:id="@+id/textView64"
+                        style="@style/MyMaterialTextView.SmallTextViewBody2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="Check the box if you want to get notified when someone puts ad on the app in the store" />
+                </com.google.android.material.card.MaterialCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

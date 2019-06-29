@@ -8,6 +8,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import com.evernote.android.job.DailyJob;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
@@ -18,16 +23,10 @@ import com.google.android.gms.location.places.Places;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.repositories.GeoFencingRepository;
 import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 
 import java.util.concurrent.TimeUnit;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 public class DailyJobForRefreshGeoFence extends DailyJob implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     public static final String TAG = "DailyJobForRefreshGeoFence";
@@ -62,8 +61,9 @@ public class DailyJobForRefreshGeoFence extends DailyJob implements GoogleApiCli
                 .addApi(Places.GEO_DATA_API)
                 .build();
         mClient.connect();
-        GeoFencingRepository geoFencingRepository = new GeoFencingRepository(context, mClient);
-        geoFencingRepository.refreshAllGeoFences();
+        // TODO refresh Fence
+//        GeoFencingRepository geoFencingRepository = new GeoFencingRepository(context, mClient);
+//        geoFencingRepository.refreshAllGeoFences();
         mClient.disconnect();
         showNotification();
         mClient = null;

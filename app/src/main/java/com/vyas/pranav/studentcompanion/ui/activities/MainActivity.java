@@ -13,19 +13,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.Drawer;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -40,11 +38,8 @@ import com.vyas.pranav.studentcompanion.ui.fragments.MyProfileFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.NotificationFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.ResourcesFragment;
-import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.viewmodels.MainViewModel;
-
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
     private Drawer mDrawer;
     private MainViewModel mainViewModel;
-    private FragmentManager fragManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,16 +65,16 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         setSupportActionBar(toolbarMainActivity);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        actionBar = getSupportActionBar();
-        fragManager = getSupportFragmentManager();
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         FirebaseUser currUser = mainViewModel.getCurrUser();
         mDrawer = NavigationDrawerUtil.getMaterialDrawer(MainActivity.this, toolbarMainActivity, currUser);
         OnNavigationItemClicked(mainViewModel.getCurrentFragmentId());
         mDrawer.setSelection(mainViewModel.getCurrentFragmentId());
-        setLiveBadge();
+//        setLiveBadge();
         Logger.addLogAdapter(new AndroidLogAdapter());
         Logger.d("Received Path is : " + this.getExternalFilesDir(null).getPath() + "\n abs path : " + this.getExternalFilesDir(null).getAbsolutePath());
         dismissCallingNotificationIsAvailable();
+//        showInstruction();
     }
 
     @Override
@@ -92,9 +86,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 mainViewModel.setCurrentFragmentId(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
                 swapFragment(attendanceFragment);
-//              fragment.setExitTransition(new Fade(Fade.OUT));
-//                getSupportFragmentManager().beginTransaction().replace(R.id.frame_main_activity_container, attendanceFragment)
-//                        .commit();
                 tvTitle.setText("Home");
                 mDrawer.setSelection(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
             } else {
@@ -123,30 +114,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 swapFragment(overallAttendanceFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
                 break;
-//
-//            case NavigationDrawerUtil.ID_HOLIDAYS:
-////                actionBar.setTitle("Holidays");
-//                tvTitle.setText("Holidays");
-//                HolidayFragment holidayFragment = new HolidayFragment();
-//                swapFragment(holidayFragment);
-//                mainViewModel.setCurrentFragmentId(identifier);
-//                break;
-//
-//            case NavigationDrawerUtil.ID_TIMETABLE:
-////                actionBar.setTitle("Timetable");
-//                tvTitle.setText("Timetable");
-//                TimetableFragment timetableFragment = new TimetableFragment();
-//                swapFragment(timetableFragment);
-//                mainViewModel.setCurrentFragmentId(identifier);
-//                break;
-//
-//            case NavigationDrawerUtil.ID_MARKET_PLACE:
-////                actionBar.setTitle("Marketplace");
-//                tvTitle.setText("Marketplace");
-//                MarketPlaceFragment marketPlaceFragment = new MarketPlaceFragment();
-//                swapFragment(marketPlaceFragment);
-//                mainViewModel.setCurrentFragmentId(identifier);
-//                break;
 
             case NavigationDrawerUtil.ID_SETTINGS:
                 tvTitle.setText("Settings");
@@ -192,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_SIGN_OUT:
-                new AlertDialog.Builder(MainActivity.this)
+                new MaterialAlertDialogBuilder(MainActivity.this)
                         .setMessage("Signing out will not remove any data of attendance\nClick ok to sign out\nYou will be redirected to the sign in page to sign in again")
                         .setTitle("Notice")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -212,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_DELETE_ACCOUNT:
-                new AlertDialog.Builder(MainActivity.this)
+                new MaterialAlertDialogBuilder(MainActivity.this)
                         .setCancelable(false)
                         .setTitle("Please Read")
                         .setMessage("Deleting account will remove all the attendance data and account from server as well as locally\nPlease proceed by touching \"Delete Anyways\" Or Click On \"Cancel\" to cancel\nApplication will shut down after deleting account, You have to manually start again\nThank You!")
@@ -284,30 +251,80 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         manager.cancelAll();
     }
 
-    public void setLiveBadge() {
-        LiveData<Integer> notificationCount = mainViewModel.getNotificationCount(ConverterUtils.convertDateToString(new Date()));
-//        notificationCount.observe(this, new Observer<Integer>() {
-//            @Override
-//            public void onChanged(Integer integer) {
-////                PrimaryDrawerItem notificationItem = ((PrimaryDrawerItem) mDrawer.getDrawerItem(NavigationDrawerUtil.ID_NOTIFICATIONS));
-////                notificationItem.withBadge(integer);
-//                mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder(integer.toString()));
-////                mDrawer.updateItem(notificationItem);
-//                TODO implement badge style here notificationItem.withBadgeStyle(new BadgeStyle());
-//            }
+//    public void setLiveBadge() {
+//        LiveData<Integer> notificationCount = mainViewModel.getNotificationCount(ConverterUtils.convertDateToString(new Date()));
+////        notificationCount.observe(this, new Observer<Integer>() {
+////            @Override
+////            public void onChanged(Integer integer) {
+//////                PrimaryDrawerItem notificationItem = ((PrimaryDrawerItem) mDrawer.getDrawerItem(NavigationDrawerUtil.ID_NOTIFICATIONS));
+//////                notificationItem.withBadge(integer);
+////                mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder(integer.toString()));
+//////                mDrawer.updateItem(notificationItem);
+////                TODO implement badge style here notificationItem.withBadgeStyle(new BadgeStyle());
+////            }
+//////        });
+////        NotificationsViewModel notificationsViewModel = ViewModelProviders.of(this).get(NotificationsViewModel.class);
+////        SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils(this);
+////        notificationsViewModel.getAllNotifications().observe(this, new Observer<List<NotificationEntry>>() {
+////            @Override
+////            public void onChanged(List<NotificationEntry> notificationEntries) {
+////                int currentNotis = notificationEntries.size();
+////                int previousNotis = sharedPreferencesUtils.getCurrentNotis();
+//////                PrimaryDrawerItem notificationItem = ((PrimaryDrawerItem) mDrawer.getDrawerItem(NavigationDrawerUtil.ID_NOTIFICATIONS));
+//////                notificationItem.withBadge(currentNotis - previousNotis);
+////                mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder((String.valueOf(currentNotis-previousNotis))));
+//////                mDrawer.updateItem(notificationItem);
+////            }
 ////        });
-//        NotificationsViewModel notificationsViewModel = ViewModelProviders.of(this).get(NotificationsViewModel.class);
-//        SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils(this);
-//        notificationsViewModel.getAllNotifications().observe(this, new Observer<List<NotificationEntry>>() {
-//            @Override
-//            public void onChanged(List<NotificationEntry> notificationEntries) {
-//                int currentNotis = notificationEntries.size();
-//                int previousNotis = sharedPreferencesUtils.getCurrentNotis();
-////                PrimaryDrawerItem notificationItem = ((PrimaryDrawerItem) mDrawer.getDrawerItem(NavigationDrawerUtil.ID_NOTIFICATIONS));
-////                notificationItem.withBadge(currentNotis - previousNotis);
-//                mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder((String.valueOf(currentNotis-previousNotis))));
-////                mDrawer.updateItem(notificationItem);
-//            }
-//        });
+//    }
+
+    private void showInstruction() {
+////        if(mainViewModel.isInstructionDone()){
+////            return;
+////        }
+//        // We load a drawable and create a location to show a tap target here
+//        // We need the display to get the width and height at this point in time
+//        final Display display = getWindowManager().getDefaultDisplay();
+//        // Load our little droid guy
+//        final Drawable droid = ContextCompat.getDrawable(this, R.drawable.ic_info_black);
+//        // Tell our droid buddy where we want him to appear
+//        final Rect droidTarget = new Rect(0, 0, droid.getIntrinsicWidth() * 2, droid.getIntrinsicHeight() * 2);
+//        // Using deprecated methods makes you look way cool
+//        droidTarget.offset(display.getWidth() / 2, display.getHeight() / 2);
+//        TapTarget start = TapTarget.forBounds(droidTarget, "Welcome Aboard!", "Welcome to the tutorial\n● In this you will be introduced to the common features of the app that will be useful!\n\n\n● So let's go!!!")
+//                .cancelable(false)
+//                .icon(droid)
+//                .id(1);
+//        TapTarget menuOpenerTarget = TapTarget.forToolbarNavigationIcon(toolbarMainActivity, "Navigation Drawer", "This is navigation drawer, It is the most useful menu that is the gateway to all the features")
+//                .cancelable(false)
+//                .icon(getDrawable(android.R.drawable.ic_menu_camera))
+//                .id(2);
+//        TapTarget sas = TapTarget.forView()
+//
+//        TapTargetSequence targetSequence = new TapTargetSequence(this)
+//                .targets(
+//                        ,
+//                ).listener(new TapTargetSequence.Listener() {
+//                    @Override
+//                    public void onSequenceFinish() {
+//                        Toast.makeText(MainActivity.this, "Finished Tutorial", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+//                        if (lastTarget.id() == 1) {
+//                            Toast.makeText(MainActivity.this, "Clicked First Step", Toast.LENGTH_SHORT).show();
+//                        }
+//                        if (lastTarget.id() == 2) {
+//                            Toast.makeText(MainActivity.this, "Clicked 2nd Step", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onSequenceCanceled(TapTarget lastTarget) {
+//
+//                    }
+//                });
+//        targetSequence.start();
     }
 }

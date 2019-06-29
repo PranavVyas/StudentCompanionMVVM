@@ -5,11 +5,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
+
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
+import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
+import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlacesDatabase;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForRefreshGeoFence;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForShowingReminder;
@@ -22,11 +30,6 @@ import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.preference.PreferenceManager;
 
 public class AppSettingsRepository {
 
@@ -134,5 +137,10 @@ public class AppSettingsRepository {
             Toast.makeText(context, "Disabled Smart Silent!", Toast.LENGTH_SHORT).show();
             Logger.d("Smart Silent : Disabled");
         }
+    }
+
+    public LiveData<List<AutoAttendancePlaceEntry>> getAutoAtttendanceLiveData() {
+        AutoAttendancePlaceDao attendancePlaceDao = AutoAttendancePlacesDatabase.getInstance(context).autoAttendancePlaceDao();
+        return attendancePlaceDao.getAllPlaceEntries();
     }
 }

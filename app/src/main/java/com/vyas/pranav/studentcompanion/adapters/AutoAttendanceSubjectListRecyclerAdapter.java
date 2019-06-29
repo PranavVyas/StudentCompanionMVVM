@@ -67,5 +67,7 @@ public class AutoAttendanceSubjectListRecyclerAdapter extends RecyclerView.Adapt
                 }
             });
         }
+
+
     }
 }

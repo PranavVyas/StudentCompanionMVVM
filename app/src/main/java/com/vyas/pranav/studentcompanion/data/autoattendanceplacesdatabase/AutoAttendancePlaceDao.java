@@ -1,7 +1,5 @@
 package com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase;
 
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -10,27 +8,26 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 @Dao
 public interface AutoAttendancePlaceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertNewPlaceId(AutoAttendancePlaceEntry newPlaceEntry);
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updatePlaceId(AutoAttendancePlaceEntry placeEntry);
+    void insertNewPlaceEntry(AutoAttendancePlaceEntry newPlaceEntry);
 
     @Delete
-    void deletePlaceId(AutoAttendancePlaceEntry placeEntry);
+    void deletePlaceEntry(AutoAttendancePlaceEntry placeEntry);
 
     @Query("SELECT * FROM PlacesTable")
-    LiveData<List<AutoAttendancePlaceEntry>> getAllPlaceIds();
+    LiveData<List<AutoAttendancePlaceEntry>> getAllPlaceEntries();
 
     @Query("DELETE FROM PlacesTable")
-    void deleteAllPlaceIds();
+    void deleteAllPlaceEntries();
 
     @Query("SELECT * FROM PlacesTable WHERE subject=:subject")
-    LiveData<AutoAttendancePlaceEntry> getPlaceIdOfSubject(String subject);
+    LiveData<AutoAttendancePlaceEntry> getPlaceEntryOfSubject(String subject);
 
-    @Query("SELECT * FROM PlacesTable WHERE placeId=:placeId")
-    LiveData<AutoAttendancePlaceEntry> getPlaceById(String placeId);
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updatePlaceEntry(AutoAttendancePlaceEntry placeEntry);
 }

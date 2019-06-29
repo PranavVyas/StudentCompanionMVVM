@@ -8,10 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
+
 import com.evrencoskun.tableview.TableView;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.github.angads25.toggle.model.ToggleableView;
 import com.github.angads25.toggle.widget.LabeledSwitch;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.TimetableTableAdapter;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
@@ -22,15 +32,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -263,7 +264,7 @@ public class TimetableFragment extends Fragment {
 
     @OnClick(R.id.btn_timetable_frag_sem_info)
     void semInfoClicked() {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(getContext());
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.item_holder_alert_dialog_sem_info, null, false);
         TextView tvSemNo = dialogView.findViewById(R.id.tv_holder_dialog_sem_info_sem);
         TextView tvStartDate = dialogView.findViewById(R.id.tv_holder_dialog_sem_info_start_date);

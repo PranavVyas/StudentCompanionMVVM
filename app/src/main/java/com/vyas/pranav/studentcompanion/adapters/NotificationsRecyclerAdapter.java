@@ -1,10 +1,14 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -13,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
+import com.vyas.pranav.studentcompanion.utils.GlideApp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,13 +55,23 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
         holder.tvDate.setText(notification.getDate());
         holder.tvName.setText(notification.getName());
         holder.tvShortInfo.setText(notification.getShort_info());
-//        GlideApp.with(holder.itemView)
-//                .load(null)
-//                .error(R.drawable.ic_caution)
-//                .placeholder(R.drawable.ic_caution)
-//                .circleCrop()
-//                .into(holder.imageItem);
-        //TODO load image here
+        GlideApp.with(holder.itemView)
+                .load(notification.getImage_url())
+                .error(R.drawable.ic_caution)
+                .placeholder(R.drawable.ic_caution)
+                .circleCrop()
+                .into(holder.imageItem);
+        holder.btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse(notification.getUrl()));
+                if (openLink.resolveActivity(view.getContext().getPackageManager()) != null) {
+                    view.getContext().startActivity(openLink);
+                } else {
+                    Toast.makeText(view.getContext(), "Link seems to be broken!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     class NotificationHolder extends RecyclerView.ViewHolder {
@@ -69,6 +84,8 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
         TextView tvShortInfo;
         @BindView(R.id.tv_recycler_notification_date)
         TextView tvDate;
+        @BindView(R.id.btn_recycler_notification_details)
+        Button btnMore;
 
         public NotificationHolder(@NonNull View itemView) {
             super(itemView);
