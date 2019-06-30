@@ -14,6 +14,7 @@ public class SharedPreferencesUtils {
     public static final String SHARED_PREF_KEY_EVENT_NOTIFICATION = "NOTIFICATION_FOR_EVENT";
     public static final String SHARED_PREF_KEY_NEW_ITEM_NOTIFICATION = "NOTIFICATION_FOR_NEW_ITEM";
     private static final String SHARED_PREF_CURRENT_NOTIFICATION = "CURRENT_NOTIFICATIONS";
+    private static final String SHARED_PREF_FIRST_OPEN_COMPONENT = "FIRST_OPEN_COMPONENT_";
 
 
     private Context context;
@@ -66,5 +67,14 @@ public class SharedPreferencesUtils {
 
     public int getCurrentAttendanceCriteria() {
         return preferences.getInt(SetUpProcessRepository.KEY_ATTENDANCE_CRITERIA, 0);
+    }
+
+    public boolean isFileFirstOpened(String Filename) {
+        return preferences.getBoolean(SHARED_PREF_FIRST_OPEN_COMPONENT + Filename, true);
+    }
+
+    public void setFileFirstTimeOpened(String Filename, boolean isFirstTimeOpened) {
+        editor.putBoolean(SHARED_PREF_FIRST_OPEN_COMPONENT + Filename, isFirstTimeOpened);
+        editor.apply();
     }
 }

@@ -43,4 +43,6 @@
     <color name="colorDangerOverallAttendance">#FFCCBC</color>
     <color name="colorWarningOverallAttendance">#FFF9C4</color>
     <color name="colorSafeOverallAttendance">#C8E6C9</color>
+
+    <color name="colorBackGroundTutorial">#00DC9E</color>
 </resources>

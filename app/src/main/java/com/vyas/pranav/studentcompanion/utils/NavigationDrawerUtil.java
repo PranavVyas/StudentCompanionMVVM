@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.net.Uri;
 import android.view.View;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -14,8 +16,6 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.vyas.pranav.studentcompanion.R;
-
-import androidx.appcompat.widget.Toolbar;
 
 public class NavigationDrawerUtil {
 
@@ -190,7 +190,7 @@ public class NavigationDrawerUtil {
         PrimaryDrawerItem resources = new PrimaryDrawerItem()
                 .withIdentifier(ID_RESOURCES)
                 .withName("Resources")
-                .withIcon(R.drawable.ic_bookshelf)
+                .withIcon(R.drawable.ic_resources_magic_wand)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {

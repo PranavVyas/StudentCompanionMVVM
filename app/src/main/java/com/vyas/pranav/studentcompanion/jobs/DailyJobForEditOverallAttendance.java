@@ -1,23 +1,20 @@
 package com.vyas.pranav.studentcompanion.jobs;
 
+import androidx.annotation.NonNull;
+
 import com.evernote.android.job.DailyJob;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
 import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
 
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-
 public class DailyJobForEditOverallAttendance extends DailyJob {
     static final String TAG = "DailyJobForEditOverallAttendance";
 
     public static void scheduleJob() {
-        Logger.clearLogAdapters();
-        Logger.addLogAdapter(new AndroidLogAdapter());
         if (!JobManager.instance().getAllJobRequestsForTag(TAG).isEmpty()) {
             Logger.d("Already Job Set Skipping Setting Of Job Now...");
             return;

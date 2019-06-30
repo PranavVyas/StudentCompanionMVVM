@@ -68,7 +68,6 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
 
             case 2:
                 SetUpDetailsSemFragment setUpDetailsSemFragment = new SetUpDetailsSemFragment();
-                addAnimationsToFragment(setUpDetailsSemFragment);
                 setUpDetailsSemFragment.setOnSubjectSelectedListener(this);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_setup_activity_container, setUpDetailsSemFragment)

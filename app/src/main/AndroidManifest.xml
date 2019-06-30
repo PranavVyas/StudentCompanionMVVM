@@ -28,7 +28,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:theme">
-        <activity android:name=".ui.activities.AutoAttendanceFenceActivity"></activity>
+        <activity android:name=".ui.activities.AutoAttendanceFenceActivity" />
         <activity
             android:name=".ui.activities.NotificationPreferenceActivity"
             android:parentActivityName=".ui.activities.MainActivity" />
@@ -47,7 +47,8 @@
         <activity
             android:name=".ui.activities.OpenSourceInformationActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".ui.activities.MainActivity" /> <!-- TODO Set AppTheme.Launcher at time of release -->
+            android:parentActivityName=".ui.activities.MainActivity" />
+        <!-- TODO Set AppTheme.Launcher at time of release -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -104,7 +105,9 @@
             android:name=".ui.activities.MarketPlaceSellItemActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivity" />
-        <activity android:name=".ui.activities.TutorialActivity" />
+        <activity
+            android:name=".ui.activities.TutorialActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.schibstedspain.leku.LocationPickerActivity"
