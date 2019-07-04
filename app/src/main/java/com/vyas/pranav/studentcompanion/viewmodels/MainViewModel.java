@@ -3,17 +3,18 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 import android.app.Application;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForSilentAction;
 import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 public class MainViewModel extends AndroidViewModel {
 
@@ -22,6 +23,7 @@ public class MainViewModel extends AndroidViewModel {
     private FirebaseAuth mAuth;
     private Application application;
     private NotificationRepository notificationRepository;
+    private SharedPreferencesUtils sharedPreferencesUtils;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -30,6 +32,7 @@ public class MainViewModel extends AndroidViewModel {
         mAuth = FirebaseAuth.getInstance();
         currUser = mAuth.getCurrentUser();
         notificationRepository = new NotificationRepository(application);
+        sharedPreferencesUtils = new SharedPreferencesUtils(application);
     }
 
     public int getCurrentFragmentId() {
@@ -63,4 +66,13 @@ public class MainViewModel extends AndroidViewModel {
             repository.enableAutoSilentDevice();
         }
     }
+
+    public boolean getFirstRunForFile(String file) {
+        return sharedPreferencesUtils.isFileFirstOpened(file);
+    }
+
+    public void setFirstRunForFile(String file, boolean isFirstTimeOpened) {
+        sharedPreferencesUtils.setFileFirstTimeOpened(file, isFirstTimeOpened);
+    }
+
 }

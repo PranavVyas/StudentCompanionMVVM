@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -35,6 +36,10 @@ public class AllNotificationFragment extends Fragment {
 
     @BindView(R.id.recycler_all_notifications)
     RecyclerView rvMain;
+    @BindView(R.id.placeholder_all_attendance)
+    ConstraintLayout placeHolder;
+    @BindView(R.id.constraint_all_notification_main)
+    ConstraintLayout mainView;
 
     private NotificationsRecyclerAdapter mAdapter;
     private NotificationsViewModel notificationsViewModel;
@@ -103,7 +108,18 @@ public class AllNotificationFragment extends Fragment {
                             finalNotis.add(x);
                         }
                     }
+                    if (finalNotis.size() == 0) {
+                        showPlaceHolder(true);
+                    } else {
+                        showPlaceHolder(false);
+                    }
                     mAdapter.submitList(finalNotis);
+                    return;
+                }
+                if (finalNotis.size() == 0) {
+                    showPlaceHolder(true);
+                } else {
+                    showPlaceHolder(false);
                 }
                 mAdapter.submitList(finalNotis);
             }
@@ -115,6 +131,16 @@ public class AllNotificationFragment extends Fragment {
 //            }
 //        });
 
+    }
+
+    private void showPlaceHolder(boolean isShown) {
+        if (isShown) {
+            placeHolder.setVisibility(View.VISIBLE);
+            mainView.setVisibility(View.GONE);
+        } else {
+            placeHolder.setVisibility(View.GONE);
+            mainView.setVisibility(View.VISIBLE);
+        }
     }
 
 }

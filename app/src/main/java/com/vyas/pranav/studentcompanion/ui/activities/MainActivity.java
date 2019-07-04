@@ -56,10 +56,12 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
     private Drawer mDrawer;
     private MainViewModel mainViewModel;
 
+    private static final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferencesRepository.setUserTheme(this);
         super.onCreate(savedInstanceState);
+        SharedPreferencesRepository.setUserTheme(this);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbarMainActivity);
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         Logger.addLogAdapter(new AndroidLogAdapter());
         Logger.d("Received Path is : " + this.getExternalFilesDir(null).getPath() + "\n abs path : " + this.getExternalFilesDir(null).getAbsolutePath());
         dismissCallingNotificationIsAvailable();
-//        showInstruction();
     }
 
     @Override

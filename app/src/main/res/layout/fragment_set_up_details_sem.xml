@@ -42,25 +42,25 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_set_up_sem_details_no_of_lectures"
+            style="@style/MyCustomMaterialEditTextInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
-            style="@style/MyCustomMaterialEditTextInput"
             android:hint="No Of Lectures Per day"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btn_set_up_details_sem_fragment_go"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:text="Go"
         style="@style/MyCustomMaterialButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="Set Subject"
+        app:layout_constraintEnd_toStartOf="@+id/btn_set_up_details_dem_continue"
+        app:layout_constraintStart_toEndOf="@+id/btn_set_up_details_dem_previous"
         app:layout_constraintTop_toBottomOf="@+id/text_input_set_up_sem_details_no_of_lectures" />
 
     <ScrollView
@@ -71,7 +71,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_set_up_details_dem_continue"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_set_up_details_sem_fragment_go">
@@ -85,29 +85,27 @@
 
     <Button
         android:id="@+id/btn_set_up_details_dem_continue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="Continue"
         style="@style/MyCustomMaterialButton"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="Continue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_set_up_details_dem_previous" />
+        app:layout_constraintStart_toEndOf="@+id/btn_set_up_details_sem_fragment_go"
+        app:layout_constraintTop_toTopOf="@+id/btn_set_up_details_sem_fragment_go" />
 
     <Button
         android:id="@+id/btn_set_up_details_dem_previous"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="Previous"
         style="@style/MyCustomMaterialButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_set_up_details_dem_continue"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="Previous"
+        app:layout_constraintEnd_toStartOf="@+id/btn_set_up_details_sem_fragment_go"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_set_up_details_sem_fragment_go" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

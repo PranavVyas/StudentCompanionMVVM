@@ -59,14 +59,25 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:textColor="@color/md_black_1000"
             android:layout_marginBottom="8dp"
+            android:textColor="@color/md_black_1000"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_overall_attendance_more"
             app:layout_constraintStart_toEndOf="@+id/progress_recycler_overall_attendance_present_percent"
             app:layout_constraintTop_toBottomOf="@+id/tv_recycler_overall_attendance_subject"
             app:layout_constraintVertical_bias="0.0"
             tools:text="Available to bunk : 8" />
+
+        <ImageButton
+            android:id="@+id/btn_overall_attendance_more"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/rounded_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_overall_attendance_subject"
+            app:srcCompat="@drawable/ic_chevron_right" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

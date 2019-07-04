@@ -1,5 +1,6 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,12 +16,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -49,6 +53,7 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
     RecyclerView rvList;
     @BindView(R.id.toolbar_digital_library)
     Toolbar toolbar;
+    private static final String TAG = "DigitalLibraryActivity";
 
     @BindView(R.id.text_input_digital_library_search_container)
     TextInputLayout inputSearch;
@@ -57,6 +62,8 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
 
     private DigitalLibraryRecyclerAdapter mAdapter;
     private DigitalLibraryViewModel digitalLibraryViewModel;
+    @BindView(R.id.placeholder_digital_library_no_item)
+    ConstraintLayout placeHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +76,7 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         digitalLibraryViewModel = ViewModelProviders.of(this).get(DigitalLibraryViewModel.class);
         setUpUi();
+        startInstruction(this);
 
 //        //TODO do something about recyclerview not transitioning
 //        Slide slide = new Slide(Gravity.RIGHT);
@@ -118,6 +126,11 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
             digitalLibraryViewModel.getAllBooks().observe(this, new Observer<List<DigitalLibraryEntry>>() {
                 @Override
                 public void onChanged(List<DigitalLibraryEntry> digitalLibraryEntries) {
+                    if (digitalLibraryEntries.size() == 0) {
+                        showPlaceHolder(true);
+                    } else {
+                        showPlaceHolder(false);
+                    }
                     mAdapter.submitList(digitalLibraryEntries);
                 }
             });
@@ -125,6 +138,11 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
             digitalLibraryViewModel.getBookByName(searchTerm).observe(this, new Observer<List<DigitalLibraryEntry>>() {
                 @Override
                 public void onChanged(List<DigitalLibraryEntry> digitalLibraryEntries) {
+                    if (digitalLibraryEntries.size() == 0) {
+                        showPlaceHolder(true);
+                    } else {
+                        showPlaceHolder(false);
+                    }
                     mAdapter.submitList(digitalLibraryEntries);
                 }
             });
@@ -241,6 +259,34 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(SharedPreferencesUtils.SHARED_PREF_AUTO_SYNC_DIGITAL_LIBRARY)) {
             onSyncClicked();
+        }
+    }
+
+    private void startInstruction(Activity activity) {
+        BubbleShowCaseBuilder intro = new BubbleShowCaseBuilder(activity)
+                .title(getString(R.string.instr_digital_search_title))
+                .description(getString(R.string.instr_digital_search_desc))
+                .targetView(inputSearch)
+//                .showOnce(TAG + "Search")
+                ;
+        BubbleShowCaseBuilder menu = new BubbleShowCaseBuilder(activity)
+                .title(getString(R.string.instr_digital_menu_title))
+                .description(getString(R.string.instr_digital_menu_desc))
+//                .showOnce(TAG + "Menu")
+                ;
+        new BubbleShowCaseSequence()
+                .addShowCase(intro)
+                .addShowCase(menu)
+                .show();
+    }
+
+    private void showPlaceHolder(boolean isShown) {
+        if (isShown) {
+            placeHolder.setVisibility(View.VISIBLE);
+            rvList.setVisibility(View.GONE);
+        } else {
+            placeHolder.setVisibility(View.GONE);
+            rvList.setVisibility(View.VISIBLE);
         }
     }
 }

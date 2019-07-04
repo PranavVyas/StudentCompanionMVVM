@@ -188,6 +188,13 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     private void toggleNightMode() {
         //appSettingsViewModel.toggleNightMode();
         getActivity().recreate();
+//        if(appSettingsViewModel.isNightModeEnabled()) {
+//            AppCompatDelegate.setDefaultNightMode(
+//                    AppCompatDelegate.MODE_NIGHT_YES);
+//        } else {
+//            AppCompatDelegate.setDefaultNightMode(
+//                    AppCompatDelegate.MODE_NIGHT_NO);
+//        }
     }
 //
 //    @Override

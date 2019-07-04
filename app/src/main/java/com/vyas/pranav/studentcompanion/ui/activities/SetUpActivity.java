@@ -40,9 +40,8 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         setUpViewModel = ViewModelProviders.of(this).get(SetUpViewModel.class);
         if (!setUpViewModel.isFirstRun()) {
             if (setUpViewModel.isTutorialDone()) {
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
                 Intent openMainActivity = new Intent(this, MainActivity.class);
-                startActivity(openMainActivity, bundle);
+                startActivity(openMainActivity);
             } else {
                 Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
                 Intent openTutorial = new Intent(this, TutorialActivity.class);

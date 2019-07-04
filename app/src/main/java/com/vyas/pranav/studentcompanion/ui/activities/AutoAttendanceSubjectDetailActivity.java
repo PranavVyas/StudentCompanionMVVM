@@ -57,7 +57,6 @@ import com.schibstedspain.leku.LocationPickerActivity;
 import com.schibstedspain.leku.LocationPickerActivityKt;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.AutoAttendanceHelper;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.viewmodels.AutoAttendanceSubjectDetailViewModel;
@@ -81,10 +80,12 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     TextView tvSubject;
     @BindView(R.id.toolbar_auto_attendance_subjet_detail)
     Toolbar toolbar;
+    @BindView(R.id.constraint_auto_attendance_main)
+    ConstraintLayout constraintMain;
 
     @BindView(R.id.card_auto_attendance_subject_detail_current_detail)
     CardView cardCurrentDetails;
-    @BindView(R.id.frame_auto_attendance_subject_detail_placeholder)
+    @BindView(R.id.placeholder_auto_attendance_subject_detail)
     ConstraintLayout framePlaceHolder;
     @BindView(R.id.btn_auto_attendance_subject_detail_edit)
     Button btnEditPlace;
@@ -107,7 +108,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferencesRepository.setUserTheme(this);
+//        SharedPreferencesRepository.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_attendance_subject_detail);
         ButterKnife.bind(this);
@@ -202,14 +203,12 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
 
     private void showNoLocationPlaceHolder(boolean isShown) {
         if (isShown) {
-            cardCurrentDetails.setVisibility(View.GONE);
-            btnEditPlace.setVisibility(View.GONE);
+            constraintMain.setVisibility(View.GONE);
             framePlaceHolder.setVisibility(View.VISIBLE);
             Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Location Provider is not available\nPlease enable Location from Quick Settings", Toast.LENGTH_SHORT).show();
         } else {
             framePlaceHolder.setVisibility(View.GONE);
-            cardCurrentDetails.setVisibility(View.VISIBLE);
-            btnEditPlace.setVisibility(View.VISIBLE);
+            constraintMain.setVisibility(View.VISIBLE);
         }
     }
 
@@ -398,7 +397,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
                 .center(new LatLng(lat, lang))
                 .strokeColor(Color.argb(50, 70, 70, 70))
                 .fillColor(Color.argb(100, 150, 150, 150))
-                .radius(100);
+                .radius(AutoAttendanceHelper.RADIUS_OF_FENCE);
         geoFenceLimits = map.addCircle(circleOptions);
     }
 

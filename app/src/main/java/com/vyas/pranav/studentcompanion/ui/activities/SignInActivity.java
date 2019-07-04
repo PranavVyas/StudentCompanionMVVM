@@ -91,9 +91,9 @@ public class SignInActivity extends AppCompatActivity {
             // Successfully signed in
             if (resultCode == RESULT_OK) {
                 showSnackbar("User Signed In");
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
+//                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
                 Intent startSetUp = new Intent(this, SetUpActivity.class);
-                startActivity(startSetUp, bundle);
+                startActivity(startSetUp);
                 finish();
             } else {
                 // Sign in failed

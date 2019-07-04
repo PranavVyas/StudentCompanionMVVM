@@ -56,4 +56,33 @@
     <string name="trans_overall_attendance_sub_name">overall_sub_name_transition</string>
 
 
+    <string name="instr_overall_card_title">Overall Attendance Card</string>
+    <string name="instr_overall_card_desc">This is Overall AttendanceCard that shows how much percent attendance you have, attendance card is colored by the percent of attendance if it is close to danger it is shown in "Orange" color and if it is near to the safe percent than it is shown in "Green" color. Click on the card to know more!</string>
+    <string name="instr_res_digital_lib_title">Digital Library</string>
+    <string name="instr_res_digital_lib_desc">Digital Library is the feature for downloading books from online database</string>
+    <string name="instr_res_buy_sell_title">Buy/Sell Items</string>
+    <string name="instr_res_buy_sell_desc">Buy/Sell Items is the feature for selling items online! The ads can be seen by anyone using the app while opening this section, Ads can be posted by users. Click on the Card to know more</string>
+    <string name="instr_res_timetable_title">Time Table</string>
+    <string name="instr_res_timetable_desc">Visit the Timetable oby clicking on this menu. You can see 2 types of timetable there, Productive view is not Modern but shows every thing at once and there is of course Modern View!</string>
+    <string name="instr_res_holiday_title">Holidays</string>
+    <string name="instr_res_holiday_desc">Visit Holidays to know about the Holidays that has been added to the database.</string>
+    <string name="instr_market_title">Market Place</string>
+    <string name="instr_market_desc">This is the place where you can buy or sell items click on the items to see the details about them. You can call directly to the seller.</string>
+    <string name="instr_market_search_title">Search Box</string>
+    <string name="instr_market_search_desc">Search for items in the Search Box type "Exact KeyWord" to search for item, If you want all the items of the category, just choose the category and leave the search box empty and clicked on the "Search"</string>
+    <string name="instr_market_fab_title">Sell Item</string>
+    <string name="instr_market_fab_desc">To sell items click on this button. Fill in the details ,photos etc and post Ad! and have users notified for each new items you post here.</string>
+    <string name="instr_atd_card_desc">There is Attendance card! You can use this to see and change attendance.</string>
+    <string name="instr_atd_card_title">Attendance Card</string>
+    <string name="instr_atd_previous_atd_title">Previous Attendance</string>
+    <string name="instr_atd_previous_atd_desc">To See Previous Attendance, touch here and select the date for which you want to change or see Attendance.</string>
+    <string name="instr_digital_search_title">Search Box</string>
+    <string name="instr_digital_search_desc">Search here for books to download online! No Need to be exact just search anypart of the name to search for it</string>
+    <string name="instr_digital_menu_title">Menu</string>
+    <string name="instr_digital_menu_desc">Click on "Three Vertical Dots" or "Menu"(Which is located at top most right corner) to reveal Menu Options
+        \n<b><big>\u25CF\u25CF Sync Now \u25CF\u25CF</big></b>
+        \n\u25CF Click on "Sync Now" the offline database with the online database
+        \n<b><big>\u25CF\u25CF Auto Sync \u25CF\u25CF</big></b>
+        \n\u25CF You can also use feature of "Auto Sync" to turn on Sync in Realtime whenever database is changed by any update on cloud</string>
+
 </resources>

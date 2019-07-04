@@ -9,6 +9,7 @@ import android.os.Build;
 import android.widget.ImageView;
 
 import androidx.multidex.MultiDexApplication;
+import androidx.preference.PreferenceManager;
 
 import com.bumptech.glide.Glide;
 import com.evernote.android.job.JobManager;
@@ -29,6 +30,14 @@ public class MainApp extends MultiDexApplication {
 
         createNotificationChannels();
         Stetho.initializeWithDefaults(this);
+
+//        if (isNightModeEnabled()){
+//            AppCompatDelegate.setDefaultNightMode(
+//                    AppCompatDelegate.MODE_NIGHT_YES);
+//        }else{
+//            AppCompatDelegate.setDefaultNightMode(
+//                    AppCompatDelegate.MODE_NIGHT_NO);
+//        }
 
         JobManager.create(this).addJobCreator(new JobsCreator());
         //initialize and create the image loader logic
@@ -75,5 +84,9 @@ public class MainApp extends MultiDexApplication {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public boolean isNightModeEnabled() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_key_switch_enable_night_mode), false);
     }
 }

@@ -68,8 +68,7 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/shape_rounded_corner_background" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_digital_library_list"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -79,10 +78,46 @@
         app:layout_constraintBottom_toTopOf="@+id/imageView12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_digital_library_search_container"
-        tools:listitem="@layout/item_holder_recycler_digital_library_book_holder">
+        app:layout_constraintTop_toBottomOf="@+id/text_input_digital_library_search_container">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_digital_library_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_holder_recycler_digital_library_book_holder" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/placeholder_digital_library_no_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/placeholder_background"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/image_no_items_digital_library" />
+
+            <TextView
+                android:id="@+id/textView69"
+                style="@style/MyMaterialTextView.MediumTextViewHeadLine5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="No Documents Available!\nUpload Now!"
+                app:layout_constraintEnd_toEndOf="@+id/imageView17"
+                app:layout_constraintStart_toStartOf="@+id/imageView17"
+                app:layout_constraintTop_toTopOf="@+id/imageView17" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
 
     <Button
         android:id="@+id/fab_digital_library_upload_book"

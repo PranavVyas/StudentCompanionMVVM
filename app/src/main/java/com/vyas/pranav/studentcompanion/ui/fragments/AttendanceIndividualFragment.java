@@ -2,6 +2,7 @@ package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
@@ -67,7 +70,6 @@ public class AttendanceIndividualFragment extends Fragment {
     private OverallAttendanceDatabase mOverallDb;
     private AttendanceDatabase mAttendanceDb;
     private AttendanceIndividualRecyclerAdapter mAdapter;
-//    private SkeletonScreen skeletonScreen;
 
     public AttendanceIndividualFragment() {
     }
@@ -87,6 +89,7 @@ public class AttendanceIndividualFragment extends Fragment {
         }
         setUpIndividualAttendance(date);
         tvDate.setText(ConverterUtils.convertDateToString(date) + "\n" + ConverterUtils.getDayOfWeek(date));
+        startInstruction(getActivity());
     }
 
     @Override
@@ -204,5 +207,21 @@ public class AttendanceIndividualFragment extends Fragment {
             rvMain.setVisibility(View.VISIBLE);
             placeHolderHoldidays.setVisibility(View.GONE);
         }
+    }
+
+    private void startInstruction(Activity activity) {
+        BubbleShowCaseBuilder attendance = new BubbleShowCaseBuilder(activity)
+                .title(getContext().getString(R.string.instr_atd_card_title))
+                .description(getContext().getString(R.string.instr_atd_card_desc))
+                .showOnce(TAG + "AttendanceCard");
+        BubbleShowCaseBuilder previousAttendance = new BubbleShowCaseBuilder(activity)
+                .title(getContext().getString(R.string.instr_atd_previous_atd_title))
+                .targetView(btnOpenOtherAttendance)
+                .description(getContext().getString(R.string.instr_atd_previous_atd_desc))
+                .showOnce(TAG + "PreviousAtt");
+        new BubbleShowCaseSequence()
+                .addShowCase(previousAttendance)
+                .addShowCase(attendance)
+                .show();
     }
 }

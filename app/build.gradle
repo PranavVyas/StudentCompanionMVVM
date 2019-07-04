@@ -9,7 +9,7 @@ android {
             storePassword 'pro@4399'
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId "com.vyas.pranav.studentcompanion"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -53,12 +53,12 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0-beta01'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     //Material Drawer
     implementation 'com.mikepenz:materialdrawer:6.1.2'
@@ -68,12 +68,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0-alpha07'
 
     //Glide Image Loading library
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     //For fixing AndroidX support for annotations
-    implementation 'com.android.support:support-annotations:28.0.0'
-    annotationProcessor 'com.android.support:support-annotations:28.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    annotationProcessor 'androidx.annotation:annotation:1.1.0'
 
     //ButterKnife
     implementation 'com.jakewharton:butterknife:10.1.0'
@@ -100,7 +100,7 @@ dependencies {
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
 
     //Preference Fragment Compat
-    implementation 'androidx.preference:preference:1.1.0-beta01'
+    implementation 'androidx.preference:preference:1.0.0'
 
     //Evernote Job Scheduler
     implementation 'com.evernote:android-job:1.3.0-rc1'
@@ -112,16 +112,16 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:5.0.0'
 
     //Firestore
-    implementation 'com.google.firebase:firebase-firestore:20.1.0'
+    implementation 'com.google.firebase:firebase-firestore:19.0.2'
 
     //Firebase Storage
-    implementation 'com.google.firebase:firebase-storage:18.0.0'
+    implementation 'com.google.firebase:firebase-storage:17.0.0'
 
     //Firebase Analytics
-    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
 
     //Firebase Realtime Database
-    implementation 'com.google.firebase:firebase-database:18.0.0'
+    implementation 'com.google.firebase:firebase-database:17.0.0'
 
     //RecyclerView Animations
     implementation 'com.ethanhua:skeleton:1.1.2'
@@ -141,17 +141,17 @@ dependencies {
     implementation 'com.karumi:dexter:5.0.0'
 
     // Stetho core
-    implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.facebook.stetho:stetho:1.5.0'
     //If you want to add a network helper
-    implementation 'com.facebook.stetho:stetho-okhttp:1.5.1'
+    implementation 'com.facebook.stetho:stetho-okhttp:1.5.0'
 
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
-    implementation 'com.google.firebase:firebase-messaging:19.0.1'
-    implementation 'com.android.support:cardview-v7:28.0.0'
-    implementation 'androidx.work:work-runtime:2.0.1'
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation "androidx.work:work-runtime:2.0.1"
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.12.0'
 
     implementation 'com.google.android.gms:play-services-awareness:16.0.0'

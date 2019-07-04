@@ -2,15 +2,15 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
 import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.repositories.DigitalLibraryRepository;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 public class DigitalLibraryViewModel extends AndroidViewModel {
 
@@ -47,6 +47,14 @@ public class DigitalLibraryViewModel extends AndroidViewModel {
 
     public boolean getStateOfAutoSync() {
         return sharedPreferencesUtils.getStateOfAutoSync();
+    }
+
+    public boolean getFirstRunForFile(String file) {
+        return sharedPreferencesUtils.isFileFirstOpened(file);
+    }
+
+    public void setFirstRunForFile(String file, boolean isFirstTimeOpened) {
+        sharedPreferencesUtils.setFileFirstTimeOpened(file, isFirstTimeOpened);
     }
 
 }

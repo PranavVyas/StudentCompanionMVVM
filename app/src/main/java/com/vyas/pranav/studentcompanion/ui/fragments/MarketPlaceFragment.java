@@ -1,6 +1,7 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.arch.core.util.Function;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
@@ -23,6 +25,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -64,9 +68,12 @@ public class MarketPlaceFragment extends Fragment {
     TextInputLayout inputSearchTag;
     @BindView(R.id.floatingActionButton)
     FloatingActionButton fab;
+    private static final String TAG = "MarketPlaceFragment";
 
     private MarketPlaceSellRecyclerAdapter mAdapter;
     private AppExecutors mExecutors = AppExecutors.getInstance();
+    @BindView(R.id.placeholder_marketplace_no_items)
+    ConstraintLayout placeHolder;
 
     private MarketPlaceViewModel marketPlaceViewModel;
     private FirestoreQueryLiveData firestoreQueryLiveData;
@@ -96,7 +103,6 @@ public class MarketPlaceFragment extends Fragment {
         Snackbar.make(inputSearchTag, message, Snackbar.LENGTH_LONG).show();
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -111,7 +117,7 @@ public class MarketPlaceFragment extends Fragment {
                 }
             }
         });
-
+        startInstruction(getActivity());
     }
 
     private void populateUI() {
@@ -246,6 +252,14 @@ public class MarketPlaceFragment extends Fragment {
             public void onChanged(List<ItemModel> itemModels) {
                 if (itemModels != null) {
                     mAdapter.submitList(itemModels);
+                    if (itemModels.size() == 0) {
+                        showPlaceHolder(true);
+                    } else {
+                        showPlaceHolder(false);
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Some Error occured while fetching list", Toast.LENGTH_SHORT).show();
+                    Logger.d("Error Occured while loading");
                 }
             }
         });
@@ -263,6 +277,38 @@ public class MarketPlaceFragment extends Fragment {
                 items.add(item);
             }
             return items;
+        }
+    }
+
+    private void startInstruction(Activity activity) {
+        BubbleShowCaseBuilder market = new BubbleShowCaseBuilder(activity)
+                .title(getContext().getString(R.string.instr_market_title))
+                .description(getContext().getString(R.string.instr_market_desc))
+                .showOnce(TAG + "Market");
+        BubbleShowCaseBuilder searchTag = new BubbleShowCaseBuilder(activity)
+                .title(getContext().getString(R.string.instr_market_search_title))
+                .description(getContext().getString(R.string.instr_market_search_desc))
+                .targetView(inputSearchTag)
+                .showOnce(TAG + "SearchTag");
+        BubbleShowCaseBuilder Fab = new BubbleShowCaseBuilder(activity)
+                .title(getContext().getString(R.string.instr_market_fab_title))
+                .description(getContext().getString(R.string.instr_market_fab_desc))
+                .targetView(fab)
+                .showOnce(TAG + "FAB");
+        new BubbleShowCaseSequence()
+                .addShowCase(searchTag)
+                .addShowCase(Fab)
+                .addShowCase(market)
+                .show();
+    }
+
+    private void showPlaceHolder(boolean isShown) {
+        if (isShown) {
+            placeHolder.setVisibility(View.VISIBLE);
+            rvResults.setVisibility(View.GONE);
+        } else {
+            placeHolder.setVisibility(View.GONE);
+            rvResults.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -9,6 +9,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -112,11 +113,14 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         TextView tvSubject;
         @BindView(R.id.card_recycler_overall_main)
         MaterialCardView cardMain;
+        @BindView(R.id.btn_overall_attendance_more)
+        ImageButton btnMore;
 
         OverallAttendanceHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+            btnMore.setOnClickListener(this);
         }
 
         @Override

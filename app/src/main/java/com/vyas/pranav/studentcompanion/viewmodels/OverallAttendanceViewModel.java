@@ -3,6 +3,11 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 import android.app.Application;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
+import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
 import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
@@ -11,22 +16,20 @@ import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import java.util.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-
 public class OverallAttendanceViewModel extends AndroidViewModel {
 
     private LiveData<List<OverallAttendanceEntry>> allOverallAttendance;
     private OverallAttendanceRepository repository;
     private SetUpProcessRepository setUpProcessRepository;
     private Context context;
+    private SharedPreferencesUtils utils;
 
     public OverallAttendanceViewModel(@NonNull Application application) {
         super(application);
         repository = new OverallAttendanceRepository(application);
         allOverallAttendance = repository.getAllOverallAttendance();
         this.context = application;
+        utils = new SharedPreferencesUtils(application);
     }
 
     public LiveData<List<OverallAttendanceEntry>> getAllOverallAttendance() {
@@ -36,5 +39,13 @@ public class OverallAttendanceViewModel extends AndroidViewModel {
     public Date getStartingDate() {
         setUpProcessRepository = new SetUpProcessRepository(context);
         return ConverterUtils.convertStringToDate(setUpProcessRepository.getStartingDate());
+    }
+
+    public boolean getFirstRunForFile(String file) {
+        return utils.isFileFirstOpened(file);
+    }
+
+    public void setFirstRunForFile(String file, boolean isFirstTimeOpened) {
+        utils.setFileFirstTimeOpened(file, isFirstTimeOpened);
     }
 }

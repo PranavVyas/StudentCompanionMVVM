@@ -73,4 +73,8 @@ public class AppSettingsViewModel extends AndroidViewModel {
     public LiveData<List<AutoAttendancePlaceEntry>> getAutoAttendanceLiveData() {
         return autoAttendancePlaceEntryLiveData;
     }
+
+//    public boolean isNightModeEnabled() {
+//        return appSettingsRepository.isNightModeEnabled();
+//    }
 }
