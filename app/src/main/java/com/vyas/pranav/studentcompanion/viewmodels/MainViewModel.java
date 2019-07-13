@@ -13,17 +13,18 @@ import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForSilentAction;
 import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
-import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
+
+import java.util.Date;
 
 public class MainViewModel extends AndroidViewModel {
 
     private int currentFragmentId;
     private FirebaseUser currUser;
-    private FirebaseAuth mAuth;
-    private Application application;
-    private NotificationRepository notificationRepository;
-    private SharedPreferencesUtils sharedPreferencesUtils;
+    private final FirebaseAuth mAuth;
+    private final Application application;
+    private final NotificationRepository notificationRepository;
+    private final SharedPreferencesUtils sharedPreferencesUtils;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -51,8 +52,8 @@ public class MainViewModel extends AndroidViewModel {
         this.currUser = currUser;
     }
 
-    public LiveData<Integer> getNotificationCount(String dateStr) {
-        return notificationRepository.getCurentNotificationCount(ConverterUtils.convertStringToDate(dateStr));
+    public LiveData<Integer> getNotificationCount(Date date) {
+        return notificationRepository.getCurrentNotificationCount(date);
     }
 
     public void removePendingJobs() {

@@ -27,7 +27,7 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
 
     private OnItemSoldButtonClickListener listener;
 
-    public static final DiffUtil.ItemCallback<Pair> diffCallback = new DiffUtil.ItemCallback<Pair>() {
+    private static final DiffUtil.ItemCallback<Pair> diffCallback = new DiffUtil.ItemCallback<Pair>() {
         @Override
         public boolean areItemsTheSame(@NonNull Pair oldItem, @NonNull Pair newItem) {
             return oldItem.first.toString().equals(newItem.first.toString());
@@ -166,7 +166,7 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
         @BindView(R.id.btn_recycler_profile_item_sold)
         Button btnSold;
 
-        public MyProfileItemHolder(@NonNull View itemView) {
+        MyProfileItemHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

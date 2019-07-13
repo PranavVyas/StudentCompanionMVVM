@@ -6,20 +6,17 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
-import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 
 public class OverallAttendanceForSubjectViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
+    private final MainDatabase mDb;
+    private final Context applicationContext;
     private String subjectName;
-    private OverallAttendanceDatabase mOverallDb;
-    private AttendanceDatabase mAttendanceDb;
-    private Context applicationContext;
 
-    public OverallAttendanceForSubjectViewModelFactory(String subjectName, OverallAttendanceDatabase mOverallDb, AttendanceDatabase mAttendanceDb, Context applicationContext) {
+    public OverallAttendanceForSubjectViewModelFactory(String subjectName, MainDatabase mDb, Context applicationContext) {
         this.subjectName = subjectName;
-        this.mOverallDb = mOverallDb;
-        this.mAttendanceDb = mAttendanceDb;
+        this.mDb = mDb;
         this.applicationContext = applicationContext.getApplicationContext();
     }
 
@@ -27,6 +24,6 @@ public class OverallAttendanceForSubjectViewModelFactory extends ViewModelProvid
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new OverallAttendanceForSubjectViewModel(applicationContext, mOverallDb, mAttendanceDb, subjectName);
+        return (T) new OverallAttendanceForSubjectViewModel(applicationContext, mDb, subjectName);
     }
 }

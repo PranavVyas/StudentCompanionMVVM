@@ -7,6 +7,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
@@ -14,10 +20,9 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDao;
-import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDatabase;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
@@ -25,12 +30,6 @@ import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 public class GeoFenceIntentService extends IntentService {
     private static final int RC_SHOW_NOTIFICATION = 4546;
@@ -93,8 +92,9 @@ public class GeoFenceIntentService extends IntentService {
     }
 
     private void insertAttendance() {
-        TimetableDao dao = TimetableDatabase.getInstance(this).timetableDao();
-        final AttendanceDao attendanceDao = AttendanceDatabase.getInstance(this).attendanceDao();
+        MainDatabase mDb = MainDatabase.getInstance(getApplicationContext());
+        TimetableDao dao = mDb.timetableDao();
+        final AttendanceDao attendanceDao = mDb.attendanceDao();
         final LiveData<List<TimetableEntry>> timetableForDay = dao.getTimetableForDay(ConverterUtils.getDayOfWeek(new Date()));
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override

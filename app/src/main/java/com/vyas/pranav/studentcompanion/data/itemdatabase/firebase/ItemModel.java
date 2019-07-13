@@ -1,8 +1,13 @@
 package com.vyas.pranav.studentcompanion.data.itemdatabase.firebase;
 
 public class ItemModel {
-    String name, p_name, contact, category, extra_info, image_uri;
-    float price;
+    private String name;
+    private String p_name;
+    private String contact;
+    private String category;
+    private String extra_info;
+    private String image_uri;
+    private float price;
 
     public ItemModel() {
     }

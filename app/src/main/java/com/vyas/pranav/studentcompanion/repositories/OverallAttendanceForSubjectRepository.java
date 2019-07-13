@@ -9,10 +9,9 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
-import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationEntry;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
+import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
-import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.Constants;
@@ -21,16 +20,16 @@ import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import java.util.Date;
 
 public class OverallAttendanceForSubjectRepository {
-    private OverallAttendanceDao overallAttendanceDao;
-    private AttendanceDao attendanceDao;
+    private final OverallAttendanceDao overallAttendanceDao;
+    private final AttendanceDao attendanceDao;
+    private final AppExecutors mExecutors;
+    private final Context applicationContext;
     private String subject;
-    private AppExecutors mExecutors;
-    private Context applicationContext;
     private SharedPreferencesUtils sharedPreferencesUtils;
 
-    public OverallAttendanceForSubjectRepository(Context applicationContext, OverallAttendanceDatabase mOverallDb, AttendanceDatabase mAttendanceDb, String subject) {
-        overallAttendanceDao = mOverallDb.overallAttendanceDao();
-        attendanceDao = mAttendanceDb.attendanceDao();
+    public OverallAttendanceForSubjectRepository(Context applicationContext, MainDatabase mDb, String subject) {
+        overallAttendanceDao = mDb.overallAttendanceDao();
+        attendanceDao = mDb.attendanceDao();
         sharedPreferencesUtils = new SharedPreferencesUtils(applicationContext);
         this.subject = subject;
         Logger.clearLogAdapters();
@@ -43,14 +42,14 @@ public class OverallAttendanceForSubjectRepository {
     }
 
     public OverallAttendanceForSubjectRepository(Context application, String subject) {
-        overallAttendanceDao = OverallAttendanceDatabase.getInstance(application).overallAttendanceDao();
-        attendanceDao = AttendanceDatabase.getInstance(application).attendanceDao();
+        overallAttendanceDao = MainDatabase.getInstance(application).overallAttendanceDao();
+        attendanceDao = MainDatabase.getInstance(application).attendanceDao();
         this.subject = subject;
         this.applicationContext = application;
         mExecutors = AppExecutors.getInstance();
     }
 
-    public void updateOverallAttendance(final OverallAttendanceEntry overallAttendanceEntry) {
+    private void updateOverallAttendance(final OverallAttendanceEntry overallAttendanceEntry) {
         mExecutors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -99,24 +98,53 @@ public class OverallAttendanceForSubjectRepository {
 
     private void checkForSmartCards(OverallAttendanceEntry subjectAttendance) {
         NotificationRepository notificationRepository = new NotificationRepository(applicationContext);
-        int totalDays = subjectAttendance.getTotalDays();
-        int bunkedDays = subjectAttendance.getBunkedDays();
-        int attendanceCriteria = sharedPreferencesUtils.getCurrentAttendanceCriteria();
-        int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (attendanceCriteria / 100.0f)));
-        if (daysTotalAvailableToBunk - bunkedDays < Constants.FLEX_DAYS_EXTRA_TO_BUNK) {
-            NotificationEntry notification = new NotificationEntry();
-            notification.setDate(ConverterUtils.convertDateToString(new Date()));
-            notification.set_ID(subjectAttendance.get_ID());
-            notification.setUrl("-1");
-            notification.setVenue("-1");
-            //TODO never set null to url
-            notification.setName("Low Attendance");
-            notification.setShort_info("Attendance is low in the Subject :" + subjectAttendance.getSubName());
-            notificationRepository.insertNotification(notification);
-            Logger.d("Low Attendance");
-        } else {
-            notificationRepository.deleteNotification(subjectAttendance.get_ID());
-        }
+        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+            @Override
+            public void run() {
+                LiveData<NotificationFirestoreModel> notification = notificationRepository.getNotificationById("OverallAttendance_" + subject);
+                notification.observeForever(new Observer<NotificationFirestoreModel>() {
+                    @Override
+                    public void onChanged(NotificationFirestoreModel notificationFirestoreModel) {
+                        notification.removeObserver(this);
+                        int totalDays = subjectAttendance.getTotalDays();
+                        int bunkedDays = subjectAttendance.getBunkedDays();
+                        int attendanceCriteria = sharedPreferencesUtils.getCurrentAttendanceCriteria();
+                        int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (attendanceCriteria / 100.0f)));
+                        if (daysTotalAvailableToBunk - bunkedDays < Constants.FLEX_DAYS_EXTRA_TO_BUNK) {
+                            //Checking if notification still exists or not. If exists than it will not be 0 type
+                            if (notificationFirestoreModel == null) {
+                                notificationFirestoreModel = new NotificationFirestoreModel();
+                                long time = new Date().getTime() + 86400000;
+                                notificationFirestoreModel.setDateInMillis(time);
+                                notificationFirestoreModel.setUrl("-1");
+                                notificationFirestoreModel.setVenue("-1");
+                                notificationFirestoreModel.setName("Low Attendance");
+                                notificationFirestoreModel.setShort_info("Attendance is low in the Subject :" + subjectAttendance.getSubName());
+                                notificationFirestoreModel.setImage_url("NO_URL");
+                                notificationFirestoreModel.setType(Constants.NOTI_TYPE_LOW_ATTENDANCE);
+                                notificationFirestoreModel.set_ID("OverallAttendance_" + subject);
+                                notificationRepository.insertNotification(notificationFirestoreModel);
+                            } else {
+                                long time = new Date().getTime() + 86400000;
+                                notificationFirestoreModel.setDateInMillis(time);
+                                notificationFirestoreModel.setUrl("-1");
+                                notificationFirestoreModel.setVenue("-1");
+                                notificationFirestoreModel.setName("Low Attendance");
+                                notificationFirestoreModel.setShort_info("Attendance is low in the Subject :" + subjectAttendance.getSubName());
+                                notificationFirestoreModel.setImage_url("NO_URL");
+                                notificationFirestoreModel.setType(Constants.NOTI_TYPE_LOW_ATTENDANCE);
+                                notificationRepository.updateNotification(notificationFirestoreModel);
+                            }
+                            Logger.d("Low Attendance");
+                        } else {
+                            if (notificationFirestoreModel.getType() == 0) {
+                                notificationRepository.deleteNotificationById("OverallAttendance_" + subject);
+                            }
+                        }
+                    }
+                });
+            }
+        });
     }
 
 

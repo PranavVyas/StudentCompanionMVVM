@@ -52,7 +52,7 @@ public class AutoAttendanceSubjectListRecyclerAdapter extends RecyclerView.Adapt
         @BindView(R.id.tv_recycler_auto_attendance_list_subject_no)
         TextView tvNo;
 
-        public AutoAttendanceSubjectHolder(@NonNull final View itemView) {
+        AutoAttendanceSubjectHolder(@NonNull final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(new View.OnClickListener() {

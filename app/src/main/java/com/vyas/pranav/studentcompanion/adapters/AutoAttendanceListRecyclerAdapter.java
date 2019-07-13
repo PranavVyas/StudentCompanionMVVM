@@ -5,13 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.vyas.pranav.studentcompanion.R;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -59,7 +60,7 @@ public class AutoAttendanceListRecyclerAdapter extends RecyclerView.Adapter<Auto
         @BindView(R.id.tv_recycler_auto_attendance_list_subject)
         TextView tvSubject;
 
-        public AutoAttendancePlaceHolder(@NonNull View itemView) {
+        AutoAttendancePlaceHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -28,7 +28,7 @@ import butterknife.OnClick;
 public class SignInActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
-    SignInViewModel signInViewModel;
+    private SignInViewModel signInViewModel;
 
     @BindView(R.id.toolbar_sign_in_activity)
     Toolbar toolbarSignIn;

@@ -10,6 +10,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -20,14 +25,11 @@ import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class SetUpDetailsSemFragment extends Fragment {
 
     @BindView(R.id.btn_set_up_details_sem_fragment_go)
@@ -165,6 +167,7 @@ public class SetUpDetailsSemFragment extends Fragment {
 
     public interface OnSubjectsSelectedListener {
         void onSubjectSelected();
+
         void onPreviousClickedOnSemSetUp();
     }
 

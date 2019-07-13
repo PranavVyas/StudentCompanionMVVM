@@ -29,11 +29,9 @@ import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.DateConverter;
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
-import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.ui.activities.AttendanceIndividualActivity;
-import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModel;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModelFactory;
@@ -41,7 +39,6 @@ import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceForSubjectVi
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceForSubjectViewModelFactory;
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceViewModel;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -65,11 +62,10 @@ public class AttendanceIndividualFragment extends Fragment {
     ConstraintLayout placeHolderHoldidays;
 
     private AttendanceForDateViewModel attendanceViewModel;
-    private OverallAttendanceForSubjectViewModel overallAttendanceViewModel;
-    private OverallAttendanceViewModel model;
-    private OverallAttendanceDatabase mOverallDb;
-    private AttendanceDatabase mAttendanceDb;
+    private OverallAttendanceForSubjectViewModel overallAttendanceForSubjectViewModel;
+    private OverallAttendanceViewModel overallAttendanceViewModel;
     private AttendanceIndividualRecyclerAdapter mAdapter;
+    private MainDatabase mDb;
 
     public AttendanceIndividualFragment() {
     }
@@ -81,7 +77,7 @@ public class AttendanceIndividualFragment extends Fragment {
         setUpRecyclerView();
         Date date = new Date();
         date = ConverterUtils.convertStringToDate(ConverterUtils.convertDateToString(date));
-        model = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
+        overallAttendanceViewModel = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
         if (getArguments() != null) {
             String dateStr = getArguments().getString(AttendanceIndividualActivity.EXTRA_DATE);
             date = ConverterUtils.convertStringToDate(dateStr);
@@ -128,14 +124,13 @@ public class AttendanceIndividualFragment extends Fragment {
                 now.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle("Choose Date");
         datePickerDialog.getDatePicker().setMaxDate(DateConverter.toTimeStamp(new Date()));
-        datePickerDialog.getDatePicker().setMinDate(DateConverter.toTimeStamp(model.getStartingDate()));
+        datePickerDialog.getDatePicker().setMinDate(DateConverter.toTimeStamp(overallAttendanceViewModel.getStartingDate()));
         datePickerDialog.show();
     }
 
     //TODO Next step : Don't setUpDatabase in the UI Class but use getContext.getApplicationContext() to send application context in the viewModel
     private void setUpDatabase() {
-        mOverallDb = OverallAttendanceDatabase.getInstance(getContext());
-        mAttendanceDb = AttendanceDatabase.getInstance(getContext());
+        mDb = MainDatabase.getInstance(getContext());
     }
 
     private void setUpRecyclerView() {
@@ -148,21 +143,13 @@ public class AttendanceIndividualFragment extends Fragment {
     }
 
     private void setUpIndividualAttendance(Date date) {
-        AttendanceForDateViewModelFactory factory = new AttendanceForDateViewModelFactory(mAttendanceDb, date);
+        AttendanceForDateViewModelFactory factory = new AttendanceForDateViewModelFactory(mDb, date);
         attendanceViewModel = ViewModelProviders.of(getActivity(), factory).get(AttendanceForDateViewModel.class);
         attendanceViewModel.getAttendanceForDate().observe(this, new Observer<List<AttendanceEntry>>() {
             @Override
             public void onChanged(final List<AttendanceEntry> attendanceEntries) {
-                List<AttendanceEntry> finalAttendance;
                 if (!attendanceEntries.isEmpty()) {
-                    finalAttendance = new ArrayList<>();
-                    for (int i = 0; i < attendanceEntries.size(); i++) {
-                        AttendanceEntry attendance = attendanceEntries.get(i);
-                        if (!attendance.getSubjectName().equals(Constants.DEFAULT_LECTURE)) {
-                            finalAttendance.add(attendance);
-                        }
-                    }
-                    mAdapter.submitList(finalAttendance);
+                    mAdapter.submitList(attendanceEntries);
                     stopProgress();
                     showHolidayPlaceHolder(false);
                     return;
@@ -173,7 +160,7 @@ public class AttendanceIndividualFragment extends Fragment {
         });
         /*TODO [PROBABLE BUG] Might be needed to refresh all the overall attendance(Which depends on the attendance database updated) as updating the attendance database and refreshing attendance happens simultaniously
         So case happens that the attendance is being updated but the Overall attendance is refreshed already
-        Sol : create a member string (in viewModel) and init as null than check if the string is null and if not than setupOverallAttendance() in onChanged of attendanceEntries*/
+        Sol : create a member string s(in viewModel) and init as null than check if the string is null and if not than setupOverallAttendance() in onChanged of attendanceEntries*/
         mAdapter.setOnAttendanceSwitchToggledListener(new AttendanceIndividualRecyclerAdapter.onAttendanceSwitchToggleListener() {
             @Override
             public void onAttendanceSwitchToggled(AttendanceEntry attendanceEntry) {
@@ -194,9 +181,9 @@ public class AttendanceIndividualFragment extends Fragment {
     }
 
     private void setUpOverallAttendance(String subName) {
-        OverallAttendanceForSubjectViewModelFactory factory = new OverallAttendanceForSubjectViewModelFactory(subName, mOverallDb, mAttendanceDb, getContext());
-        overallAttendanceViewModel = ViewModelProviders.of(getActivity(), factory).get(OverallAttendanceForSubjectViewModel.class);
-        overallAttendanceViewModel.refreshOverallAttendance(subName);
+        OverallAttendanceForSubjectViewModelFactory factory = new OverallAttendanceForSubjectViewModelFactory(subName, mDb, getContext());
+        overallAttendanceForSubjectViewModel = ViewModelProviders.of(getActivity(), factory).get(OverallAttendanceForSubjectViewModel.class);
+        overallAttendanceForSubjectViewModel.refreshOverallAttendance(subName);
     }
 
     private void showHolidayPlaceHolder(boolean isShown) {

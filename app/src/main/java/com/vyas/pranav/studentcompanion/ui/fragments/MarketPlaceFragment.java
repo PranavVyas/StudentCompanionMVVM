@@ -71,7 +71,7 @@ public class MarketPlaceFragment extends Fragment {
     private static final String TAG = "MarketPlaceFragment";
 
     private MarketPlaceSellRecyclerAdapter mAdapter;
-    private AppExecutors mExecutors = AppExecutors.getInstance();
+    private final AppExecutors mExecutors = AppExecutors.getInstance();
     @BindView(R.id.placeholder_marketplace_no_items)
     ConstraintLayout placeHolder;
 
@@ -80,7 +80,7 @@ public class MarketPlaceFragment extends Fragment {
 
     private String selectedCategory;
     private String searchStr;
-    private List<String> categories = new ArrayList<>(Arrays.asList(
+    private final List<String> categories = new ArrayList<>(Arrays.asList(
             "Book",
             "Bicycle",
             "Xerox"
@@ -99,6 +99,7 @@ public class MarketPlaceFragment extends Fragment {
         return view;
     }
 
+    @SuppressWarnings("SameParameterValue")
     void showSnackbar(String message) {
         Snackbar.make(inputSearchTag, message, Snackbar.LENGTH_LONG).show();
     }

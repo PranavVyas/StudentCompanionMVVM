@@ -6,31 +6,46 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
-import java.util.Date;
+import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
+
 import java.util.List;
 
 @Dao
 public interface NotificationDao {
 
     @Query("SELECT * FROM Notifications")
-    LiveData<List<NotificationEntry>> getAllNotifications();
+    LiveData<List<NotificationFirestoreModel>> getAllNotifications();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertNotification(NotificationEntry notificationEntry);
+    void insertNotification(NotificationFirestoreModel notificationFirestoreModel);
 
-    @Query("SELECT * FROM Notifications WHERE date >= :date")
-    LiveData<List<NotificationEntry>> getNotificationAfter(Date date);
+    @Insert()
+    void insertAllNotifications(List<NotificationFirestoreModel> allNotifications);
 
     @Query("DELETE FROM Notifications WHERE _ID = :id")
-    void deleteNotification(long id);
+    void deleteNotification(String id);
 
-    @Query("SELECT COUNT(date) FROM Notifications WHERE date >= :date")
-    LiveData<Integer> getCurrentNotificationCount(Date date);
+    @Query("SELECT COUNT(dateInMillis) FROM Notifications WHERE dateInMillis >= :dateInMillis")
+    LiveData<Integer> getCurrentNotificationCount(long dateInMillis);
 
-    @Query("SELECT * FROM Notifications WHERE date = :date AND name = :name AND short_info = :shortInfo AND url = :url AND venue = :venue")
-    LiveData<NotificationEntry> getUniqueNotification(String date, String name, String shortInfo, String url, String venue);
+    @Query("SELECT * FROM Notifications WHERE _ID = :ID")
+    LiveData<NotificationFirestoreModel> getNotificationById(String ID);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateNotification(NotificationFirestoreModel notificationFirestoreModel);
+
+    @Query("SELECT * FROM Notifications WHERE _ID = :ID")
+    NotificationFirestoreModel getNotificationByIdInForeground(String ID);
+
+    @Query(("SELECT * FROM Notifications WHERE type = :type"))
+    List<NotificationFirestoreModel> getNotificationByTypeInForeground(int type);
 
     @Delete
-    void deleteNotification(NotificationEntry notification);
+    void deleteNotifications(List<NotificationFirestoreModel> notifications);
+
+    @Query("DELETE FROM Notifications")
+    void deleteAllNotifications();
+
 }

@@ -26,7 +26,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.orhanobut.logger.Logger;
-import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDatabase;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.services.FenceAutoAttendanceIntentService;
 
@@ -39,9 +39,9 @@ public class AutoAttendanceHelper {
 
     public static final String KEY_PRE_SUBJECT_FENCE = "KEY_OF_SUBJECT_FENCE";
     public static final double RADIUS_OF_FENCE = 100.0;
+    private final Context context;
+    private final long dwellTime = TimeUnit.MINUTES.toMillis(2);
     private PendingIntent mPendingIntent;
-    private Context context;
-    private long dwellTime = TimeUnit.MINUTES.toMillis(2);
     private AwarenessFence mLocationFence;
 
     public AutoAttendanceHelper(Context context) {
@@ -69,7 +69,7 @@ public class AutoAttendanceHelper {
 //    }
 
     public void updateOrRemoveFenceForSubject(boolean isToRegister, String subject, double longitude, double latitude) {
-        LiveData<List<TimetableEntry>> fullTimetable = TimetableDatabase.getInstance(context).timetableDao().getTimetableForSubject(subject);
+        LiveData<List<TimetableEntry>> fullTimetable = MainDatabase.getInstance(context).timetableDao().getTimetableForSubject(subject);
         fullTimetable.observeForever(new Observer<List<TimetableEntry>>() {
             @Override
             public void onChanged(List<TimetableEntry> timetableEntries) {

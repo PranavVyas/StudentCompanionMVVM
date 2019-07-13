@@ -11,22 +11,16 @@
         android:layout_height="wrap_content"
         tools:context=".ui.fragments.MyProfileFragment">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/fui_transparent"
-            app:cardCornerRadius="512dp"
-            app:cardElevation="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/cardView3"
-            app:layout_constraintEnd_toEndOf="@+id/cardView3"
-            app:layout_constraintStart_toStartOf="@+id/cardView3"
-            app:layout_constraintTop_toTopOf="@+id/cardView3">
         <ImageView
             android:id="@+id/image_my_profile_dp"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:elevation="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardView3"
+            app:layout_constraintEnd_toEndOf="@+id/cardView3"
+            app:layout_constraintStart_toStartOf="@+id/cardView3"
+            app:layout_constraintTop_toTopOf="@+id/cardView3"
             tools:src="@tools:sample/avatars[12]" />
-        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView3"
@@ -35,11 +29,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="75dp"
             android:layout_marginEnd="16dp"
+            style="@style/MyMaterialCardView"
             app:cardCornerRadius="@dimen/card_radius_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <!--TODO adjust card elevation for all-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -84,6 +78,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
+            style="@style/MyMaterialCardView"
             app:cardCornerRadius="@dimen/card_radius_profile"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

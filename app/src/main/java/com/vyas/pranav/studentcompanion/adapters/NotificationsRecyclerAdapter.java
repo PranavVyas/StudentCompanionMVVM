@@ -17,25 +17,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
+import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
+import com.vyas.pranav.studentcompanion.utils.Constants;
+import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
+import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirestoreModel, NotificationsRecyclerAdapter.NotificationHolder> {
 
-    public static final DiffUtil.ItemCallback<NotificationFirestoreModel> diffCallback = new DiffUtil.ItemCallback<NotificationFirestoreModel>() {
+    private static final DiffUtil.ItemCallback<NotificationFirestoreModel> diffCallback = new DiffUtil.ItemCallback<NotificationFirestoreModel>() {
         @Override
         public boolean areItemsTheSame(@NonNull NotificationFirestoreModel oldItem, @NonNull NotificationFirestoreModel newItem) {
-            return oldItem.getUrl() == newItem.getUrl();
+            return oldItem.getUrl().equals(newItem.getUrl());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull NotificationFirestoreModel oldItem, @NonNull NotificationFirestoreModel newItem) {
-            return (oldItem.getDate().equals(newItem.getDate())) &&
+            return (oldItem.getDateInMillis() == (newItem.getDateInMillis())) &&
                     (oldItem.getShort_info().equals(newItem.getShort_info())) &&
-                    (oldItem.getVenue().equals(newItem.getVenue()) &&
-                            (oldItem.getName().equals(newItem.getName())));
+                    (oldItem.getVenue().equals(newItem.getVenue())) &&
+                    (oldItem.getName().equals(newItem.getName())) &&
+                    (oldItem.getType() == newItem.getType());
         }
     };
 
@@ -52,15 +59,36 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
     @Override
     public void onBindViewHolder(@NonNull NotificationHolder holder, int position) {
         NotificationFirestoreModel notification = getItem(position);
-        holder.tvDate.setText(notification.getDate());
+        Date date = new Date();
+        date.setTime(notification.getDateInMillis());
+        holder.tvDate.setText(ConverterUtils.convertDateToString(date));
         holder.tvName.setText(notification.getName());
         holder.tvShortInfo.setText(notification.getShort_info());
+
+        if (notification.getType() == Constants.NOTI_TYPE_LOW_ATTENDANCE) {
+            holder.btnMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent openOverallAttendance = new Intent(holder.itemView.getContext(), MainActivity.class);
+                    openOverallAttendance.putExtra(Constants.EXTRA_MAIN_ACT_OPEN_OVERALL, NavigationDrawerUtil.ID_OVERALL_ATTENDANCE);
+                    holder.itemView.getContext().startActivity(openOverallAttendance);
+                }
+            });
+            GlideApp.with(holder.itemView)
+                    .load(R.drawable.ic_caution)
+                    .error(R.drawable.ic_caution)
+                    .placeholder(R.drawable.ic_caution)
+                    .circleCrop()
+                    .into(holder.imageItem);
+            return;
+        }
         GlideApp.with(holder.itemView)
                 .load(notification.getImage_url())
                 .error(R.drawable.ic_caution)
                 .placeholder(R.drawable.ic_caution)
                 .circleCrop()
                 .into(holder.imageItem);
+
         holder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +115,7 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
         @BindView(R.id.btn_recycler_notification_details)
         Button btnMore;
 
-        public NotificationHolder(@NonNull View itemView) {
+        NotificationHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -35,7 +35,7 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
     private int currentAttendance = 0;
 
 
-    public static final DiffUtil.ItemCallback<OverallAttendanceEntry> diffCallback = new DiffUtil.ItemCallback<OverallAttendanceEntry>() {
+    private static final DiffUtil.ItemCallback<OverallAttendanceEntry> diffCallback = new DiffUtil.ItemCallback<OverallAttendanceEntry>() {
         @Override
         public boolean areItemsTheSame(@NonNull OverallAttendanceEntry oldItem, @NonNull OverallAttendanceEntry newItem) {
             return oldItem.get_ID() == newItem.get_ID();

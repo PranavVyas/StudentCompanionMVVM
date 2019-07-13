@@ -5,19 +5,13 @@ import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationDao;
-import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationDatabase;
-import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationEntry;
 import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
-import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.MainApp;
@@ -55,43 +49,43 @@ public class NotificationFcmService extends FirebaseMessagingService {
 
     }
 
-    private void addToDatabase(String name, String typeOfEvent, String link, String venue, String date, String shortInfo) {
-        NotificationDao notificationDao = NotificationDatabase.getInstance(getApplicationContext()).notificationDao();
-        NotificationEntry notification = new NotificationEntry();
-        notification.setShort_info(shortInfo);
-        notification.setName(name);
-        notification.setUrl(link);
-        notification.setDate(date);
-        notification.setVenue(venue);
-        if (typeOfEvent.equals("1")) {
-            //Insert
-            notificationDao.insertNotification(notification);
-        } else if (typeOfEvent.equals("2")) {
-            deleteNotification(notificationDao.getUniqueNotification(date, name, shortInfo, link, venue), notificationDao);
-        }
-    }
+//    private void addToDatabase(String name, String typeOfEvent, String link, String venue, String date, String shortInfo) {
+//        NotificationDao notificationDao = MainDatabase.getInstance(getApplicationContext()).notificationDao();
+//        NotificationEntry notification = new NotificationEntry();
+//        notification.setShort_info(shortInfo);
+//        notification.setName(name);
+//        notification.setUrl(link);
+//        notification.setDate(date);
+//        notification.setVenue(venue);
+//        if (typeOfEvent.equals("1")) {
+//            //Insert
+//            notificationDao.insertNotification(notification);
+//        } else if (typeOfEvent.equals("2")) {
+//            deleteNotification(notificationDao.getUniqueNotification(date, name, shortInfo, link, venue), notificationDao);
+//        }
+//    }
 
-    private void deleteNotification(LiveData<NotificationEntry> uniqueNotification, NotificationDao notificationDao) {
-        AppExecutors.getInstance().mainThread().execute(new Runnable() {
-            @Override
-            public void run() {
-                uniqueNotification.observeForever(new Observer<NotificationEntry>() {
-                    @Override
-                    public void onChanged(NotificationEntry notificationEntry) {
-                        uniqueNotification.removeObserver(this);
-                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (notificationEntry != null) {
-                                    notificationDao.deleteNotification(notificationEntry);
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
+//    private void deleteNotification(LiveData<NotificationEntry> uniqueNotification, NotificationDao notificationDao) {
+//        AppExecutors.getInstance().mainThread().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                uniqueNotification.observeForever(new Observer<NotificationEntry>() {
+//                    @Override
+//                    public void onChanged(NotificationEntry notificationEntry) {
+//                        uniqueNotification.removeObserver(this);
+//                        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (notificationEntry != null) {
+//                                    notificationDao.deleteNotification(notificationEntry);
+//                                }
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//        });
+//    }
 
     private PendingIntent getContentIntent() {
         Intent intent = new Intent(getApplicationContext(), SignInActivity.class);

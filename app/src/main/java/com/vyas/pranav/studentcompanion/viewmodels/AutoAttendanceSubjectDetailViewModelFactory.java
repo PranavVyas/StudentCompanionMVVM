@@ -2,16 +2,16 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.content.Context;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 public class AutoAttendanceSubjectDetailViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private Context context;
-    private GoogleApiClient googleApiClient;
+    private final Context context;
+    private final GoogleApiClient googleApiClient;
 
     public AutoAttendanceSubjectDetailViewModelFactory(Context context, GoogleApiClient googleApiClient) {
         this.context = context;

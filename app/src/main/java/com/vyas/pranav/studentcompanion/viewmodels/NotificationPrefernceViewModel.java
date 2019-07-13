@@ -10,8 +10,8 @@ import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 
 public class NotificationPrefernceViewModel extends AndroidViewModel {
 
-    private SharedPreferencesUtils sharedPreferencesUtils;
-    private FirebaseMessaging instance;
+    private final SharedPreferencesUtils sharedPreferencesUtils;
+    private final FirebaseMessaging instance;
 
     public NotificationPrefernceViewModel(@NonNull Application application) {
         super(application);

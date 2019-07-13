@@ -1,11 +1,9 @@
 package com.vyas.pranav.studentcompanion.data.notificationdatabase;
 
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Notifications")
 public class NotificationEntry {
 
     @PrimaryKey(autoGenerate = true)

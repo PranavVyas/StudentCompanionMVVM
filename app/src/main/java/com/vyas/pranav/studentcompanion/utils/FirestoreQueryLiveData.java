@@ -3,6 +3,8 @@ package com.vyas.pranav.studentcompanion.utils;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -12,13 +14,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import javax.annotation.Nullable;
 
-import androidx.lifecycle.LiveData;
-
 public class FirestoreQueryLiveData extends LiveData<QuerySnapshot> {
     private static final String TAG = "FirestoreQueryLiveData";
     private final MyValueEventListener listener = new MyValueEventListener();
     private final Handler handler = new Handler();
-    private Query query;
+    private final Query query;
     private ListenerRegistration listenerRegistration;
     private boolean listenerRemovePending = false;
     private final Runnable removeListener = new Runnable() {

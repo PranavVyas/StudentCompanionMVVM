@@ -2,32 +2,29 @@ package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
-import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
-
 public class OverallAttendanceRepository {
 
-    private OverallAttendanceDao overallAttendanceDao;
-    private AttendanceDao attendanceDao;
-    private AppExecutors mExecutors;
-    private Context application;
+    private final OverallAttendanceDao overallAttendanceDao;
+    private final AttendanceDao attendanceDao;
+    private final AppExecutors mExecutors;
+    private final Context context;
 
-    public OverallAttendanceRepository(Context application) {
-        OverallAttendanceDatabase mOverallDb = OverallAttendanceDatabase.getInstance(application);
-        this.overallAttendanceDao = mOverallDb.overallAttendanceDao();
-        AttendanceDatabase mAttendanceDb = AttendanceDatabase.getInstance(application);
-        this.attendanceDao = mAttendanceDb.attendanceDao();
+    public OverallAttendanceRepository(Context context) {
+        this.overallAttendanceDao = MainDatabase.getInstance(context).overallAttendanceDao();
+        this.attendanceDao = MainDatabase.getInstance(context).attendanceDao();
         this.mExecutors = AppExecutors.getInstance();
-        this.application = application;
+        this.context = context;
     }
 
     public LiveData<List<OverallAttendanceEntry>> getAllOverallAttendance() {
@@ -71,14 +68,14 @@ public class OverallAttendanceRepository {
     }
 
     public void refreshAllOverallAttendance() {
-        if (application == null) {
+        if (context == null) {
             Logger.d("Context empty in refreshOverallAttendance");
         }
-        SetUpProcessRepository setUpProcessRepository = new SetUpProcessRepository(application);
+        SetUpProcessRepository setUpProcessRepository = new SetUpProcessRepository(context);
         List<String> subList = setUpProcessRepository.getSubjectList();
         for (int i = 0; i < subList.size(); i++) {
             String subject = subList.get(i);
-            OverallAttendanceForSubjectRepository repository = new OverallAttendanceForSubjectRepository(application, subject);
+            OverallAttendanceForSubjectRepository repository = new OverallAttendanceForSubjectRepository(context, subject);
             repository.refreshOverallAttendanceForSubject(subject);
         }
     }

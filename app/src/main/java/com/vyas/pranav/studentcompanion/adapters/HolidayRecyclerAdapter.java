@@ -5,14 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -58,7 +59,7 @@ public class HolidayRecyclerAdapter extends RecyclerView.Adapter<HolidayRecycler
         @BindView(R.id.tv_recycler_holiday_fragment_name)
         TextView tvName;
 
-        public HolidayHolder(@NonNull View itemView) {
+        HolidayHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

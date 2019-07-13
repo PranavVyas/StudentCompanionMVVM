@@ -2,18 +2,17 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.content.Context;
 
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
-import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
-import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceForSubjectRepository;
-
 import androidx.lifecycle.ViewModel;
+
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
+import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceForSubjectRepository;
 
 public class OverallAttendanceForSubjectViewModel extends ViewModel {
 
-    private OverallAttendanceForSubjectRepository repository;
+    private final OverallAttendanceForSubjectRepository repository;
 
-    public OverallAttendanceForSubjectViewModel(Context applicationContext, OverallAttendanceDatabase mOverallDb, AttendanceDatabase mAttendanceDb, String subjectName) {
-        repository = new OverallAttendanceForSubjectRepository(applicationContext, mOverallDb, mAttendanceDb, subjectName);
+    public OverallAttendanceForSubjectViewModel(Context applicationContext, MainDatabase mDb, String subjectName) {
+        repository = new OverallAttendanceForSubjectRepository(applicationContext, mDb, subjectName);
     }
 
     public void refreshOverallAttendance(String subjectName) {

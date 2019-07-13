@@ -5,12 +5,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.vyas.pranav.studentcompanion.R;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,7 +46,7 @@ public class TimetableDayRecyclerAdapter extends RecyclerView.Adapter<TimetableD
         @BindView(R.id.tv_recycler_timetable_day_lecture_detail)
         TextView tvDetail;
 
-        public TimetableDayHolder(@NonNull View itemView) {
+        TimetableDayHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -85,4 +85,27 @@
         \n<b><big>\u25CF\u25CF Auto Sync \u25CF\u25CF</big></b>
         \n\u25CF You can also use feature of "Auto Sync" to turn on Sync in Realtime whenever database is changed by any update on cloud</string>
 
+    <string name="navigation_home">Today\'s attendance</string>
+    <string name="navigation_overall_attendance">Overall Attendance</string>
+    <string name="navigation_settings">Settings</string>
+    <string name="navigation_notifications">Notifications</string>
+    <string name="navigation_my_profile">My Profile</string>
+    <string name="navigation_about_this_app">About This App</string>
+    <string name="navigation_about_developer">About Developer</string>
+    <string name="navigation_resources">Resources</string>
+    <string name="navigation_sign_out">Sign Out</string>
+    <string name="navigation_delete_account">Delete Account</string>
+
+
+    <string name="title_home">Home</string>
+    <string name="title_attention">Attention</string>
+
+    <string name="main_message_delete_acc">Deleting account will remove all the attendance data and account from server as well as locally Please proceed by touching \"Delete Anyways\" Or Click On \"Cancel\" to cancel Application will shut down after deleting account, You have to manually start again Thank You!</string>
+    <string name="main_positive_btn_delete_acc">Delete Anyways...</string>
+
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_ok">OK</string>
+
+    <string name="main_neutral_btn_delete_acc_sign_out_instead">Sign out Instead</string>
+
 </resources>

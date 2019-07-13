@@ -2,7 +2,6 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -11,6 +10,13 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,12 +43,6 @@ import com.vyas.pranav.studentcompanion.viewmodels.UploadBookViewModel;
 
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -192,17 +192,9 @@ public class UploadBookActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                intent.setType(mimeTypes.length == 1 ? mimeTypes[0] : "*/*");
-                if (mimeTypes.length > 0) {
-                    intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-                }
-            } else {
-                String mimeTypesStr = "";
-                for (String mimeType : mimeTypes) {
-                    mimeTypesStr += mimeType + "|";
-                }
-                intent.setType(mimeTypesStr.substring(0, mimeTypesStr.length() - 1));
+            intent.setType(mimeTypes.length == 1 ? mimeTypes[0] : "*/*");
+            if (mimeTypes.length > 0) {
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
             }
             startActivityForResult(Intent.createChooser(intent, "Choose File"), RC_OPEN_CHOOSER);
         }

@@ -2,21 +2,21 @@ package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayDao;
-import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayDatabase;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
-
 public class HolidayRepository {
-    private HolidayDao holidayDao;
-    private AppExecutors mExecutors;
+    private final HolidayDao holidayDao;
+    private final AppExecutors mExecutors;
 
     public HolidayRepository(Context context) {
-        this.holidayDao = HolidayDatabase.getInstance(context).holidayDao();
+        this.holidayDao = MainDatabase.getInstance(context).holidayDao();
         mExecutors = AppExecutors.getInstance();
     }
 

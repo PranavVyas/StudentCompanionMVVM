@@ -2,6 +2,9 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -10,9 +13,6 @@ import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 
 public class MarketPlaceViewModel extends AndroidViewModel {
 
@@ -23,7 +23,7 @@ public class MarketPlaceViewModel extends AndroidViewModel {
     ));
     private String searchStr = "";
     private int selectedCategory = 0;
-    private CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("sell");
+    private final CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("sell");
     private Query mQuery = collectionReference.whereEqualTo("category", categories.get(selectedCategory));
     private FirestoreQueryLiveData queryLiveData;
     private String childSting;
@@ -77,9 +77,5 @@ public class MarketPlaceViewModel extends AndroidViewModel {
 
     public void setSelectedCategory(int position) {
         this.selectedCategory = position;
-    }
-
-    public void setNewQueryLiveData(Query query) {
-
     }
 }

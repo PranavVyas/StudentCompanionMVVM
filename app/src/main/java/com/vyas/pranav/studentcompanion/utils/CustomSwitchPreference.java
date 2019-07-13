@@ -5,15 +5,15 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.preference.PreferenceViewHolder;
+import androidx.preference.SwitchPreferenceCompat;
+
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.github.angads25.toggle.model.ToggleableView;
 import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.vyas.pranav.studentcompanion.R;
 
-import androidx.preference.PreferenceViewHolder;
-import androidx.preference.SwitchPreferenceCompat;
-
-public class CustomSwitchPreference extends SwitchPreferenceCompat {
+class CustomSwitchPreference extends SwitchPreferenceCompat {
 
     private final Listener mListener = new Listener();
     private boolean currentState;

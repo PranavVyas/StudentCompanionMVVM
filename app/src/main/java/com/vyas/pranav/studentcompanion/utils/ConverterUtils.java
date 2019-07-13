@@ -251,7 +251,7 @@ public class ConverterUtils {
          * @param year      the year
          * @param dayOfYear the day of year(like 12,65,etc...)
          */
-        public CustomDate(int date, int month, int year, int dayOfYear) {
+        CustomDate(int date, int month, int year, int dayOfYear) {
             this.date = date;
             this.month = month;
             this.year = year;
@@ -345,7 +345,7 @@ public class ConverterUtils {
          * @param min  the min
          * @param hour the hour
          */
-        public CustomTime(int min, int hour) {
+        CustomTime(int min, int hour) {
             this.min = min;
             this.hour = hour;
         }
@@ -355,7 +355,7 @@ public class ConverterUtils {
          *
          * @return the min
          */
-        public int getMin() {
+        int getMin() {
             return min;
         }
 
@@ -373,7 +373,7 @@ public class ConverterUtils {
          *
          * @return the hour
          */
-        public int getHour() {
+        int getHour() {
             return hour;
         }
 

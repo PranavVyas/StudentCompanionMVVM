@@ -68,7 +68,7 @@ public class DailyJobForShowingReminder extends DailyJob {
         return PendingIntent.getActivity(getContext(), Constants.SHOW_REMINDER_JOB_RC_CONTENT_INTENT, intent, 0);
     }
 
-    private void sendNotification(Context context, String title, String desc, NotificationCompat.Action action1, NotificationCompat.Action action2, PendingIntent contentIntent) {
+    private void sendNotification(Context context, @SuppressWarnings("SameParameterValue") String title, String desc, NotificationCompat.Action action1, NotificationCompat.Action action2, PendingIntent contentIntent) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo_forground)
                 .setContentTitle(title)

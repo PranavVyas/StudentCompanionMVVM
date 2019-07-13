@@ -45,7 +45,6 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
 
     private AppSettingsViewModel appSettingsViewModel;
     private AutoAttendanceHelper helper;
-//    private GeoFencingRepository geoFencingRepository;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -100,12 +99,9 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
 //            checkAutoAttendanceStateAndExecute();
 //            appSettingsViewModel.setRefreshGeoFence(appSettingsViewModel.isAutoAttendanceEnabled());
             setEditAutoAttendanceStateFromViewModel();
-//            TODO Register and unregister fence accordingly
             setFence(appSettingsViewModel.isAutoAttendanceEnabled());
         } else if (s.equals(getString(R.string.pref_key_switch_enable_night_mode))) {
             toggleNightMode();
-        } else if (s.equals(getString(R.string.pref_key_list_notification))) {
-            //TODO
         }
     }
 
@@ -253,7 +249,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         ButterKnife.bind(this, view);
         setSelectTimeStateFromViewModel();
         setEditAutoAttendanceStateFromViewModel();
-//        geoFencingRepository = new GeoFencingRepository(getContext(), getApiClient());
+        //Select Places for Auto Attendance is Clicked
         findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -263,6 +259,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
                 return false;
             }
         });
+        //Smart Silent is Clicked
         findPreference(getString(R.string.pref_key_switch_enable_smart_silent)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -281,6 +278,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
                         return false;
                     }
                 } else {
+                    //TODO handling switch action accordingly
 //                    Toast.makeText(getContext(), "Disabled the Silent Mode", Toast.LENGTH_SHORT).show();
                 }
                 appSettingsViewModel.toggleSmartSilent();
@@ -288,6 +286,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             }
         });
 
+        //Notification is clicked
         findPreference(getString(R.string.pref_key_list_notification)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {

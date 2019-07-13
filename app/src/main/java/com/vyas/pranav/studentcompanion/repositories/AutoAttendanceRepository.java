@@ -6,18 +6,18 @@ import androidx.lifecycle.LiveData;
 
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
-import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlacesDatabase;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 
 public class AutoAttendanceRepository {
 
-    private Context context;
-    private AutoAttendancePlaceDao autoAttendancePlaceDao;
-    private AppExecutors mExecutors;
+    private final Context context;
+    private final AutoAttendancePlaceDao autoAttendancePlaceDao;
+    private final AppExecutors mExecutors;
 
     public AutoAttendanceRepository(Context context) {
-        this.context = context;
-        autoAttendancePlaceDao = AutoAttendancePlacesDatabase.getInstance(context).autoAttendancePlaceDao();
+        this.context = context.getApplicationContext();
+        autoAttendancePlaceDao = MainDatabase.getInstance(context).autoAttendancePlaceDao();
         mExecutors = AppExecutors.getInstance();
     }
 

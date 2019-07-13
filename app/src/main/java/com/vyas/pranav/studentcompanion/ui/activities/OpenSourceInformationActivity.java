@@ -4,6 +4,11 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.OpenSourceRecyclerAdapter;
@@ -16,10 +21,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -91,38 +92,4 @@ public class OpenSourceInformationActivity extends AppCompatActivity {
         return json;
     }
 
-//    private void setUpExpansionLayout() {
-//        expandableLayout.setRenderer(new ExpandableLayout.Renderer<LibraryParentModel, LibraryChildModel>() {
-//            @Override
-//            public void renderParent(View view, LibraryParentModel libraryParentModel, boolean b, int i) {
-//                ((TextView) view.findViewById(R.id.tv_expansion_osl_parent_name)).setText(libraryParentModel.getName());
-//            }
-//
-//            @Override
-//            public void renderChild(View view, LibraryChildModel libraryChildModel, int i, int i1) {
-//                ((TextView) view.findViewById(R.id.tv_expansion_osl_child_license)).setText(libraryChildModel.getLicense());
-//                ((TextView) view.findViewById(R.id.tv_expansion_osl_child_url)).setText(libraryChildModel.getUrl());
-//            }
-//        });
-//        expandableLayout.setCollapseListener(new ExpandCollapseListener.CollapseListener<LibraryParentModel>() {
-//            @Override
-//            public void onCollapsed(int i, LibraryParentModel libraryParentModel, View view) {
-//                GlideApp.with(view).load(R.drawable.ic_arrow_down)
-//                        .into((ImageView) view.findViewById(R.id.image_expansion_osl_parent_arrow));
-//            }
-//        });
-//        expandableLayout.setExpandListener(new ExpandCollapseListener.ExpandListener<LibraryParentModel>() {
-//            @Override
-//            public void onExpanded(int i, LibraryParentModel libraryParentModel, View view) {
-//                GlideApp.with(view).load(R.drawable.ic_arrow_up)
-//                        .into((ImageView) view.findViewById(R.id.image_expansion_osl_parent_arrow));
-//            }
-//        });
-//        for (int position = 0; position < external_libraries.size(); position++) {
-//            Section<LibraryParentModel, LibraryChildModel> section = new Section<>();
-//            section.parent = new LibraryParentModel(external_libraries.get(position).getName());
-//            section.children.add(new LibraryChildModel(external_libraries.get(position).getLicense(), external_libraries.get(position).getUrl()));
-//            expandableLayout.addSection(section);
-//        }
-//    }
 }

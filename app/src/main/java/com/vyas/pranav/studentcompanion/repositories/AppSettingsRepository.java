@@ -17,7 +17,7 @@ import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
-import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlacesDatabase;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForRefreshGeoFence;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForShowingReminder;
@@ -33,9 +33,9 @@ import java.util.concurrent.TimeUnit;
 
 public class AppSettingsRepository {
 
-    private Context context;
-    private SharedPreferences mPreference;
-    private SharedPreferences.Editor mEditor;
+    private final Context context;
+    private final SharedPreferences mPreference;
+    private final SharedPreferences.Editor mEditor;
 
     public AppSettingsRepository(Context context) {
         this.context = context;
@@ -140,7 +140,7 @@ public class AppSettingsRepository {
     }
 
     public LiveData<List<AutoAttendancePlaceEntry>> getAutoAtttendanceLiveData() {
-        AutoAttendancePlaceDao attendancePlaceDao = AutoAttendancePlacesDatabase.getInstance(context).autoAttendancePlaceDao();
+        AutoAttendancePlaceDao attendancePlaceDao = MainDatabase.getInstance(context).autoAttendancePlaceDao();
         return attendancePlaceDao.getAllPlaceEntries();
     }
 }

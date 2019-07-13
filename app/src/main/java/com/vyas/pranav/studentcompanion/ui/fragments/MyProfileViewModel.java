@@ -3,6 +3,9 @@ package com.vyas.pranav.studentcompanion.ui.fragments;
 import android.app.Application;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,17 +15,14 @@ import com.google.firebase.firestore.Query;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-
 public class MyProfileViewModel extends AndroidViewModel {
 
-    private FirebaseFirestore mFirestoreDb;
-    private Query mCollectionReference;
-    private FirestoreQueryLiveData mListLiveData;
-    private FirebaseAuth mAuth;
-    private FirebaseUser currUser;
-    private String userName;
+    private final FirebaseFirestore mFirestoreDb;
+    private final Query mCollectionReference;
+    private final FirestoreQueryLiveData mListLiveData;
+    private final FirebaseAuth mAuth;
+    private final FirebaseUser currUser;
+    private final String userName;
 
     public MyProfileViewModel(@NonNull Application application) {
         super(application);

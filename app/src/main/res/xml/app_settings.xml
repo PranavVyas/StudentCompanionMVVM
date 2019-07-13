@@ -50,7 +50,7 @@
         app:title="@string/pref_title_switch_enable_smart_silent" />
 
     <Preference
-        android:icon="@drawable/ic_auto_attendance_map"
+        android:icon="@drawable/ic_chat"
         android:key="@string/pref_key_list_notification"
         android:layout="@layout/custom_item_preference_full"
         android:title="@string/pref_list_notification_title" />

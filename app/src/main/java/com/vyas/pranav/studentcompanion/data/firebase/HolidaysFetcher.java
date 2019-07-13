@@ -1,5 +1,7 @@
 package com.vyas.pranav.studentcompanion.data.firebase;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -15,12 +17,10 @@ import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-
 public class HolidaysFetcher {
 
-    private FirebaseFirestore mFirestore;
-    private CollectionReference mCollectionReference;
+    private final FirebaseFirestore mFirestore;
+    private final CollectionReference mCollectionReference;
     //    private FirebaseDatabase mFirebaseDatabase;
 //    private DatabaseReference mDatabaseReference;
     private OnHolidaysReceivedListener listener;

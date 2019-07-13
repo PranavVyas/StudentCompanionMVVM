@@ -1,5 +1,7 @@
 package com.vyas.pranav.studentcompanion.data.itemdatabase.firebase;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -12,12 +14,10 @@ import com.orhanobut.logger.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-
 public class ItemFetcher {
 
-    private FirebaseFirestore mFirestoreDatabase;
-    private CollectionReference mCollectionReference;
+    private final FirebaseFirestore mFirestoreDatabase;
+    private final CollectionReference mCollectionReference;
 
     public ItemFetcher() {
         Logger.clearLogAdapters();

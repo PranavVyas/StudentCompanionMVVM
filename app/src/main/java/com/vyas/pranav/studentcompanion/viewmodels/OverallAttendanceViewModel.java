@@ -23,6 +23,7 @@ public class OverallAttendanceViewModel extends AndroidViewModel {
     private SetUpProcessRepository setUpProcessRepository;
     private Context context;
     private SharedPreferencesUtils utils;
+    private boolean isTutorialShownOnStarting = false;
 
     public OverallAttendanceViewModel(@NonNull Application application) {
         super(application);
@@ -47,5 +48,13 @@ public class OverallAttendanceViewModel extends AndroidViewModel {
 
     public void setFirstRunForFile(String file, boolean isFirstTimeOpened) {
         utils.setFileFirstTimeOpened(file, isFirstTimeOpened);
+    }
+
+    public boolean isTutorialShownOnStarting() {
+        return isTutorialShownOnStarting;
+    }
+
+    public void setTutorialShownOnStarting(boolean tutorialShownOnStarting) {
+        isTutorialShownOnStarting = tutorialShownOnStarting;
     }
 }

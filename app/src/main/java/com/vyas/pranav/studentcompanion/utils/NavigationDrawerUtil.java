@@ -1,6 +1,7 @@
 package com.vyas.pranav.studentcompanion.utils;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.View;
 
@@ -11,6 +12,7 @@ import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.holder.BadgeStyle;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -45,7 +47,7 @@ public class NavigationDrawerUtil {
         }
         PrimaryDrawerItem todayAttendance = new PrimaryDrawerItem()
                 .withIdentifier(ID_TODAY_ATTENDANCE)
-                .withName("Today's Attendance")
+                .withName(R.string.navigation_home)
                 .withIcon(R.drawable.ic_today_attendance)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -56,7 +58,7 @@ public class NavigationDrawerUtil {
                 });
         PrimaryDrawerItem overallAttendance = new PrimaryDrawerItem()
                 .withIdentifier(ID_OVERALL_ATTENDANCE)
-                .withName("Overall Attendance")
+                .withName(R.string.navigation_overall_attendance)
                 .withIcon(R.drawable.ic_overall_attendance)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -89,7 +91,7 @@ public class NavigationDrawerUtil {
 //                });
         PrimaryDrawerItem settings = new PrimaryDrawerItem()
                 .withIdentifier(ID_SETTINGS)
-                .withName("Settings")
+                .withName(R.string.navigation_settings)
                 .withIcon(R.drawable.ic_settings)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -111,8 +113,10 @@ public class NavigationDrawerUtil {
 //                });
         PrimaryDrawerItem notifications = new PrimaryDrawerItem()
                 .withIdentifier(ID_NOTIFICATIONS)
-                .withName("Notifications")
+                .withName(R.string.navigation_notifications)
                 .withIcon(R.drawable.ic_chat)
+                .withBadge("0")
+                .withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -122,7 +126,7 @@ public class NavigationDrawerUtil {
                 });
         PrimaryDrawerItem myProfile = new PrimaryDrawerItem()
                 .withIdentifier(ID_MY_PROFILE)
-                .withName("My Profile")
+                .withName(R.string.navigation_my_profile)
                 .withIcon(R.drawable.ic_profile)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -133,7 +137,7 @@ public class NavigationDrawerUtil {
                 });
         PrimaryDrawerItem aboutApp = new PrimaryDrawerItem()
                 .withIdentifier(ID_ABOUT_APP)
-                .withName("About this app")
+                .withName(R.string.navigation_about_this_app)
                 .withIcon(R.mipmap.ic_launcher_round)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -144,7 +148,7 @@ public class NavigationDrawerUtil {
                 });
         PrimaryDrawerItem aboutDeveloper = new PrimaryDrawerItem()
                 .withIdentifier(ID_ABOUT_DEVELOPER)
-                .withName("About Developer")
+                .withName(R.string.navigation_about_developer)
                 .withIcon(R.drawable.ic_developer)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -155,7 +159,7 @@ public class NavigationDrawerUtil {
                 });
         PrimaryDrawerItem signOut = new PrimaryDrawerItem()
                 .withIdentifier(ID_SIGN_OUT)
-                .withName("Sign Out")
+                .withName(R.string.navigation_sign_out)
                 .withIcon(R.drawable.ic_log_in_out)
                 .withSelectable(false)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -167,7 +171,7 @@ public class NavigationDrawerUtil {
                 });
         PrimaryDrawerItem deleteAccount = new PrimaryDrawerItem()
                 .withIdentifier(ID_DELETE_ACCOUNT)
-                .withName("Delete Account")
+                .withName(R.string.navigation_delete_account)
                 .withIcon(R.drawable.ic_delete)
                 .withSelectable(false)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -219,6 +223,7 @@ public class NavigationDrawerUtil {
                         profile
                 ).build();
 
+        //noinspection UnnecessaryLocalVariable
         Drawer drawer = new DrawerBuilder()
                 .withActivity(context)
                 .withToolbar(toolbar)

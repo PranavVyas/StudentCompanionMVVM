@@ -11,8 +11,8 @@ import com.vyas.pranav.studentcompanion.repositories.AutoAttendanceRepository;
 
 public class AutoAttendanceSubjectDetailViewModel extends ViewModel {
 
-    private AutoAttendanceRepository repo;
-    private Context context;
+    private final AutoAttendanceRepository repo;
+    private final Context context;
     private String currName;
 
     public AutoAttendanceSubjectDetailViewModel(Context context, GoogleApiClient googleApiClient) {

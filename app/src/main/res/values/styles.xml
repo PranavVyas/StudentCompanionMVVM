@@ -2,14 +2,16 @@
 
     <!--TODO Change Theme at rhe end of the session-->
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+    <!--<style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">-->
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorAccent">@color/colorSecondary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVarient</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVarient</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="colorError">@color/colorError</item>
         <item name="colorOnError">@color/colorOnError</item>
@@ -55,10 +57,10 @@
         <item name="colorAccent">@color/colorSecondaryNight</item>
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVarientNight</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantNight</item>
         <item name="colorOnPrimary">@color/colorOnPrimaryNight</item>
         <item name="colorSecondary">@color/colorSecondaryNight</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVarientNight</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantNight</item>
         <item name="colorOnSecondary">@color/colorOnSecondaryNight</item>
         <item name="colorError">@color/colorErrorNight</item>
         <item name="colorOnError">@color/colorOnErrorNight</item>
@@ -194,6 +196,11 @@
 
     <style name="MyCustomMaterialButton" parent="Widget.MaterialComponents.Button">
         <item name="backgroundTint">?attr/colorSecondaryVariant</item>
+    </style>
+
+    <style name="MyMaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">2dp</item>
     </style>
 
 </resources>

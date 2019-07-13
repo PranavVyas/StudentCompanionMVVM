@@ -73,7 +73,6 @@ public class MyProfileFragment extends Fragment {
 //                List<ItemModel> items = queryDocumentSnapshots.toObjects(ItemModel.class);
                 List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
 
-                //TODO
                 items = queryDocumentSnapshots.toObjects(ItemModel.class);
                 List<Pair> listOfPairs = new ArrayList<>();
                 for (int i = 0; i < documents.size(); i++) {

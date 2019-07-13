@@ -6,6 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.github.angads25.toggle.model.ToggleableView;
 import com.github.angads25.toggle.widget.LabeledSwitch;
@@ -13,10 +18,6 @@ import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -74,9 +75,8 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
             @Override
             public void onSwitched(ToggleableView toggleableView, boolean isOn) {
                 if (listener != null) {
-                    AttendanceEntry attendanceEntry = attendanceOfDay;
-                    attendanceEntry.setPresent(isOn);
-                    listener.onAttendanceSwitchToggled(attendanceEntry);
+                    attendanceOfDay.setPresent(isOn);
+                    listener.onAttendanceSwitchToggled(attendanceOfDay);
                 } else {
                     Logger.d("Listener is not init");
                 }

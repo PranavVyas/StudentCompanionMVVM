@@ -2,19 +2,19 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
 import com.vyas.pranav.studentcompanion.repositories.HolidayRepository;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-
 public class HolidayViewModel extends AndroidViewModel {
 
-    private HolidayRepository holidayRepository;
-    private LiveData<List<HolidayEntry>> holidayEntries;
+    private final HolidayRepository holidayRepository;
+    private final LiveData<List<HolidayEntry>> holidayEntries;
 
     public HolidayViewModel(@NonNull Application application) {
         super(application);

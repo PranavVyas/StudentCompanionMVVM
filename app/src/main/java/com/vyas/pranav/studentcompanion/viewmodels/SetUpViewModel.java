@@ -121,11 +121,11 @@ public class SetUpViewModel extends AndroidViewModel {
         repository.setLectureEndTimeInSharedPrefs(lectureNo, timeEnd);
     }
 
-    public int getStartingTimeOfLecture(int lectureNo) {
+    private int getStartingTimeOfLecture(int lectureNo) {
         return repository.getStartTimeForLecture(lectureNo);
     }
 
-    public int getEndingTimeOfLecture(int lectureNo) {
+    private int getEndingTimeOfLecture(int lectureNo) {
         return repository.getEndTimeForLecture(lectureNo);
     }
 

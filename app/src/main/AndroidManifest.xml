@@ -27,8 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
+        android:fullBackupContent="@xml/backup_descriptor"
         tools:replace="android:theme">
-        <activity android:name=".ui.activities.AutoAttendanceFenceActivity" />
         <activity
             android:name=".ui.activities.NotificationPreferenceActivity"
             android:parentActivityName=".ui.activities.MainActivity" />

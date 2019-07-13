@@ -12,8 +12,8 @@
 
     <ImageView
         android:id="@android:id/icon"
-        android:layout_width="50dp"
-        android:layout_height="50sp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_gravity="center"
         android:scaleType="fitXY"
         tools:srcCompat="@tools:sample/avatars[10]" />

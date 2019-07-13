@@ -73,6 +73,7 @@ public class FenceAutoAttendanceIntentService extends IntentService {
         return (new NotificationCompat.Action.Builder(R.drawable.logo_forground, "Open App Now", openAppFromNotification).build());
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void sendNotification(String title, String message, String bigText) {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext(), MainApp.NOTIFICATION_CHANNEL_ID)

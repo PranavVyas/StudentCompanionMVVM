@@ -8,7 +8,7 @@
     <!--android:background="?attr/custom_background_main"-->
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_auto_attendance_subjet_detail"
+        android:id="@+id/toolbar_auto_attendance_subject_detail"
         style="@style/MyCustomMaterialToolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_toolbar_auto_attendance_subjet_detail"
+            android:id="@+id/tv_toolbar_auto_attendance_subject_detail"
             style="@style/MyCustomToolbarTextView"
             android:text="Edit GeoFence" />
     </androidx.appcompat.widget.Toolbar>
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_auto_attendance_subjet_detail">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_auto_attendance_subject_detail">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_auto_attendance_main"
@@ -39,7 +39,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_auto_attendance_subjet_detail">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_auto_attendance_subject_detail">
 
             <TextView
                 android:id="@+id/tv_auto_attendance_subject_detail_subject"
@@ -64,7 +64,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:cardElevation="@dimen/default_card_elevation"
+                style="@style/MyMaterialCardView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_auto_attendance_subject_detail_subject">
@@ -142,7 +142,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_auto_attendance_subjet_detail">
+            app:layout_constraintTop_toBottomOf="@id/toolbar_auto_attendance_subject_detail">
 
             <TextView
                 android:id="@+id/textView72"

@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.NotificationsRecyclerAdapter;
@@ -24,14 +26,13 @@ import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.viewmodels.NotificationsViewModel;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AllNotificationFragment extends Fragment {
+class AllNotificationFragment extends Fragment {
 
 
     @BindView(R.id.recycler_all_notifications)
@@ -72,16 +73,6 @@ public class AllNotificationFragment extends Fragment {
         initData();
     }
 
-//    private void initDataForDate() {
-//        LiveData<List<NotificationEntry>> notificationTillDate = notificationsViewModelForDate.getNotificationFromDate();
-//        notificationTillDate.observe(this, new Observer<List<NotificationEntry>>() {
-//            @Override
-//            public void onChanged(List<NotificationEntry> notificationEntries) {
-//                mAdapter.submitList(notificationEntries);
-//            }
-//        });
-//    }
-
     private void setUpRecyclerView() {
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rvMain.setLayoutManager(llm);
@@ -90,21 +81,16 @@ public class AllNotificationFragment extends Fragment {
     }
 
     private void initData() {
-        FirestoreQueryLiveData firestoreLiveData = notificationsViewModel.getFirestoreLiveData();
-        firestoreLiveData.observe(this, new Observer<QuerySnapshot>() {
+        LiveData<List<NotificationFirestoreModel>> allNotisFromDb = notificationsViewModel.getAllNotisFromDb();
+        allNotisFromDb.observe(getActivity(), new Observer<List<NotificationFirestoreModel>>() {
             @Override
-            public void onChanged(QuerySnapshot queryDocumentSnapshots) {
-                List<NotificationFirestoreModel> notificationFirestoreModels = queryDocumentSnapshots.toObjects(NotificationFirestoreModel.class);
-                List<NotificationFirestoreModel> finalNotis = notificationFirestoreModels;
+            public void onChanged(List<NotificationFirestoreModel> notificationFirestoreModels) {
+                List<NotificationFirestoreModel> finalNotis;
+                finalNotis = notificationFirestoreModels;
                 if (date != null) {
                     finalNotis = new ArrayList<>();
-                    Calendar calNow = Calendar.getInstance();
-                    //TODO set Today's notifications in curent notis
-                    calNow.setTime(new Date());
-                    Calendar calInNoti = Calendar.getInstance();
                     for (NotificationFirestoreModel x : notificationFirestoreModels) {
-                        calInNoti.setTime(ConverterUtils.convertStringToDate(x.getDate()));
-                        if (calInNoti.after(calNow)) {
+                        if (x.getDateInMillis() - (new Date().getTime()) > -1) {
                             finalNotis.add(x);
                         }
                     }
@@ -122,6 +108,44 @@ public class AllNotificationFragment extends Fragment {
                     showPlaceHolder(false);
                 }
                 mAdapter.submitList(finalNotis);
+            }
+        });
+
+        FirestoreQueryLiveData firestoreLiveData = notificationsViewModel.getFirestoreLiveData();
+        firestoreLiveData.observe(getActivity(), new Observer<QuerySnapshot>() {
+            @Override
+            public void onChanged(QuerySnapshot queryDocumentSnapshots) {
+                List<NotificationFirestoreModel> notificationFirestoreModels = new ArrayList<>();
+                List<String> listOfIds = new ArrayList<>();
+                for (DocumentSnapshot x :
+                        queryDocumentSnapshots.getDocuments()) {
+                    listOfIds.add(x.getId());
+                    notificationFirestoreModels.add(x.toObject(NotificationFirestoreModel.class));
+                }
+                notificationsViewModel.syncNotificationDatabase(listOfIds, notificationFirestoreModels);
+//                List<NotificationFirestoreModel> finalNotis = notificationFirestoreModels;
+//                if (date != null) {
+//                    finalNotis = new ArrayList<>();
+//                    //TODO set Today's notifications in current notis [DONE TESTING LEFT]
+//                    for (NotificationFirestoreModel x : notificationFirestoreModels) {
+//                        if (ConverterUtils.convertStringToDate(x.getDate()).compareTo(new Date()) > -1) {
+//                            finalNotis.add(x);
+//                        }
+//                    }
+//                    if (finalNotis.size() == 0) {
+//                        showPlaceHolder(true);
+//                    } else {
+//                        showPlaceHolder(false);
+//                    }
+//                    mAdapter.submitList(finalNotis);
+//                    return;
+//                }
+//                if (finalNotis.size() == 0) {
+//                    showPlaceHolder(true);
+//                } else {
+//                    showPlaceHolder(false);
+//                }
+//                mAdapter.submitList(finalNotis);
             }
         });
 //        LiveData<List<NotificationEntry>> allNotifications = notificationsViewModel.getAllNotifications();

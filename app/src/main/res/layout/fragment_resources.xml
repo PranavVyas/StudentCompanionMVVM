@@ -23,6 +23,7 @@
                 android:id="@+id/card_resources_fragment_digital_library"
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
+                style="@style/MyMaterialCardView"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
@@ -51,6 +52,7 @@
                 android:id="@+id/card_resources_fragment_buy_sell"
                 android:layout_width="match_parent"
                 android:layout_height="156dp"
+                style="@style/MyMaterialCardView"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
@@ -83,6 +85,7 @@
                 android:layout_height="156dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                style="@style/MyMaterialCardView"
                 android:layout_marginEnd="8dp"
                 app:cardCornerRadius="8dp">
 
@@ -113,6 +116,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
+                style="@style/MyMaterialCardView"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp">
 

@@ -96,7 +96,7 @@ public class MarketPlaceSellRecyclerAdapter extends ListAdapter<ItemModel, Marke
         @BindView(R.id.tv_recycler_marketplace_item_p_name)
         TextView tvPersonName;
 
-        public SellItemHolder(@NonNull View itemView) {
+        SellItemHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

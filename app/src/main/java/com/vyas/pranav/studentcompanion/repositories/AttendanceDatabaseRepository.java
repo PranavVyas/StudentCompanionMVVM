@@ -2,24 +2,23 @@ package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 
 import java.util.Date;
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
-
 public class AttendanceDatabaseRepository {
 
-    private AttendanceDao attendanceDao;
-    private AppExecutors mExecutors;
+    private final AttendanceDao attendanceDao;
+    private final AppExecutors mExecutors;
 
     public AttendanceDatabaseRepository(Context context) {
-        AttendanceDatabase mAttendanceDb = AttendanceDatabase.getInstance(context);
-        attendanceDao = mAttendanceDb.attendanceDao();
+        attendanceDao = MainDatabase.getInstance(context).attendanceDao();
         mExecutors = AppExecutors.getInstance();
     }
 

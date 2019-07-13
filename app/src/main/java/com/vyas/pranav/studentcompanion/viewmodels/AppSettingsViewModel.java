@@ -18,7 +18,7 @@ public class AppSettingsViewModel extends AndroidViewModel {
     private int reminderTime;
     private LiveData<List<AutoAttendancePlaceEntry>> autoAttendancePlaceEntryLiveData;
 
-    private AppSettingsRepository appSettingsRepository;
+    private final AppSettingsRepository appSettingsRepository;
 
     public AppSettingsViewModel(@NonNull Application application) {
         super(application);
@@ -64,10 +64,6 @@ public class AppSettingsViewModel extends AndroidViewModel {
 
     public void toggleSmartSilent() {
         appSettingsRepository.toggleSmartSilent();
-    }
-
-    public void registerFence() {
-
     }
 
     public LiveData<List<AutoAttendancePlaceEntry>> getAutoAttendanceLiveData() {

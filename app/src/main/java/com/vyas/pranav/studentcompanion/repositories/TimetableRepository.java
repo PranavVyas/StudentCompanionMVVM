@@ -2,14 +2,14 @@ package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
+
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDao;
-import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDatabase;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 
 import java.util.List;
-
-import androidx.lifecycle.LiveData;
 
 public class TimetableRepository {
 
@@ -17,14 +17,9 @@ public class TimetableRepository {
     private AppExecutors mExecutors;
     private Context context;
 
-//    public TimetableRepository(TimetableDatabase mTimetableDb) {
-//        this.timetableDao = mTimetableDb.timetableDao();
-//        mExecutors = AppExecutors.getInstance();
-//    }
-
     public TimetableRepository(Context context) {
         this.context = context;
-        this.timetableDao = TimetableDatabase.getInstance(context).timetableDao();
+        this.timetableDao = MainDatabase.getInstance(context).timetableDao();
         mExecutors = AppExecutors.getInstance();
     }
 

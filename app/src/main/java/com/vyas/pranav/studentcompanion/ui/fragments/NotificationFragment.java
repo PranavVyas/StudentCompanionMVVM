@@ -6,6 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.tabs.TabLayout;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.utils.Constants;
@@ -14,15 +22,10 @@ import com.vyas.pranav.studentcompanion.viewmodels.NotificationsViewModel;
 
 import java.util.Date;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class NotificationFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
@@ -51,7 +54,7 @@ public class NotificationFragment extends Fragment implements ViewPager.OnPageCh
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         notificationsViewModel = ViewModelProviders.of(getActivity()).get(NotificationsViewModel.class);
-        NotificationViewPagerAdapter mAdapter = new NotificationViewPagerAdapter(getChildFragmentManager());
+        NotificationViewPagerAdapter mAdapter = new NotificationViewPagerAdapter(getChildFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(mAdapter);
         selectedPage = notificationsViewModel.getSelectedPage();
         viewPager.setCurrentItem(selectedPage);
@@ -78,8 +81,8 @@ public class NotificationFragment extends Fragment implements ViewPager.OnPageCh
 
     class NotificationViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        public NotificationViewPagerAdapter(@NonNull FragmentManager fm) {
-            super(fm);
+        NotificationViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
         }
 
         @NonNull

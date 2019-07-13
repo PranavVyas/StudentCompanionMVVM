@@ -78,8 +78,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     TextView tvName;
     @BindView(R.id.tv_auto_attendance_subject_detail_subject)
     TextView tvSubject;
-    @BindView(R.id.toolbar_auto_attendance_subjet_detail)
-    Toolbar toolbar;
+    private final AutoAttendanceHelper helper = new AutoAttendanceHelper(this);
     @BindView(R.id.constraint_auto_attendance_main)
     ConstraintLayout constraintMain;
 
@@ -104,7 +103,8 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     private PendingIntent locationUpdatePendingIntent;
     private LiveData<AutoAttendancePlaceEntry> placeEntry;
     private AutoAttendancePlaceEntry currPlaceEntry;
-    private AutoAttendanceHelper helper = new AutoAttendanceHelper(this);
+    @BindView(R.id.toolbar_auto_attendance_subject_detail)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -350,8 +350,8 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
                 currPlaceEntry.setLang(lang);
                 currPlaceEntry.setLat(lat);
                 autoAttendanceSubjectDetailViewModel.refreshFenceInDb(currPlaceEntry);
+                //Updating Fence in Real Life
                 helper.updateOrRemoveFenceForSubject(true, currSubject, lat, lang);
-                //TODO update Fence in real life
             } else {
                 Toast.makeText(this, "Error Occurred While Retrieving Data", Toast.LENGTH_SHORT).show();
             }

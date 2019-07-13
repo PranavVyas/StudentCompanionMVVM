@@ -52,7 +52,6 @@ public class OverallAttendanceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setUpRecyclerView();
         setUpOverallAttendance();
-        showInstruction(getActivity());
     }
 
     private void setUpRecyclerView() {
@@ -69,8 +68,13 @@ public class OverallAttendanceFragment extends Fragment {
             @Override
             public void onChanged(List<OverallAttendanceEntry> overallAttendanceEntries) {
                 mAdapter.submitList(overallAttendanceEntries);
+                if (!mViewModel.isTutorialShownOnStarting()) {
+                    showInstruction(getActivity());
+                    mViewModel.setTutorialShownOnStarting(true);
+                }
             }
         });
+
     }
 
     @OnClick(R.id.button2)

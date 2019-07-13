@@ -9,15 +9,13 @@ import androidx.preference.PreferenceManager;
 
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
-import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlacesDatabase;
 import com.vyas.pranav.studentcompanion.data.firebase.HolidaysFetcher;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
-import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
@@ -31,6 +29,7 @@ import java.util.List;
 
 public class SetUpProcessRepository {
 
+    public static final String KEY_ATTENDANCE_CRITERIA = "SHARED_PREF_ATTENDANCE_CRITERIA";
     private static final String SHARED_PREF_ENDING_SEM = "END_SEM_DATE_STRING";
     private static final String SHARED_PREF_STARTING_SEM = "START_SEM_DATE_STRING";
     private static final String SHARED_PREF_CURRENT_STEP = "CURRENT_STEP_IN_SET_UP";
@@ -42,13 +41,12 @@ public class SetUpProcessRepository {
     private static final String SHARED_PREF_LECTURE_START = "STARTING_TIME_OF_LECTURE";
     private static final String SHARED_PREF_LECTURE_END = "ENDING_TIME_OF_LECTURE";
     private static final String SHARED_PREF_TUTORIAL = "TUTORIAL_DONE";
-    public static final String KEY_ATTENDANCE_CRITERIA = "SHARED_PREF_ATTENDANCE_CRITERIA";
-
     private Context context;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private HolidayRepository holidayRepository;
     private TimetableRepository timetableRepository;
+    private MainDatabase mDb;
 
     private List<TimetableEntry> Monday;
     private List<TimetableEntry> Tuesday;
@@ -63,6 +61,7 @@ public class SetUpProcessRepository {
         this.context = context;
         holidayRepository = new HolidayRepository(context);
         timetableRepository = new TimetableRepository(context);
+        mDb = MainDatabase.getInstance(context);
     }
 
     public boolean isAppFirstRun() {
@@ -107,7 +106,7 @@ public class SetUpProcessRepository {
     }
 
     public List<String> getSubjectList() {
-        List<String> subjects = new ArrayList<>(preferences.getStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<String>()));
+        List<String> subjects = new ArrayList<>(preferences.getStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<>()));
         if (subjects.isEmpty()) {
             return new ArrayList<>();
         } else {
@@ -227,7 +226,7 @@ public class SetUpProcessRepository {
         });
     }
 
-    public void setTimetableForDay(List<TimetableEntry> timetableEntries) {
+    private void setTimetableForDay(List<TimetableEntry> timetableEntries) {
         Monday = new ArrayList<>();
         Tuesday = new ArrayList<>();
         Wednesday = new ArrayList<>();
@@ -265,11 +264,11 @@ public class SetUpProcessRepository {
     }
 
 
-    public void setHolidays(List<HolidayEntry> holidayEntries) {
+    private void setHolidays(List<HolidayEntry> holidayEntries) {
         holidayRepository.setHolidays(holidayEntries);
     }
 
-    public List<Date> removeHolidaysAndWeekends(List<Date> holidayDates) {
+    private List<Date> removeHolidaysAndWeekends(List<Date> holidayDates) {
         List<Date> allDates = ConverterUtils.getDates(ConverterUtils.convertStringToDate(getStartingDate()), ConverterUtils.convertStringToDate(getEndingDate()));
         List<Date> resultDates = new ArrayList<>();
         for (int i = 0; i < allDates.size(); i++) {
@@ -283,12 +282,12 @@ public class SetUpProcessRepository {
     }
 
     public void initializeOverallAttendance() {
-        AttendanceDao attendanceDao = AttendanceDatabase.getInstance(context).attendanceDao();
-        OverallAttendanceDao overallAttendanceDao = OverallAttendanceDatabase.getInstance(context).overallAttendanceDao();
+        AttendanceDao attendanceDao = mDb.attendanceDao();
+        OverallAttendanceDao overallAttendanceDao = mDb.overallAttendanceDao();
         insertAllOverallAttendance(getSubjectList(), attendanceDao, overallAttendanceDao);
     }
 
-    public void insertAllOverallAttendance(final List<String> subjectList, final AttendanceDao attendanceDao, final OverallAttendanceDao overallAttendanceDao) {
+    private void insertAllOverallAttendance(final List<String> subjectList, final AttendanceDao attendanceDao, final OverallAttendanceDao overallAttendanceDao) {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -311,8 +310,8 @@ public class SetUpProcessRepository {
         });
     }
 
-    public void setUpAutoAttendanceDatabase() {
-        final AutoAttendancePlaceDao autoAttendancePlaceDao = AutoAttendancePlacesDatabase.getInstance(context).autoAttendancePlaceDao();
+    private void setUpAutoAttendanceDatabase() {
+        final AutoAttendancePlaceDao autoAttendancePlaceDao = mDb.autoAttendancePlaceDao();
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {

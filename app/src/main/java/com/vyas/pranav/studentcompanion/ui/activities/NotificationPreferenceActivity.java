@@ -50,7 +50,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
 
     private NotificationPrefernceViewModel notificationsViewModel;
     private SharedPreferencesUtils sharedPreferencesUtils;
-    private FirebaseMessaging instance;
+    private FirebaseMessaging fcmInstance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +59,10 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification_preference);
         ButterKnife.bind(this);
         notificationsViewModel = ViewModelProviders.of(this).get(NotificationPrefernceViewModel.class);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        placeHOlderConnection.setVisibility(View.GONE);
         sharedPreferencesUtils = notificationsViewModel.getPrefenceUtils();
         initViews();
-        instance = notificationsViewModel.getInstance();
+        fcmInstance = notificationsViewModel.getInstance();
+
         checkBoxEvent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -84,6 +81,10 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        placeHOlderConnection.setVisibility(View.GONE);
         GlideApp.with(this)
                 .load(R.drawable.image_no_connection_placeholder)
                 .into(imagePlaceHolder);
@@ -93,26 +94,30 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
 
     void refreshEventSubscription() {
         if (sharedPreferencesUtils.isEventNotificationEnabed()) {
-            instance.subscribeToTopic("events").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.subscribeToTopic("events").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
                         Toast.makeText(NotificationPreferenceActivity.this, "Subscribed to Event!", Toast.LENGTH_SHORT).show();
+                        Logger.d("Subscribed to Events");
                     } else {
                         checkBoxEvent.setChecked(false);
                         Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                        Logger.d("Problem while subscribing to event: ");
                     }
                 }
             });
         } else {
-            instance.unsubscribeFromTopic("events").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.unsubscribeFromTopic("events").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
                         Toast.makeText(NotificationPreferenceActivity.this, "Unsubscribed to Event!", Toast.LENGTH_SHORT).show();
+                        Logger.d("Unsubscribed from Events");
                     } else {
                         checkBoxEvent.setChecked(true);
                         Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                        Logger.d("Problem while unsubscribe from Event");
                     }
                 }
             })
@@ -122,26 +127,31 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
 
     void refreshNewItemSubscription() {
         if (sharedPreferencesUtils.isNewItemShopNotificationEnabled()) {
-            instance.subscribeToTopic("sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.subscribeToTopic("sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
                         Toast.makeText(NotificationPreferenceActivity.this, "Subscribed to sell item!", Toast.LENGTH_SHORT).show();
+                        Logger.d("Subscribed to New Item Subscription");
                     } else {
                         Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                         checkBoxNewItem.setChecked(false);
+                        Logger.d("Problem while subscribing to new item: ");
                     }
                 }
             });
         } else {
-            instance.unsubscribeFromTopic("sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.unsubscribeFromTopic("sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
                         Toast.makeText(NotificationPreferenceActivity.this, "Unsubscribed to sell item!", Toast.LENGTH_SHORT).show();
+                        Logger.d("Unsubscribed from new items");
+
                     } else {
                         checkBoxNewItem.setChecked(true);
                         Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                        Logger.d("Problem while unsubscribe from new item");
                     }
                 }
             });

@@ -14,8 +14,8 @@ import java.util.List;
 
 public class DigitalLibraryViewModel extends AndroidViewModel {
 
-    private DigitalLibraryRepository repository;
-    private SharedPreferencesUtils sharedPreferencesUtils;
+    private final DigitalLibraryRepository repository;
+    private final SharedPreferencesUtils sharedPreferencesUtils;
 
     public DigitalLibraryViewModel(@NonNull Application application) {
         super(application);
@@ -25,11 +25,6 @@ public class DigitalLibraryViewModel extends AndroidViewModel {
 
     public LiveData<List<DigitalLibraryEntry>> getAllBooks() {
         return repository.getAllBooks();
-    }
-
-
-    public void startSync() {
-        repository.startSync();
     }
 
     public void replaceAllBooks(List<DigitalLibraryEntry> booksFirestore) {

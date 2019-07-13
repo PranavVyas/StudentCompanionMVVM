@@ -5,6 +5,7 @@
     android:id="@+id/card_recycler_overall_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    style="@style/MyMaterialCardView"
     android:layout_margin="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -5,6 +5,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
@@ -17,10 +21,6 @@ import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.MainApp;
 
 import java.util.concurrent.TimeUnit;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import static com.vyas.pranav.studentcompanion.utils.ConverterUtils.getCurrentTimeInMillis;
 
@@ -73,7 +73,8 @@ public class DailyJobForUnsilentAction extends Job {
         return PendingIntent.getActivity(getContext(), Constants.SHOW_REMINDER_JOB_RC_CONTENT_INTENT, intent, 0);
     }
 
-    private void sendNotification(Context context, String title, String desc) {
+    @SuppressWarnings("SameParameterValue")
+    private void sendNotification(Context context, @SuppressWarnings("SameParameterValue") String title, String desc) {
         Notification notification = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo_forground)
                 .setContentTitle(title)

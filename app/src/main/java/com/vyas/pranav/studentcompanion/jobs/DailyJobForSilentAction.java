@@ -48,9 +48,6 @@ public class DailyJobForSilentAction extends Job {
         }
     }
 
-    public static void getAllJobs() {
-    }
-
     @NonNull
     @Override
     protected Result onRunJob(@NonNull Params params) {
@@ -79,6 +76,7 @@ public class DailyJobForSilentAction extends Job {
         return PendingIntent.getActivity(getContext(), Constants.SHOW_REMINDER_JOB_RC_CONTENT_INTENT, intent, 0);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void sendNotification(Context context, String title, String desc) {
         Notification notification = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo_forground)

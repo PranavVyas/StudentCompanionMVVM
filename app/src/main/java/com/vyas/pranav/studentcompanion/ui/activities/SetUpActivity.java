@@ -54,7 +54,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         executeSetUpStep(setUpViewModel.getCurrentStep());
     }
 
-    public void executeSetUpStep(int step) {
+    private void executeSetUpStep(int step) {
         switch (step) {
             case 1:
                 SetUpDatesFragment setUpDatesFragment = new SetUpDatesFragment();
@@ -94,10 +94,10 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
     }
 
     private void addAnimationsToFragment(Fragment fragment) {
-        fragment.setEnterTransition(new Slide(Gravity.RIGHT));
-        fragment.setExitTransition(new Slide(Gravity.LEFT));
-        fragment.setReturnTransition(new Slide(Gravity.LEFT));
-        fragment.setReenterTransition(new Slide(Gravity.RIGHT));
+        fragment.setEnterTransition(new Slide(Gravity.END));
+        fragment.setExitTransition(new Slide(Gravity.START));
+        fragment.setReturnTransition(new Slide(Gravity.START));
+        fragment.setReenterTransition(new Slide(Gravity.END));
         fragment.setAllowEnterTransitionOverlap(false);
         fragment.setAllowReturnTransitionOverlap(false);
     }

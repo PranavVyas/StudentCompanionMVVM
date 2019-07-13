@@ -14,6 +14,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,12 +49,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -95,11 +96,11 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     private Uri imageUri;
     private String downloadUri;
 
-    private FirebaseStorage mStorage = FirebaseStorage.getInstance();
-    private StorageReference mStorageReference = mStorage.getReference();
+    private final FirebaseStorage mStorage = FirebaseStorage.getInstance();
+    private final StorageReference mStorageReference = mStorage.getReference();
     private StorageReference child;
-    private FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference mCollectionReference = mFirestore.collection("sell");
+    private final FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
+    private final CollectionReference mCollectionReference = mFirestore.collection("sell");
     private Snackbar sbar;
     private MarketPlaceSellItemViewModel marketPlaceSellItemViewModel;
     private UploadTask uploadTask;

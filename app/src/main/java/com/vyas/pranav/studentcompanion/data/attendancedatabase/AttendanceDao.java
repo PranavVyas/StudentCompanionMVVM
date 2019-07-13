@@ -1,8 +1,5 @@
 package com.vyas.pranav.studentcompanion.data.attendancedatabase;
 
-import java.util.Date;
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -10,6 +7,9 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import java.util.Date;
+import java.util.List;
 
 @Dao
 public interface AttendanceDao {
@@ -26,10 +26,7 @@ public interface AttendanceDao {
     @Delete
     void deleteAttendance(AttendanceEntry attendanceEntry);
 
-    @Query("SELECT * FROM AttendanceIndividual")
-    LiveData<List<AttendanceEntry>> getAllAttendance();
-
-    @Query("SELECT * FROM AttendanceIndividual WHERE date = :date ORDER BY _ID")
+    @Query("SELECT * FROM AttendanceIndividual WHERE date = :date ORDER BY _ID AND NOT subjectName = 'No Lecture' ")
     LiveData<List<AttendanceEntry>> getAttendanceForDate(Date date);
 
     @Query("DELETE FROM AttendanceIndividual")

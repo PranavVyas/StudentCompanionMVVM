@@ -1,21 +1,61 @@
 package com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.vyas.pranav.studentcompanion.utils.Constants;
+
+@IgnoreExtraProperties
+@Entity(tableName = "Notifications")
 public class NotificationFirestoreModel {
 
-    private String name, date, short_info, image_url;
+    private String name, short_info, image_url;
+    @PrimaryKey
+    @NonNull
+    private String _ID = "DEFAULT_ID";
     private String url = "";
     private String venue = "";
+    private long dateInMillis;
+    private int type = Constants.NOTI_TYPE_EVENT;
 
+    @Ignore
     public NotificationFirestoreModel() {
     }
 
-    public NotificationFirestoreModel(String name, String date, String short_info, String image_url, String url, String venue) {
+    @Ignore
+    public NotificationFirestoreModel(String name, String short_info, String image_url, String url, String venue, long dateInMillis, int type) {
         this.name = name;
-        this.date = date;
         this.short_info = short_info;
         this.image_url = image_url;
         this.url = url;
         this.venue = venue;
+        this.dateInMillis = dateInMillis;
+        this.type = type;
+    }
+
+    public NotificationFirestoreModel(String name, String short_info, String image_url, String _ID, String url, String venue, long dateInMillis, int type) {
+        this.name = name;
+        this.short_info = short_info;
+        this.image_url = image_url;
+        this._ID = _ID;
+        this.url = url;
+        this.venue = venue;
+        this.dateInMillis = dateInMillis;
+        this.type = type;
+    }
+
+    @Exclude
+    public String get_ID() {
+        return _ID;
+    }
+
+    @Exclude
+    public void set_ID(String _ID) {
+        this._ID = _ID;
     }
 
     public String getName() {
@@ -26,12 +66,12 @@ public class NotificationFirestoreModel {
         this.name = name;
     }
 
-    public String getDate() {
-        return date;
+    public long getDateInMillis() {
+        return dateInMillis;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateInMillis(long dateInMillis) {
+        this.dateInMillis = dateInMillis;
     }
 
     public String getShort_info() {
@@ -64,5 +104,13 @@ public class NotificationFirestoreModel {
 
     public void setImage_url(String image_url) {
         this.image_url = image_url;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

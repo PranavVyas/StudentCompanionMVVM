@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationEntry;
+import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 
@@ -16,10 +16,11 @@ import java.util.List;
 
 public class NotificationsViewModel extends AndroidViewModel {
 
-    private LiveData<List<NotificationEntry>> notifications;
-    private NotificationRepository repository;
+    private final NotificationRepository repository;
+    private LiveData<List<NotificationFirestoreModel>> notifications;
     private int selectedPage = 0;
     private FirestoreQueryLiveData firestoreQueryLiveData;
+    private LiveData<List<NotificationFirestoreModel>> allNotisFromDb;
 
     public NotificationsViewModel(@NonNull Application application) {
         super(application);
@@ -28,14 +29,7 @@ public class NotificationsViewModel extends AndroidViewModel {
         FirebaseFirestore mDb = FirebaseFirestore.getInstance();
         CollectionReference ref = mDb.collection("events");
         firestoreQueryLiveData = repository.getLiveFirestoreData(ref);
-    }
-
-    public LiveData<List<NotificationEntry>> getAllNotifications() {
-        return notifications;
-    }
-
-    public void deleteNotification(long id) {
-        repository.deleteNotification(id);
+        allNotisFromDb = repository.getAllNotifications();
     }
 
     public int getSelectedPage() {
@@ -48,5 +42,13 @@ public class NotificationsViewModel extends AndroidViewModel {
 
     public FirestoreQueryLiveData getFirestoreLiveData() {
         return firestoreQueryLiveData;
+    }
+
+    public void syncNotificationDatabase(List<String> ids, List<NotificationFirestoreModel> notificationFirestoreModels) {
+        repository.syncNotifications(ids, notificationFirestoreModels);
+    }
+
+    public LiveData<List<NotificationFirestoreModel>> getAllNotisFromDb() {
+        return allNotisFromDb;
     }
 }

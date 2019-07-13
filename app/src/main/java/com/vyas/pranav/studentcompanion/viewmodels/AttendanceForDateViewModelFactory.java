@@ -1,20 +1,20 @@
 package com.vyas.pranav.studentcompanion.viewmodels;
 
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDatabase;
-
-import java.util.Date;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
+
+import java.util.Date;
+
 public class AttendanceForDateViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final AttendanceDatabase mAttendanceDb;
+    private final MainDatabase mDb;
     private final Date date;
 
-    public AttendanceForDateViewModelFactory(AttendanceDatabase mAttendanceDb, Date date) {
-        this.mAttendanceDb = mAttendanceDb;
+    public AttendanceForDateViewModelFactory(MainDatabase mDb, Date date) {
+        this.mDb = mDb;
         this.date = date;
     }
 
@@ -22,7 +22,7 @@ public class AttendanceForDateViewModelFactory extends ViewModelProvider.NewInst
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new AttendanceForDateViewModel(mAttendanceDb, date);
+        return (T) new AttendanceForDateViewModel(mDb, date);
     }
 
 }

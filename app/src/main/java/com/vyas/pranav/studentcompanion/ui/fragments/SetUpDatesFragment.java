@@ -165,7 +165,6 @@ public class SetUpDatesFragment extends Fragment {
         startCal.setTime(start);
         Calendar endCal = Calendar.getInstance();
         endCal.setTime(end);
-        //TODO take diff of date from here and use it in another todo
         long diffInMillis = endCal.getTimeInMillis() - startCal.getTimeInMillis();
         //Toast.makeText(getContext(), "Diff in days are "+days, Toast.LENGTH_SHORT).show();
         return (int) TimeUnit.MILLISECONDS.toDays(diffInMillis);
