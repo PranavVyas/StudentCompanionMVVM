@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.awareness.fence.FenceState;
+import com.google.firebase.auth.FirebaseAuth;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
@@ -31,6 +32,12 @@ public class FenceAutoAttendanceIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Logger.addLogAdapter(new AndroidLogAdapter());
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        //TODO For now Just make jobs and this uneffective if the user is not signed in later try to remove them and enable them when user is signed in
+        if (mAuth.getCurrentUser() == null) {
+            Logger.d("User is not Signed in and fence is triggered");
+            return;
+        }
         FenceState fenceState = FenceState.extract(intent);
         SetUpProcessRepository repository = new SetUpProcessRepository(getApplicationContext());
         String subjectNameFromFence = fenceState.getFenceKey().substring(AutoAttendanceHelper.KEY_PRE_SUBJECT_FENCE.length());

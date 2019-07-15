@@ -82,6 +82,7 @@ public class AppSettingsRepository {
                                 int endTime = timetableEntries.get(i).getTimeEnd();
                                 Toast.makeText(context, "Enabled Smart Silent!", Toast.LENGTH_SHORT).show();
                                 Logger.d("Smart Silent : Enabled");
+
                                 DailyJobForSilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(startTime + 1));
                                 DailyJobForUnsilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(endTime - 1));
                             }

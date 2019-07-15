@@ -126,7 +126,6 @@ class AllNotificationFragment extends Fragment {
 //                List<NotificationFirestoreModel> finalNotis = notificationFirestoreModels;
 //                if (date != null) {
 //                    finalNotis = new ArrayList<>();
-//                    //TODO set Today's notifications in current notis [DONE TESTING LEFT]
 //                    for (NotificationFirestoreModel x : notificationFirestoreModels) {
 //                        if (ConverterUtils.convertStringToDate(x.getDate()).compareTo(new Date()) > -1) {
 //                            finalNotis.add(x);

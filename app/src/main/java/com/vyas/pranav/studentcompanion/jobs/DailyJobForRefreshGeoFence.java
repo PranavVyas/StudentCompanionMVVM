@@ -61,7 +61,6 @@ public class DailyJobForRefreshGeoFence extends DailyJob implements GoogleApiCli
                 .addApi(Places.GEO_DATA_API)
                 .build();
         mClient.connect();
-        // TODO refresh Fence
         mClient.disconnect();
         showNotification();
         mClient = null;

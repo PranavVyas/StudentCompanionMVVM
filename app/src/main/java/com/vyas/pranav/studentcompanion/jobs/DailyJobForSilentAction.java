@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
+import com.google.firebase.auth.FirebaseAuth;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.services.ToggleSilentDeviceIntentService;
@@ -39,8 +40,6 @@ public class DailyJobForSilentAction extends Job {
         }
         new JobRequest.Builder(TAG).setUpdateCurrent(false).setExact(timeInMillis).build().schedule();
     }
-    //TODO Remove this job when user signs out
-
 
     public static void cancelAllJobs() {
         if (!JobManager.instance().getAllJobRequestsForTag(TAG).isEmpty()) {
@@ -51,6 +50,11 @@ public class DailyJobForSilentAction extends Job {
     @NonNull
     @Override
     protected Result onRunJob(@NonNull Params params) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() == null) {
+            Logger.d("User is not Signed in and attempted to silent device");
+            return Result.SUCCESS;
+        }
         sendNotification(getContext(), "Notification", "Device is Silent Now...");
         Intent toggleSilentIntent = new Intent(getContext(), ToggleSilentDeviceIntentService.class);
         toggleSilentIntent.setAction(Constants.INTENT_ACTION_SILENT_DEVICE);

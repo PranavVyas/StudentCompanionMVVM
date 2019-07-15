@@ -6,16 +6,31 @@ import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 
-import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class SharedPreferencesUtils {
 
     public static final String SHARED_PREF_AUTO_SYNC_DIGITAL_LIBRARY = "AUTO_SYNC_IN_DIGITAL_LIBRARY";
-    public static final String SHARED_PREF_KEY_EVENT_NOTIFICATION = "NOTIFICATION_FOR_EVENT";
-    public static final String SHARED_PREF_KEY_NEW_ITEM_NOTIFICATION = "NOTIFICATION_FOR_NEW_ITEM";
+    private static final String SHARED_PREF_KEY_EVENT_NOTIFICATION = "NOTIFICATION_FOR_EVENT";
+    private static final String SHARED_PREF_KEY_NEW_ITEM_NOTIFICATION = "NOTIFICATION_FOR_NEW_ITEM";
     private static final String SHARED_PREF_CURRENT_NOTIFICATION = "CURRENT_NOTIFICATIONS";
     private static final String SHARED_PREF_FIRST_OPEN_COMPONENT = "FIRST_OPEN_COMPONENT_";
-
+    private static final String SHARED_PREF_REMINDER_JOB_TIME = "SHARED_PREFERENCE_REMINDER_TIME";
+    private static final String SHARED_PREF_AUTO_SMART_SILENT_LAST_STATE = "SILENT_LAST_STATE";
+    private static final String SHARED_PREF_ENDING_SEM = "END_SEM_DATE_STRING";
+    private static final String SHARED_PREF_STARTING_SEM = "START_SEM_DATE_STRING";
+    private static final String SHARED_PREF_CURRENT_STEP = "CURRENT_STEP_IN_SET_UP";
+    private static final String SHARED_PREF_SUBJECTS_SET = "SUBJECT_LIST";
+    private static final String SHARED_PREF_CURRENT_DAY = "CURRENT_DAY";
+    private static final String SHARED_PREF_CURRENT_SEMESTER = "CURRENT_SEMESTER";
+    private static final String SHARED_PREF_FIRST_RUN = "IS_FIRST_RUN";
+    private static final String SHARED_PREF_NO_OF_LECTURES_PER_DAY = "NO_OF_LECTURES_PER_DAY";
+    private static final String SHARED_PREF_LECTURE_START = "STARTING_TIME_OF_LECTURE";
+    private static final String SHARED_PREF_LECTURE_END = "ENDING_TIME_OF_LECTURE";
+    private static final String SHARED_PREF_TUTORIAL = "TUTORIAL_DONE";
+    private static final String KEY_ATTENDANCE_CRITERIA = "SHARED_PREF_ATTENDANCE_CRITERIA";
 
     private Context context;
     private SharedPreferences preferences;
@@ -66,7 +81,7 @@ public class SharedPreferencesUtils {
     }
 
     public int getCurrentAttendanceCriteria() {
-        return preferences.getInt(SetUpProcessRepository.KEY_ATTENDANCE_CRITERIA, 0);
+        return preferences.getInt(KEY_ATTENDANCE_CRITERIA, 0);
     }
 
     public boolean isFileFirstOpened(String Filename) {
@@ -77,4 +92,133 @@ public class SharedPreferencesUtils {
         editor.putBoolean(SHARED_PREF_FIRST_OPEN_COMPONENT + Filename, isFirstTimeOpened);
         editor.apply();
     }
+
+    public void setCurrentAttendanceCriteria(int progress) {
+        editor.putInt(KEY_ATTENDANCE_CRITERIA, progress).apply();
+    }
+
+    public long getReminderJobTime() {
+        return preferences.getLong(SHARED_PREF_REMINDER_JOB_TIME, -1);
+    }
+
+    public void setReminderJobTime(long timeInMillis) {
+        editor.putLong(SHARED_PREF_REMINDER_JOB_TIME, timeInMillis);
+        editor.apply();
+    }
+
+    public boolean getLastSilentState() {
+        return preferences.getBoolean(SHARED_PREF_AUTO_SMART_SILENT_LAST_STATE, false);
+    }
+
+    public void setLastSilentState(boolean isOn) {
+        editor.putBoolean(SHARED_PREF_AUTO_SMART_SILENT_LAST_STATE, isOn);
+        editor.apply();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public boolean isAppFirstRun() {
+        return preferences.getBoolean(SHARED_PREF_FIRST_RUN, true);
+    }
+
+    public void setAppFirstRun(boolean isAppFirstRun) {
+        editor.putBoolean(SHARED_PREF_FIRST_RUN, isAppFirstRun);
+        editor.apply();
+    }
+
+    public void setUpEndingDate(String endDateStr) {
+        editor.putString(SHARED_PREF_ENDING_SEM, endDateStr);
+        editor.apply();
+    }
+
+    public void setUpStartingDate(String startDateStr) {
+        editor.putString(SHARED_PREF_STARTING_SEM, startDateStr);
+        editor.apply();
+    }
+
+    public String getStartingDate() {
+        return preferences.getString(SHARED_PREF_STARTING_SEM, null);
+    }
+
+    public String getEndingDate() {
+        return preferences.getString(SHARED_PREF_ENDING_SEM, null);
+    }
+
+    public void setUpCurrentStep(int step) {
+        editor.putInt(SHARED_PREF_CURRENT_STEP, step);
+        editor.apply();
+    }
+
+    public int getSetUpCurrentStep() {
+        return preferences.getInt(SHARED_PREF_CURRENT_STEP, 1);
+    }
+
+    public void setSubjectListInSharedPrefrences(List<String> subjects) {
+        editor.putStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<>(subjects));
+        editor.apply();
+    }
+
+    public List<String> getSubjectList() {
+        List<String> subjects = new ArrayList<>(preferences.getStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<>()));
+        if (subjects.isEmpty()) {
+            return new ArrayList<>();
+        } else {
+            return subjects;
+        }
+    }
+
+    public int getCurrentDay() {
+        return preferences.getInt(SHARED_PREF_CURRENT_DAY, 1);
+    }
+
+    public void setCurrentDay(int currentDay) {
+        editor.putInt(SHARED_PREF_CURRENT_DAY, currentDay);
+        editor.apply();
+    }
+
+    public void setUpSemester(int semester) {
+        editor.putInt(SHARED_PREF_CURRENT_SEMESTER, semester);
+        editor.apply();
+    }
+
+    public int getSemester() {
+        return preferences.getInt(SHARED_PREF_CURRENT_SEMESTER, 1);
+    }
+
+    public void setLectureStartTimeInSharedPrefs(int lectureNo, int startTime) {
+        editor.putInt(SHARED_PREF_LECTURE_START + lectureNo, startTime);
+        editor.apply();
+    }
+
+    public void setLectureEndTimeInSharedPrefs(int lectureNo, int endTime) {
+        editor.putInt(SHARED_PREF_LECTURE_END + lectureNo, endTime);
+        editor.apply();
+    }
+
+    public int getStartTimeForLecture(int lectureNo) {
+        return preferences.getInt(SHARED_PREF_LECTURE_START + lectureNo, 0);
+    }
+
+    public int getEndTimeForLecture(int lectureNo) {
+        return preferences.getInt(SHARED_PREF_LECTURE_END + lectureNo, 60);
+    }
+
+    public int getNoOfLecturesPerDay() {
+        return preferences.getInt(SHARED_PREF_NO_OF_LECTURES_PER_DAY, 4);
+    }
+
+    public void setNoOfLecturesPerDay(int noOfLecturesPerDay) {
+        editor.putInt(SHARED_PREF_NO_OF_LECTURES_PER_DAY, noOfLecturesPerDay);
+        editor.apply();
+    }
+
+    public boolean isTutorialDone() {
+        return preferences.getBoolean(SHARED_PREF_TUTORIAL, false);
+    }
+
+    public void setTutorialDone(boolean isDone) {
+        editor.putBoolean(SHARED_PREF_TUTORIAL, isDone).apply();
+    }
+
+
+
 }

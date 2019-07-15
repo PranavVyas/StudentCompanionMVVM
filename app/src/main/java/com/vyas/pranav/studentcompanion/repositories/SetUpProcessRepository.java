@@ -1,13 +1,12 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.preference.PreferenceManager;
 
 import com.orhanobut.logger.Logger;
+import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
@@ -24,28 +23,16 @@ import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 public class SetUpProcessRepository {
 
-    public static final String KEY_ATTENDANCE_CRITERIA = "SHARED_PREF_ATTENDANCE_CRITERIA";
-    private static final String SHARED_PREF_ENDING_SEM = "END_SEM_DATE_STRING";
-    private static final String SHARED_PREF_STARTING_SEM = "START_SEM_DATE_STRING";
-    private static final String SHARED_PREF_CURRENT_STEP = "CURRENT_STEP_IN_SET_UP";
-    private static final String SHARED_PREF_SUBJECTS_SET = "SUBJECT_LIST";
-    private static final String SHARED_PREF_CURRENT_DAY = "CURRENT_DAY";
-    private static final String SHARED_PREF_CURRENT_SEMESTER = "CURRENT_SEMESTER";
-    private static final String SHARED_PREF_FIRST_RUN = "IS_FIRST_RUN";
-    private static final String SHARED_PREF_NO_OF_LECTURES_PER_DAY = "NO_OF_LECTURES_PER_DAY";
-    private static final String SHARED_PREF_LECTURE_START = "STARTING_TIME_OF_LECTURE";
-    private static final String SHARED_PREF_LECTURE_END = "ENDING_TIME_OF_LECTURE";
-    private static final String SHARED_PREF_TUTORIAL = "TUTORIAL_DONE";
     private Context context;
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
+    //    private SharedPreferences preferences;
+//    private SharedPreferences.Editor editor;
     private HolidayRepository holidayRepository;
     private TimetableRepository timetableRepository;
+    private SharedPreferencesUtils sharedPreferencesUtils;
     private MainDatabase mDb;
 
     private List<TimetableEntry> Monday;
@@ -55,9 +42,7 @@ public class SetUpProcessRepository {
     private List<TimetableEntry> Friday;
 
     public SetUpProcessRepository(Context context) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        editor = preferences.edit();
-        editor.apply();
+        sharedPreferencesUtils = new SharedPreferencesUtils(context);
         this.context = context;
         holidayRepository = new HolidayRepository(context);
         timetableRepository = new TimetableRepository(context);
@@ -65,98 +50,83 @@ public class SetUpProcessRepository {
     }
 
     public boolean isAppFirstRun() {
-        return preferences.getBoolean(SHARED_PREF_FIRST_RUN, true);
+        return sharedPreferencesUtils.isAppFirstRun();
     }
 
     public void setAppFirstRun(boolean isAppFirstRun) {
-        editor.putBoolean(SHARED_PREF_FIRST_RUN, isAppFirstRun);
-        editor.apply();
+        sharedPreferencesUtils.setAppFirstRun(isAppFirstRun);
     }
 
     public void setUpEndingDate(String endDateStr) {
-        editor.putString(SHARED_PREF_ENDING_SEM, endDateStr);
-        editor.apply();
+        sharedPreferencesUtils.setUpEndingDate(endDateStr);
     }
 
     public void setUpStartingDate(String startDateStr) {
-        editor.putString(SHARED_PREF_STARTING_SEM, startDateStr);
-        editor.apply();
+        sharedPreferencesUtils.setUpStartingDate(startDateStr);
     }
 
     public String getStartingDate() {
-        return preferences.getString(SHARED_PREF_STARTING_SEM, null);
+        return sharedPreferencesUtils.getStartingDate();
     }
 
     public String getEndingDate() {
-        return preferences.getString(SHARED_PREF_ENDING_SEM, null);
+        return sharedPreferencesUtils.getEndingDate();
     }
 
     public void setUpCurrentStep(int step) {
-        editor.putInt(SHARED_PREF_CURRENT_STEP, step);
-        editor.apply();
+        sharedPreferencesUtils.setUpCurrentStep(step);
     }
 
     public int getSetUpCurrentStep() {
-        return preferences.getInt(SHARED_PREF_CURRENT_STEP, 1);
+        return sharedPreferencesUtils.getSetUpCurrentStep();
     }
 
     public void setSubjectListInSharedPrefrences(List<String> subjects) {
-        editor.putStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<>(subjects));
-        editor.apply();
+        sharedPreferencesUtils.setSubjectListInSharedPrefrences(subjects);
     }
 
     public List<String> getSubjectList() {
-        List<String> subjects = new ArrayList<>(preferences.getStringSet(SHARED_PREF_SUBJECTS_SET, new HashSet<>()));
-        if (subjects.isEmpty()) {
-            return new ArrayList<>();
-        } else {
-            return subjects;
-        }
+        return sharedPreferencesUtils.getSubjectList();
     }
 
     public int getCurrentDay() {
-        return preferences.getInt(SHARED_PREF_CURRENT_DAY, 1);
+        return sharedPreferencesUtils.getCurrentDay();
     }
 
     public void setCurrentDay(int currentDay) {
-        editor.putInt(SHARED_PREF_CURRENT_DAY, currentDay);
-        editor.apply();
+        sharedPreferencesUtils.setCurrentDay(currentDay);
     }
 
     public void setUpSemester(int semester) {
-        editor.putInt(SHARED_PREF_CURRENT_SEMESTER, semester);
-        editor.apply();
+        sharedPreferencesUtils.setUpSemester(semester);
     }
 
     public int getSemester() {
-        return preferences.getInt(SHARED_PREF_CURRENT_SEMESTER, 1);
+        return sharedPreferencesUtils.getSemester();
     }
 
     public void setLectureStartTimeInSharedPrefs(int lectureNo, int startTime) {
-        editor.putInt(SHARED_PREF_LECTURE_START + lectureNo, startTime);
-        editor.apply();
+        sharedPreferencesUtils.setLectureStartTimeInSharedPrefs(lectureNo, startTime);
     }
 
     public void setLectureEndTimeInSharedPrefs(int lectureNo, int endTime) {
-        editor.putInt(SHARED_PREF_LECTURE_END + lectureNo, endTime);
-        editor.apply();
+        sharedPreferencesUtils.setLectureEndTimeInSharedPrefs(lectureNo, endTime);
     }
 
     public int getStartTimeForLecture(int lectureNo) {
-        return preferences.getInt(SHARED_PREF_LECTURE_START + lectureNo, 0);
+        return sharedPreferencesUtils.getStartTimeForLecture(lectureNo);
     }
 
     public int getEndTimeForLecture(int lectureNo) {
-        return preferences.getInt(SHARED_PREF_LECTURE_END + lectureNo, 60);
+        return sharedPreferencesUtils.getEndTimeForLecture(lectureNo);
     }
 
     public int getNoOfLecturesPerDay() {
-        return preferences.getInt(SHARED_PREF_NO_OF_LECTURES_PER_DAY, 4);
+        return sharedPreferencesUtils.getNoOfLecturesPerDay();
     }
 
     public void setNoOfLecturesPerDay(int noOfLecturesPerDay) {
-        editor.putInt(SHARED_PREF_NO_OF_LECTURES_PER_DAY, noOfLecturesPerDay);
-        editor.apply();
+        sharedPreferencesUtils.setNoOfLecturesPerDay(noOfLecturesPerDay);
     }
 
     public void saveHolidaysAndInitAttendance() {
@@ -329,18 +299,18 @@ public class SetUpProcessRepository {
     }
 
     public boolean isTutorialDone() {
-        return preferences.getBoolean(SHARED_PREF_TUTORIAL, false);
+        return sharedPreferencesUtils.isTutorialDone();
     }
 
     public void setTutorialDone(boolean isDone) {
-        editor.putBoolean(SHARED_PREF_TUTORIAL, isDone).apply();
+        sharedPreferencesUtils.setTutorialDone(isDone);
     }
 
     public int getCurrentAttendanceCriteria() {
-        return preferences.getInt(KEY_ATTENDANCE_CRITERIA, 0);
+        return sharedPreferencesUtils.getCurrentAttendanceCriteria();
     }
 
     public void setCurrentAttendanceCriteria(int progress) {
-        editor.putInt(KEY_ATTENDANCE_CRITERIA, progress).apply();
+        sharedPreferencesUtils.setCurrentAttendanceCriteria(progress);
     }
 }
