@@ -13,7 +13,7 @@ import com.github.angads25.toggle.model.ToggleableView;
 import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.vyas.pranav.studentcompanion.R;
 
-class CustomSwitchPreference extends SwitchPreferenceCompat {
+public class CustomSwitchPreference extends SwitchPreferenceCompat {
 
     private final Listener mListener = new Listener();
     private boolean currentState;

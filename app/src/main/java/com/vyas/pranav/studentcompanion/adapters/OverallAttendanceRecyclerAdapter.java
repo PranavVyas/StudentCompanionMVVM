@@ -9,11 +9,13 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,10 +33,6 @@ import me.itangqi.waveloadingview.WaveLoadingView;
 
 public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttendanceEntry, OverallAttendanceRecyclerAdapter.OverallAttendanceHolder> {
 
-    private SharedPreferencesUtils sharedPreferencesUtils;
-    private int currentAttendance = 0;
-
-
     private static final DiffUtil.ItemCallback<OverallAttendanceEntry> diffCallback = new DiffUtil.ItemCallback<OverallAttendanceEntry>() {
         @Override
         public boolean areItemsTheSame(@NonNull OverallAttendanceEntry oldItem, @NonNull OverallAttendanceEntry newItem) {
@@ -49,6 +47,8 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
                     (oldItem.getTotalDays() == newItem.getTotalDays());
         }
     };
+    private SharedPreferencesUtils sharedPreferencesUtils;
+    private int currentAttendance = 0;
 
     public OverallAttendanceRecyclerAdapter() {
         super(diffCallback);
@@ -73,38 +73,76 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
     @Override
     public void onBindViewHolder(@NonNull OverallAttendanceHolder holder, int position) {
         OverallAttendanceEntry item = getItem(position);
+
+        ViewCompat.setTransitionName(holder.progressPresent, item.getSubName() + item.get_ID());
+        ViewCompat.setTransitionName(holder.tvSubject, item.getSubName() + item.getSubName());
+
         holder.tvSubject.setText(item.getSubName());
+        Context context = holder.itemView.getContext();
         int presentDays = item.getPresentDays();
         int bunkedDays = item.getBunkedDays();
         int totalDays = item.getTotalDays();
         int currentAttendanceCriteria = getCurrentAttendanceCriteria(holder.itemView.getContext());
+        //For Example currentAttendanceCriteria = 75
+        double dangerPercent = 100 - ((100 - currentAttendanceCriteria) * 3 / 3);
+        //dangerPercent = 75
+        double warningPercent = 100 - ((100 - currentAttendanceCriteria) * 2 / 3);
+        //warning Percent = 83.33
+        double safePercent = 100 - ((100 - currentAttendanceCriteria) / 3);
+        //safe Percent = 91.67
         if (totalDays == 0) {
             holder.tvAvailableToBunk.setText("Subject is not in the timetable");
             holder.progressPresent.setProgressValue(100);
             holder.progressPresent.setCenterTitle("100 %");
             return;
         }
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openDetail = new Intent(view.getContext(), OverallAttendanceDetailActivity.class);
+                Gson gson = new Gson();
+                String JsonOverallAttendance = gson.toJson(getItem(position));
+                if (getItem(position).getTotalDays() == 0) {
+                    Toast.makeText(view.getContext(), "Subject is not available in the timetable", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((Activity) view.getContext(),
+                        Pair.create(holder.progressPresent, ViewCompat.getTransitionName(holder.progressPresent)),
+                        Pair.create(holder.tvSubject, ViewCompat.getTransitionName(holder.tvSubject))).toBundle();
+                openDetail.putExtra(OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE, JsonOverallAttendance);
+                view.getContext().startActivity(openDetail, bundle);
+            }
+        };
+
+        holder.itemView.setOnClickListener(listener);
+        holder.btnMore.setOnClickListener(listener);
+
         float presentPresent = (presentDays * 100) / totalDays;
         int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (currentAttendanceCriteria / 100.0f)));
         int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
         holder.tvAvailableToBunk.setText("Available to Bunk " + daysAvailableToBunk);
         holder.progressPresent.setProgressValue((int) presentPresent);
         holder.progressPresent.setCenterTitle((int) presentPresent + " %");
-        if (presentPresent > 90) {
-            holder.cardMain.setBackgroundResource(R.color.colorSafeOverallAttendance);
+        if (presentPresent > safePercent) {
+            holder.constraintCard.setBackgroundColor(context.getResources().getColor(R.color.colorSafeOverallAttendance));
+//            holder.constraintCard.setBackgroundResource(R.color.colorSafeOverallAttendance);
             return;
         }
-        if (presentPresent > 75) {
-            holder.cardMain.setBackgroundResource(R.color.colorWarningOverallAttendance);
+        if (presentPresent > warningPercent) {
+            holder.constraintCard.setBackgroundColor(context.getResources().getColor(R.color.colorWarningOverallAttendance));
+//            holder.constraintCard.setBackgroundResource(R.color.colorWarningOverallAttendance);
             return;
         }
-        if (presentPresent < 76) {
-            holder.cardMain.setBackgroundResource(R.color.colorDangerOverallAttendance);
+        if (presentPresent > dangerPercent) {
+            holder.constraintCard.setBackgroundColor(context.getResources().getColor(R.color.colorDangerOverallAttendance));
+//            holder.constraintCard.setBackgroundResource(R.color.colorDangerOverallAttendance);
             return;
         }
     }
 
-    class OverallAttendanceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class OverallAttendanceHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.progress_recycler_overall_attendance_present_percent)
         WaveLoadingView progressPresent;
         @BindView(R.id.tv_recycler_overall_attendance_available_to_bunk)
@@ -114,30 +152,13 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         @BindView(R.id.card_recycler_overall_main)
         MaterialCardView cardMain;
         @BindView(R.id.btn_overall_attendance_more)
-        ImageButton btnMore;
+        Button btnMore;
+        @BindView(R.id.constraint_overall_attendance_card)
+        ConstraintLayout constraintCard;
 
         OverallAttendanceHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(this);
-            btnMore.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Intent openDetail = new Intent(view.getContext(), OverallAttendanceDetailActivity.class);
-            Gson gson = new Gson();
-            String JsonOverallAttendance = gson.toJson(getItem(getAdapterPosition()));
-            if (getItem(getAdapterPosition()).getTotalDays() == 0) {
-                Toast.makeText(view.getContext(), "Subject is not available in the timetable", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((Activity) view.getContext(),
-                    Pair.create(progressPresent, progressPresent.getTransitionName()),
-                    Pair.create(tvSubject, tvSubject.getTransitionName())).toBundle();
-            openDetail.putExtra(OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE, JsonOverallAttendance);
-            view.getContext().startActivity(openDetail, bundle);
         }
     }
 }

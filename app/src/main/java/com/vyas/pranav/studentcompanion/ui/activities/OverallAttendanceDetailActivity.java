@@ -4,15 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 
 import java.util.Locale;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.itangqi.waveloadingview.WaveLoadingView;
@@ -36,6 +38,10 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
     TextView tvTotalDays;
     @BindView(R.id.toolbar_overall_attendance_detail)
     Toolbar toolbar;
+    @BindView(R.id.tv_overall_attendance_detail_att_criteria)
+    TextView tvAttendanceCriteria;
+    int currentAttendanceCriteria;
+    private SharedPreferencesUtils preferencesUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,14 +53,23 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         Intent receivedData = getIntent();
+        preferencesUtils = new SharedPreferencesUtils(this);
+        currentAttendanceCriteria = preferencesUtils.getCurrentAttendanceCriteria();
         if (receivedData != null) {
             if (receivedData.hasExtra(EXTRA_OVERALL_ATTENDANCE)) {
                 String receivedJson = receivedData.getStringExtra(EXTRA_OVERALL_ATTENDANCE);
                 Gson gson = new Gson();
                 OverallAttendanceEntry entry = gson.fromJson(receivedJson, OverallAttendanceEntry.class);
                 populateUI(entry);
+
+                String transNameSubject = entry.getSubName() + entry.getSubName();
+                String transNameProgress = entry.getSubName() + entry.get_ID();
+
+                progressSubject.setTransitionName(transNameProgress);
+                tvSubject.setTransitionName(transNameSubject);
             }
         }
+
     }
 
     private void populateUI(OverallAttendanceEntry entry) {
@@ -62,7 +77,7 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
         tvTotalDays.setText(String.format(Locale.US, "%d", entry.getTotalDays()));
         tvPresentDays.setText(String.format(Locale.US, "%d", entry.getPresentDays()));
         tvBunkedDays.setText(String.format(Locale.US, "%d", entry.getBunkedDays()));
-        int leftToBunk = (int) Math.ceil(entry.getTotalDays() * 0.25) - entry.getBunkedDays();
+        int leftToBunk = (int) Math.ceil(entry.getTotalDays() * ((100.0 - currentAttendanceCriteria) / 100.0)) - entry.getBunkedDays();
         tvLeftToBunkDays.setText(String.format(Locale.US, "%d", leftToBunk));
         int precentPercent = (entry.getPresentDays() * 100) / entry.getTotalDays();
         progressSubject.setProgressValue(precentPercent);
@@ -70,5 +85,7 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
         int maxAttendance = (int) Math.ceil(((entry.getTotalDays() - entry.getBunkedDays()) * 100.0) / entry.getTotalDays());
         progressSubjectMax.setProgressValue(maxAttendance);
         progressSubjectMax.setCenterTitle(maxAttendance + " %");
+        tvAttendanceCriteria.setText("You have set Attendance criteria as : " + currentAttendanceCriteria + "%");
+
     }
 }

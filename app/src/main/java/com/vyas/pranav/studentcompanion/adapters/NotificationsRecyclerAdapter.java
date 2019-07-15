@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
 import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
@@ -92,12 +93,40 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
         holder.btnMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse(notification.getUrl()));
-                if (openLink.resolveActivity(view.getContext().getPackageManager()) != null) {
-                    view.getContext().startActivity(openLink);
-                } else {
-                    Toast.makeText(view.getContext(), "Link seems to be broken!", Toast.LENGTH_SHORT).show();
-                }
+                BottomSheetDialog mDialog = new BottomSheetDialog(view.getContext());
+                mDialog.setContentView(R.layout.item_holder_bottom_sheet_notification_event);
+                mDialog.show();
+
+                TextView tvName = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_name);
+                TextView tvDate = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_date);
+                TextView tvVenue = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_venue);
+                TextView tvExtra = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_extra);
+                Button btnOpen = mDialog.findViewById(R.id.button_holder_bottom_sheet_notification_event);
+
+                tvName.setText("Event: " + notification.getName());
+                tvDate.setText("Date: " + ConverterUtils.convertDateToString(date));
+                tvVenue.setText("Venue: " + notification.getVenue());
+                tvExtra.setText("About: " + notification.getShort_info());
+                GlideApp.with(view.getContext())
+                        .load(notification.getImage_url())
+                        .error(R.drawable.ic_caution)
+                        .placeholder(R.drawable.ic_caution)
+                        .circleCrop()
+                        .into((ImageView) mDialog.findViewById(R.id.image_holder_bottom_sheet_notification_event));
+
+                btnOpen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse(notification.getUrl()));
+                        if (openLink.resolveActivity(view.getContext().getPackageManager()) != null) {
+                            view.getContext().startActivity(openLink);
+                        } else {
+                            Toast.makeText(view.getContext(), "Link seems to be broken!", Toast.LENGTH_SHORT).show();
+                        }
+                        mDialog.dismiss();
+                    }
+                });
+
             }
         });
     }

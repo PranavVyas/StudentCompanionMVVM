@@ -13,8 +13,10 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.holder.BadgeStyle;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.vyas.pranav.studentcompanion.R;
@@ -124,7 +126,7 @@ public class NavigationDrawerUtil {
                         return false;
                     }
                 });
-        PrimaryDrawerItem myProfile = new PrimaryDrawerItem()
+        SecondaryDrawerItem myProfile = new SecondaryDrawerItem()
                 .withIdentifier(ID_MY_PROFILE)
                 .withName(R.string.navigation_my_profile)
                 .withIcon(R.drawable.ic_profile)
@@ -135,7 +137,7 @@ public class NavigationDrawerUtil {
                         return false;
                     }
                 });
-        PrimaryDrawerItem aboutApp = new PrimaryDrawerItem()
+        SecondaryDrawerItem aboutApp = new SecondaryDrawerItem()
                 .withIdentifier(ID_ABOUT_APP)
                 .withName(R.string.navigation_about_this_app)
                 .withIcon(R.mipmap.ic_launcher_round)
@@ -146,7 +148,7 @@ public class NavigationDrawerUtil {
                         return false;
                     }
                 });
-        PrimaryDrawerItem aboutDeveloper = new PrimaryDrawerItem()
+        SecondaryDrawerItem aboutDeveloper = new SecondaryDrawerItem()
                 .withIdentifier(ID_ABOUT_DEVELOPER)
                 .withName(R.string.navigation_about_developer)
                 .withIcon(R.drawable.ic_developer)
@@ -193,7 +195,7 @@ public class NavigationDrawerUtil {
 
         PrimaryDrawerItem resources = new PrimaryDrawerItem()
                 .withIdentifier(ID_RESOURCES)
-                .withName("Resources")
+                .withName(R.string.navigation_resources)
                 .withIcon(R.drawable.ic_resources_magic_wand)
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -232,14 +234,16 @@ public class NavigationDrawerUtil {
                         todayAttendance,
                         overallAttendance,
                         resources,
+                        notifications,
+                        new DividerDrawerItem(),
 //                        holidays,
 //                        timetable,
 //                        marketplace,
                         myProfile,
-                        settings,
-                        notifications,
                         aboutApp,
                         aboutDeveloper,
+                        new DividerDrawerItem(),
+                        settings,
                         signOut,
                         deleteAccount
                 ).build();

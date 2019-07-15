@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--CUSTOM BUTTONS-->
+    <style name="MyCustomMaterialButtonIcon" parent="Widget.MaterialComponents.Button.Icon">
+        <item name="backgroundTint">?attr/colorSecondaryVariant</item>
+    </style>
+
+    <style name="MyCustomMaterialButton" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">?attr/colorSecondaryVariant</item>
+    </style>
+
+    <style name="MyMaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">4dp</item>
+        <item name="cardElevation">2dp</item>
+    </style>
+
+    <!--Custom Material Toolbar-->
+    <style name="MyCustomMaterialToolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:minHeight">?actionBarSize</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <!--Outlined Text Input Layout-->
+    <style name="MyCustomOutlinedBoxTextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="errorTextColor">@color/accent</item>
+    </style>
+
+    <!--Material Edit Text-->
+    <style name="MyCustomMaterialEditTextInput" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:singleLine">true</item>
+    </style>
+</resources>

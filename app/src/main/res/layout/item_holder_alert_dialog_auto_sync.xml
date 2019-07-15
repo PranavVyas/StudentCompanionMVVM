@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="256dp"
+    android:layout_width="match_parent"
+    app:layout_behavior="@string/bottom_sheet_behavior"
     android:layout_height="wrap_content">
 
 
@@ -31,21 +32,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView56" />
+        app:layout_constraintTop_toBottomOf="@+id/textView56_card" />
 
-    <TextView
-        android:id="@+id/textView56"
-        style="@style/MyMaterialTextView.SmallTextViewBody2"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/textView56_card"
+        style="@style/MyMaterialCardView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Enabling Auto Sync will cause use of more mobile data and cpu usage as it will automatically update it self when there is any change in db including new document uploaded or removed Automatic Sync needs and active internet connection and will guarantee latest updates"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView52" />
+        app:layout_constraintTop_toBottomOf="@+id/textView52">
+
+        <TextView
+            android:id="@+id/textView56"
+            style="@style/MyMaterialTextView.SmallTextViewBody2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Enabling Auto Sync will cause use of more mobile data and cpu usage as it will automatically update it self when there is any change in db including new document uploaded or removed Automatic Sync needs and active internet connection and will guarantee latest updates" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/tv_holder_atert_dialog_auto_sync"

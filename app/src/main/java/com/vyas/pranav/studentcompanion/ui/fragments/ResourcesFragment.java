@@ -51,7 +51,7 @@ public class ResourcesFragment extends Fragment {
         Intent openDigitalLibrary = new Intent(getContext(), DigitalLibraryActivity.class);
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
                 .toBundle();
-        startActivity(openDigitalLibrary, bundle);
+        startActivity(openDigitalLibrary);
     }
 
     @OnClick(R.id.card_resources_fragment_timetable)
@@ -61,7 +61,7 @@ public class ResourcesFragment extends Fragment {
         intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.TIME_TABLE);
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
                 .toBundle();
-        startActivity(intent, bundle);
+        startActivity(intent);
     }
 
     @OnClick(R.id.card_resources_fragment_buy_sell)
@@ -70,7 +70,7 @@ public class ResourcesFragment extends Fragment {
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
                 .toBundle();
         intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.MARKETPLACE_ACTIVITY);
-        startActivity(intent, bundle);
+        startActivity(intent);
     }
 
     @OnClick(R.id.card_resources_fragment_holidays)
@@ -79,7 +79,7 @@ public class ResourcesFragment extends Fragment {
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
                 .toBundle();
         intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.HOLIDAYS);
-        startActivity(intent, bundle);
+        startActivity(intent);
     }
 
     private void startInstruction(Activity activity) {

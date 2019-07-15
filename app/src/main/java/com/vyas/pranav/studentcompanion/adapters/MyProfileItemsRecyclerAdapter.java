@@ -11,11 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
@@ -24,8 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileItemsRecyclerAdapter.MyProfileItemHolder> {
-
-    private OnItemSoldButtonClickListener listener;
 
     private static final DiffUtil.ItemCallback<Pair> diffCallback = new DiffUtil.ItemCallback<Pair>() {
         @Override
@@ -47,6 +45,7 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
                     (oldItemModel.getPrice() == newItemModel.getPrice());
         }
     };
+    private OnItemSoldButtonClickListener listener;
 
     public MyProfileItemsRecyclerAdapter() {
         super(diffCallback);
@@ -93,7 +92,7 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
         View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertDialog(item, idOfItem, v.getContext());
+                showBottomSheet(item, idOfItem, v.getContext());
             }
         };
         holder.tvPrice.setOnClickListener(clickListener);
@@ -113,14 +112,17 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
         this.listener = listener;
     }
 
-    private void showAlertDialog(ItemModel item, String id, Context context) {
-        View alertView = LayoutInflater.from(context).inflate(R.layout.item_holder_alert_dialog_marketplace_sell, null);
-        TextView tvDialogName = alertView.findViewById(R.id.tv_marketplace_sell_item_name);
-        TextView tvDialogPrice = alertView.findViewById(R.id.tv_marketplace_sell_item_price);
-        TextView tvDialogInfo = alertView.findViewById(R.id.tv_marketplace_sell_item_info);
-        TextView tvDialogContact = alertView.findViewById(R.id.tv_marketplace_sell_item_contact);
-        TextView tvDialogCategory = alertView.findViewById(R.id.tv_marketplace_sell_item_category);
-        ImageView imageItem = alertView.findViewById(R.id.image_marketplace_sell_item);
+    private void showBottomSheet(ItemModel item, String id, Context context) {
+        BottomSheetDialog mDialog = new BottomSheetDialog(context);
+        mDialog.setContentView(R.layout.item_holder_alert_dialog_marketplace_sell);
+        mDialog.show();
+
+        TextView tvDialogName = mDialog.findViewById(R.id.tv_marketplace_sell_item_name);
+        TextView tvDialogPrice = mDialog.findViewById(R.id.tv_marketplace_sell_item_price);
+        TextView tvDialogInfo = mDialog.findViewById(R.id.tv_marketplace_sell_item_info);
+        TextView tvDialogContact = mDialog.findViewById(R.id.tv_marketplace_sell_item_contact);
+        TextView tvDialogCategory = mDialog.findViewById(R.id.tv_marketplace_sell_item_category);
+        ImageView imageItem = mDialog.findViewById(R.id.image_marketplace_sell_item);
 
         tvDialogCategory.setText(item.getCategory());
         tvDialogName.setText(item.getName());
@@ -132,11 +134,8 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
                 .circleCrop()
                 .into(imageItem);
 
-        AlertDialog alertDialog = new AlertDialog.Builder(context)
-                .setView(alertView)
-                .show();
 
-        Button btnSold = alertDialog.findViewById(R.id.btn_marketplace_sell_item_action);
+        Button btnSold = mDialog.findViewById(R.id.btn_marketplace_sell_item_action);
         if (btnSold != null) {
             btnSold.setText("Sold It!");
             btnSold.setOnClickListener(new View.OnClickListener() {
@@ -144,7 +143,7 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
                 public void onClick(View v) {
                     if (listener != null) {
                         listener.onItemSoldClicked(id);
-                        alertDialog.dismiss();
+                        mDialog.dismiss();
                     } else {
                         throw new NullPointerException("Listener is not Attached properly");
                     }
@@ -153,6 +152,10 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
         } else {
             Toast.makeText(context, "Button is empty", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public interface OnItemSoldButtonClickListener {
+        void onItemSoldClicked(String id);
     }
 
     class MyProfileItemHolder extends RecyclerView.ViewHolder {
@@ -170,9 +173,5 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-    }
-
-    public interface OnItemSoldButtonClickListener {
-        void onItemSoldClicked(String id);
     }
 }

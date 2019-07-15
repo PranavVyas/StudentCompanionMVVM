@@ -5,7 +5,6 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -25,7 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
@@ -39,6 +37,8 @@ import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.firebase.Boo
 import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.viewmodels.DigitalLibraryViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,18 +153,18 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
     void onFabClicked() {
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         Intent intent = new Intent(this, UploadBookActivity.class);
-        startActivity(intent, bundle);
+        startActivity(intent);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_digital_library_sync:
                 onSyncClicked();
                 break;
 
             case R.id.menu_digital_library_auto_sync:
-                showAlertDialogForAutoSync();
+                showBottomSheetForAutoSync();
                 break;
 
             default:
@@ -173,48 +173,24 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
         return super.onOptionsItemSelected(item);
     }
 
-    private void showAlertDialogForAutoSync() {
-        View view = LayoutInflater.from(this).inflate(R.layout.item_holder_alert_dialog_auto_sync, null, false);
-        TextView status = view.findViewById(R.id.tv_holder_atert_dialog_auto_sync);
+    private void showBottomSheetForAutoSync() {
+        BottomSheetDialog mDialog = new BottomSheetDialog(this);
+        mDialog.setContentView(R.layout.item_holder_alert_dialog_auto_sync);
+        mDialog.show();
+        TextView status = mDialog.findViewById(R.id.tv_holder_atert_dialog_auto_sync);
         status.setText("Current Status : " + (digitalLibraryViewModel.getStateOfAutoSync() ? "Enabled" : "Disabled"));
-        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
-//                .setTitle("Auto Sync")
-//                .setPositiveButton("Enable it", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        digitalLibraryViewModel.changeAutoSync(true);
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .setNegativeButton("Disable it", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        digitalLibraryViewModel.changeAutoSync(false);
-//                        dialog.dismiss();
-//                    }
-//                })
-//                .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                })
-                .setView(view)
-                .setCancelable(true)
-                .create();
-        dialog.show();
-        dialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_enable).setOnClickListener(new View.OnClickListener() {
+        mDialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_enable).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 digitalLibraryViewModel.changeAutoSync(true);
-                dialog.dismiss();
+                mDialog.dismiss();
             }
         });
-        dialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_disable).setOnClickListener(new View.OnClickListener() {
+        mDialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_disable).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 digitalLibraryViewModel.changeAutoSync(false);
-                dialog.dismiss();
+                mDialog.dismiss();
             }
         });
     }

@@ -45,7 +45,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
             } else {
                 Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
                 Intent openTutorial = new Intent(this, TutorialActivity.class);
-                startActivity(openTutorial, bundle);
+                startActivity(openTutorial);
             }
             finish();
             return;
@@ -125,7 +125,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         setUpViewModel.saveHolidaysAndInitAttendance();
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         Intent intent = new Intent(this, TutorialActivity.class);
-        startActivity(intent, bundle);
+        startActivity(intent);
         setUpViewModel.setFirstRun(false);
         finish();
     }

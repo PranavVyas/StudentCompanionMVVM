@@ -48,7 +48,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:padding="4dp"
-            android:transitionName="@string/trans_overall_attendance_sub_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_overall_attendance_detail"
@@ -61,7 +60,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:transitionName="@string/trans_overall_attendance_progress"
             app:layout_constraintEnd_toStartOf="@+id/progress_overall_attendance_detail_max_attendance"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_overall_attendance_detail_subject"
@@ -190,30 +188,26 @@
 
         <TextView
             android:id="@+id/textView6"
+            style="@style/MyMaterialTextView.SmallTextViewBody1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
             android:text="Bunked\nLectures"
             android:textAlignment="center"
-            style="@style/MyMaterialTextView.SmallTextViewBody1"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView5"
             app:layout_constraintStart_toStartOf="@+id/imageView5"
             app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
         <TextView
             android:id="@+id/textView8"
+            style="@style/MyMaterialTextView.SmallTextViewBody1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
             android:text="Available\nto Bunk"
             android:textAlignment="center"
-            style="@style/MyMaterialTextView.SmallTextViewBody1"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/imageView4"
             app:layout_constraintStart_toStartOf="@+id/imageView4"
             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
@@ -293,6 +287,29 @@
             app:layout_constraintEnd_toEndOf="@+id/progress_overall_attendance_detail_max_attendance"
             app:layout_constraintStart_toStartOf="@+id/progress_overall_attendance_detail_max_attendance"
             app:layout_constraintTop_toBottomOf="@+id/progress_overall_attendance_detail_max_attendance" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/MyMaterialCardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+            <TextView
+                android:id="@+id/tv_overall_attendance_detail_att_criteria"
+                style="@style/MyMaterialTextView.SmallTextViewBody1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="TextView"
+                android:textStyle="italic" />
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

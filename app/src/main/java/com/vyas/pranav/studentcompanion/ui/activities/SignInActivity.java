@@ -72,7 +72,7 @@ public class SignInActivity extends AppCompatActivity {
         } else {
             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
             Intent startSetUp = new Intent(this, SetUpActivity.class);
-            startActivity(startSetUp, bundle);
+            startActivity(startSetUp);
             finish();
         }
     }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Custom Toolbar TextView-->
+    <style name="MyCustomToolbarTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">?attr/toolbar_text_view_color</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/product_sans_bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!--Custom TextViews-->
+    <style name="MyMaterialTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/material_font</item>
+    </style>
+
+    <style name="MyMaterialTextView.SmallTextViewBody2" parent="MyMaterialTextView">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
+    </style>
+
+    <style name="MyMaterialTextView.SmallTextViewBody1" parent="MyMaterialTextView">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+    </style>
+
+    <style name="MyMaterialTextView.SmallTextViewBody2.Bold" parent="MyMaterialTextView.SmallTextViewBody2">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MyMaterialTextView.SmallTextViewBody1.Bold" parent="MyMaterialTextView.SmallTextViewBody1">
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="MyMaterialTextView.MediumTextViewHeadLine6" parent="MyMaterialTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6
+        </item>
+    </style>
+
+    <style name="MyMaterialTextView.MediumTextViewHeadLine5" parent="MyMaterialTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline5
+        </item>
+    </style>
+
+    <style name="MyMaterialTextView.MediumTextViewHeadLine4" parent="MyMaterialTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline4
+        </item>
+    </style>
+
+    <!--<style name="MyMaterialTextView.MediumTextViewHeadLine6.White" parent="MyMaterialTextView">--><!--<item name="android:textStyle">bold</item>--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6--><!--</item>--><!--</style>-->
+
+    <!--<style name="MyMaterialTextView.MediumTextViewHeadLine5.White" parent="MyMaterialTextView">--><!--<item name="android:textStyle">bold</item>--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline5--><!--</item>--><!--</style>-->
+
+    <!--<style name="MyMaterialTextView.MediumTextViewHeadLine4.White" parent="MyMaterialTextView">--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textStyle">bold</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline4--><!--</item>--><!--</style>-->
+
+    <!--<style name="MyMaterialTextView.SmallTextViewBody2.White" parent="MyMaterialTextView">--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>--><!--</style>-->
+
+    <!--<style name="MyMaterialTextView.SmallTextViewBody1.White" parent="MyMaterialTextView">--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>--><!--</style>-->
+</resources>

@@ -1,11 +1,11 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 
@@ -79,19 +79,27 @@ public class DigitalLibraryRecyclerAdapter extends ListAdapter<DigitalLibraryEnt
 
         @Override
         public void onClick(View v) {
-//            Toast.makeText(v.getContext(), "Link is : " + getItem(getAdapterPosition()).getBookUrl(), Toast.LENGTH_SHORT).show();
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(v.getContext());
-            builder.setTitle("Attention!")
-                    .setMessage("Link Provided with this document is going to open now in browser. You can download file with normal downloader! I am planing to add download manager later!!")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse(getItem(getAdapterPosition()).getBookUrl()));
-                            v.getContext().startActivity(openLink);
-                            dialogInterface.dismiss();
-                        }
-                    });
-            builder.create().show();
+            BottomSheetDialog mDialog = new BottomSheetDialog(v.getContext());
+            mDialog.setContentView(R.layout.item_holder_sheet_open_link_digital);
+            mDialog.show();
+
+            TextView tvName = mDialog.findViewById(R.id.tv_holder_botttom_sheet_digital_name);
+            TextView tvExtra = mDialog.findViewById(R.id.tv_holder_botttom_sheet_digital_extra);
+            TextView tvAuthor = mDialog.findViewById(R.id.tv_holder_botttom_sheet_digital_author);
+            TextView tvSubjectDialog = mDialog.findViewById(R.id.tv_holder_botttom_sheet_digital_subject);
+            Button btnOk = mDialog.findViewById(R.id.btn_holder_bottom_sheet_digital_open_in_browser);
+
+            DigitalLibraryEntry book = getItem(getAdapterPosition());
+            tvAuthor.setText(book.getAuthorName());
+            tvName.setText(book.getBookName());
+            tvSubjectDialog.setText(book.getSubject());
+            tvExtra.setText(book.getExtraInfo());
+
+            btnOk.setOnClickListener(view -> {
+                Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse(getItem(getAdapterPosition()).getBookUrl()));
+                v.getContext().startActivity(openLink);
+                mDialog.dismiss();
+            });
         }
     }
 }

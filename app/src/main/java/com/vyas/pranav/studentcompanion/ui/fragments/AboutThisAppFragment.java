@@ -57,6 +57,6 @@ public class AboutThisAppFragment extends Fragment {
     void openSourceLicensesClicked() {
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
         Intent intent = new Intent(getContext(), OpenSourceInformationActivity.class);
-        startActivity(intent, bundle);
+        startActivity(intent);
     }
 }

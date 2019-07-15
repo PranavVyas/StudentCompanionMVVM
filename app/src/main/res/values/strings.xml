@@ -100,12 +100,13 @@
     <string name="title_home">Home</string>
     <string name="title_attention">Attention</string>
 
-    <string name="main_message_delete_acc">Deleting account will remove all the attendance data and account from server as well as locally Please proceed by touching \"Delete Anyways\" Or Click On \"Cancel\" to cancel Application will shut down after deleting account, You have to manually start again Thank You!</string>
+    <string name="main_message_delete_acc">\u25CF Deleting account will remove all the attendance data and account from server as well as locally.\n\u25CF Application will shut down after deleting account, You have to manually start again.\n\u25CF Please proceed by touching \"OK\" to continue Or Click On \"Cancel\" to cancel.</string>
     <string name="main_positive_btn_delete_acc">Delete Anyways...</string>
 
     <string name="btn_cancel">Cancel</string>
     <string name="btn_ok">OK</string>
 
     <string name="main_neutral_btn_delete_acc_sign_out_instead">Sign out Instead</string>
+    <string name="main_sheet_delete_account">Do you want to Delete Account?</string>
 
 </resources>

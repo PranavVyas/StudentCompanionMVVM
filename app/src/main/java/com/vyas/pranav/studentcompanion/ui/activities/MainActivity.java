@@ -3,11 +3,12 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 import android.app.ActivityManager;
 import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.holder.StringHolder;
@@ -167,64 +168,60 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_SIGN_OUT:
-                new MaterialAlertDialogBuilder(MainActivity.this)
-                        .setMessage("Signing out will not remove any data of attendance\nClick ok to sign out\nYou will be redirected to the sign in page to sign in again")
-                        .setTitle(R.string.title_attention)
-                        .setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                signOutUser();
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton(R.string.btn_cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create().show();
+                BottomSheetDialog mSignOutSheet = new BottomSheetDialog(this);
+                mSignOutSheet.setContentView(R.layout.item_holder_bottom_sheet_sign_out);
+                mSignOutSheet.show();
+                Button signOutBtn = mSignOutSheet.findViewById(R.id.btn_holder_bottom_sheet_ok);
+                Button cancel = mSignOutSheet.findViewById(R.id.btn_holder_bottom_sheet_cancel);
+                signOutBtn.setOnClickListener(view -> {
+                    signOutUser();
+                    mSignOutSheet.dismiss();
+                });
+                cancel.setOnClickListener(view -> mSignOutSheet.dismiss());
                 break;
 
             case NavigationDrawerUtil.ID_DELETE_ACCOUNT:
-                new MaterialAlertDialogBuilder(MainActivity.this)
-                        .setCancelable(false)
-                        .setTitle(getString(R.string.title_attention))
-                        .setMessage(getString(R.string.main_message_delete_acc))
-                        .setPositiveButton(getString(R.string.main_positive_btn_delete_acc), new DialogInterface.OnClickListener() {
+                BottomSheetDialog mDeleteSheet = new BottomSheetDialog(this);
+                mDeleteSheet.setContentView(R.layout.item_holder_bottom_sheet_delete_account);
+                mDeleteSheet.show();
+                Button btnDelete = mDeleteSheet.findViewById(R.id.btn_holder_bottom_sheet_delete_ok);
+                Button btnCancel = mDeleteSheet.findViewById(R.id.btn_holder_bottom_sheet_delete_cancel);
+                Button btnSignOut = mDeleteSheet.findViewById(R.id.btn_holder_bottom_sheet_delete_sign_out);
+
+                btnDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "Deleting Account...", Toast.LENGTH_SHORT).show();
+                        mDeleteSheet.dismiss();
+                        AuthUI.getInstance().delete(MainActivity.this).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainActivity.this, "Deleting Account...", Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
-                                AuthUI.getInstance().delete(MainActivity.this).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        mainViewModel.setCurrUser(null);
-                                        Toast.makeText(MainActivity.this, "Account Successfully Deleted...\nRedirecting to sign In Page...", Toast.LENGTH_SHORT).show();
-                                        Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
-                                        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle();
-                                        startActivity(startSignInActivity, bundle);
-                                        ((ActivityManager) MainActivity.this.getSystemService(Context.ACTIVITY_SERVICE)).clearApplicationUserData();
-                                        MainActivity.this.finish();
-                                    }
-                                });
+                            public void onComplete(@NonNull Task<Void> task) {
+                                mainViewModel.setCurrUser(null);
+                                Toast.makeText(MainActivity.this, "Account Successfully Deleted...\nRedirecting to sign In Page...", Toast.LENGTH_SHORT).show();
+                                Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
+                                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle();
+                                startActivity(startSignInActivity);
+                                ((ActivityManager) MainActivity.this.getSystemService(Context.ACTIVITY_SERVICE)).clearApplicationUserData();
+                                MainActivity.this.finish();
                             }
-                        })
-                        .setNegativeButton(getString(R.string.btn_cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNeutralButton(getString(R.string.main_neutral_btn_delete_acc_sign_out_instead), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                signOutUser();
-                            }
-                        })
-                        .create()
-                        .show();
+                        });
+                    }
+                });
+
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mDeleteSheet.dismiss();
+                    }
+                });
+
+                btnSignOut.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        signOutUser();
+                        mDeleteSheet.dismiss();
+                    }
+                });
         }
     }
 

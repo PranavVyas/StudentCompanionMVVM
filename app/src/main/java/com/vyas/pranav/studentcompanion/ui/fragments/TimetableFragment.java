@@ -1,11 +1,11 @@
 package com.vyas.pranav.studentcompanion.ui.fragments;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +21,7 @@ import com.evrencoskun.tableview.TableView;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.github.angads25.toggle.model.ToggleableView;
 import com.github.angads25.toggle.widget.LabeledSwitch;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.TimetableTableAdapter;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
@@ -265,23 +265,22 @@ public class TimetableFragment extends Fragment {
 
     @OnClick(R.id.btn_timetable_frag_sem_info)
     void semInfoClicked() {
-        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(getContext());
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.item_holder_alert_dialog_sem_info, null, false);
-        TextView tvSemNo = dialogView.findViewById(R.id.tv_holder_dialog_sem_info_sem);
-        TextView tvStartDate = dialogView.findViewById(R.id.tv_holder_dialog_sem_info_start_date);
-        TextView tvEndDate = dialogView.findViewById(R.id.tv_holder_dialog_sem_info_end_date);
-        tvSemNo.setText(":  " + timetableViewModel.getSemInfo());
-        tvStartDate.setText(":  " + timetableViewModel.getStartDate());
-        tvEndDate.setText(":  " + timetableViewModel.getEndDate());
-        dialogBuilder.setView(dialogView);
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
+        mDialog.setContentView(R.layout.item_holder_alert_dialog_sem_info);
+        mDialog.show();
+        TextView tvSemNo = mDialog.findViewById(R.id.tv_holder_dialog_sem_info_sem);
+        TextView tvStartDate = mDialog.findViewById(R.id.tv_holder_dialog_sem_info_start_date);
+        TextView tvEndDate = mDialog.findViewById(R.id.tv_holder_dialog_sem_info_end_date);
+        tvSemNo.setText("" + timetableViewModel.getSemInfo());
+        tvStartDate.setText("" + timetableViewModel.getStartDate());
+        tvEndDate.setText("" + timetableViewModel.getEndDate());
+        Button btnOk = mDialog.findViewById(R.id.btn_holder_dialog_sem_info_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void onClick(View view) {
+                mDialog.dismiss();
             }
         });
-        dialogBuilder.setTitle("Semester Information");
-        dialogBuilder.create().show();
     }
 
 }

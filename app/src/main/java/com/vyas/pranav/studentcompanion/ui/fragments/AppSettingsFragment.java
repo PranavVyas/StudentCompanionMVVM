@@ -255,7 +255,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             public boolean onPreferenceClick(Preference preference) {
                 Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
                 Intent intent = new Intent(getContext(), AutoAttendanceSubjectListActivity.class);
-                startActivity(intent, bundle);
+                startActivity(intent);
                 return false;
             }
         });
@@ -277,9 +277,6 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
                         }
                         return false;
                     }
-                } else {
-                    //TODO handling switch action accordingly
-//                    Toast.makeText(getContext(), "Disabled the Silent Mode", Toast.LENGTH_SHORT).show();
                 }
                 appSettingsViewModel.toggleSmartSilent();
                 return true;
@@ -292,7 +289,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             public boolean onPreferenceClick(Preference preference) {
                 Intent intent = new Intent(getContext(), NotificationPreferenceActivity.class);
                 Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                startActivity(intent, bundle);
+                startActivity(intent);
                 return true;
             }
         });
@@ -306,9 +303,14 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
                 Toast.makeText(getContext(), "Thanks For Permission", Toast.LENGTH_SHORT).show();
             } else {
                 if (isPermissionGranted()) {
+                    //TODO turnoff switch here
+//                    ((CustomSwitchPreference)getPreferenceScreen().findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
+//                    ((CustomSwitchPreference)findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
                     Toast.makeText(getContext(), "Thank You For Permission! Please Enable it now", Toast.LENGTH_LONG).show();
                 } else {
                     //TODO turn off switch here
+//                    ((CustomSwitchPreference)getPreferenceScreen().findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
+//                    ((CustomSwitchPreference)findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
                     Toast.makeText(getContext(), "Please Provide me with permission", Toast.LENGTH_LONG).show();
                 }
             }

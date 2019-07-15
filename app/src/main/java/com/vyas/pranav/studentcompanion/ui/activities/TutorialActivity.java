@@ -82,7 +82,7 @@ public class TutorialActivity extends FancyWalkthroughActivity {
     private void startMainActivity() {
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         Intent startMain = new Intent(this, MainActivity.class);
-        startActivity(startMain, bundle);
+        startActivity(startMain);
         tutorialViewModel.setTutorialComplete(true);
         finish();
     }

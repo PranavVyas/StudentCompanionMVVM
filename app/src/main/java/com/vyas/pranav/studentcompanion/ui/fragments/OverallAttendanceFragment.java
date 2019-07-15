@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.OverallAttendanceRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
@@ -79,7 +79,9 @@ public class OverallAttendanceFragment extends Fragment {
 
     @OnClick(R.id.button2)
     void clickedINfoButton() {
-        Toast.makeText(getContext(), "Please Click on the Subject card to know more!", Toast.LENGTH_SHORT).show();
+        BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
+        mDialog.setContentView(R.layout.item_holder_bottom_sheet_overall_info);
+        mDialog.show();
     }
 
     private void showInstruction(Activity activity) {

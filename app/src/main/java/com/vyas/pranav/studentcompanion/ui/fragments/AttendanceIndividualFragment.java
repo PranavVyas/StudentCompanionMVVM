@@ -115,7 +115,7 @@ public class AttendanceIndividualFragment extends Fragment {
                         Intent intent = new Intent(getContext(), AttendanceIndividualActivity.class);
                         intent.putExtra(AttendanceIndividualActivity.EXTRA_DATE, selectedDate);
                         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                        startActivity(intent, bundle);
+                        startActivity(intent);
                         //Toast.makeText(getContext(), "i = "+i+" i1 = "+i1+" i2 = "+i2, Toast.LENGTH_SHORT).show();
                     }
                 },

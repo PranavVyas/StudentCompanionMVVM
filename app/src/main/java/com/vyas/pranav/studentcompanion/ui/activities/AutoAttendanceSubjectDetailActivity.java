@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -45,6 +44,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -57,6 +57,7 @@ import com.schibstedspain.leku.LocationPickerActivity;
 import com.schibstedspain.leku.LocationPickerActivityKt;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
+import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.AutoAttendanceHelper;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.viewmodels.AutoAttendanceSubjectDetailViewModel;
@@ -74,11 +75,11 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         , GoogleApiClient.OnConnectionFailedListener
         , OnMapReadyCallback {
 
+    private final AutoAttendanceHelper helper = new AutoAttendanceHelper(this);
     @BindView(R.id.tv_auto_attendance_subject_detail_name)
     TextView tvName;
     @BindView(R.id.tv_auto_attendance_subject_detail_subject)
     TextView tvSubject;
-    private final AutoAttendanceHelper helper = new AutoAttendanceHelper(this);
     @BindView(R.id.constraint_auto_attendance_main)
     ConstraintLayout constraintMain;
 
@@ -90,7 +91,8 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     Button btnEditPlace;
     @BindView(R.id.btn_frame_auto_attendance_subject_detail_placeholder_retry)
     Button btnRetry;
-
+    @BindView(R.id.toolbar_auto_attendance_subject_detail)
+    Toolbar toolbar;
     private GoogleApiClient mClient;
     private AutoAttendanceSubjectDetailViewModel autoAttendanceSubjectDetailViewModel;
     private String currSubject;
@@ -103,12 +105,10 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     private PendingIntent locationUpdatePendingIntent;
     private LiveData<AutoAttendancePlaceEntry> placeEntry;
     private AutoAttendancePlaceEntry currPlaceEntry;
-    @BindView(R.id.toolbar_auto_attendance_subject_detail)
-    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        SharedPreferencesRepository.setUserTheme(this);
+        SharedPreferencesRepository.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_attendance_subject_detail);
         ButterKnife.bind(this);
@@ -166,29 +166,23 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     }
 
     @OnClick(R.id.btn_frame_auto_attendance_subject_detail_placeholder_show_location)
-    void clickedshowLocation() {
+    void clickedShowLocation() {
         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
     }
 
     private void openSettingsDialog() {
         new MaterialAlertDialogBuilder(this)
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Permission is denied...\nPlease Allow Permission first...", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        AutoAttendanceSubjectDetailActivity.this.finish();
-                    }
-                }).setPositiveButton("GO TO SETTINGS", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent openSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                openSettings.setData(uri);
-                startActivityForResult(openSettings, 101);
-                dialog.dismiss();
-                AutoAttendanceSubjectDetailActivity.this.finish();
-            }
+                .setNegativeButton("CANCEL", (dialog, which) -> {
+                    Toast.makeText(AutoAttendanceSubjectDetailActivity.this, "Permission is denied...\nPlease Allow Permission first...", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    AutoAttendanceSubjectDetailActivity.this.finish();
+                }).setPositiveButton("GO TO SETTINGS", (dialog, which) -> {
+            Intent openSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package", getPackageName(), null);
+            openSettings.setData(uri);
+            startActivityForResult(openSettings, 101);
+            dialog.dismiss();
+            AutoAttendanceSubjectDetailActivity.this.finish();
         }).setMessage("\u25CF Location Permission is needed for setting up GeoFences\n\u25CF Please give permission through settings")
                 .setTitle("Permission Denied")
                 .setCancelable(false)
@@ -316,27 +310,29 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
 //            Toast.makeText(this, "Please Install Google Play Services", Toast.LENGTH_SHORT).show();
 //            e.printStackTrace();
 //        }
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
-                .setMessage("\u25CF You will be redirected to select place where you would be at the time of lecture/lab.\u25CF No need to be perfect here, A location in the radius of 35 meter is valid")
-                .setTitle("Edit Configured Place")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        Intent locationPickerIntent = new LocationPickerActivity.Builder()
-                                .withGeolocApiKey(getString(R.string.api_key))
-                                .withDefaultLocaleSearchZone()
-                                .shouldReturnOkOnBackPressed()
-                                .withStreetHidden()
-                                .withCityHidden()
-                                .withZipCodeHidden()
-                                .withGoogleTimeZoneEnabled()
-                                .withUnnamedRoadHidden()
-                                .build(AutoAttendanceSubjectDetailActivity.this);
-                        startActivityForResult(locationPickerIntent, Constants.RC_OPEN_PLACE_PICKER_CUSTOM);
-                    }
-                });
-        builder.create().show();
+
+        BottomSheetDialog mDialog = new BottomSheetDialog(this);
+        mDialog.setContentView(R.layout.item_holder_bottom_sheet_auto_atten_sub_detail_edit_place);
+        mDialog.show();
+
+        TextView tv = mDialog.findViewById(R.id.tv_holder_bottom_sheet_auto_att_sub_detail);
+        Button btnEditPlaceDialog = mDialog.findViewById(R.id.btn_holder_bottom_sheet_auto_att_sub_detail);
+
+        tv.setText("Do you want to Change Place for Subject: " + currSubject + " ?");
+        btnEditPlaceDialog.setOnClickListener(view -> {
+            mDialog.dismiss();
+            Intent locationPickerIntent = new LocationPickerActivity.Builder()
+                    .withGeolocApiKey(getString(R.string.api_key))
+                    .withDefaultLocaleSearchZone()
+                    .shouldReturnOkOnBackPressed()
+                    .withStreetHidden()
+                    .withCityHidden()
+                    .withZipCodeHidden()
+                    .withGoogleTimeZoneEnabled()
+                    .withUnnamedRoadHidden()
+                    .build(AutoAttendanceSubjectDetailActivity.this);
+            startActivityForResult(locationPickerIntent, Constants.RC_OPEN_PLACE_PICKER_CUSTOM);
+        });
     }
 
     @Override
