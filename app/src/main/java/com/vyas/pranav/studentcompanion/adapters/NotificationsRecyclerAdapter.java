@@ -2,6 +2,7 @@ package com.vyas.pranav.studentcompanion.adapters;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
-import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
-import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 
 import java.util.Date;
 
@@ -67,14 +66,16 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
         holder.tvShortInfo.setText(notification.getShort_info());
 
         if (notification.getType() == Constants.NOTI_TYPE_LOW_ATTENDANCE) {
-            holder.btnMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent openOverallAttendance = new Intent(holder.itemView.getContext(), MainActivity.class);
-                    openOverallAttendance.putExtra(Constants.EXTRA_MAIN_ACT_OPEN_OVERALL, NavigationDrawerUtil.ID_OVERALL_ATTENDANCE);
-                    holder.itemView.getContext().startActivity(openOverallAttendance);
-                }
-            });
+            holder.btnMore.setVisibility(View.GONE);
+//                    .setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent openOverallAttendance = new Intent(holder.itemView.getContext(), MainActivity.class);
+//                    openOverallAttendance.putExtra(Constants.EXTRA_MAIN_ACT_OPEN_OVERALL, NavigationDrawerUtil.ID_OVERALL_ATTENDANCE);
+//                    holder.itemView.getContext().startActivity(openOverallAttendance);
+//                    Toast.makeText(view.getContext(), "Intent Fired", Toast.LENGTH_SHORT).show();
+//                }
+//            });
             GlideApp.with(holder.itemView)
                     .load(R.drawable.ic_caution)
                     .error(R.drawable.ic_caution)
@@ -103,10 +104,10 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
                 TextView tvExtra = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_extra);
                 Button btnOpen = mDialog.findViewById(R.id.button_holder_bottom_sheet_notification_event);
 
-                tvName.setText("Event: " + notification.getName());
-                tvDate.setText("Date: " + ConverterUtils.convertDateToString(date));
-                tvVenue.setText("Venue: " + notification.getVenue());
-                tvExtra.setText("About: " + notification.getShort_info());
+                tvName.setText(Html.fromHtml("Event: <b>" + notification.getName() + "</b>"));
+                tvDate.setText(Html.fromHtml("Date: <b>" + ConverterUtils.convertDateToString(date) + "</b>"));
+                tvVenue.setText(Html.fromHtml("Venue: <b>" + notification.getVenue() + "</b>"));
+                tvExtra.setText(Html.fromHtml("About: <b>" + notification.getShort_info() + "</b>"));
                 GlideApp.with(view.getContext())
                         .load(notification.getImage_url())
                         .error(R.drawable.ic_caution)

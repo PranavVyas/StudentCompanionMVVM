@@ -21,6 +21,7 @@
         <!--<item name="android:windowExitTransition">@transition/default_window_fade</item>-->
         <!--<item name="android:windowReenterTransition">@android:transition/fade</item>-->
         <!--<item name="android:windowReturnTransition">@android:transition/fade</item>-->
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogThemeLight</item>
         <item name="android:windowContentTransitions">true</item>
         <!--CUSTOM PARAMETERS-->
         <item name="table_background">@color/fui_transparent</item>
@@ -60,13 +61,16 @@
         <!--<item name="android:windowReenterTransition">@android:transition/fade</item>-->
         <!--<item name="android:windowReturnTransition">@android:transition/fade</item>-->
         <item name="android:windowContentTransitions">true</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="drawerArrowStyle">@style/MaterialDrawer.DrawerArrowStyle</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogThemeDark</item>
         <!--CUSTOM PARAMETERS-->
         <item name="table_background">@color/fui_transparent</item>
         <item name="table_selected_cell">@color/colorSecondary</item>
         <item name="placeholder_background">@color/placeHolderBackgroundNight</item>
         <item name="icon_custom_tint">#ffffff</item>
         <item name="custom_component_color_default">#ffffff</item>
-        <item name="toolbar_text_view_color">#000000</item>
+        <item name="toolbar_text_view_color">#FFFFFF</item>
         <item name="gradient_resources_text_view">@drawable/shape_mask_textview_gradient_black
         </item>
         <!--Material Drawer Attributes-->

@@ -38,10 +38,10 @@ import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
-import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.MarketPlaceSellItemViewModel;
 
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferencesRepository.setUserTheme(this);
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market_place_sell_item);
         ButterKnife.bind(this);
@@ -270,7 +270,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                 AppExecutors.getInstance().networkIO().execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (ConverterUtils.hasInternetAccess(MarketPlaceSellItemActivity.this)) {
+                        if (AttendanceUtils.hasInternetAccess(MarketPlaceSellItemActivity.this)) {
                             uploadImage();
                         } else {
                             showPlaceHOlder(true);
@@ -460,8 +460,8 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
             public void run() {
-                showPlaceHOlder(!ConverterUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
-                Logger.d("Internet Connection is " + ConverterUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
+                showPlaceHOlder(!AttendanceUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
+                Logger.d("Internet Connection is " + AttendanceUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
             }
         });
     }

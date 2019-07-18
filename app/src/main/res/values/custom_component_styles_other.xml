@@ -30,4 +30,16 @@
     <style name="MyCustomMaterialEditTextInput" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
         <item name="android:singleLine">true</item>
     </style>
+
+    <style name="AppBottomSheetDialogThemeLight" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppBottomSheetDialogThemeDark" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/shape_rounded_bottom_sheet</item>
+    </style>
 </resources>

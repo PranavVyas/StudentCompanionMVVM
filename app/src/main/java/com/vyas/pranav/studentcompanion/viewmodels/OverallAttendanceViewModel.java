@@ -7,11 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
 import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.Date;
 import java.util.List;

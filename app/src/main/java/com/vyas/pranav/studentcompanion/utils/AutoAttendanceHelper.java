@@ -68,7 +68,7 @@ public class AutoAttendanceHelper {
 //        return mLocationFence;
 //    }
 
-    public void updateOrRemoveFenceForSubject(boolean isToRegister, String subject, double longitude, double latitude) {
+    public void updateOrRemoveFenceForSubject(boolean isToRegister, String subject, double latitude, double longitude) {
         LiveData<List<TimetableEntry>> fullTimetable = MainDatabase.getInstance(context).timetableDao().getTimetableForSubject(subject);
         fullTimetable.observeForever(new Observer<List<TimetableEntry>>() {
             @Override
@@ -84,7 +84,7 @@ public class AutoAttendanceHelper {
                                 for (TimetableEntry x :
                                         timetableEntries) {
                                     long start = TimeUnit.MINUTES.toMillis(x.getTimeStart());
-                                    long end = start + TimeUnit.MINUTES.toMillis(5);
+                                    long end = TimeUnit.MINUTES.toMillis(x.getTimeEnd());
                                     if ("Monday".equals(x.getDay())) {
                                         timeFences.add(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_MONDAY, TimeZone.getDefault(), start, end));
                                         Logger.d("Fence Added for Constraint: Day(Monday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
@@ -103,7 +103,7 @@ public class AutoAttendanceHelper {
                                     }
                                 }
                                 mLocationFence = null;
-                                mLocationFence = LocationFence.in(latitude, longitude, RADIUS_OF_FENCE, dwellTime);
+                                mLocationFence = LocationFence.entering(latitude, longitude, RADIUS_OF_FENCE);
                                 if (mLocationFence != null) {
                                     Logger.d("Location Fence is Created Successfully");
                                 } else {
@@ -112,7 +112,9 @@ public class AutoAttendanceHelper {
                                     return;
                                 }
 
-                                AwarenessFence finalFence = AwarenessFence.and(AwarenessFence.or(timeFences), mLocationFence);
+                                //todo repair this
+                                AwarenessFence finalTimeFence = AwarenessFence.or(timeFences);
+                                AwarenessFence finalFence = AwarenessFence.and(finalTimeFence, mLocationFence);
                                 String key = KEY_PRE_SUBJECT_FENCE + subject;
                                 Awareness.getFenceClient(context)
                                         .updateFences(getFenceUpdateRequest(key, finalFence, isToRegister))
@@ -125,7 +127,7 @@ public class AutoAttendanceHelper {
                                                     } else {
                                                         Toast.makeText(context, "Fence Removed successfully", Toast.LENGTH_SHORT).show();
                                                     }
-                                                    Logger.d("Fence Action Successful for Subject : " + subject + " :: Action: " + (isToRegister ? "Registered" : "Removed"));
+                                                    Logger.d("Fence Action Successful for Subject : " + subject + " :: Action: " + (isToRegister ? "Registered" : "Removed") + "\nWith Key: " + key);
                                                 } else {
                                                     Logger.d("Registration/Removal Unsuccessful for Fence Generation for Subject : " + subject);
                                                     Toast.makeText(context, "Fence Registration/removal unsuccessful", Toast.LENGTH_SHORT).show();

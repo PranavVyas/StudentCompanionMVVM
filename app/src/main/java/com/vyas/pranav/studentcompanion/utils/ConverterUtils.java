@@ -1,36 +1,18 @@
 package com.vyas.pranav.studentcompanion.utils;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.text.format.DateFormat;
-import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class ConverterUtils {
 
-    public static final int FILE_NOT_FOUND_SRC = -1;
-
     private static final String TAG = "ConverterUtils";
-    private static final int FILE_NOT_CREATED_DEST = -2;
-    private static final int UNKNOWN_ERROR = -3;
 
     /**
      * Convert string to date.
@@ -169,22 +151,6 @@ public class ConverterUtils {
         String minStr = ((min < 10) ? "0" + min : "" + min);
 
         return hourStr + ":" + minStr;
-    }
-
-    public static List<Date> getDates(Date date1, Date date2) {
-        ArrayList<Date> dates = new ArrayList<>();
-
-        Calendar cal1 = Calendar.getInstance();
-        cal1.setTime(date1);
-
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(date2);
-
-        while (!cal1.after(cal2)) {
-            dates.add(cal1.getTime());
-            cal1.add(Calendar.DATE, 1);
-        }
-        return dates;
     }
 
     /**
@@ -401,62 +367,5 @@ public class ConverterUtils {
     public static long getCurrentTimeInMillis() {
         Calendar now = GregorianCalendar.getInstance();
         return TimeUnit.HOURS.toMillis(now.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(now.get(Calendar.MINUTE)) + TimeUnit.SECONDS.toMillis(now.get(Calendar.SECOND));
-    }
-
-    public static boolean hasInternetAccess(Context context) {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        boolean res = activeNetworkInfo != null;
-        if (res) {
-            try {
-                HttpURLConnection urlc = (HttpURLConnection)
-                        (new URL("https://clients3.google.com/generate_204")
-                                .openConnection());
-                urlc.setRequestProperty("User-Agent", "Android");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1500);
-                urlc.connect();
-                return (urlc.getResponseCode() == 204 &&
-                        urlc.getContentLength() == 0);
-//                HttpURLConnection urlc = (HttpURLConnection) (new URL("https://www.google.com").openConnection());
-//                urlc.setRequestProperty("User-Agent", "Test");
-//                urlc.setRequestProperty("Connection", "close");
-//                urlc.setConnectTimeout(1500);
-//                urlc.connect();
-//                return (urlc.getResponseCode() == 200);
-            } catch (IOException e) {
-                Log.e(TAG, "Error checking internet connection", e);
-            }
-        } else {
-            Log.d(TAG, "No network available!");
-        }
-        return false;
-    }
-
-    public static int copy(String srcStr, String dstStr) throws IOException {
-        File src = new File(srcStr);
-        if (!src.exists()) {
-            return FILE_NOT_FOUND_SRC;
-        }
-        File dst = new File(dstStr);
-        if (dst.exists()) {
-            boolean newFile = dst.createNewFile();
-            if (!newFile) {
-                return FILE_NOT_CREATED_DEST;
-            }
-            try (InputStream in = new FileInputStream(src)) {
-                try (OutputStream out = new FileOutputStream(dst)) {
-                    // Transfer bytes from in to out
-                    byte[] buf = new byte[1024];
-                    int len;
-                    while ((len = in.read(buf)) > 0) {
-                        out.write(buf, 0, len);
-                    }
-                    return 0;
-                }
-            }
-        }
-        return UNKNOWN_ERROR;
     }
 }

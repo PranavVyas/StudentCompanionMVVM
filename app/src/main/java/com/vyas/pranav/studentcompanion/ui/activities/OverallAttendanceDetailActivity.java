@@ -9,9 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.Locale;
 
@@ -45,7 +44,7 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferencesRepository.setUserTheme(this);
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overall_attendacne_detail);
         ButterKnife.bind(this);

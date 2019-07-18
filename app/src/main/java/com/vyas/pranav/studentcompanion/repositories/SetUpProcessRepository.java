@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.orhanobut.logger.Logger;
-import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
@@ -18,8 +17,10 @@ import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAt
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -239,7 +240,7 @@ public class SetUpProcessRepository {
     }
 
     private List<Date> removeHolidaysAndWeekends(List<Date> holidayDates) {
-        List<Date> allDates = ConverterUtils.getDates(ConverterUtils.convertStringToDate(getStartingDate()), ConverterUtils.convertStringToDate(getEndingDate()));
+        List<Date> allDates = AttendanceUtils.getDates(ConverterUtils.convertStringToDate(getStartingDate()), ConverterUtils.convertStringToDate(getEndingDate()));
         List<Date> resultDates = new ArrayList<>();
         for (int i = 0; i < allDates.size(); i++) {
             Date date = allDates.get(i);

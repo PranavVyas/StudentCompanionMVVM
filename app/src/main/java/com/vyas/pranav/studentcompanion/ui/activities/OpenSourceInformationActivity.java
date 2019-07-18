@@ -14,7 +14,7 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.OpenSourceRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.models.ExternalLibraryModel;
 import com.vyas.pranav.studentcompanion.data.models.LibraryModel;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +43,7 @@ public class OpenSourceInformationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferencesRepository.setUserTheme(this);
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_source_information);
         ButterKnife.bind(this);

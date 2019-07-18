@@ -23,9 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.ui.activities.OverallAttendanceDetailActivity;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -128,6 +128,7 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         if (presentPresent > safePercent) {
             holder.constraintCard.setBackgroundColor(context.getResources().getColor(R.color.colorSafeOverallAttendance));
 //            holder.constraintCard.setBackgroundResource(R.color.colorSafeOverallAttendance);
+            //TODO Change card background color
             return;
         }
         if (presentPresent > warningPercent) {

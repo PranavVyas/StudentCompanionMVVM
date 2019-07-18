@@ -35,10 +35,10 @@ import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.firebase.BookModel;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
-import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.UploadBookViewModel;
 
 import java.util.concurrent.TimeUnit;
@@ -100,8 +100,8 @@ public class UploadBookActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
-        SharedPreferencesRepository.setUserTheme(this);
         setContentView(R.layout.activity_upload_book);
         ButterKnife.bind(this);
         uploadBookViewModel = ViewModelProviders.of(this).get(UploadBookViewModel.class);
@@ -163,8 +163,8 @@ public class UploadBookActivity extends AppCompatActivity {
         AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
             public void run() {
-                showPlaceHolder(!ConverterUtils.hasInternetAccess(UploadBookActivity.this));
-                Logger.d("Internet Connection is " + ConverterUtils.hasInternetAccess(UploadBookActivity.this));
+                showPlaceHolder(!AttendanceUtils.hasInternetAccess(UploadBookActivity.this));
+                Logger.d("Internet Connection is " + AttendanceUtils.hasInternetAccess(UploadBookActivity.this));
             }
         });
     }
@@ -210,7 +210,7 @@ public class UploadBookActivity extends AppCompatActivity {
                 AppExecutors.getInstance().networkIO().execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (ConverterUtils.hasInternetAccess(UploadBookActivity.this)) {
+                        if (AttendanceUtils.hasInternetAccess(UploadBookActivity.this)) {
                             startUploadingDocument();
                         } else {
                             showPlaceHolder(true);

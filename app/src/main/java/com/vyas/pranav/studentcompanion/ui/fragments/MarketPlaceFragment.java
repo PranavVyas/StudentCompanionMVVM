@@ -40,8 +40,8 @@ import com.vyas.pranav.studentcompanion.adapters.MarketPlaceSellRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.ui.activities.MarketPlaceSellItemActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.Constants;
-import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.viewmodels.MarketPlaceViewModel;
 
@@ -113,7 +113,7 @@ public class MarketPlaceFragment extends Fragment {
         AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
             public void run() {
-                if (!ConverterUtils.hasInternetAccess(getContext())) {
+                if (!AttendanceUtils.hasInternetAccess(getContext())) {
                     showSnackbar("Internet not available. Latest sync Failed");
                 }
             }

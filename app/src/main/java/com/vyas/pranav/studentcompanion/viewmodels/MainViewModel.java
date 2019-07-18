@@ -9,13 +9,16 @@ import androidx.lifecycle.LiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
+import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForSilentAction;
 import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
+import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.Date;
+import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
 
@@ -25,6 +28,8 @@ public class MainViewModel extends AndroidViewModel {
     private final Application application;
     private final NotificationRepository notificationRepository;
     private final SharedPreferencesUtils sharedPreferencesUtils;
+    private final OverallAttendanceRepository overallAttendanceRepository;
+    private LiveData<List<OverallAttendanceEntry>> allOverallAttendance;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -34,6 +39,8 @@ public class MainViewModel extends AndroidViewModel {
         currUser = mAuth.getCurrentUser();
         notificationRepository = new NotificationRepository(application);
         sharedPreferencesUtils = new SharedPreferencesUtils(application);
+        overallAttendanceRepository = new OverallAttendanceRepository(application);
+        allOverallAttendance = overallAttendanceRepository.getAllOverallAttendance();
     }
 
     public int getCurrentFragmentId() {
@@ -74,6 +81,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public void setFirstRunForFile(String file, boolean isFirstTimeOpened) {
         sharedPreferencesUtils.setFileFirstTimeOpened(file, isFirstTimeOpened);
+    }
+
+    public LiveData<List<OverallAttendanceEntry>> getAllOverallAttendance() {
+        return allOverallAttendance;
     }
 
 }

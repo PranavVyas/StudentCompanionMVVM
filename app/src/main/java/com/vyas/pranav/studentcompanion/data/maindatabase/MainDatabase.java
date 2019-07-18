@@ -7,7 +7,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.vyas.pranav.studentcompanion.data.DateConverter;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
@@ -22,6 +21,7 @@ import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAt
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDao;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
+import com.vyas.pranav.studentcompanion.utils.DateConverter;
 
 @Database(entities = {AttendanceEntry.class, AutoAttendancePlaceEntry.class, DigitalLibraryEntry.class, HolidayEntry.class, OverallAttendanceEntry.class, TimetableEntry.class, NotificationFirestoreModel.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)

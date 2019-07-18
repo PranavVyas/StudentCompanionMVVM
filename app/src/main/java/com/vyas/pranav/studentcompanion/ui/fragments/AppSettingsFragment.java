@@ -20,7 +20,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
 
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
@@ -57,14 +57,14 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        getActivity().registerReceiver(myReceiver, new IntentFilter(Constants.FENCE_RECEIVER_ACTION));
-        if (!isPermissionGranted()) {
-            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putBoolean(getString(R.string.pref_key_switch_enable_smart_silent), false).apply();
-        }
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+////        getActivity().registerReceiver(myReceiver, new IntentFilter(Constants.FENCE_RECEIVER_ACTION));
+//        if (!isPermissionGranted()) {
+//            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putBoolean(getString(R.string.pref_key_switch_enable_smart_silent), false).apply();
+//        }
+//    }
 
     /**
      * Register the listener
@@ -102,6 +102,8 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             setFence(appSettingsViewModel.isAutoAttendanceEnabled());
         } else if (s.equals(getString(R.string.pref_key_switch_enable_night_mode))) {
             toggleNightMode();
+        } else if (s.equals(getString(R.string.pref_key_switch_enable_smart_silent))) {
+//            checkAndApplySmartSilent();
         }
     }
 
@@ -236,6 +238,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
 //
 //    }
 //
+
     private boolean isPermissionGranted() {
         NotificationManager nm = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         return Build.VERSION.SDK_INT < 24 || nm.isNotificationPolicyAccessGranted();
@@ -253,33 +256,17 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+//                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
                 Intent intent = new Intent(getContext(), AutoAttendanceSubjectListActivity.class);
                 startActivity(intent);
                 return false;
             }
         });
         //Smart Silent is Clicked
-        findPreference(getString(R.string.pref_key_switch_enable_smart_silent)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        findPreference(getString(R.string.pref_key_switch_enable_smart_silent)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean isEnabled = (boolean) newValue;
-                if (isEnabled) {
-                    if (isPermissionGranted()) {
-//                        Toast.makeText(getContext(), "Enabled the Silent Mode", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getContext(), "Permission is not granted\nPlease Grant Do Not Disturb Access to StudentCompanion", Toast.LENGTH_SHORT).show();
-                        NotificationManager nm = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                        if (Build.VERSION.SDK_INT >= 24 && !nm.isNotificationPolicyAccessGranted()) {
-                            Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                            startActivityForResult(intent, Constants.RC_SETTINGS_SILENT_DEVICE, bundle);
-                        }
-                        return false;
-                    }
-                }
-                appSettingsViewModel.toggleSmartSilent();
-                return true;
+            public boolean onPreferenceClick(Preference preference) {
+                return checkAndApplySmartSilent();
             }
         });
 
@@ -295,10 +282,31 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         });
     }
 
+    private boolean checkAndApplySmartSilent() {
+        if (isPermissionGranted()) {
+            //We can change preference here...
+            appSettingsViewModel.toggleSmartSilent();
+            return true;
+        } else {
+            //We can not change value here..We need to revert back now
+            Toast.makeText(getContext(), "Permission is not granted\nPlease Grant Do Not Disturb Access to StudentCompanion", Toast.LENGTH_SHORT).show();
+            NotificationManager nm = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            if (Build.VERSION.SDK_INT >= 24 && !nm.isNotificationPolicyAccessGranted()) {
+                Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+                startActivityForResult(intent, Constants.RC_SETTINGS_SILENT_DEVICE, bundle);
+            }
+            return false;
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.RC_SETTINGS_SILENT_DEVICE) {
+//            getPreferenceManager().getDefaultSharedPreferences(getContext()).edit().putBoolean(getString(R.string.pref_key_switch_enable_smart_silent),false).apply();
+            ((SwitchPreference) getPreferenceScreen().findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
+
             if (resultCode == RESULT_OK) {
                 Toast.makeText(getContext(), "Thanks For Permission", Toast.LENGTH_SHORT).show();
             } else {

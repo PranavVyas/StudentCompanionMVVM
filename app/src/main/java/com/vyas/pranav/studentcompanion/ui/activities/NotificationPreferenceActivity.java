@@ -20,11 +20,10 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
-import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.NotificationPrefernceViewModel;
 
 import java.util.concurrent.TimeUnit;
@@ -54,7 +53,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferencesRepository.setUserTheme(this);
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_preference);
         ButterKnife.bind(this);
@@ -88,7 +87,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
         GlideApp.with(this)
                 .load(R.drawable.image_no_connection_placeholder)
                 .into(imagePlaceHolder);
-        checkBoxNewItem.setChecked(sharedPreferencesUtils.isEventNotificationEnabed());
+        checkBoxEvent.setChecked(sharedPreferencesUtils.isEventNotificationEnabed());
         checkBoxNewItem.setChecked(sharedPreferencesUtils.isNewItemShopNotificationEnabled());
     }
 
@@ -163,8 +162,8 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
         AppExecutors.getInstance().networkIO().execute(new Runnable() {
             @Override
             public void run() {
-                showPlaceHOlder(!ConverterUtils.hasInternetAccess(NotificationPreferenceActivity.this));
-                Logger.d("Internet Connection is " + ConverterUtils.hasInternetAccess(NotificationPreferenceActivity.this));
+                showPlaceHOlder(!AttendanceUtils.hasInternetAccess(NotificationPreferenceActivity.this));
+                Logger.d("Internet Connection is " + AttendanceUtils.hasInternetAccess(NotificationPreferenceActivity.this));
             }
         });
     }

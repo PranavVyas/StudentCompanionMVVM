@@ -19,6 +19,7 @@ import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForEditOverallAttendance;
 import com.vyas.pranav.studentcompanion.jobs.JobsCreator;
 
 public class MainApp extends MultiDexApplication {
@@ -27,10 +28,8 @@ public class MainApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
         createNotificationChannels();
         Stetho.initializeWithDefaults(this);
-
 //        if (isNightModeEnabled()){
 //            AppCompatDelegate.setDefaultNightMode(
 //                    AppCompatDelegate.MODE_NIGHT_YES);
@@ -38,8 +37,8 @@ public class MainApp extends MultiDexApplication {
 //            AppCompatDelegate.setDefaultNightMode(
 //                    AppCompatDelegate.MODE_NIGHT_NO);
 //        }
-
         JobManager.create(this).addJobCreator(new JobsCreator());
+        DailyJobForEditOverallAttendance.scheduleJob();
         //initialize and create the image loader logic
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
             @Override

@@ -31,11 +31,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.DigitalLibraryRecyclerAdapter;
-import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.firebase.BookModel;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.DigitalLibraryViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -67,8 +66,8 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
-        SharedPreferencesRepository.setUserTheme(this);
         setContentView(R.layout.activity_digital_library);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -77,7 +76,6 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
         digitalLibraryViewModel = ViewModelProviders.of(this).get(DigitalLibraryViewModel.class);
         setUpUi();
         startInstruction(this);
-
 //        //TODO do something about recyclerview not transitioning
 //        Slide slide = new Slide(Gravity.RIGHT);
 //        slide.setInterpolator(

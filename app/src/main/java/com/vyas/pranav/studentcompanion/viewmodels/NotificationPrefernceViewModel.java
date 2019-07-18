@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 public class NotificationPrefernceViewModel extends AndroidViewModel {
 

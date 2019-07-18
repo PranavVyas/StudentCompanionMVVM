@@ -3,7 +3,7 @@
     xmlns:andriod="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.vyas.pranav.studentcompanion.utils.CustomSwitchPreference
+    <SwitchPreference
         app:defaultValue="true"
         app:icon="@drawable/ic_reminder"
         app:key="@string/pref_key_switch_enable_reminder"
@@ -14,12 +14,11 @@
     <!--suppress AndroidElementNotAllowed-->
     <com.vyas.pranav.studentcompanion.utils.TimePreference
         android:defaultValue="@integer/pref_def_value_time_reminder_time"
-        android:layout="@layout/custom_item_preference_full"
         android:key="@string/pref_key_time_reminder_time"
         andriod:icon="@drawable/ic_clock"
         android:title="@string/pref_title_time_reminder_time" />
 
-    <com.vyas.pranav.studentcompanion.utils.CustomSwitchPreference
+    <SwitchPreference
         app:defaultValue="false"
         app:icon="@drawable/ic_enable_auto_attendance"
         app:key="@string/pref_key_switch_enable_auto_attendance"
@@ -27,7 +26,7 @@
         app:summaryOn="@string/pref_summery_on_switch_enable_auto_attendance"
         app:title="@string/pref_title_switch_enable_auto_attendance" />
 
-    <com.vyas.pranav.studentcompanion.utils.CustomSwitchPreference
+    <SwitchPreference
         app:defaultValue="@bool/pref_def_value_switch_enable_night_mode"
         app:icon="@drawable/ic_night_mode"
         app:key="@string/pref_key_switch_enable_night_mode"
@@ -37,11 +36,10 @@
 
     <Preference
         android:icon="@drawable/ic_auto_attendance_map"
-        android:layout="@layout/custom_item_preference_full"
         android:key="@string/pref_key_select_places_auto_attendance"
         android:title="@string/pref_select_places_auto_attendance" />
 
-    <com.vyas.pranav.studentcompanion.utils.CustomSwitchPreference
+    <SwitchPreference
         app:defaultValue="@bool/pref_def_value_switch_enable_smart_silent"
         app:icon="@drawable/ic_silent"
         app:key="@string/pref_key_switch_enable_smart_silent"
@@ -52,7 +50,6 @@
     <Preference
         android:icon="@drawable/ic_chat"
         android:key="@string/pref_key_list_notification"
-        android:layout="@layout/custom_item_preference_full"
         android:title="@string/pref_list_notification_title" />
 
 </androidx.preference.PreferenceScreen>

@@ -3,16 +3,17 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
-import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.MarketPlaceFragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
-import com.vyas.pranav.studentcompanion.viewmodels.ContainerViewModel;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.ui.fragments.HolidayFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.MarketPlaceFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.TimetableFragment;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
+import com.vyas.pranav.studentcompanion.viewmodels.ContainerViewModel;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,9 +33,9 @@ public class ContainerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferencesRepository.setUserTheme(this);
-        setContentView(R.layout.activity_container);
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_container);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

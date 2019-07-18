@@ -28,7 +28,6 @@ import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
-import com.vyas.pranav.studentcompanion.data.DateConverter;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.ui.activities.AttendanceIndividualActivity;
@@ -123,8 +122,8 @@ public class AttendanceIndividualFragment extends Fragment {
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle("Choose Date");
-        datePickerDialog.getDatePicker().setMaxDate(DateConverter.toTimeStamp(new Date()));
-        datePickerDialog.getDatePicker().setMinDate(DateConverter.toTimeStamp(overallAttendanceViewModel.getStartingDate()));
+        datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        datePickerDialog.getDatePicker().setMinDate(overallAttendanceViewModel.getStartingDate().getTime());
         datePickerDialog.show();
     }
 

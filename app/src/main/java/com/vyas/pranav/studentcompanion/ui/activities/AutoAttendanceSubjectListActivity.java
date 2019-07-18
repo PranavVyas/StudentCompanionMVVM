@@ -16,8 +16,8 @@ import com.orhanobut.logger.Logger;
 import com.schibstedspain.leku.LocationPickerActivityKt;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AutoAttendanceSubjectListRecyclerAdapter;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.utils.Constants;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.AutoAttendanceSubjectListViewModel;
 
 import butterknife.BindView;
@@ -36,7 +36,7 @@ public class AutoAttendanceSubjectListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferencesRepository.setUserTheme(this);
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auto_attendance_subject_list);
         ButterKnife.bind(this);

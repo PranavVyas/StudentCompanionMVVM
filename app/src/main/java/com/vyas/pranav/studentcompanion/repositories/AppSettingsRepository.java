@@ -68,6 +68,7 @@ public class AppSettingsRepository {
 
     public void enableAutoSilentDevice() {
         DailyJobForSilentAction.cancelAllJobs();
+        DailyJobForUnsilentAction.cancelAllJobs();
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {
@@ -130,7 +131,7 @@ public class AppSettingsRepository {
     }
 
     public void toggleSmartSilent() {
-        if (!isSmartSilentEnabled()) {
+        if (isSmartSilentEnabled()) {
             enableAutoSilentDevice();
         } else {
             DailyJobForSilentAction.cancelAllJobs();

@@ -1,10 +1,12 @@
-package com.vyas.pranav.studentcompanion.data;
+package com.vyas.pranav.studentcompanion.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
+
+import com.vyas.pranav.studentcompanion.R;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,6 +43,15 @@ public class SharedPreferencesUtils {
         editor = preferences.edit();
         editor.apply();
         this.context = context;
+    }
+
+    public static void setUserTheme(Context context) {
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if (mPrefs.getBoolean(context.getString(R.string.pref_key_switch_enable_night_mode), false)) {
+            context.setTheme(R.style.AppTheme_Night);
+        } else {
+            context.setTheme(R.style.AppTheme);
+        }
     }
 
     public int getCurrentNotis() {

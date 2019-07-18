@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_recycler_overall_main"
+    style="@style/MyMaterialCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/MyMaterialCardView"
     android:layout_margin="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/constraint_overall_attendance_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <me.itangqi.waveloadingview.WaveLoadingView

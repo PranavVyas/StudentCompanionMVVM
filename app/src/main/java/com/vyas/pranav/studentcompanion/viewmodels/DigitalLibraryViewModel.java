@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.vyas.pranav.studentcompanion.data.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.repositories.DigitalLibraryRepository;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.List;
 

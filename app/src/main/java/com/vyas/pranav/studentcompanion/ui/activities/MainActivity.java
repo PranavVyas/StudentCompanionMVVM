@@ -32,7 +32,6 @@ import com.mikepenz.materialdrawer.holder.StringHolder;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
 import com.vyas.pranav.studentcompanion.ui.fragments.AboutDeveloperFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AboutThisAppFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.AppSettingsFragment;
@@ -43,6 +42,7 @@ import com.vyas.pranav.studentcompanion.ui.fragments.OverallAttendanceFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.ResourcesFragment;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.MainViewModel;
 
 import java.util.Date;
@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
-        SharedPreferencesRepository.setUserTheme(this);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbarMainActivity);
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         if (getIntent().hasExtra(Constants.EXTRA_MAIN_ACT_OPEN_OVERALL)) {
             mainViewModel.setCurrentFragmentId(getIntent().getIntExtra(Constants.EXTRA_MAIN_ACT_OPEN_OVERALL, NavigationDrawerUtil.ID_TODAY_ATTENDANCE));
+            OnNavigationItemClicked(getIntent().getIntExtra(Constants.EXTRA_MAIN_ACT_OPEN_OVERALL, NavigationDrawerUtil.ID_TODAY_ATTENDANCE));
         }
         FirebaseUser currUser = mainViewModel.getCurrUser();
         mDrawer = NavigationDrawerUtil.getMaterialDrawer(MainActivity.this, toolbarMainActivity, currUser);
@@ -110,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         switch (identifier) {
             case NavigationDrawerUtil.ID_TODAY_ATTENDANCE:
                 tvTitle.setText(R.string.navigation_home);
-
                 AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
                 swapFragment(attendanceFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
@@ -261,4 +261,16 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
             mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder(integer.toString()));
         });
     }
+
+//    private void refreshOverallAttendance(){
+//        mainViewModel.getAllOverallAttendance().observe(this, new Observer<List<OverallAttendanceEntry>>() {
+//            @Override
+//            public void onChanged(List<OverallAttendanceEntry> overallAttendanceEntries) {
+//                for (OverallAttendanceEntry x :
+//                        overallAttendanceEntries) {
+//                    AttendanceUtils.checkForSmartCards(x,MainActivity.this);
+//                }
+//            }
+//        });
+//    }
 }

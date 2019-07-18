@@ -3,12 +3,13 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.repositories.SharedPreferencesRepository;
-import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.ui.fragments.AttendanceIndividualFragment;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -20,7 +21,7 @@ public class AttendanceIndividualActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferencesRepository.setUserTheme(this);
+        SharedPreferencesUtils.setUserTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance_individual);
         ButterKnife.bind(this);

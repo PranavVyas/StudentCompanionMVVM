@@ -11,16 +11,18 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -39,6 +41,14 @@ public class SetUpLectureTimeFragment extends Fragment {
     public SetUpLectureTimeFragment() {
     }
 
+    @OnClick(R.id.btn_set_up_lecture_time_info)
+    void clickedInfo() {
+        BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
+        mDialog.setContentView(R.layout.item_holder_bottom_sheet_setup_time_info);
+        mDialog.show();
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,6 +60,7 @@ public class SetUpLectureTimeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        clickedInfo();
         setUpViewModel = ViewModelProviders.of(getActivity()).get(SetUpViewModel.class);
         populateUI();
     }

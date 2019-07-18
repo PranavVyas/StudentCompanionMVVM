@@ -106,7 +106,7 @@ public class TutorialActivity extends FancyWalkthroughActivity {
 //
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
-//        SharedPreferencesRepository.setUserTheme(this);
+//        SharedPreferencesUtils.setUserTheme(this);
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_toturial);
 //        ButterKnife.bind(this);

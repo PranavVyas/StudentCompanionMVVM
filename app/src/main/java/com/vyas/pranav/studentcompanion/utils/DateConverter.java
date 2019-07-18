@@ -1,8 +1,8 @@
-package com.vyas.pranav.studentcompanion.data;
-
-import java.util.Date;
+package com.vyas.pranav.studentcompanion.utils;
 
 import androidx.room.TypeConverter;
+
+import java.util.Date;
 
 public class DateConverter {
 

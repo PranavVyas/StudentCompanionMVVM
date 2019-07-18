@@ -2,7 +2,6 @@ package com.vyas.pranav.studentcompanion.utils;
 
 public final class Constants {
 
-    public static final int FLEX_DAYS_EXTRA_TO_BUNK = 10;
     public static final String KEY_SEND_DATA_TO_NOTIFICATION_CLASS_DATE = "NotificationFragmentToAllNotificationFragment";
     public static final String DEFAULT_LECTURE = "No Lecture";
 

@@ -6,14 +6,15 @@
         <item name="android:textColor">?attr/toolbar_text_view_color</item>
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
-        <item name="android:fontFamily">@font/product_sans_bold</item>
+        <!--<item name="android:fontFamily">@font/product_sans_bold</item>-->
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!--Custom TextViews-->
     <style name="MyMaterialTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:fontFamily">@font/material_font</item>
+        <!--<item name="android:fontFamily">@font/material_font</item>-->
     </style>
 
     <style name="MyMaterialTextView.SmallTextViewBody2" parent="MyMaterialTextView">

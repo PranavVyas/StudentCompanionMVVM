@@ -22,7 +22,7 @@ public class DailyJobForEditOverallAttendance extends DailyJob {
         Logger.d("Job was not started ,Starting Now...");
         JobRequest.Builder jobBuilder = new JobRequest.Builder(TAG).setUpdateCurrent(true);
         long startTime = TimeUnit.HOURS.toMillis(0) + TimeUnit.MINUTES.toMillis(10);
-        long endTime = startTime + TimeUnit.MINUTES.toMillis(1);
+        long endTime = startTime + TimeUnit.MINUTES.toMillis(0);
         DailyJob.schedule(jobBuilder, startTime, endTime);
     }
 
@@ -33,9 +33,7 @@ public class DailyJobForEditOverallAttendance extends DailyJob {
         OverallAttendanceRepository overallAttendanceRepository = new OverallAttendanceRepository(getContext());
         overallAttendanceRepository.refreshAllOverallAttendance();
         AppSettingsRepository repo = new AppSettingsRepository(getContext());
-        if (repo.isSmartSilentEnabled()) {
-            repo.enableAutoSilentDevice();
-        }
+        repo.toggleSmartSilent();
         return DailyJobResult.SUCCESS;
     }
 }

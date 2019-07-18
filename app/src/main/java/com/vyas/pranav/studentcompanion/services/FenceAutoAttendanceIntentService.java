@@ -41,10 +41,13 @@ public class FenceAutoAttendanceIntentService extends IntentService {
         FenceState fenceState = FenceState.extract(intent);
         SetUpProcessRepository repository = new SetUpProcessRepository(getApplicationContext());
         String subjectNameFromFence = fenceState.getFenceKey().substring(AutoAttendanceHelper.KEY_PRE_SUBJECT_FENCE.length());
+        Logger.d("Subject Received in Fence Service is :" + subjectNameFromFence);
         for (String x :
                 repository.getSubjectList()) {
             if (x.equals(subjectNameFromFence)) {
+                Logger.d("For subject : " + x + " is same as subject received in service : " + subjectNameFromFence);
                 checkFenceState(fenceState, getApplicationContext(), x);
+                return;
             }
         }
     }
@@ -52,18 +55,18 @@ public class FenceAutoAttendanceIntentService extends IntentService {
     void checkFenceState(FenceState fenceState, Context context, String subject) {
         switch (fenceState.getCurrentState()) {
             case FenceState.TRUE:
-                Logger.d("Fence Detected : " + Constants.KEY_FENCE_LOCATION);
+                Logger.d("Fence Detected : " + Constants.KEY_FENCE_LOCATION + subject);
                 Toast.makeText(context, "You are in the Fence of Subject :" + subject, Toast.LENGTH_SHORT).show();
                 sendNotification("Callback!", "Fence Available", "Just Received True callback from subject :" + subject);
                 break;
 
             case FenceState.FALSE:
-                Logger.d("Fence is Not Detected : " + Constants.KEY_FENCE_LOCATION);
+                Logger.d("Fence is Not Detected : " + Constants.KEY_FENCE_LOCATION + subject);
                 sendNotification("Callback!", "Fence UnAvailable", "Just Received False callback from subject :" + subject);
                 break;
 
             case FenceState.UNKNOWN:
-                Logger.d("Fence Detected : " + Constants.KEY_FENCE_LOCATION + " is in unknown state");
+                Logger.d("Fence Detected : " + Constants.KEY_FENCE_LOCATION + subject + " is in unknown state");
                 sendNotification("Callback!", "Fence Unknown", "Just Received Unknown callback from subject :" + subject);
                 break;
         }
@@ -95,7 +98,7 @@ public class FenceAutoAttendanceIntentService extends IntentService {
                 .addAction(getOpenAppAction())
                 .setAutoCancel(true);
 
-        NotificationManagerCompat.from(getApplicationContext()).notify(Constants.FENCE_CALLBACK_NOTIFICATION, notificationBuilder.build());
+        NotificationManagerCompat.from(getApplicationContext()).notify((int) (Math.random() * 10000), notificationBuilder.build());
     }
 
 }
