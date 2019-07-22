@@ -39,9 +39,7 @@ import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 
-public class AppSettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener
-//        ,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
-{
+public class AppSettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppSettingsViewModel appSettingsViewModel;
     private AutoAttendanceHelper helper;
@@ -56,15 +54,6 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         helper = new AutoAttendanceHelper(getContext());
         return super.onCreateView(inflater, container, savedInstanceState);
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-////        getActivity().registerReceiver(myReceiver, new IntentFilter(Constants.FENCE_RECEIVER_ACTION));
-//        if (!isPermissionGranted()) {
-//            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putBoolean(getString(R.string.pref_key_switch_enable_smart_silent), false).apply();
-//        }
-//    }
 
     /**
      * Register the listener
@@ -184,22 +173,8 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     }
 
     private void toggleNightMode() {
-        //appSettingsViewModel.toggleNightMode();
         getActivity().recreate();
-//        if(appSettingsViewModel.isNightModeEnabled()) {
-//            AppCompatDelegate.setDefaultNightMode(
-//                    AppCompatDelegate.MODE_NIGHT_YES);
-//        } else {
-//            AppCompatDelegate.setDefaultNightMode(
-//                    AppCompatDelegate.MODE_NIGHT_NO);
-//        }
     }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        mClient.disconnect();
-//    }
 
     private void setEditAutoAttendanceStateFromViewModel() {
         boolean isAutoAttendanceEnabled = appSettingsViewModel.isAutoAttendanceEnabled();
@@ -209,35 +184,6 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setEnabled(false);
         }
     }
-
-    //    private GoogleApiClient getApiClient() {
-//        if (mClient != null) {
-//            return mClient;
-//        }
-//        mClient = new GoogleApiClient.Builder(getContext())
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API)
-//                .addApi(Places.GEO_DATA_API)
-//                .build();
-//        return mClient;
-//    }
-//
-//    @Override
-//    public void onConnected(@Nullable Bundle bundle) {
-//
-//    }
-//
-//    @Override
-//    public void onConnectionSuspended(int i) {
-//
-//    }
-//
-//    @Override
-//    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//
-//    }
-//
 
     private boolean isPermissionGranted() {
         NotificationManager nm = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -304,21 +250,13 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.RC_SETTINGS_SILENT_DEVICE) {
-//            getPreferenceManager().getDefaultSharedPreferences(getContext()).edit().putBoolean(getString(R.string.pref_key_switch_enable_smart_silent),false).apply();
             ((SwitchPreference) getPreferenceScreen().findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
-
             if (resultCode == RESULT_OK) {
                 Toast.makeText(getContext(), "Thanks For Permission", Toast.LENGTH_SHORT).show();
             } else {
                 if (isPermissionGranted()) {
-                    //TODO turnoff switch here
-//                    ((CustomSwitchPreference)getPreferenceScreen().findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
-//                    ((CustomSwitchPreference)findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
                     Toast.makeText(getContext(), "Thank You For Permission! Please Enable it now", Toast.LENGTH_LONG).show();
                 } else {
-                    //TODO turn off switch here
-//                    ((CustomSwitchPreference)getPreferenceScreen().findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
-//                    ((CustomSwitchPreference)findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
                     Toast.makeText(getContext(), "Please Provide me with permission", Toast.LENGTH_LONG).show();
                 }
             }

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.activities.ContainerActivity;
 import com.vyas.pranav.studentcompanion.ui.activities.DigitalLibraryActivity;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -42,7 +45,12 @@ public class ResourcesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        startInstruction(getActivity());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startInstruction(getActivity());
+            }
+        }, TimeUnit.SECONDS.toMillis(2));
     }
 
     @OnClick(R.id.card_resources_fragment_digital_library)

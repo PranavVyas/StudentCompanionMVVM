@@ -25,6 +25,7 @@ import com.vyas.pranav.studentcompanion.jobs.DailyJobForSilentAction;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForUnsilentAction;
 import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.Date;
@@ -84,8 +85,8 @@ public class AppSettingsRepository {
                                 Toast.makeText(context, "Enabled Smart Silent!", Toast.LENGTH_SHORT).show();
                                 Logger.d("Smart Silent : Enabled");
 
-                                DailyJobForSilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(startTime + 1));
-                                DailyJobForUnsilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(endTime - 1));
+                                DailyJobForSilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(startTime + Constants.TIME_WINDOW_SILENT_DEVICE));
+                                DailyJobForUnsilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(endTime - Constants.TIME_WINDOW_UNSILENT_DEVICE));
                             }
                         }
                     }

@@ -98,6 +98,7 @@ public class FenceAutoAttendanceIntentService extends IntentService {
                 .addAction(getOpenAppAction())
                 .setAutoCancel(true);
 
+        //todo debug
         NotificationManagerCompat.from(getApplicationContext()).notify((int) (Math.random() * 10000), notificationBuilder.build());
     }
 

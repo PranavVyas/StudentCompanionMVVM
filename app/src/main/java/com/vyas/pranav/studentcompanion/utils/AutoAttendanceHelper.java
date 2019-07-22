@@ -48,26 +48,6 @@ public class AutoAttendanceHelper {
         this.context = context;
     }
 
-
-    private PendingIntent getPendingIntent() {
-        if (mPendingIntent == null) {
-            Intent intent = new Intent(context, FenceAutoAttendanceIntentService.class);
-            mPendingIntent = PendingIntent.getService(context, Constants.RC_SEND_FENCE_BROADCAST, intent, 0);
-        }
-        return mPendingIntent;
-    }
-
-//    private AwarenessFence getLocationFence(double latitude, double longitude) {
-//        mLocationFence = null;
-//        mLocationFence = LocationFence.in(latitude, longitude, RADIUS_OF_FENCE, dwellTime);
-//        if (mLocationFence != null) {
-//            Logger.d("Location Fence is Created Successfully");
-//        } else {
-//            Logger.d("Location Fence is not Created Successfully");
-//        }
-//        return mLocationFence;
-//    }
-
     public void updateOrRemoveFenceForSubject(boolean isToRegister, String subject, double latitude, double longitude) {
         LiveData<List<TimetableEntry>> fullTimetable = MainDatabase.getInstance(context).timetableDao().getTimetableForSubject(subject);
         fullTimetable.observeForever(new Observer<List<TimetableEntry>>() {
@@ -81,29 +61,8 @@ public class AutoAttendanceHelper {
                             @Override
                             public void onPermissionGranted(PermissionGrantedResponse response) {
                                 List<AwarenessFence> timeFences = new ArrayList<>();
-                                for (TimetableEntry x :
-                                        timetableEntries) {
-                                    long start = TimeUnit.MINUTES.toMillis(x.getTimeStart());
-                                    long end = TimeUnit.MINUTES.toMillis(x.getTimeEnd());
-                                    if ("Monday".equals(x.getDay())) {
-                                        timeFences.add(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_MONDAY, TimeZone.getDefault(), start, end));
-                                        Logger.d("Fence Added for Constraint: Day(Monday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
-                                    } else if ("Tuesday".equals(x.getDay())) {
-                                        timeFences.add(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_TUESDAY, TimeZone.getDefault(), start, end));
-                                        Logger.d("Fence Added for Constraint: Day(Tuesday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
-                                    } else if ("Wednesday".equals(x.getDay())) {
-                                        timeFences.add(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_WEDNESDAY, TimeZone.getDefault(), start, end));
-                                        Logger.d("Fence Added for Constraint: Day(Wednesday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
-                                    } else if ("Thursday".equals(x.getDay())) {
-                                        timeFences.add(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_THURSDAY, TimeZone.getDefault(), start, end));
-                                        Logger.d("Fence Added for Constraint: Day(Thursday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
-                                    } else if ("Friday".equals(x.getDay())) {
-                                        timeFences.add(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_FRIDAY, TimeZone.getDefault(), start, end));
-                                        Logger.d("Fence Added for Constraint: Day(Friday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
-                                    }
-                                }
                                 mLocationFence = null;
-                                mLocationFence = LocationFence.entering(latitude, longitude, RADIUS_OF_FENCE);
+                                mLocationFence = LocationFence.in(latitude, longitude, RADIUS_OF_FENCE, TimeUnit.MINUTES.toMillis(1));
                                 if (mLocationFence != null) {
                                     Logger.d("Location Fence is Created Successfully");
                                 } else {
@@ -111,13 +70,35 @@ public class AutoAttendanceHelper {
                                     Toast.makeText(context, "Location Fence is not Created Successfully", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-
+                                for (TimetableEntry x :
+                                        timetableEntries) {
+                                    long start = TimeUnit.MINUTES.toMillis(x.getTimeStart());
+                                    long end = TimeUnit.MINUTES.toMillis(x.getTimeEnd());
+//                                    long timeInMiddle = (start + end) / 2;
+//                                    long timeInEnd = timeInMiddle + TimeUnit.MINUTES.toMillis(2);
+                                    if ("Monday".equals(x.getDay())) {
+                                        timeFences.add(AwarenessFence.and(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_MONDAY, TimeZone.getDefault(), start, end), mLocationFence));
+                                        Logger.d("Fence Added for Constraint: Day(Monday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
+                                    } else if ("Tuesday".equals(x.getDay())) {
+                                        timeFences.add(AwarenessFence.and(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_TUESDAY, TimeZone.getDefault(), start, end), mLocationFence));
+                                        Logger.d("Fence Added for Constraint: Day(Tuesday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
+                                    } else if ("Wednesday".equals(x.getDay())) {
+                                        timeFences.add(AwarenessFence.and(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_WEDNESDAY, TimeZone.getDefault(), start, end), mLocationFence));
+                                        Logger.d("Fence Added for Constraint: Day(Wednesday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
+                                    } else if ("Thursday".equals(x.getDay())) {
+                                        timeFences.add(AwarenessFence.and(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_THURSDAY, TimeZone.getDefault(), start, end), mLocationFence));
+                                        Logger.d("Fence Added for Constraint: Day(Thursday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
+                                    } else if ("Friday".equals(x.getDay())) {
+                                        timeFences.add(AwarenessFence.and(TimeFence.inIntervalOfDay(TimeFence.DAY_OF_WEEK_FRIDAY, TimeZone.getDefault(), start, end), mLocationFence));
+                                        Logger.d("Fence Added for Constraint: Day(Friday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
+                                    }
+                                }
                                 //todo repair this
                                 AwarenessFence finalTimeFence = AwarenessFence.or(timeFences);
-                                AwarenessFence finalFence = AwarenessFence.and(finalTimeFence, mLocationFence);
+//                                AwarenessFence finalFence = AwarenessFence.and(finalTimeFence, mLocationFence);
                                 String key = KEY_PRE_SUBJECT_FENCE + subject;
                                 Awareness.getFenceClient(context)
-                                        .updateFences(getFenceUpdateRequest(key, finalFence, isToRegister))
+                                        .updateFences(getFenceUpdateRequest(key, finalTimeFence, isToRegister))
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
@@ -150,6 +131,14 @@ public class AutoAttendanceHelper {
                         }).check();
             }
         });
+    }
+
+    private PendingIntent getPendingIntent() {
+        if (mPendingIntent == null) {
+            Intent intent = new Intent(context, FenceAutoAttendanceIntentService.class);
+            mPendingIntent = PendingIntent.getService(context, Constants.RC_SEND_FENCE_BROADCAST, intent, 0);
+        }
+        return mPendingIntent;
     }
 
     private FenceUpdateRequest getFenceUpdateRequest(String key, AwarenessFence finalFence, boolean isToRegister) {

@@ -2,6 +2,7 @@ package com.vyas.pranav.studentcompanion.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAt
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceViewModel;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -85,11 +87,16 @@ public class OverallAttendanceFragment extends Fragment {
     }
 
     private void showInstruction(Activity activity) {
-        new BubbleShowCaseBuilder(activity)
-                .title(getContext().getString(R.string.instr_overall_card_title))
-                .description(getContext().getString(R.string.instr_overall_card_desc))
-                .targetView(rvOverallAttendance.getChildCount() == 0 ? rvOverallAttendance : rvOverallAttendance.getChildAt(0))
-                .showOnce(TAG + "overallAttCard")
-                .show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new BubbleShowCaseBuilder(activity)
+                        .title(getContext().getString(R.string.instr_overall_card_title))
+                        .description(getContext().getString(R.string.instr_overall_card_desc))
+                        .showOnce(TAG + "overallAttCard")
+                        .show();
+            }
+        }, TimeUnit.SECONDS.toMillis(2));
+
     }
 }

@@ -14,7 +14,7 @@
 
     <!--Custom TextViews-->
     <style name="MyMaterialTextView" parent="Widget.AppCompat.TextView">
-        <!--<item name="android:fontFamily">@font/material_font</item>-->
+        <item name="android:fontFamily">@font/material_font</item>
     </style>
 
     <style name="MyMaterialTextView.SmallTextViewBody2" parent="MyMaterialTextView">

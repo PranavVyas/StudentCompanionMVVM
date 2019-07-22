@@ -5,12 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDatesFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDetailsSemFragment;
@@ -146,5 +150,40 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
     public void onPreviousClickedInSetUpTimetable() {
         setUpViewModel.setCurrentStep(3);
         executeSetUpStep(setUpViewModel.getCurrentStep());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.setup_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        BottomSheetDialog mDialog = new BottomSheetDialog(this);
+        switch (setUpViewModel.getCurrentStep()) {
+            case 1:
+                mDialog.setContentView(R.layout.item_holder_bottom_sheet_set_up_dates);
+                mDialog.show();
+                return true;
+
+            case 2:
+                mDialog.setContentView(R.layout.item_holder_bottom_sheet_set_up_subject);
+                mDialog.show();
+                return true;
+
+
+            case 3:
+                mDialog.setContentView(R.layout.item_holder_bottom_sheet_setup_time_info);
+                mDialog.show();
+                return true;
+
+            case 4:
+                mDialog.setContentView(R.layout.item_holder_bottom_sheet_set_up_lecture);
+                mDialog.show();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

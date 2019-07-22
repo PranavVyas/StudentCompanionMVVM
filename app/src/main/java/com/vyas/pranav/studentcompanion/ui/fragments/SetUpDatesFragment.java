@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -94,6 +95,13 @@ public class SetUpDatesFragment extends Fragment {
 
             }
         });
+        showHelp();
+    }
+
+    private void showHelp() {
+        BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
+        mDialog.setContentView(R.layout.item_holder_bottom_sheet_set_up_dates);
+        mDialog.show();
     }
 
     @OnClick(R.id.btn_set_up_dates_fragment_continue)

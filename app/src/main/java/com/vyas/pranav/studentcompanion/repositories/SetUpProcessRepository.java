@@ -274,7 +274,7 @@ public class SetUpProcessRepository {
                     x.setPresentDays(presentDays);
                     x.setSubName(subject);
                     overallAttendanceDao.insertOverall(x);
-//                    DailyJobForEditOverallAttendance.scheduleJob();
+//                    DailyJobForDoingDailyJobs.scheduleJob();
                 }
                 Logger.d("Overall Attendance Database Init success");
             }

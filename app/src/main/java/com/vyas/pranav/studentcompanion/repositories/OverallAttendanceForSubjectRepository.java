@@ -1,19 +1,27 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.MainApp;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.Date;
@@ -91,9 +99,28 @@ public class OverallAttendanceForSubjectRepository {
                         });
                     }
                 });
+                sendNotification(applicationContext, "Refreshed", "Subject Overall Attendance is refreshed for subjec : " + subjectName, getContentIntent());
             }
         });
     }
 
+    private void sendNotification(Context context, @SuppressWarnings("SameParameterValue") String title, String desc, PendingIntent contentIntent) {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.logo_forground)
+                .setContentTitle(title)
+                .setContentText(desc)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat.from(context).notify((int) (Math.random() * 1000), notificationBuilder.build());
+        //todo debug
+    }
+
+    private PendingIntent getContentIntent() {
+        Intent intent = new Intent(applicationContext, SignInActivity.class);
+        return PendingIntent.getActivity(applicationContext, Constants.SHOW_REMINDER_JOB_RC_CONTENT_INTENT, intent, 0);
+    }
 
 }

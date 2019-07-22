@@ -9,6 +9,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.SetUpTimetableRecyclerAdapter;
@@ -19,14 +29,6 @@ import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -69,6 +71,13 @@ public class SetUpTimetableFragment extends Fragment {
         tvDay.setText(getDayFromInt(currentDay));
         setUpRecyclerView();
         setUpViewModel.initTimetableAttendance();
+        showHelp();
+    }
+
+    private void showHelp() {
+        BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
+        mDialog.setContentView(R.layout.item_holder_bottom_sheet_set_up_lecture);
+        mDialog.show();
     }
 
     private void setUpRecyclerView() {

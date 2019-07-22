@@ -88,6 +88,7 @@ public class GeoFenceIntentService extends IntentService {
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this.getApplicationContext());
 
+        //todo debug
         notificationManager.notify((int) (RC_SHOW_NOTIFICATION + Math.random() * 100), mBuilder.build());
     }
 

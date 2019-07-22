@@ -10,6 +10,7 @@ import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
@@ -71,8 +72,8 @@ public class OverallAttendanceRepository {
         if (context == null) {
             Logger.d("Context empty in refreshOverallAttendance");
         }
-        SetUpProcessRepository setUpProcessRepository = new SetUpProcessRepository(context);
-        List<String> subList = setUpProcessRepository.getSubjectList();
+        SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils(context);
+        List<String> subList = sharedPreferencesUtils.getSubjectList();
         for (int i = 0; i < subList.size(); i++) {
             String subject = subList.get(i);
             OverallAttendanceForSubjectRepository repository = new OverallAttendanceForSubjectRepository(context, subject);

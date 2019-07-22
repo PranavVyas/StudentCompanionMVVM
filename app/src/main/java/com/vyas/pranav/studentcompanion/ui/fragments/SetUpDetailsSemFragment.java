@@ -15,10 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
@@ -62,9 +61,14 @@ public class SetUpDetailsSemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_set_up_details_sem, container, false);
         ButterKnife.bind(this, view);
-        Logger.clearLogAdapters();
-        Logger.addLogAdapter(new AndroidLogAdapter());
+        showHelp();
         return view;
+    }
+
+    private void showHelp() {
+        BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
+        mDialog.setContentView(R.layout.item_holder_bottom_sheet_set_up_subject);
+        mDialog.show();
     }
 
     @Override

@@ -83,7 +83,9 @@ public class DailyJobForShowingReminder extends DailyJob {
             notificationBuilder.addAction(action2);
         }
 
-        NotificationManagerCompat.from(context).notify(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION, notificationBuilder.build());
+        NotificationManagerCompat.from(context).notify((int) (Math.random() * 1000), notificationBuilder.build());
+        //todo debug
+//        NotificationManagerCompat.from(context).notify(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION, notificationBuilder.build());
     }
 
 }
