@@ -84,11 +84,11 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         int totalDays = item.getTotalDays();
         int currentAttendanceCriteria = getCurrentAttendanceCriteria(holder.itemView.getContext());
         //For Example currentAttendanceCriteria = 75
-        double dangerPercent = 100 - ((100 - currentAttendanceCriteria) * 3 / 3);
+        double dangerPercent = 100 - ((100.0 - currentAttendanceCriteria) * 3 / 3);
         //dangerPercent = 75
-        double warningPercent = 100 - ((100 - currentAttendanceCriteria) * 2 / 3);
+        double warningPercent = 100 - ((100.0 - currentAttendanceCriteria) * 2 / 3);
         //warning Percent = 83.33
-        double safePercent = 100 - ((100 - currentAttendanceCriteria) / 3);
+        double safePercent = 100 - ((100.0 - currentAttendanceCriteria) / 3);
         //safe Percent = 91.67
         if (totalDays == 0) {
             holder.tvAvailableToBunk.setText("Subject is not in the timetable");
@@ -125,20 +125,17 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         holder.tvAvailableToBunk.setText("Available to Bunk " + daysAvailableToBunk);
         holder.progressPresent.setProgressValue((int) presentPresent);
         holder.progressPresent.setCenterTitle((int) presentPresent + " %");
-        if (presentPresent > safePercent) {
-            holder.constraintCard.setBackgroundColor(context.getResources().getColor(R.color.colorSafeOverallAttendance));
-//            holder.constraintCard.setBackgroundResource(R.color.colorSafeOverallAttendance);
-            //TODO Change card background color
+        int maxAttendance = (int) Math.ceil(((totalDays - bunkedDays) * 100.0) / totalDays);
+        if (maxAttendance > safePercent) {
+            holder.cardMain.setCardBackgroundColor(context.getResources().getColor(R.color.colorSafeOverallAttendance));
             return;
         }
-        if (presentPresent > warningPercent) {
-            holder.constraintCard.setBackgroundColor(context.getResources().getColor(R.color.colorWarningOverallAttendance));
-//            holder.constraintCard.setBackgroundResource(R.color.colorWarningOverallAttendance);
+        if (maxAttendance > warningPercent) {
+            holder.cardMain.setCardBackgroundColor(context.getResources().getColor(R.color.colorWarningOverallAttendance));
             return;
         }
-        if (presentPresent > dangerPercent) {
-            holder.constraintCard.setBackgroundColor(context.getResources().getColor(R.color.colorDangerOverallAttendance));
-//            holder.constraintCard.setBackgroundResource(R.color.colorDangerOverallAttendance);
+        if (maxAttendance > 0) {
+            holder.cardMain.setCardBackgroundColor(context.getResources().getColor(R.color.colorDangerOverallAttendance));
             return;
         }
     }
