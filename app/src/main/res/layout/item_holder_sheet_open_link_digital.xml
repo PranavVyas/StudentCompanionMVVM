@@ -14,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/boardered_rounded_corner_rectangle"
+        android:background="@drawable/bordered_rounded_corner_rectangle"
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/title_attention"

@@ -54,10 +54,6 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
 
     @Override
     public void onBindViewHolder(@NonNull final AttendanceIndividualHolder holder, final int position) {
-//        if(attendanceEntries.get(position).getSubjectName().equals(Constants.DEFAULT_LECTURE)){
-//            holder.itemView.setVisibility(View.GONE);
-//            return;
-//        }
         AttendanceEntry attendanceOfDay = getItem(position);
         Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceOfDay.getLectureNo());
         holder.tvLectureNo.setText("Lecture " + attendanceOfDay.getLectureNo());

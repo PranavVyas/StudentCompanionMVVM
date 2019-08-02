@@ -13,18 +13,14 @@ import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.Noti
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AttendanceUtils {
 
@@ -70,7 +66,7 @@ public class AttendanceUtils {
                             //Checking if notification still exists or not. If exists than it will not be 0 type
                             if (notificationFirestoreModel == null) {
                                 notificationFirestoreModel = new NotificationFirestoreModel();
-                                long time = new Date().getTime() + 86400000;
+                                long time = new Date().getTime() + TimeUnit.DAYS.toMillis(1);
                                 notificationFirestoreModel.setDateInMillis(time);
                                 notificationFirestoreModel.setUrl("-1");
                                 notificationFirestoreModel.setVenue("-1");
@@ -81,7 +77,7 @@ public class AttendanceUtils {
                                 notificationFirestoreModel.set_ID("OverallAttendance_" + subjectAttendance.getSubName());
                                 notificationRepository.insertNotification(notificationFirestoreModel);
                             } else {
-                                long time = new Date().getTime() + 86400000;
+                                long time = new Date().getTime() + TimeUnit.DAYS.toMillis(1);
                                 notificationFirestoreModel.setDateInMillis(time);
                                 notificationFirestoreModel.setUrl("-1");
                                 notificationFirestoreModel.setVenue("-1");
@@ -119,12 +115,6 @@ public class AttendanceUtils {
                 urlc.connect();
                 return (urlc.getResponseCode() == 204 &&
                         urlc.getContentLength() == 0);
-//                HttpURLConnection urlc = (HttpURLConnection) (new URL("https://www.google.com").openConnection());
-//                urlc.setRequestProperty("User-Agent", "Test");
-//                urlc.setRequestProperty("Connection", "close");
-//                urlc.setConnectTimeout(1500);
-//                urlc.connect();
-//                return (urlc.getResponseCode() == 200);
             } catch (IOException e) {
                 Log.e(TAG, "Error checking internet connection", e);
             }
@@ -132,31 +122,5 @@ public class AttendanceUtils {
             Log.d(TAG, "No network available!");
         }
         return false;
-    }
-
-    public static int copy(String srcStr, String dstStr) throws IOException {
-        File src = new File(srcStr);
-        if (!src.exists()) {
-            return FILE_NOT_FOUND_SRC;
-        }
-        File dst = new File(dstStr);
-        if (dst.exists()) {
-            boolean newFile = dst.createNewFile();
-            if (!newFile) {
-                return FILE_NOT_CREATED_DEST;
-            }
-            try (InputStream in = new FileInputStream(src)) {
-                try (OutputStream out = new FileOutputStream(dst)) {
-                    // Transfer bytes from in to out
-                    byte[] buf = new byte[1024];
-                    int len;
-                    while ((len = in.read(buf)) > 0) {
-                        out.write(buf, 0, len);
-                    }
-                    return 0;
-                }
-            }
-        }
-        return UNKNOWN_ERROR;
     }
 }

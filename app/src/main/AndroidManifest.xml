@@ -18,17 +18,24 @@
         android:name="android.hardware.location.gps"
         android:required="false" />
 
-
     <application
         android:name=".utils.MainApp"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
-        android:fullBackupContent="@xml/backup_descriptor"
         tools:replace="android:theme">
+        <activity
+            android:name=".ui.activities.AddNoteActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.NotesActivity" />
+        <activity
+            android:name=".ui.activities.NotesActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.NotificationPreferenceActivity"
             android:parentActivityName=".ui.activities.MainActivity" />
@@ -47,8 +54,7 @@
         <activity
             android:name=".ui.activities.OpenSourceInformationActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".ui.activities.MainActivity" />
-        <!-- TODO Set AppTheme.Launcher at time of release -->
+            android:parentActivityName=".ui.activities.MainActivity" /> <!-- TODO Set AppTheme.Launcher at time of release -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -100,7 +106,6 @@
             android:name=".ui.activities.AutoAttendanceSubjectDetailActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.AutoAttendanceSubjectListActivity" />
-
         <activity
             android:name=".ui.activities.MarketPlaceSellItemActivity"
             android:launchMode="singleTop"
@@ -108,7 +113,6 @@
         <activity
             android:name=".ui.activities.TutorialActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.schibstedspain.leku.LocationPickerActivity"
             android:label="@string/leku_title_activity_location_picker"

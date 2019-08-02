@@ -19,7 +19,6 @@ import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.jobs.DailyJobForDoingDailyJobs;
 import com.vyas.pranav.studentcompanion.jobs.JobsCreator;
 
 public class MainApp extends MultiDexApplication {
@@ -38,7 +37,7 @@ public class MainApp extends MultiDexApplication {
 //                    AppCompatDelegate.MODE_NIGHT_NO);
 //        }
         JobManager.create(this).addJobCreator(new JobsCreator());
-        DailyJobForDoingDailyJobs.scheduleJob();
+//        DailyJobForDoingDailyJobs.scheduleJob();
         //initialize and create the image loader logic
         DrawerImageLoader.init(new AbstractDrawerImageLoader() {
             @Override

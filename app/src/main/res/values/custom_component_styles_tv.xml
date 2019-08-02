@@ -31,7 +31,16 @@
 
     <style name="MyMaterialTextView.SmallTextViewBody1.Bold" parent="MyMaterialTextView.SmallTextViewBody1">
         <item name="android:textStyle">bold</item>
+    </style>
 
+    <style name="MyMaterialTextView.SmallSubtitleTextViewBody1" parent="MyMaterialTextView">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle1
+        </item>
+    </style>
+
+    <style name="MyMaterialTextView.SmallSubtitleTextViewBody2" parent="MyMaterialTextView">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle2
+        </item>
     </style>
 
     <style name="MyMaterialTextView.MediumTextViewHeadLine6" parent="MyMaterialTextView">

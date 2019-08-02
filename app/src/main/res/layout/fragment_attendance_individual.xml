@@ -14,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/boardered_rounded_corner_rectangle"
+        android:background="@drawable/bordered_rounded_corner_rectangle"
         android:padding="4dp"
         android:textAlignment="center"
         style="@style/MyMaterialTextView.SmallTextViewBody1"

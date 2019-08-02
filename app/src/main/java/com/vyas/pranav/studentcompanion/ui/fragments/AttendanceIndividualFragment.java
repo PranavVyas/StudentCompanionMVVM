@@ -26,12 +26,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.android.material.picker.MaterialStyledDatePickerDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.ui.activities.AttendanceIndividualActivity;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModel;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModelFactory;
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceForSubjectViewModel;
@@ -65,6 +67,7 @@ public class AttendanceIndividualFragment extends Fragment {
     private OverallAttendanceViewModel overallAttendanceViewModel;
     private AttendanceIndividualRecyclerAdapter mAdapter;
     private MainDatabase mDb;
+    private SharedPreferencesUtils utils;
 
     public AttendanceIndividualFragment() {
     }
@@ -76,6 +79,7 @@ public class AttendanceIndividualFragment extends Fragment {
         setUpRecyclerView();
         Date date = new Date();
         date = ConverterUtils.convertStringToDate(ConverterUtils.convertDateToString(date));
+        utils = new SharedPreferencesUtils(getContext());
         overallAttendanceViewModel = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
         if (getArguments() != null) {
             String dateStr = getArguments().getString(AttendanceIndividualActivity.EXTRA_DATE);
@@ -189,10 +193,22 @@ public class AttendanceIndividualFragment extends Fragment {
         if (isShown) {
             rvMain.setVisibility(View.GONE);
             placeHolderHoldidays.setVisibility(View.VISIBLE);
+            if ((getEndingDate().getTime() - new Date().getTime()) > 1) {
+                showSnackBar("Your Semester is Over!", Snackbar.LENGTH_LONG);
+            }
         } else {
             rvMain.setVisibility(View.VISIBLE);
             placeHolderHoldidays.setVisibility(View.GONE);
         }
+    }
+
+    private void showSnackBar(String s, int duration) {
+        Snackbar.make(placeHolderHoldidays, s, duration).show();
+    }
+
+    private Date getEndingDate() {
+        String endingDate = utils.getEndingDate();
+        return ConverterUtils.convertStringToDate(endingDate);
     }
 
     private void startInstruction(Activity activity) {

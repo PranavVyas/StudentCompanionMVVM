@@ -38,7 +38,7 @@
         android:text="Continue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_set_up_lecture_time_info" />
+        app:layout_constraintStart_toEndOf="@+id/btn_set_up_lecture_time_previous" />
 
     <Button
         android:id="@+id/btn_set_up_lecture_time_previous"
@@ -50,19 +50,7 @@
         android:layout_marginBottom="8dp"
         android:text="Previous"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_set_up_lecture_time_info"
+        app:layout_constraintEnd_toStartOf="@+id/btn_set_up_lecture_time_continue"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/btn_set_up_lecture_time_info"
-        style="@style/MyCustomMaterialButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Help"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_set_up_lecture_time_continue"
-        app:layout_constraintStart_toEndOf="@+id/btn_set_up_lecture_time_previous" />
 </androidx.constraintlayout.widget.ConstraintLayout>

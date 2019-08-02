@@ -96,7 +96,7 @@ public class OverallAttendanceFragment extends Fragment {
                         .showOnce(TAG + "overallAttCard")
                         .show();
             }
-        }, TimeUnit.SECONDS.toMillis(2));
+        }, TimeUnit.SECONDS.toMillis(1));
 
     }
 }

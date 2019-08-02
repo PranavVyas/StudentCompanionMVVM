@@ -192,7 +192,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
             public void run() {
                 retryClicked();
             }
-        }, TimeUnit.SECONDS.toMillis(2));
+        }, TimeUnit.SECONDS.toMillis(1));
     }
 
 }

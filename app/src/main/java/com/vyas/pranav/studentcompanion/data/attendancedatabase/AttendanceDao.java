@@ -26,7 +26,7 @@ public interface AttendanceDao {
     @Delete
     void deleteAttendance(AttendanceEntry attendanceEntry);
 
-    @Query("SELECT * FROM AttendanceIndividual WHERE date = :date ORDER BY _ID AND NOT subjectName = 'No Lecture' ")
+    @Query("SELECT * FROM AttendanceIndividual WHERE date = :date AND NOT subjectName = 'No Lecture' ORDER BY _ID")
     LiveData<List<AttendanceEntry>> getAttendanceForDate(Date date);
 
     @Query("DELETE FROM AttendanceIndividual")

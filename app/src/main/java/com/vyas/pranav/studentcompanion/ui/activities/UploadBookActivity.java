@@ -155,7 +155,7 @@ public class UploadBookActivity extends AppCompatActivity {
             public void run() {
                 retryClicked();
             }
-        }, TimeUnit.SECONDS.toMillis(2));
+        }, TimeUnit.SECONDS.toMillis(1));
     }
 
     @OnClick(R.id.btn_placeholder_upload_book_no_connection_retry)

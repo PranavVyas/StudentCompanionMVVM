@@ -7,6 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.vyas.pranav.studentcompanion.data.NoteDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
@@ -15,6 +16,7 @@ import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibra
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayDao;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
+import com.vyas.pranav.studentcompanion.data.models.NotesEntry;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationDao;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
@@ -23,7 +25,7 @@ import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDao;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.utils.DateConverter;
 
-@Database(entities = {AttendanceEntry.class, AutoAttendancePlaceEntry.class, DigitalLibraryEntry.class, HolidayEntry.class, OverallAttendanceEntry.class, TimetableEntry.class, NotificationFirestoreModel.class}, version = 1, exportSchema = false)
+@Database(entities = {AttendanceEntry.class, AutoAttendancePlaceEntry.class, DigitalLibraryEntry.class, HolidayEntry.class, OverallAttendanceEntry.class, TimetableEntry.class, NotificationFirestoreModel.class, NotesEntry.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class MainDatabase extends RoomDatabase {
     public static final String DB_NAME = "MainDatabase";
@@ -56,4 +58,6 @@ public abstract class MainDatabase extends RoomDatabase {
     public abstract TimetableDao timetableDao();
 
     public abstract NotificationDao notificationDao();
+
+    public abstract NoteDao noteDao();
 }

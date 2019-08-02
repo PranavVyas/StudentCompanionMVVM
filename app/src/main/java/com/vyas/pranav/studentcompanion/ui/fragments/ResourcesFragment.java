@@ -20,6 +20,7 @@ import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.activities.ContainerActivity;
 import com.vyas.pranav.studentcompanion.ui.activities.DigitalLibraryActivity;
+import com.vyas.pranav.studentcompanion.ui.activities.NotesActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -50,7 +51,7 @@ public class ResourcesFragment extends Fragment {
             public void run() {
                 startInstruction(getActivity());
             }
-        }, TimeUnit.SECONDS.toMillis(2));
+        }, TimeUnit.SECONDS.toMillis(1));
     }
 
     @OnClick(R.id.card_resources_fragment_digital_library)
@@ -87,6 +88,12 @@ public class ResourcesFragment extends Fragment {
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
                 .toBundle();
         intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.HOLIDAYS);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.card_resources_fragment_notes)
+    void notesClicked() {
+        Intent intent = new Intent(getContext(), NotesActivity.class);
         startActivity(intent);
     }
 

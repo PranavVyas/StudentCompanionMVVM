@@ -3,10 +3,12 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,8 +16,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForDoingDailyJobs;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDatesFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDetailsSemFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpLectureTimeFragment;
@@ -23,10 +27,14 @@ import com.vyas.pranav.studentcompanion.ui.fragments.SetUpTimetableFragment;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragment.OnDatesSetUpListener, SetUpDetailsSemFragment.OnSubjectsSelectedListener, SetUpTimetableFragment.OnTimetableSelectedListener, SetUpLectureTimeFragment.OnLectureTimeSelectedListener {
+
+    private static final String TAG = "SetUpActivity";
 
     @BindView(R.id.toolbar_setup_activity)
     Toolbar toolbar;
@@ -42,6 +50,15 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setUpViewModel = ViewModelProviders.of(this).get(SetUpViewModel.class);
+        if (setUpViewModel.isFirstRun()) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showInstruction();
+                }
+            }, TimeUnit.SECONDS.toMillis(1));
+        }
+
         if (!setUpViewModel.isFirstRun()) {
             if (setUpViewModel.isTutorialDone()) {
                 Intent openMainActivity = new Intent(this, MainActivity.class);
@@ -56,6 +73,16 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         }
         setUpViewModel.init();
         executeSetUpStep(setUpViewModel.getCurrentStep());
+    }
+
+    private void showInstruction() {
+        View view = findViewById(R.id.menu_set_up);
+        new BubbleShowCaseBuilder(this)
+                .title("Dynamic Help is Here!")
+                .description("For Help on each Step, Here is Help Menu!!\nFor Each page help is changed according to the step!")
+                .targetView(findViewById(R.id.menu_set_up))
+                .showOnce(TAG + "SetUpActivity")
+                .show();
     }
 
     private void executeSetUpStep(int step) {
@@ -131,6 +158,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         Intent intent = new Intent(this, TutorialActivity.class);
         startActivity(intent);
         setUpViewModel.setFirstRun(false);
+        DailyJobForDoingDailyJobs.scheduleJob();
         finish();
     }
 

@@ -41,7 +41,6 @@ public class SetUpLectureTimeFragment extends Fragment {
     public SetUpLectureTimeFragment() {
     }
 
-    @OnClick(R.id.btn_set_up_lecture_time_info)
     void clickedInfo() {
         BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
         mDialog.setContentView(R.layout.item_holder_bottom_sheet_setup_time_info);

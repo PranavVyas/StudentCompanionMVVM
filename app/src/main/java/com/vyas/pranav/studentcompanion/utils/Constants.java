@@ -46,4 +46,7 @@ public final class Constants {
     public static final String EXTRA_MAIN_ACT_OPEN_OVERALL = "OPEN_MAIN_ACT_WITH_FRAGMENT";
     public static final int TIME_WINDOW_SILENT_DEVICE = 5;
     public static final int TIME_WINDOW_UNSILENT_DEVICE = 5;
+    public static final String DATE_BTN_DEFAULT = "Select Date";
+    public static final String DESC_ET_DEFAULT = "Description";
+    public static final String TITLE_ET_DEFAULT = "Title";
 }

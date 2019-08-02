@@ -24,7 +24,7 @@ public class AttendanceForDateViewModel extends ViewModel {
     }
 
     public LiveData<List<AttendanceEntry>> getAttendanceForDate() {
-        return repository.getAttendanceForDate(date);
+        return attendanceForDate;
     }
 
     public void updateAttendance(AttendanceEntry attendanceEntry) {
@@ -38,4 +38,5 @@ public class AttendanceForDateViewModel extends ViewModel {
     public void setLastChangedSubject(String lastChangedSubject) {
         this.lastChangedSubject = lastChangedSubject;
     }
+
 }
