@@ -24,7 +24,6 @@ import com.vyas.pranav.studentcompanion.viewmodels.NotesViewModelFactory;
 import com.vyas.pranav.studentcompanion.viewmodels.NotesViewModelForDate;
 
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -37,7 +36,6 @@ public class NotesListFragment extends Fragment implements NoteRecyclerAdapter.O
     public static final int TYPE_TILL_TODAY_NOTES_SHOW = 1;
     @BindView(R.id.rv_notes_list_fragment_list)
     RecyclerView rvNotesList;
-    private NoteRecyclerAdapter mAdapter;
 
     public NotesListFragment() {
     }
@@ -53,7 +51,7 @@ public class NotesListFragment extends Fragment implements NoteRecyclerAdapter.O
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAdapter = new NoteRecyclerAdapter();
+        NoteRecyclerAdapter mAdapter = new NoteRecyclerAdapter();
         mAdapter.setOnNotesDeleteClickedListener(this);
         rvNotesList.setAdapter(mAdapter);
         rvNotesList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -61,32 +59,19 @@ public class NotesListFragment extends Fragment implements NoteRecyclerAdapter.O
             long dateInMillis = new Date().getTime() - TimeUnit.DAYS.toMillis(1);
             NotesViewModelFactory factory = new NotesViewModelFactory(new Date(dateInMillis), getContext());
             NotesViewModelForDate viewModelForDate = ViewModelProviders.of(getActivity(), factory).get(NotesViewModelForDate.class);
-            viewModelForDate.getNotes().observe(this, this::setNotes);
+            viewModelForDate.getNotes().observe(this, mAdapter::submitList);
         } else {
             NoteViewModel viewModel = ViewModelProviders.of(getActivity()).get(NoteViewModel.class);
-            viewModel.getAllNotes().observe(this, this::setNotes);
+            viewModel.getAllNotes().observe(this, mAdapter::submitList);
         }
 
     }
 
-    public void setNotes(List<NotesEntry> notes) {
-        Toast.makeText(getContext(), "Length of List : " + notes.size(), Toast.LENGTH_SHORT).show();
-        mAdapter.submitList(notes);
-    }
-
     @Override
     public void OnNotesDeleteClicked(NotesEntry note) {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                MainDatabase.getInstance(getContext()).noteDao().deleteNote(note);
-                AppExecutors.getInstance().mainThread().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "Note was deleted successfully!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            MainDatabase.getInstance(getContext()).noteDao().deleteNote(note);
+            AppExecutors.getInstance().mainThread().execute(() -> Toast.makeText(getContext(), "Note was deleted successfully!", Toast.LENGTH_SHORT).show());
         });
     }
 }

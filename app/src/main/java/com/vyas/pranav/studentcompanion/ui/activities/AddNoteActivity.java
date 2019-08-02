@@ -46,6 +46,8 @@ public class AddNoteActivity extends AppCompatActivity {
     Button btnDate;
     @BindView(R.id.toolbar_add_note)
     Toolbar toolbar;
+    @BindView(R.id.btn_add_note_add)
+    Button btnAdd;
 
     private String title, desc, date;
     private AddNoteViewModel viewModel;
@@ -63,6 +65,7 @@ public class AddNoteActivity extends AppCompatActivity {
             isNewNote = false;
             NotesEntry note = new Gson().fromJson(getIntent().getStringExtra(EXTRA_EDIT_NOTE), NotesEntry.class);
             viewModel.setNote(note);
+            btnAdd.setText("Update");
         }
 
         title = viewModel.getTitle();

@@ -2,7 +2,7 @@ package com.vyas.pranav.studentcompanion.repositories;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 
 import com.vyas.pranav.studentcompanion.data.NoteDao;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
@@ -10,7 +10,6 @@ import com.vyas.pranav.studentcompanion.data.models.NotesEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 
 import java.util.Date;
-import java.util.List;
 
 public class NoteRepository {
     private Context context;
@@ -32,11 +31,11 @@ public class NoteRepository {
         });
     }
 
-    public LiveData<List<NotesEntry>> getAllNotes() {
+    public DataSource.Factory<Integer, NotesEntry> getAllNotes() {
         return noteDao.getAllNotes();
     }
 
-    public LiveData<List<NotesEntry>> getNotesBeforeDate(Date date) {
+    public DataSource.Factory<Integer, NotesEntry> getNotesBeforeDate(Date date) {
         return noteDao.getNotesBefore(date);
     }
 

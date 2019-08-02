@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -23,7 +23,7 @@ import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NoteRecyclerAdapter extends ListAdapter<NotesEntry, NoteRecyclerAdapter.NoteHolderSingle> {
+public class NoteRecyclerAdapter extends PagedListAdapter<NotesEntry, NoteRecyclerAdapter.NoteHolderSingle> {
 
     public static String EXTRA_TYPE_EDIT_ADD_NOTE = "RecyclerView.EditNote.FromRv";
     public static String EXTRA_EDIT_NOTE = "RecyclerView.EditNote";

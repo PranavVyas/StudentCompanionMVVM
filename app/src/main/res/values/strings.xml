@@ -108,5 +108,6 @@
 
     <string name="main_neutral_btn_delete_acc_sign_out_instead">Sign out Instead</string>
     <string name="main_sheet_delete_account">Do you want to Delete Account?</string>
+    <string name="overall_days_available_to_bunk">Available to Bunk</string>
 
 </resources>

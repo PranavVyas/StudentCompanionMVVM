@@ -49,4 +49,5 @@ public final class Constants {
     public static final String DATE_BTN_DEFAULT = "Select Date";
     public static final String DESC_ET_DEFAULT = "Description";
     public static final String TITLE_ET_DEFAULT = "Title";
+    public static final int PAGE_SIZE_NOTES = 20;
 }
