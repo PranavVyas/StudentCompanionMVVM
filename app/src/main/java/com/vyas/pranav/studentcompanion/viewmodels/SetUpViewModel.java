@@ -6,9 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
 import com.vyas.pranav.studentcompanion.repositories.TimetableRepository;
+import com.vyas.pranav.studentcompanion.utils.Constants;
+import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.utils.Generators;
 
 import java.util.ArrayList;
@@ -27,16 +31,21 @@ public class SetUpViewModel extends AndroidViewModel {
     private int semester;
     private boolean isFirstRun;
     private int noOfLecturesPerDay;
+    private String currentPath;
 
     private SetUpProcessRepository repository;
     private TimetableRepository timetableRepository;
     private int attendanceCriteria = 0;
+    private FirestoreQueryLiveData collagesLiveData;
 
     public SetUpViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
         repository = new SetUpProcessRepository(application);
         isFirstRun = repository.isAppFirstRun();
+        FirebaseFirestore mDb = FirebaseFirestore.getInstance();
+        CollectionReference mRef = mDb.collection(Constants.PATH_COLLAGES);
+        collagesLiveData = repository.getCollagesLiveData(mRef);
     }
 
     public void init() {
@@ -48,6 +57,11 @@ public class SetUpViewModel extends AndroidViewModel {
         semester = repository.getSemester();
         noOfLecturesPerDay = repository.getNoOfLecturesPerDay();
         attendanceCriteria = repository.getCurrentAttendanceCriteria();
+        currentPath = repository.getCurrentPath();
+    }
+
+    public FirestoreQueryLiveData getCollagesLiveData() {
+        return collagesLiveData;
     }
 
     public String getStartDate() {
@@ -182,5 +196,14 @@ public class SetUpViewModel extends AndroidViewModel {
     public void setCurrentAttendanceCriteria(int progress) {
         this.attendanceCriteria = progress;
         repository.setCurrentAttendanceCriteria(progress);
+    }
+
+    public String getCurrentPath() {
+        return currentPath;
+    }
+
+    public void setCurrentPath(String currentPath) {
+        this.currentPath = currentPath;
+        repository.setCurrentPath(currentPath);
     }
 }

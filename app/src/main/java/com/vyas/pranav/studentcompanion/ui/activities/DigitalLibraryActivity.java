@@ -197,7 +197,7 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
 
     private void onSyncClicked() {
         Toast.makeText(this, "Sync Clicked", Toast.LENGTH_SHORT).show();
-        CollectionReference booksRef = FirebaseFirestore.getInstance().collection(Constants.PATH_DIGITAL_LIBRARY_SVNIT);
+        CollectionReference booksRef = FirebaseFirestore.getInstance().collection(new SharedPreferencesUtils(this).getCurrentPath() + Constants.PATH_DIGITAL_LIBRARY_SVNIT);
         FirestoreQueryLiveData liveBooksData = new FirestoreQueryLiveData(booksRef);
         liveBooksData.removeObservers(this);
         liveBooksData.observe(this, new Observer<QuerySnapshot>() {

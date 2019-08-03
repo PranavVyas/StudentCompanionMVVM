@@ -15,6 +15,7 @@ import com.google.firebase.firestore.Query;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 public class MyProfileViewModel extends AndroidViewModel {
 
@@ -31,7 +32,7 @@ public class MyProfileViewModel extends AndroidViewModel {
         mAuth = FirebaseAuth.getInstance();
         currUser = mAuth.getCurrentUser();
         userName = currUser.getDisplayName();
-        mCollectionReference = mFirestoreDb.collection(Constants.PATH_SELL_SVNIT).whereEqualTo("p_name", userName);
+        mCollectionReference = mFirestoreDb.collection(new SharedPreferencesUtils(application).getCurrentPath() + Constants.PATH_SELL_SVNIT).whereEqualTo("p_name", userName);
         mListLiveData = new FirestoreQueryLiveData(mCollectionReference);
     }
 
@@ -40,7 +41,7 @@ public class MyProfileViewModel extends AndroidViewModel {
     }
 
     public void deleteItem(String id) {
-        mFirestoreDb.collection(Constants.PATH_SELL_SVNIT).document(id)
+        mFirestoreDb.collection(new SharedPreferencesUtils(getApplication()).getCurrentPath() + Constants.PATH_SELL_SVNIT).document(id)
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

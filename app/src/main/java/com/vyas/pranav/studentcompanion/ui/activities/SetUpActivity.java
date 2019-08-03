@@ -25,6 +25,7 @@ import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDatesFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDetailsSemFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpLectureTimeFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpTimetableFragment;
+import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
@@ -220,23 +221,32 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
     }
 
     private void showPlaceHolder(boolean isShown) {
-        if (isShown) {
-            rootLayout.setVisibility(View.GONE);
-            placeHolder.setVisibility(View.VISIBLE);
-        } else {
-            rootLayout.setVisibility(View.VISIBLE);
-            placeHolder.setVisibility(View.GONE);
-        }
+        AppExecutors.getInstance().mainThread().execute(() -> {
+            if (isShown) {
+                rootLayout.setVisibility(View.GONE);
+                placeHolder.setVisibility(View.VISIBLE);
+            } else {
+                rootLayout.setVisibility(View.VISIBLE);
+                placeHolder.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     @OnClick(R.id.btn_set_up_placeholder_retry)
     void retryClicked() {
-        if (AttendanceUtils.hasInternetAccess(this)) {
-            //Hide Placeholder
-            showPlaceHolder(false);
-        } else {
-            //Show Placeholder
-            showPlaceHolder(true);
-        }
+        AppExecutors.getInstance().networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (AttendanceUtils.hasInternetAccess(SetUpActivity.this)) {
+                    //Hide Placeholder
+                    showPlaceHolder(false);
+                } else {
+                    //Show Placeholder
+                    showPlaceHolder(true);
+                }
+            }
+        });
+
     }
 }

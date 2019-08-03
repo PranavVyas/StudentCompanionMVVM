@@ -24,8 +24,9 @@
             android:text="Continue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.523"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/seek_set_up_dates_attendance_crieteria" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_setup_collage" />
 
         <TextView
             android:id="@+id/textView"
@@ -135,5 +136,27 @@
             app:layout_constraintStart_toEndOf="@+id/textView14"
             app:layout_constraintTop_toBottomOf="@+id/text_input_set_up_dates_sem_no"
             tools:text="52%" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textView106"
+            style="@style/MyMaterialTextView.SmallTextViewBody1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Collage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seek_set_up_dates_attendance_crieteria" />
+
+        <Spinner
+            android:id="@+id/spinner_setup_collage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/seek_set_up_dates_attendance_crieteria"
+            app:layout_constraintStart_toStartOf="@+id/seek_set_up_dates_attendance_crieteria"
+            app:layout_constraintTop_toBottomOf="@+id/textView106" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

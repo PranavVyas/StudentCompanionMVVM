@@ -15,7 +15,7 @@
     <com.vyas.pranav.studentcompanion.utils.TimePreference
         android:defaultValue="@integer/pref_def_value_time_reminder_time"
         android:key="@string/pref_key_time_reminder_time"
-        andriod:icon="@drawable/ic_clock"
+        andriod:icon="@drawable/ic_watch"
         android:title="@string/pref_title_time_reminder_time" />
 
     <SwitchPreference

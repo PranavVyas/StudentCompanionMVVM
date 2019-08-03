@@ -94,7 +94,7 @@ public class UploadBookActivity extends AppCompatActivity {
     private StorageReference mStorageReference = mStorage.getReference();
     private StorageReference child;
     private FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference mCollectionReference = mFirestore.collection(Constants.PATH_DIGITAL_LIBRARY_SVNIT);
+    private CollectionReference mCollectionReference;
     private Snackbar sbar;
     private UploadTask uploadTask;
     private String downloadBookUrl;
@@ -105,6 +105,7 @@ public class UploadBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_book);
         ButterKnife.bind(this);
+        mCollectionReference = mFirestore.collection(new SharedPreferencesUtils(this).getCurrentPath() + Constants.PATH_DIGITAL_LIBRARY_SVNIT);
         uploadBookViewModel = ViewModelProviders.of(this).get(UploadBookViewModel.class);
         initData();
         setUpUi();

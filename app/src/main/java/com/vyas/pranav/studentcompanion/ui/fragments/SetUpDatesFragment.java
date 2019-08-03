@@ -4,12 +4,15 @@ package com.vyas.pranav.studentcompanion.ui.fragments;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +26,14 @@ import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.models.CollageModel;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -52,6 +58,8 @@ public class SetUpDatesFragment extends Fragment {
     TextView tvAttendancePercent;
     @BindView(R.id.seek_set_up_dates_attendance_crieteria)
     SeekBar seekBarAttendance;
+    @BindView(R.id.spinner_setup_collage)
+    Spinner spinnerCollage;
 
     private OnDatesSetUpListener mCallback;
     private SetUpViewModel setUpViewModel;
@@ -95,6 +103,30 @@ public class SetUpDatesFragment extends Fragment {
 
             }
         });
+
+        setUpViewModel.getCollagesLiveData().observe(getActivity(), queryDocumentSnapshots -> {
+            List<CollageModel> collageModels = queryDocumentSnapshots.toObjects(CollageModel.class);
+            List<String> paths = new ArrayList<>();
+            for (CollageModel x :
+                    collageModels) {
+                paths.add(x.getCity() + "/" + x.getName());
+            }
+            ArrayAdapter<String> mAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_simple_custom_main, paths);
+            mAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+            spinnerCollage.setAdapter(mAdapter);
+            spinnerCollage.setSelection(paths.indexOf(setUpViewModel.getCurrentPath()));
+            spinnerCollage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    setUpViewModel.setCurrentPath(paths.get(i));
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+        });
         showHelp();
     }
 
@@ -115,6 +147,8 @@ public class SetUpDatesFragment extends Fragment {
             Toast.makeText(getContext(), "Difference between dates must be more than 15 Days\nEnding date must be after Starting date", Toast.LENGTH_SHORT).show();
         } else if (!validateSemNo()) {
             inputSemNo.setError("Please Input Correct Sem No");
+        } else if (TextUtils.isEmpty(setUpViewModel.getCurrentPath())) {
+            Toast.makeText(getContext(), "Collage is not Selected", Toast.LENGTH_SHORT).show();
         } else {
             inputSemNo.setErrorEnabled(false);
             setSemNo();
@@ -126,13 +160,10 @@ public class SetUpDatesFragment extends Fragment {
 
     @OnClick(R.id.btn_set_up_dates_fragment_start_date)
     void selectStartingDate() {
-        MaterialStyledDatePickerDialog.OnDateSetListener listener = new MaterialStyledDatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                String startDateStr = ConverterUtils.formatDateStringFromCalender(i2, i1 + 1, i);
-                setUpViewModel.setStartDate(startDateStr);
-                btnStartDate.setText(setUpViewModel.getStartDate());
-            }
+        MaterialStyledDatePickerDialog.OnDateSetListener listener = (datePicker, i, i1, i2) -> {
+            String startDateStr = ConverterUtils.formatDateStringFromCalender(i2, i1 + 1, i);
+            setUpViewModel.setStartDate(startDateStr);
+            btnStartDate.setText(setUpViewModel.getStartDate());
         };
         showDatePickerDialog(listener);
     }
@@ -140,13 +171,10 @@ public class SetUpDatesFragment extends Fragment {
     @SuppressLint("RestrictedApi")
     @OnClick(R.id.btn_set_up_dates_fragment_end_date)
     void selectEndingDate() {
-        MaterialStyledDatePickerDialog.OnDateSetListener listener = new MaterialStyledDatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                String endDateStr = ConverterUtils.formatDateStringFromCalender(i2, i1 + 1, i);
-                setUpViewModel.setEndDate(endDateStr);
-                btnEndDate.setText(setUpViewModel.getEndDate());
-            }
+        MaterialStyledDatePickerDialog.OnDateSetListener listener = (datePicker, i, i1, i2) -> {
+            String endDateStr = ConverterUtils.formatDateStringFromCalender(i2, i1 + 1, i);
+            setUpViewModel.setEndDate(endDateStr);
+            btnEndDate.setText(setUpViewModel.getEndDate());
         };
         showDatePickerDialog(listener);
     }

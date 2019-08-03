@@ -50,8 +50,9 @@ public final class Constants {
     public static final String DESC_ET_DEFAULT = "Description";
     public static final String TITLE_ET_DEFAULT = "Title";
     public static final int PAGE_SIZE_NOTES = 20;
-    public static final String PATH_EVENTS_SVNIT = "surat/svnit/events";
-    public static final String PATH_SELL_SVNIT = "surat/svnit/sell";
-    public static final String PATH_HOLIDAYS_SVNIT = "surat/svnit/holidays";
-    public static final String PATH_DIGITAL_LIBRARY_SVNIT = "surat/svnit/digitalLibrary";
+    public static final String PATH_EVENTS_SVNIT = "/events";
+    public static final String PATH_SELL_SVNIT = "/sell";
+    public static final String PATH_HOLIDAYS_SVNIT = "/holidays";
+    public static final String PATH_DIGITAL_LIBRARY_SVNIT = "/digitalLibrary";
+    public static final String PATH_COLLAGES = "collage";
 }

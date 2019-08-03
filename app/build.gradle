@@ -166,6 +166,8 @@ dependencies {
 
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
 
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
     implementation 'androidx.paging:paging-runtime:2.1.0'
 }
 apply plugin: 'com.google.gms.google-services'

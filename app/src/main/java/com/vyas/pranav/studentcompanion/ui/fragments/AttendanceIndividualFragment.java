@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -110,17 +109,14 @@ public class AttendanceIndividualFragment extends Fragment {
         Calendar now = Calendar.getInstance();
         MaterialStyledDatePickerDialog datePickerDialog = new MaterialStyledDatePickerDialog(
                 getContext(),
-                new MaterialStyledDatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int i1, int day) {
-                        int month = i1 + 1;
-                        String selectedDate = ConverterUtils.formatDateStringFromCalender(day, month, year);
-                        Intent intent = new Intent(getContext(), AttendanceIndividualActivity.class);
-                        intent.putExtra(AttendanceIndividualActivity.EXTRA_DATE, selectedDate);
-                        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                        startActivity(intent);
-                        //Toast.makeText(getContext(), "i = "+i+" i1 = "+i1+" i2 = "+i2, Toast.LENGTH_SHORT).show();
-                    }
+                (datePicker, year, i1, day) -> {
+                    int month = i1 + 1;
+                    String selectedDate = ConverterUtils.formatDateStringFromCalender(day, month, year);
+                    Intent intent = new Intent(getContext(), AttendanceIndividualActivity.class);
+                    intent.putExtra(AttendanceIndividualActivity.EXTRA_DATE, selectedDate);
+                    Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+                    startActivity(intent);
+                    //Toast.makeText(getContext(), "i = "+i+" i1 = "+i1+" i2 = "+i2, Toast.LENGTH_SHORT).show();
                 },
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
@@ -193,7 +189,7 @@ public class AttendanceIndividualFragment extends Fragment {
         if (isShown) {
             rvMain.setVisibility(View.GONE);
             placeHolderHoldidays.setVisibility(View.VISIBLE);
-            if ((getEndingDate().getTime() - new Date().getTime()) > 1) {
+            if (new Date().getTime() - (getEndingDate().getTime()) > 1) {
                 showSnackBar("Your Semester is Over!", Snackbar.LENGTH_LONG);
             }
         } else {

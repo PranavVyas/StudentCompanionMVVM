@@ -5,12 +5,14 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
-import com.vyas.pranav.studentcompanion.data.firebase.HolidaysFetcher;
+import com.vyas.pranav.studentcompanion.data.firebase.model.HolidayModel;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
@@ -20,6 +22,7 @@ import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
@@ -49,6 +52,11 @@ public class SetUpProcessRepository {
         timetableRepository = new TimetableRepository(context);
         mDb = MainDatabase.getInstance(context);
     }
+
+    public FirestoreQueryLiveData getCollagesLiveData(Query query) {
+        return new FirestoreQueryLiveData(query);
+    }
+
 
     public boolean isAppFirstRun() {
         return sharedPreferencesUtils.isAppFirstRun();
@@ -131,22 +139,36 @@ public class SetUpProcessRepository {
     }
 
     public void saveHolidaysAndInitAttendance() {
-        HolidaysFetcher holidaysFetcher = new HolidaysFetcher();
-        holidaysFetcher.setOnHolidaysReceivedListener(new HolidaysFetcher.OnHolidaysReceivedListener() {
-            @Override
-            public void onHolidaysReceived(List<HolidayEntry> holidayEntries) {
-                List<Date> holidayDates = new ArrayList<>();
-                for (HolidayEntry x :
-                        holidayEntries) {
-                    holidayDates.add(x.getDate());
-                }
-                setHolidays(holidayEntries);
-                List<Date> eligibleDates = removeHolidaysAndWeekends(holidayDates);
-                setUpAutoAttendanceDatabase();
-                eligibleDatesCalculated(eligibleDates);
+//        HolidaysFetcher holidaysFetcher = new HolidaysFetcher();
+        FirestoreQueryLiveData holidayLiveData = new FirestoreQueryLiveData(FirebaseFirestore.getInstance().collection(getCurrentPath() + Constants.PATH_HOLIDAYS_SVNIT));
+        holidayLiveData.observeForever(queryDocumentSnapshots -> {
+            List<HolidayModel> holidayModels = queryDocumentSnapshots.toObjects(HolidayModel.class);
+            List<Date> holidayDates = new ArrayList<>();
+            List<HolidayEntry> holidayEntries = new ArrayList<>();
+            for (HolidayModel x :
+                    holidayModels) {
+                HolidayEntry holiday = new HolidayEntry();
+                holiday.setName(x.getName());
+                holiday.setDate(ConverterUtils.convertStringToDate(x.getDate()));
+                holiday.setDay(ConverterUtils.getDayOfWeek(x.getDate()));
+                holidayDates.add(holiday.getDate());
+                holidayEntries.add(holiday);
             }
+            setHolidays(holidayEntries);
+            List<Date> eligibleDates = removeHolidaysAndWeekends(holidayDates);
+            setUpAutoAttendanceDatabase();
+            eligibleDatesCalculated(eligibleDates);
         });
-        holidaysFetcher.getHolidayEntries();
+
+//        holidaysFetcher.setOnHolidaysReceivedListener(new HolidaysFetcher.OnHolidaysReceivedListener() {
+//            @Override
+//            public void onHolidaysReceived(List<HolidayEntry> holidayEntries) {
+//
+//            }
+//        });
+//        holidaysFetcher.getHolidayEntries();
+
+
     }
 
     private void eligibleDatesCalculated(List<Date> eligibleDates) {
@@ -313,5 +335,13 @@ public class SetUpProcessRepository {
 
     public void setCurrentAttendanceCriteria(int progress) {
         sharedPreferencesUtils.setCurrentAttendanceCriteria(progress);
+    }
+
+    public String getCurrentPath() {
+        return sharedPreferencesUtils.getCurrentPath();
+    }
+
+    public void setCurrentPath(String currentPath) {
+        sharedPreferencesUtils.setCurrentPath(currentPath);
     }
 }

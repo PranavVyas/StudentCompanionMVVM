@@ -30,7 +30,7 @@ public class DailyJobForDoingDailyJobs extends DailyJob {
         Logger.d("Job was not started ,Starting Now...");
         JobRequest.Builder jobBuilder = new JobRequest.Builder(TAG).setUpdateCurrent(true);
         long startTime = TimeUnit.HOURS.toMillis(0) + TimeUnit.MINUTES.toMillis(10);
-        long endTime = startTime + TimeUnit.MINUTES.toMillis(0);
+        long endTime = startTime + TimeUnit.MINUTES.toMillis(30);
         DailyJob.schedule(jobBuilder, startTime, endTime);
     }
 

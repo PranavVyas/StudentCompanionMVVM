@@ -33,6 +33,7 @@ public class SharedPreferencesUtils {
     private static final String SHARED_PREF_LECTURE_END = "ENDING_TIME_OF_LECTURE";
     private static final String SHARED_PREF_TUTORIAL = "TUTORIAL_DONE";
     private static final String KEY_ATTENDANCE_CRITERIA = "SHARED_PREF_ATTENDANCE_CRITERIA";
+    private static final String PATH_MAIN_SOURCE_FIRESTORE = "SHARED_PREF.FirestorePath";
 
     private Context context;
     private SharedPreferences preferences;
@@ -230,6 +231,17 @@ public class SharedPreferencesUtils {
         editor.putBoolean(SHARED_PREF_TUTORIAL, isDone).apply();
     }
 
+    public String getCurrentPath() {
+        return preferences.getString(PATH_MAIN_SOURCE_FIRESTORE, "surat/svnit");
+    }
+
+    public void setCurrentPath(String currentPath) {
+        editor.putString(PATH_MAIN_SOURCE_FIRESTORE, currentPath).apply();
+    }
+
+    public void clearSharedPreference() {
+        editor.clear();
+    }
 
 
 }

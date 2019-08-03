@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,12 +86,9 @@ public class AddNoteActivity extends AppCompatActivity {
         Calendar now = Calendar.getInstance();
         MaterialStyledDatePickerDialog datePickerDialog = new MaterialStyledDatePickerDialog(
                 this,
-                new MaterialStyledDatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int i1, int day) {
-                        int month = i1 + 1;
-                        date = ConverterUtils.formatDateStringFromCalender(day, month, year);
-                    }
+                (datePicker, year, i1, day) -> {
+                    int month = i1 + 1;
+                    date = ConverterUtils.formatDateStringFromCalender(day, month, year);
                 },
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),

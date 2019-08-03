@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,13 +25,15 @@ public class MarketPlaceViewModel extends AndroidViewModel {
     ));
     private String searchStr = "";
     private int selectedCategory = 0;
-    private final CollectionReference collectionReference = FirebaseFirestore.getInstance().collection(Constants.PATH_SELL_SVNIT);
-    private Query mQuery = collectionReference.whereEqualTo("category", categories.get(selectedCategory));
+    private final CollectionReference collectionReference;
+    private Query mQuery;
     private FirestoreQueryLiveData queryLiveData;
     private String childSting;
 
     public MarketPlaceViewModel(@NonNull Application application) {
         super(application);
+        collectionReference = FirebaseFirestore.getInstance().collection(new SharedPreferencesUtils(application).getCurrentPath() + Constants.PATH_SELL_SVNIT);
+        mQuery = collectionReference.whereEqualTo("category", categories.get(selectedCategory));
         queryLiveData = new FirestoreQueryLiveData(mQuery);
     }
 

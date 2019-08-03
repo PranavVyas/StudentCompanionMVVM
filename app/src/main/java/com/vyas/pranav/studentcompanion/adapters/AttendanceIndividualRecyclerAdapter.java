@@ -1,6 +1,5 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +21,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceEntry, AttendanceIndividualRecyclerAdapter.AttendanceIndividualHolder> {
-    private static final String TAG = "AttendanceIndividualRec";
-
-    private onAttendanceSwitchToggleListener listener;
-
     public static final DiffUtil.ItemCallback<AttendanceEntry> diffCallback = new DiffUtil.ItemCallback<AttendanceEntry>() {
         @Override
         public boolean areItemsTheSame(@NonNull AttendanceEntry oldItem, @NonNull AttendanceEntry newItem) {
@@ -40,6 +35,8 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
                     (oldItem.isPresent() == newItem.isPresent());
         }
     };
+    private static final String TAG = "AttendanceIndividualRec";
+    private onAttendanceSwitchToggleListener listener;
 
     public AttendanceIndividualRecyclerAdapter() {
         super(diffCallback);
@@ -54,25 +51,7 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
 
     @Override
     public void onBindViewHolder(@NonNull final AttendanceIndividualHolder holder, final int position) {
-        AttendanceEntry attendanceOfDay = getItem(position);
-        Log.d(TAG, "onBindViewHolder: Lecture No " + attendanceOfDay.getLectureNo());
-        holder.tvLectureNo.setText("Lecture " + attendanceOfDay.getLectureNo());
-        holder.tvSubjectName.setText(attendanceOfDay.getSubjectName());
-        holder.switchPresent.setOn(attendanceOfDay.isPresent());
-
-        View.OnClickListener onClickListener = v -> holder.switchPresent.performClick();
-        holder.itemView.setOnClickListener(onClickListener);
-        holder.switchPresent.setOnToggledListener(new OnToggledListener() {
-            @Override
-            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
-                if (listener != null) {
-                    attendanceOfDay.setPresent(isOn);
-                    listener.onAttendanceSwitchToggled(attendanceOfDay);
-                } else {
-                    Logger.d("Listener is not init");
-                }
-            }
-        });
+        holder.bindTo(getItem(position));
     }
 
     public void setOnAttendanceSwitchToggledListener(onAttendanceSwitchToggleListener listener) {
@@ -94,6 +73,26 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         AttendanceIndividualHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void bindTo(AttendanceEntry attendanceOfDay) {
+            tvLectureNo.setText("Lecture " + attendanceOfDay.getLectureNo());
+            tvSubjectName.setText(attendanceOfDay.getSubjectName());
+            switchPresent.setOn(attendanceOfDay.isPresent());
+
+            View.OnClickListener onClickListener = v -> switchPresent.performClick();
+            itemView.setOnClickListener(onClickListener);
+            switchPresent.setOnToggledListener(new OnToggledListener() {
+                @Override
+                public void onSwitched(ToggleableView toggleableView, boolean isOn) {
+                    if (listener != null) {
+                        attendanceOfDay.setPresent(isOn);
+                        listener.onAttendanceSwitchToggled(attendanceOfDay);
+                    } else {
+                        Logger.d("Listener is not init");
+                    }
+                }
+            });
         }
     }
 

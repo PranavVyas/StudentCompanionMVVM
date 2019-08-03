@@ -28,6 +28,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:theme">
+        <activity android:name=".ui.activities.ImportExportActivity">
+
+        </activity>
         <activity
             android:name=".ui.activities.AddNoteActivity"
             android:launchMode="singleTop"
@@ -75,7 +78,8 @@
             android:parentActivityName=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.SetUpActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <service android:name=".services.EditOverallAttendanceIntentService" />
         <service android:name=".services.AttendanceEditIntentService" />

@@ -101,7 +101,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     private final StorageReference mStorageReference = mStorage.getReference();
     private StorageReference child;
     private final FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
-    private final CollectionReference mCollectionReference = mFirestore.collection(Constants.PATH_SELL_SVNIT);
+    private CollectionReference mCollectionReference;
     private Snackbar sbar;
     private MarketPlaceSellItemViewModel marketPlaceSellItemViewModel;
     private UploadTask uploadTask;
@@ -117,6 +117,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mCollectionReference = mFirestore.collection(new SharedPreferencesUtils(this).getCurrentPath() + Constants.PATH_SELL_SVNIT);
         marketPlaceSellItemViewModel = ViewModelProviders.of(this).get(MarketPlaceSellItemViewModel.class);
         userName = marketPlaceSellItemViewModel.getCurrUser().getDisplayName();
         populateUI();
