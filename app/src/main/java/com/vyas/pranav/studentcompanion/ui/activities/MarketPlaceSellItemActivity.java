@@ -40,6 +40,7 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.MarketPlaceSellItemViewModel;
@@ -100,7 +101,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     private final StorageReference mStorageReference = mStorage.getReference();
     private StorageReference child;
     private final FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
-    private final CollectionReference mCollectionReference = mFirestore.collection("sell");
+    private final CollectionReference mCollectionReference = mFirestore.collection(Constants.PATH_SELL_SVNIT);
     private Snackbar sbar;
     private MarketPlaceSellItemViewModel marketPlaceSellItemViewModel;
     private UploadTask uploadTask;

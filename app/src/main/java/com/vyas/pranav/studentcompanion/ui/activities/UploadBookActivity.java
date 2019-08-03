@@ -37,6 +37,7 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.firebase.BookModel;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.UploadBookViewModel;
@@ -58,7 +59,7 @@ public class UploadBookActivity extends AppCompatActivity {
     @BindView(R.id.text_input_upload_book_subject)
     TextInputLayout inputSubject;
     @BindView(R.id.text_input_upload_book_extra_info)
-    TextInputLayout inputExtaInfo;
+    TextInputLayout inputExtraInfo;
 
     @BindView(R.id.et_upload_book_author_name)
     TextInputEditText etAuthorName;
@@ -93,7 +94,7 @@ public class UploadBookActivity extends AppCompatActivity {
     private StorageReference mStorageReference = mStorage.getReference();
     private StorageReference child;
     private FirebaseFirestore mFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference mCollectionReference = mFirestore.collection("digitalLibrary");
+    private CollectionReference mCollectionReference = mFirestore.collection(Constants.PATH_DIGITAL_LIBRARY_SVNIT);
     private Snackbar sbar;
     private UploadTask uploadTask;
     private String downloadBookUrl;
@@ -368,10 +369,10 @@ public class UploadBookActivity extends AppCompatActivity {
         extraInfo = etExtraInfo.getText().toString().trim();
         uploadBookViewModel.setExtraInfo(extraInfo);
         if (extraInfo.isEmpty()) {
-            inputExtaInfo.setError("Extra info is not Given, write N/A if not available");
+            inputExtraInfo.setError("Extra info is not Given, write N/A if not available");
             return false;
         } else {
-            inputExtaInfo.setErrorEnabled(false);
+            inputExtraInfo.setErrorEnabled(false);
             return true;
         }
     }

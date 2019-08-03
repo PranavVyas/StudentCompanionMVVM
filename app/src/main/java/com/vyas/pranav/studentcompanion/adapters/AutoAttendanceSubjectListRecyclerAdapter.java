@@ -55,16 +55,13 @@ public class AutoAttendanceSubjectListRecyclerAdapter extends RecyclerView.Adapt
         AutoAttendanceSubjectHolder(@NonNull final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent startAutoAttendanceEditActivity = new Intent(itemView.getContext(), AutoAttendanceSubjectDetailActivity.class);
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && subjectList != null) {
-                        startAutoAttendanceEditActivity.putExtra(EXTRA_SUBJECT_NAME, subjectList.get(position));
-                    }
-                    itemView.getContext().startActivity(startAutoAttendanceEditActivity);
+            itemView.setOnClickListener(v -> {
+                Intent startAutoAttendanceEditActivity = new Intent(itemView.getContext(), AutoAttendanceSubjectDetailActivity.class);
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && subjectList != null) {
+                    startAutoAttendanceEditActivity.putExtra(EXTRA_SUBJECT_NAME, subjectList.get(position));
                 }
+                itemView.getContext().startActivity(startAutoAttendanceEditActivity);
             });
         }
 

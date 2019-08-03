@@ -275,12 +275,7 @@ public class TimetableFragment extends Fragment {
         tvStartDate.setText("" + timetableViewModel.getStartDate());
         tvEndDate.setText("" + timetableViewModel.getEndDate());
         Button btnOk = mDialog.findViewById(R.id.btn_holder_dialog_sem_info_ok);
-        btnOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mDialog.dismiss();
-            }
-        });
+        btnOk.setOnClickListener(view -> mDialog.dismiss());
     }
 
 }

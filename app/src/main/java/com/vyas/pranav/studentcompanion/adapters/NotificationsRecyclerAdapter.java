@@ -91,44 +91,38 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
                 .circleCrop()
                 .into(holder.imageItem);
 
-        holder.btnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BottomSheetDialog mDialog = new BottomSheetDialog(view.getContext());
-                mDialog.setContentView(R.layout.item_holder_bottom_sheet_notification_event);
-                mDialog.show();
+        holder.btnMore.setOnClickListener(view -> {
+            BottomSheetDialog mDialog = new BottomSheetDialog(view.getContext());
+            mDialog.setContentView(R.layout.item_holder_bottom_sheet_notification_event);
+            mDialog.show();
 
-                TextView tvName = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_name);
-                TextView tvDate = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_date);
-                TextView tvVenue = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_venue);
-                TextView tvExtra = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_extra);
-                Button btnOpen = mDialog.findViewById(R.id.button_holder_bottom_sheet_notification_event);
+            TextView tvName = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_name);
+            TextView tvDate = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_date);
+            TextView tvVenue = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_venue);
+            TextView tvExtra = mDialog.findViewById(R.id.tv_holder_bottom_sheet_notification_event_extra);
+            Button btnOpen = mDialog.findViewById(R.id.button_holder_bottom_sheet_notification_event);
 
-                tvName.setText(Html.fromHtml("Event: <b>" + notification.getName() + "</b>"));
-                tvDate.setText(Html.fromHtml("Date: <b>" + ConverterUtils.convertDateToString(date) + "</b>"));
-                tvVenue.setText(Html.fromHtml("Venue: <b>" + notification.getVenue() + "</b>"));
-                tvExtra.setText(Html.fromHtml("About: <b>" + notification.getShort_info() + "</b>"));
-                GlideApp.with(view.getContext())
-                        .load(notification.getImage_url())
-                        .error(R.drawable.ic_caution)
-                        .placeholder(R.drawable.ic_caution)
-                        .circleCrop()
-                        .into((ImageView) mDialog.findViewById(R.id.image_holder_bottom_sheet_notification_event));
+            tvName.setText(Html.fromHtml("Event: <b>" + notification.getName() + "</b>"));
+            tvDate.setText(Html.fromHtml("Date: <b>" + ConverterUtils.convertDateToString(date) + "</b>"));
+            tvVenue.setText(Html.fromHtml("Venue: <b>" + notification.getVenue() + "</b>"));
+            tvExtra.setText(Html.fromHtml("About: <b>" + notification.getShort_info() + "</b>"));
+            GlideApp.with(view.getContext())
+                    .load(notification.getImage_url())
+                    .error(R.drawable.ic_caution)
+                    .placeholder(R.drawable.ic_caution)
+                    .circleCrop()
+                    .into((ImageView) mDialog.findViewById(R.id.image_holder_bottom_sheet_notification_event));
 
-                btnOpen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse(notification.getUrl()));
-                        if (openLink.resolveActivity(view.getContext().getPackageManager()) != null) {
-                            view.getContext().startActivity(openLink);
-                        } else {
-                            Toast.makeText(view.getContext(), "Link seems to be broken!", Toast.LENGTH_SHORT).show();
-                        }
-                        mDialog.dismiss();
-                    }
-                });
+            btnOpen.setOnClickListener(view1 -> {
+                Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse(notification.getUrl()));
+                if (openLink.resolveActivity(view1.getContext().getPackageManager()) != null) {
+                    view1.getContext().startActivity(openLink);
+                } else {
+                    Toast.makeText(view1.getContext(), "Link seems to be broken!", Toast.LENGTH_SHORT).show();
+                }
+                mDialog.dismiss();
+            });
 
-            }
         });
     }
 

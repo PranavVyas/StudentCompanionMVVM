@@ -39,13 +39,10 @@ public class OpenSourceRecyclerAdapter extends RecyclerView.Adapter<OpenSourceRe
         holder.libInfo.setText(libraryModel.getLicense());
         holder.libName.setText(libraryModel.getName());
 //        Logger.json(new Gson().toJson(libraryModel));
-        holder.libLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(libraryModel.getUrl()));
-                holder.itemView.getContext().startActivity(intent);
-            }
+        holder.libLink.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(libraryModel.getUrl()));
+            holder.itemView.getContext().startActivity(intent);
         });
     }
 

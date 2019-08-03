@@ -1,6 +1,5 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,10 +8,12 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -24,6 +25,7 @@ import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDatesFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDetailsSemFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpLectureTimeFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpTimetableFragment;
+import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
@@ -31,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragment.OnDatesSetUpListener, SetUpDetailsSemFragment.OnSubjectsSelectedListener, SetUpTimetableFragment.OnTimetableSelectedListener, SetUpLectureTimeFragment.OnLectureTimeSelectedListener {
 
@@ -38,6 +41,10 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
 
     @BindView(R.id.toolbar_setup_activity)
     Toolbar toolbar;
+    @BindView(R.id.constraint_set_up_placeholder)
+    ConstraintLayout placeHolder;
+    @BindView(R.id.frame_setup_activity_container)
+    FrameLayout rootLayout;
 
     private SetUpViewModel setUpViewModel;
 
@@ -58,13 +65,11 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
                 }
             }, TimeUnit.SECONDS.toMillis(1));
         }
-
         if (!setUpViewModel.isFirstRun()) {
             if (setUpViewModel.isTutorialDone()) {
                 Intent openMainActivity = new Intent(this, MainActivity.class);
                 startActivity(openMainActivity);
             } else {
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
                 Intent openTutorial = new Intent(this, TutorialActivity.class);
                 startActivity(openTutorial);
             }
@@ -76,7 +81,6 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
     }
 
     private void showInstruction() {
-        View view = findViewById(R.id.menu_set_up);
         new BubbleShowCaseBuilder(this)
                 .title("Dynamic Help is Here!")
                 .description("For Help on each Step, Here is Help Menu!!\nFor Each page help is changed according to the step!")
@@ -86,6 +90,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
     }
 
     private void executeSetUpStep(int step) {
+        retryClicked();
         switch (step) {
             case 1:
                 SetUpDatesFragment setUpDatesFragment = new SetUpDatesFragment();
@@ -154,7 +159,6 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
     @Override
     public void onTimetableSelected() {
         setUpViewModel.saveHolidaysAndInitAttendance();
-        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         Intent intent = new Intent(this, TutorialActivity.class);
         startActivity(intent);
         setUpViewModel.setFirstRun(false);
@@ -213,5 +217,26 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showPlaceHolder(boolean isShown) {
+        if (isShown) {
+            rootLayout.setVisibility(View.GONE);
+            placeHolder.setVisibility(View.VISIBLE);
+        } else {
+            rootLayout.setVisibility(View.VISIBLE);
+            placeHolder.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.btn_set_up_placeholder_retry)
+    void retryClicked() {
+        if (AttendanceUtils.hasInternetAccess(this)) {
+            //Hide Placeholder
+            showPlaceHolder(false);
+        } else {
+            //Show Placeholder
+            showPlaceHolder(true);
+        }
     }
 }

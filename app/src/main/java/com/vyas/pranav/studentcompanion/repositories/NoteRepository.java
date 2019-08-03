@@ -23,12 +23,7 @@ public class NoteRepository {
     }
 
     public void insertNote(NotesEntry note) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                noteDao.insertNote(note);
-            }
-        });
+        mExecutors.diskIO().execute(() -> noteDao.insertNote(note));
     }
 
     public DataSource.Factory<Integer, NotesEntry> getAllNotes() {
@@ -40,11 +35,6 @@ public class NoteRepository {
     }
 
     public void updateNote(NotesEntry notesEntry) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                noteDao.update(notesEntry);
-            }
-        });
+        mExecutors.diskIO().execute(() -> noteDao.update(notesEntry));
     }
 }

@@ -64,7 +64,6 @@ public class NotesListFragment extends Fragment implements NoteRecyclerAdapter.O
             NoteViewModel viewModel = ViewModelProviders.of(getActivity()).get(NoteViewModel.class);
             viewModel.getAllNotes().observe(this, mAdapter::submitList);
         }
-
     }
 
     @Override

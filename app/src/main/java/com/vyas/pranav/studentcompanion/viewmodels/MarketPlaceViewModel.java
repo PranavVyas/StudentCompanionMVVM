@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class MarketPlaceViewModel extends AndroidViewModel {
     ));
     private String searchStr = "";
     private int selectedCategory = 0;
-    private final CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("sell");
+    private final CollectionReference collectionReference = FirebaseFirestore.getInstance().collection(Constants.PATH_SELL_SVNIT);
     private Query mQuery = collectionReference.whereEqualTo("category", categories.get(selectedCategory));
     private FirestoreQueryLiveData queryLiveData;
     private String childSting;

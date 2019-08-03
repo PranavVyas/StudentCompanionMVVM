@@ -60,12 +60,7 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         holder.tvSubjectName.setText(attendanceOfDay.getSubjectName());
         holder.switchPresent.setOn(attendanceOfDay.isPresent());
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.switchPresent.performClick();
-            }
-        };
+        View.OnClickListener onClickListener = v -> holder.switchPresent.performClick();
         holder.itemView.setOnClickListener(onClickListener);
         holder.switchPresent.setOnToggledListener(new OnToggledListener() {
             @Override

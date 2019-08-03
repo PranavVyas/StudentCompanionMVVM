@@ -10,6 +10,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class NotificationsViewModel extends AndroidViewModel {
         repository = new NotificationRepository(application);
         notifications = repository.getAllNotifications();
         FirebaseFirestore mDb = FirebaseFirestore.getInstance();
-        CollectionReference ref = mDb.collection("events");
+        CollectionReference ref = mDb.collection(Constants.PATH_EVENTS_SVNIT);
         firestoreQueryLiveData = repository.getLiveFirestoreData(ref);
         allNotisFromDb = repository.getAllNotifications();
     }

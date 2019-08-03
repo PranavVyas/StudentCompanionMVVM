@@ -89,22 +89,12 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
                 .error(R.drawable.ic_market_place)
                 .circleCrop()
                 .into(holder.imageItem);
-        View.OnClickListener clickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomSheet(item, idOfItem, v.getContext());
-            }
-        };
+        View.OnClickListener clickListener = v -> showBottomSheet(item, idOfItem, v.getContext());
         holder.tvPrice.setOnClickListener(clickListener);
         holder.tvName.setOnClickListener(clickListener);
         holder.imageItem.setOnClickListener(clickListener);
         if (listener != null) {
-            holder.btnSold.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemSoldClicked(idOfItem);
-                }
-            });
+            holder.btnSold.setOnClickListener(v -> listener.onItemSoldClicked(idOfItem));
         }
     }
 
@@ -138,15 +128,12 @@ public class MyProfileItemsRecyclerAdapter extends ListAdapter<Pair, MyProfileIt
         Button btnSold = mDialog.findViewById(R.id.btn_marketplace_sell_item_action);
         if (btnSold != null) {
             btnSold.setText("Sold It!");
-            btnSold.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onItemSoldClicked(id);
-                        mDialog.dismiss();
-                    } else {
-                        throw new NullPointerException("Listener is not Attached properly");
-                    }
+            btnSold.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onItemSoldClicked(id);
+                    mDialog.dismiss();
+                } else {
+                    throw new NullPointerException("Listener is not Attached properly");
                 }
             });
         } else {

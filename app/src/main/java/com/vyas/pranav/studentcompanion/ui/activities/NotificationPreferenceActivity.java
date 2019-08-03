@@ -22,6 +22,7 @@ import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.NotificationPrefernceViewModel;
@@ -93,7 +94,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
 
     void refreshEventSubscription() {
         if (sharedPreferencesUtils.isEventNotificationEnabed()) {
-            fcmInstance.subscribeToTopic("events").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.subscribeToTopic(Constants.PATH_EVENTS_SVNIT).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -107,7 +108,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
                 }
             });
         } else {
-            fcmInstance.unsubscribeFromTopic("events").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.unsubscribeFromTopic(Constants.PATH_EVENTS_SVNIT).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {

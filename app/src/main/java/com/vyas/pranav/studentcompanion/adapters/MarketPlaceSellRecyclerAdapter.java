@@ -76,12 +76,7 @@ public class MarketPlaceSellRecyclerAdapter extends ListAdapter<ItemModel, Marke
                 .error(R.drawable.ic_market_place)
                 .circleCrop()
                 .into(holder.image);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomSheet(v.getContext(), item);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> showBottomSheet(v.getContext(), item));
     }
 
     private void showBottomSheet(Context context, ItemModel item) {
@@ -113,14 +108,11 @@ public class MarketPlaceSellRecyclerAdapter extends ListAdapter<ItemModel, Marke
         if (btnSold != null) {
             btnSold.setText("Call Now!");
             btnSold.setIcon(context.getResources().getDrawable(R.drawable.ic_phone));
-            btnSold.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent call = new Intent(Intent.ACTION_DIAL);
-                    call.setData(Uri.parse("tel:" + item.getContact()));
-                    v.getContext().startActivity(call);
-                    mDialog.dismiss();
-                }
+            btnSold.setOnClickListener(v -> {
+                Intent call = new Intent(Intent.ACTION_DIAL);
+                call.setData(Uri.parse("tel:" + item.getContact()));
+                v.getContext().startActivity(call);
+                mDialog.dismiss();
             });
         } else {
             Toast.makeText(context, "Button is empty", Toast.LENGTH_SHORT).show();

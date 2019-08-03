@@ -33,6 +33,7 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.DigitalLibraryRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.firebase.BookModel;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.DigitalLibraryViewModel;
@@ -177,19 +178,13 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
         mDialog.show();
         TextView status = mDialog.findViewById(R.id.tv_holder_atert_dialog_auto_sync);
         status.setText("Current Status : " + (digitalLibraryViewModel.getStateOfAutoSync() ? "Enabled" : "Disabled"));
-        mDialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_enable).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                digitalLibraryViewModel.changeAutoSync(true);
-                mDialog.dismiss();
-            }
+        mDialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_enable).setOnClickListener(v -> {
+            digitalLibraryViewModel.changeAutoSync(true);
+            mDialog.dismiss();
         });
-        mDialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_disable).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                digitalLibraryViewModel.changeAutoSync(false);
-                mDialog.dismiss();
-            }
+        mDialog.findViewById(R.id.btn_holder_atert_dialog_auto_sync_disable).setOnClickListener(v -> {
+            digitalLibraryViewModel.changeAutoSync(false);
+            mDialog.dismiss();
         });
     }
 
@@ -202,7 +197,7 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
 
     private void onSyncClicked() {
         Toast.makeText(this, "Sync Clicked", Toast.LENGTH_SHORT).show();
-        CollectionReference booksRef = FirebaseFirestore.getInstance().collection("digitalLibrary");
+        CollectionReference booksRef = FirebaseFirestore.getInstance().collection(Constants.PATH_DIGITAL_LIBRARY_SVNIT);
         FirestoreQueryLiveData liveBooksData = new FirestoreQueryLiveData(booksRef);
         liveBooksData.removeObservers(this);
         liveBooksData.observe(this, new Observer<QuerySnapshot>() {

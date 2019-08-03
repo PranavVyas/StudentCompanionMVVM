@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ItemFetcher {
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
         mFirestoreDatabase = FirebaseFirestore.getInstance();
-        mCollectionReference = mFirestoreDatabase.collection("sell");
+        mCollectionReference = mFirestoreDatabase.collection(Constants.PATH_SELL_SVNIT);
         Task<QuerySnapshot> querySnapshotTask = mCollectionReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {

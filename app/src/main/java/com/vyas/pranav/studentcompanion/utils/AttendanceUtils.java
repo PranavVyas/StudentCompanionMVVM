@@ -57,12 +57,9 @@ public class AttendanceUtils {
                     public void onChanged(NotificationFirestoreModel notificationFirestoreModel) {
                         notification.removeObserver(this);
                         int totalDays = subjectAttendance.getTotalDays();
-                        int bunkedDays = subjectAttendance.getBunkedDays();
-                        int attendanceCriteria = sharedPreferencesUtils.getCurrentAttendanceCriteria();
-                        int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (attendanceCriteria / 100.0f)));
-                        int extraDaysFlexBunk = (int) (totalDays * (100.0 - ((100.0 - attendanceCriteria) * 2 / 3)) / 100.0);
-                        Logger.d("Available days to bunk Flex " + extraDaysFlexBunk + " for Subject " + subjectAttendance.getSubName() + "\nDays Left to bunk " + (daysTotalAvailableToBunk - bunkedDays));
-                        if (daysTotalAvailableToBunk - bunkedDays < extraDaysFlexBunk) {
+                        double presentPresent = (subjectAttendance.getPresentDays() * 100.0) / totalDays;
+                        double warningPercent = 100 - ((100.0 - sharedPreferencesUtils.getCurrentAttendanceCriteria()) * 2 / 3);
+                        if (presentPresent < warningPercent) {
                             //Checking if notification still exists or not. If exists than it will not be 0 type
                             if (notificationFirestoreModel == null) {
                                 notificationFirestoreModel = new NotificationFirestoreModel();

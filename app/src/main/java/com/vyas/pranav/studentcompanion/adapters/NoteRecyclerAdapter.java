@@ -28,7 +28,7 @@ public class NoteRecyclerAdapter extends PagedListAdapter<NotesEntry, NoteRecycl
     public static String EXTRA_TYPE_EDIT_ADD_NOTE = "RecyclerView.EditNote.FromRv";
     public static String EXTRA_EDIT_NOTE = "RecyclerView.EditNote";
     public static boolean EDIT_NOTE = true;
-    static DiffUtil.ItemCallback<NotesEntry> diffCallback = new DiffUtil.ItemCallback<NotesEntry>() {
+    private static DiffUtil.ItemCallback<NotesEntry> diffCallback = new DiffUtil.ItemCallback<NotesEntry>() {
         @Override
         public boolean areItemsTheSame(@NonNull NotesEntry oldItem, @NonNull NotesEntry newItem) {
             return oldItem.getId() == newItem.getId();
@@ -60,45 +60,36 @@ public class NoteRecyclerAdapter extends PagedListAdapter<NotesEntry, NoteRecycl
         holder.tvDesc.setText(note.getDesc());
         holder.tvTitle.setText(note.getTitle());
 
-        holder.imageDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mCallback != null) {
-                    mCallback.OnNotesDeleteClicked(note);
-                }
+        holder.imageDelete.setOnClickListener(view -> {
+            if (mCallback != null) {
+                mCallback.OnNotesDeleteClicked(note);
             }
         });
 
-        holder.btnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                BottomSheetDialog mDialog = new BottomSheetDialog(holder.itemView.getContext());
-                mDialog.setContentView(R.layout.item_holder_bottom_sheet_note);
-                mDialog.show();
+        holder.btnMore.setOnClickListener(view -> {
+            BottomSheetDialog mDialog = new BottomSheetDialog(holder.itemView.getContext());
+            mDialog.setContentView(R.layout.item_holder_bottom_sheet_note);
+            mDialog.show();
 
-                TextView tvTitle = mDialog.findViewById(R.id.tv_note_bottom_sheet_title);
-                TextView tvDesc = mDialog.findViewById(R.id.tv_note_bottom_sheet_desc);
-                TextView tvDate = mDialog.findViewById(R.id.tv_note_bottom_sheet_date);
-                ImageView imageEdit = mDialog.findViewById(R.id.image_note_bottom_sheet_edit);
-                TextView tvEdit = mDialog.findViewById(R.id.tv_note_bottom_sheet_edit_note);
+            TextView tvTitle = mDialog.findViewById(R.id.tv_note_bottom_sheet_title);
+            TextView tvDesc = mDialog.findViewById(R.id.tv_note_bottom_sheet_desc);
+            TextView tvDate = mDialog.findViewById(R.id.tv_note_bottom_sheet_date);
+            ImageView imageEdit = mDialog.findViewById(R.id.image_note_bottom_sheet_edit);
+            TextView tvEdit = mDialog.findViewById(R.id.tv_note_bottom_sheet_edit_note);
 
-                View.OnClickListener listener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(holder.itemView.getContext(), AddNoteActivity.class);
-                        intent.putExtra(EXTRA_TYPE_EDIT_ADD_NOTE, EDIT_NOTE);
-                        intent.putExtra(EXTRA_EDIT_NOTE, new Gson().toJson(note));
-                        holder.itemView.getContext().startActivity(intent);
-                        mDialog.dismiss();
-                    }
-                };
+            View.OnClickListener listener = view1 -> {
+                Intent intent = new Intent(holder.itemView.getContext(), AddNoteActivity.class);
+                intent.putExtra(EXTRA_TYPE_EDIT_ADD_NOTE, EDIT_NOTE);
+                intent.putExtra(EXTRA_EDIT_NOTE, new Gson().toJson(note));
+                holder.itemView.getContext().startActivity(intent);
+                mDialog.dismiss();
+            };
 
-                tvDate.setText(ConverterUtils.convertDateToString(note.getDate()));
-                tvTitle.setText(note.getTitle());
-                tvDesc.setText(note.getDesc());
-                imageEdit.setOnClickListener(listener);
-                tvEdit.setOnClickListener(listener);
-            }
+            tvDate.setText(ConverterUtils.convertDateToString(note.getDate()));
+            tvTitle.setText("Title:" + note.getTitle());
+            tvDesc.setText(note.getDesc());
+            imageEdit.setOnClickListener(listener);
+            tvEdit.setOnClickListener(listener);
         });
     }
 

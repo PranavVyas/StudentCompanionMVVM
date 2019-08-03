@@ -97,23 +97,20 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
             return;
         }
 
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent openDetail = new Intent(view.getContext(), OverallAttendanceDetailActivity.class);
-                Gson gson = new Gson();
-                String JsonOverallAttendance = gson.toJson(getItem(position));
-                if (getItem(position).getTotalDays() == 0) {
-                    Toast.makeText(view.getContext(), "Subject is not available in the timetable", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((Activity) view.getContext(),
-                        Pair.create(holder.progressPresent, ViewCompat.getTransitionName(holder.progressPresent)),
-                        Pair.create(holder.tvSubject, ViewCompat.getTransitionName(holder.tvSubject))).toBundle();
-                openDetail.putExtra(OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE, JsonOverallAttendance);
-                view.getContext().startActivity(openDetail, bundle);
+        View.OnClickListener listener = view -> {
+            Intent openDetail = new Intent(view.getContext(), OverallAttendanceDetailActivity.class);
+            Gson gson = new Gson();
+            String JsonOverallAttendance = gson.toJson(getItem(position));
+            if (getItem(position).getTotalDays() == 0) {
+                Toast.makeText(view.getContext(), "Subject is not available in the timetable", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation((Activity) view.getContext(),
+                    Pair.create(holder.progressPresent, ViewCompat.getTransitionName(holder.progressPresent)),
+                    Pair.create(holder.tvSubject, ViewCompat.getTransitionName(holder.tvSubject))).toBundle();
+            openDetail.putExtra(OverallAttendanceDetailActivity.EXTRA_OVERALL_ATTENDANCE, JsonOverallAttendance);
+            view.getContext().startActivity(openDetail, bundle);
         };
 
         holder.itemView.setOnClickListener(listener);

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.transition.Slide;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -188,39 +187,28 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 Button btnCancel = mDeleteSheet.findViewById(R.id.btn_holder_bottom_sheet_delete_cancel);
                 Button btnSignOut = mDeleteSheet.findViewById(R.id.btn_holder_bottom_sheet_delete_sign_out);
 
-                btnDelete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "Deleting Account...", Toast.LENGTH_SHORT).show();
-                        mDeleteSheet.dismiss();
-                        AuthUI.getInstance().delete(MainActivity.this).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                mainViewModel.setCurrUser(null);
-                                Toast.makeText(MainActivity.this, "Account Successfully Deleted...\nRedirecting to sign In Page...", Toast.LENGTH_SHORT).show();
-                                Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
-                                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle();
-                                startActivity(startSignInActivity);
-                                ((ActivityManager) MainActivity.this.getSystemService(Context.ACTIVITY_SERVICE)).clearApplicationUserData();
-                                MainActivity.this.finish();
-                            }
-                        });
-                    }
+                btnDelete.setOnClickListener(view -> {
+                    Toast.makeText(MainActivity.this, "Deleting Account...", Toast.LENGTH_SHORT).show();
+                    mDeleteSheet.dismiss();
+                    AuthUI.getInstance().delete(MainActivity.this).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            mainViewModel.setCurrUser(null);
+                            Toast.makeText(MainActivity.this, "Account Successfully Deleted...\nRedirecting to sign In Page...", Toast.LENGTH_SHORT).show();
+                            Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
+                            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle();
+                            startActivity(startSignInActivity);
+                            ((ActivityManager) MainActivity.this.getSystemService(Context.ACTIVITY_SERVICE)).clearApplicationUserData();
+                            MainActivity.this.finish();
+                        }
+                    });
                 });
 
-                btnCancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mDeleteSheet.dismiss();
-                    }
-                });
+                btnCancel.setOnClickListener(view -> mDeleteSheet.dismiss());
 
-                btnSignOut.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        signOutUser();
-                        mDeleteSheet.dismiss();
-                    }
+                btnSignOut.setOnClickListener(view -> {
+                    signOutUser();
+                    mDeleteSheet.dismiss();
                 });
         }
     }

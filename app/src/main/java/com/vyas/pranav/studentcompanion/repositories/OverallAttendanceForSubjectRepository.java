@@ -22,7 +22,6 @@ import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.MainApp;
-import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.Date;
 
@@ -32,12 +31,10 @@ public class OverallAttendanceForSubjectRepository {
     private final AppExecutors mExecutors;
     private final Context applicationContext;
     private String subject;
-    private SharedPreferencesUtils sharedPreferencesUtils;
 
     public OverallAttendanceForSubjectRepository(Context applicationContext, MainDatabase mDb, String subject) {
         overallAttendanceDao = mDb.overallAttendanceDao();
         attendanceDao = mDb.attendanceDao();
-        sharedPreferencesUtils = new SharedPreferencesUtils(applicationContext);
         this.subject = subject;
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
@@ -57,12 +54,7 @@ public class OverallAttendanceForSubjectRepository {
     }
 
     private void updateOverallAttendance(final OverallAttendanceEntry overallAttendanceEntry) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                overallAttendanceDao.updateOverall(overallAttendanceEntry);
-            }
-        });
+        mExecutors.diskIO().execute(() -> overallAttendanceDao.updateOverall(overallAttendanceEntry));
     }
 
     public LiveData<OverallAttendanceEntry> getOverallAttendanceEntryForSubject() {
@@ -83,23 +75,20 @@ public class OverallAttendanceForSubjectRepository {
                         overallAttendance.removeObserver(this);
                         SetUpProcessRepository setUpProcessRepository = new SetUpProcessRepository(applicationContext);
                         final Date startDate = ConverterUtils.convertStringToDate(setUpProcessRepository.getStartingDate());
-                        mExecutors.diskIO().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                Date todayDate = new Date();
-                                int presentDays = attendanceDao.getAttendedDaysForSubject(subjectName, startDate, todayDate);
-                                int bunkedDays = attendanceDao.getBunkedDaysForSubject(subjectName, startDate, todayDate);
-                                int totalDays = attendanceDao.getTotalDaysForSubject(subjectName);
-                                overallAttendanceEntry.setTotalDays(totalDays);
-                                overallAttendanceEntry.setBunkedDays(bunkedDays);
-                                overallAttendanceEntry.setPresentDays(presentDays);
-                                updateOverallAttendance(overallAttendanceEntry);
-                                AttendanceUtils.checkForSmartCards(overallAttendanceEntry, applicationContext);
-                            }
+                        mExecutors.diskIO().execute(() -> {
+                            Date todayDate = new Date();
+                            int presentDays = attendanceDao.getAttendedDaysForSubject(subjectName, startDate, todayDate);
+                            int bunkedDays = attendanceDao.getBunkedDaysForSubject(subjectName, startDate, todayDate);
+                            int totalDays = attendanceDao.getTotalDaysForSubject(subjectName);
+                            overallAttendanceEntry.setTotalDays(totalDays);
+                            overallAttendanceEntry.setBunkedDays(bunkedDays);
+                            overallAttendanceEntry.setPresentDays(presentDays);
+                            updateOverallAttendance(overallAttendanceEntry);
+                            AttendanceUtils.checkForSmartCards(overallAttendanceEntry, applicationContext);
                         });
                     }
                 });
-                sendNotification(applicationContext, "Refreshed", "Subject Overall Attendance is refreshed for subjec : " + subjectName, getContentIntent());
+                sendNotification(applicationContext, "Refreshed", "Subject Overall Attendance is refreshed for subject : " + subjectName, getContentIntent());
             }
         });
     }

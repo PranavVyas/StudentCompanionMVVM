@@ -12,6 +12,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.firebase.model.HolidayModel;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class HolidaysFetcher {
         Logger.clearLogAdapters();
         Logger.addLogAdapter(new AndroidLogAdapter());
         mFirestore = FirebaseFirestore.getInstance();
-        mCollectionReference = mFirestore.collection("holidays");
+        mCollectionReference = mFirestore.collection(Constants.PATH_HOLIDAYS_SVNIT);
 //        mFirebaseDatabase = FirebaseDatabase.getInstance();
 //        mDatabaseReference = mFirebaseDatabase.getReference("Root");
     }

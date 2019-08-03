@@ -94,32 +94,26 @@ public class SetUpLectureTimeFragment extends Fragment {
                 layout.addView(btnEndTime, 1);
 
                 int finalI = i;
-                btnStartTime.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                                btnStartTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i + ":" + i1)));
-                            }
-                        }, 0, 0, false);
-                        timePickerDialog.setTitle("Choose Starting Time for Lecture " + ((finalI / 2) + 1));
-                        timePickerDialog.show();
-                    }
+                btnStartTime.setOnClickListener(view -> {
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int i12, int i1) {
+                            btnStartTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i12 + ":" + i1)));
+                        }
+                    }, 0, 0, false);
+                    timePickerDialog.setTitle("Choose Starting Time for Lecture " + ((finalI / 2) + 1));
+                    timePickerDialog.show();
                 });
 
-                btnEndTime.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                                btnEndTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i + ":" + i1)));
-                            }
-                        }, 0, 0, false);
-                        timePickerDialog.setTitle("Choose Ending Time for Lecture " + ((finalI / 2) + 1));
-                        timePickerDialog.show();
-                    }
+                btnEndTime.setOnClickListener(view -> {
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int i13, int i1) {
+                            btnEndTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i13 + ":" + i1)));
+                        }
+                    }, 0, 0, false);
+                    timePickerDialog.setTitle("Choose Ending Time for Lecture " + ((finalI / 2) + 1));
+                    timePickerDialog.show();
                 });
                 linearContainer.addView(layout, i);
             }

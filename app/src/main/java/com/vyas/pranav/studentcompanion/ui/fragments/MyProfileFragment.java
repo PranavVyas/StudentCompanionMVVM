@@ -95,12 +95,7 @@ public class MyProfileFragment extends Fragment {
 
     private void setUpRecyclerView() {
         mAdapter = new MyProfileItemsRecyclerAdapter();
-        mAdapter.setOnItemSoldButtonClickListener(new MyProfileItemsRecyclerAdapter.OnItemSoldButtonClickListener() {
-            @Override
-            public void onItemSoldClicked(String id) {
-                myProfileViewModel.deleteItem(id);
-            }
-        });
+        mAdapter.setOnItemSoldButtonClickListener(id -> myProfileViewModel.deleteItem(id));
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rvMyAds.setLayoutManager(llm);
         rvMyAds.setAdapter(mAdapter);
