@@ -59,12 +59,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setUpViewModel = ViewModelProviders.of(this).get(SetUpViewModel.class);
         if (setUpViewModel.isFirstRun()) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    showInstruction();
-                }
-            }, TimeUnit.SECONDS.toMillis(1));
+            new Handler().postDelayed(this::showInstruction, TimeUnit.SECONDS.toMillis(1));
         }
         if (!setUpViewModel.isFirstRun()) {
             if (setUpViewModel.isTutorialDone()) {
@@ -230,23 +225,18 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
                 placeHolder.setVisibility(View.GONE);
             }
         });
-
     }
 
     @OnClick(R.id.btn_set_up_placeholder_retry)
     void retryClicked() {
-        AppExecutors.getInstance().networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (AttendanceUtils.hasInternetAccess(SetUpActivity.this)) {
-                    //Hide Placeholder
-                    showPlaceHolder(false);
-                } else {
-                    //Show Placeholder
-                    showPlaceHolder(true);
-                }
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            if (AttendanceUtils.hasInternetAccess(SetUpActivity.this)) {
+                //Hide Placeholder
+                showPlaceHolder(false);
+            } else {
+                //Show Placeholder
+                showPlaceHolder(true);
             }
         });
-
     }
 }
