@@ -1,4 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+Student Companion - An Android App that has features like attendance manager, note manager etc
+Copyright (C) 2019  Pranav Vyas
+
+This file is a part of Student Companion.
+
+Student Companion is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Student Companion is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,11 +40,11 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView"
+            style="@style/MyMaterialCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="75dp"
-            style="@style/MyMaterialCardView"
             android:layout_marginEnd="16dp"
             app:cardCornerRadius="@dimen/card_radius_profile"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,6 +57,7 @@
 
                 <TextView
                     android:id="@+id/textView38"
+                    style="@style/MyMaterialTextView.MediumTextViewHeadLine5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -48,20 +65,19 @@
                     android:layout_marginEnd="8dp"
                     android:text="Pranav Vyas"
                     android:textAlignment="center"
-                    style="@style/MyMaterialTextView.MediumTextViewHeadLine5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView44"
+                    style="@style/MyMaterialTextView.SmallTextViewBody2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="Surat, Gujarat, India"
-                    style="@style/MyMaterialTextView.SmallTextViewBody2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView13"
@@ -99,13 +115,13 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView2"
+            style="@style/MyMaterialCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:cardCornerRadius="@dimen/card_radius_profile"
-            style="@style/MyMaterialCardView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView">
@@ -116,26 +132,26 @@
 
                 <TextView
                     android:id="@+id/textView42"
+                    style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="Current"
-                    style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    style="@style/MyMaterialTextView.SmallTextViewBody2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    android:text="B.Tech (Chemical Engineering)\n(3rd Year)\nSVNIT,Surat\nGujarat - 395007\nIndia"
+                    android:text="B.Tech (Chemical Engineering)\n(4th Year)\nSVNIT,Surat\nGujarat - 395007\nIndia"
                     android:textAlignment="center"
-                    style="@style/MyMaterialTextView.SmallTextViewBody2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -144,15 +160,14 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView"
+            style="@style/MyMaterialCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="4dp"
-            style="@style/MyMaterialCardView"
             app:cardCornerRadius="@dimen/card_radius_profile"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView2">
@@ -163,13 +178,13 @@
 
                 <TextView
                     android:id="@+id/textView45"
+                    style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="Socials"
-                    style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -182,8 +197,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="16dp"
-                    android:tint="?attr/icon_custom_tint"
                     android:src="@drawable/ic_social_media_github"
+                    android:tint="?attr/icon_custom_tint"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/image_about_developer_facebook"
                     app:layout_constraintStart_toStartOf="parent"
@@ -228,5 +243,52 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            style="@style/MyMaterialCardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="@dimen/card_radius_profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="About me"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    style="@style/MyMaterialTextView.SmallTextViewBody2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="\u25CF I am a Udacity Certified Android Developer and I like to develop Android Apps to solve some real life issue.\n\u25CF I have been working on and off (because of Exams, Assignments, Practicals, etc.) this project from last 6 months and have added some useful features and plan to add more in future!"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

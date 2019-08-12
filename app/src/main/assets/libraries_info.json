@@ -1,7 +1,7 @@
 {
   "name": "Student Companion",
   "license": "GNU Affero General Public License v3 ",
-  "extra_license": "https://github.com/PranavVyas/StudentCompanionMVVM/License.md",
+  "extra_license": "https://github.com/PranavVyas/StudentCompanionMVVM/blob/master/LICENSE",
   "external_libraries": [
     {
       "name": "MaterialDrawer",

@@ -1,4 +1,20 @@
 package com.vyas.pranav.studentcompanion.services;
+/*
+Student Companion - An Android App that has features like attendance manager, note manager etc
+Copyright (C) 2019  Pranav Vyas
+
+This file is a part of Student Companion.
+
+Student Companion is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Student Companion is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+*/
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,6 +24,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
@@ -19,9 +38,6 @@ import com.vyas.pranav.studentcompanion.ui.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 public class GeoFenceTransitionBroadcastReceiver extends BroadcastReceiver {
 
