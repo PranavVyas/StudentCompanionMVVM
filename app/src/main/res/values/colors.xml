@@ -6,7 +6,6 @@
     <color name="colorPrimaryVariant">#3700B3</color>
     <color name="colorSecondary">#03DAC6</color>
     <color name="colorSecondaryVariant">#018786</color>
-    <color name="colorBackground">#FFFFFF</color>
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorError">#B00020</color>
     <color name="colorOnPrimary">#FFFFFF</color>
@@ -25,7 +24,6 @@
     <color name="colorPrimaryVariantNight">#3700B3</color>
     <color name="colorSecondaryNight">#03DAC6</color>
     <color name="colorSecondaryVariantNight">#03DAC6</color>
-    <color name="colorBackgroundNight">#121212</color>
     <color name="colorSurfaceNight">#121212</color>
     <color name="colorErrorNight">#CF6679</color>
     <color name="colorOnPrimaryNight">#000000</color>
@@ -34,12 +32,10 @@
     <color name="colorOnSurfaceNight">#FFFFFF</color>
     <color name="colorOnErrorNight">#000000</color>
 
-    <!--CUSTOM PARAMETRS-->
+    <!--CUSTOM PARAMETERS-->
     <color name="placeHolderBackgroundNight">#1F1F1F</color>
-    <color name="tableSelectedCellColorNight">#9575CD</color>
-    <color name="lightBackgroundNight">#1E1E1E</color>
 
-    <!--OVERALL ATTENDACE CARD COLOR-->
+    <!--OVERALL ATTENDANCE CARD COLOR-->
     <color name="colorDangerOverallAttendance">#FFCCBC</color>
     <color name="colorWarningOverallAttendance">#FFF9C4</color>
     <color name="colorSafeOverallAttendance">#C8E6C9</color>

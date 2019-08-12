@@ -1,5 +1,10 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Student Companion</string>
+
+    <string name="book">Book</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="xerox">Xerox</string>
+
     <string name="pref_key_switch_enable_reminder" translatable="false">SHARED_PREF_IS_REMINDER_ENABLED</string>
     <string name="pref_title_switch_enable_reminder">Enable Reminder</string>
     <string name="pref_summery_on_switch_enable_reminder">Reminder Enabled</string>
@@ -7,14 +12,13 @@
     <bool name="pref_def_value_switch_enable_reminder">false</bool>
 
     <string name="pref_key_time_reminder_time" translatable="false">SHARED_PREF_REMINDER_TIME</string>
-    <string name="pref_title_time_reminder_time">Select Time</string>
+    <string name="pref_title_time_reminder_time">Select Time For Reminder</string>
     <integer name="pref_def_value_time_reminder_time">0</integer>
-    <string name="pref_summery_time_reminder_time">00:00</string>
 
     <string name="pref_key_switch_enable_auto_attendance" translatable="false">SHARED_PREF_IS_AUTO_ATTENDANCE_ENABLED</string>
     <string name="pref_title_switch_enable_auto_attendance">Enable Auto Attendance</string>
     <string name="pref_summery_on_switch_enable_auto_attendance">Auto Attendance Enabled</string>
-    <string name="pref_summery_off_switch_enable_auto_attendance">Auto Attendance Disabled</string>
+    <string name="pref_summery_off_switch_enable_auto_attendance" tools:keep="@string/pref_summery_off_switch_enable_auto_attendance">Auto Attendance Disabled</string>
     <bool name="pref_def_value_switch_enable_auto_attendance">false</bool>
 
     <string name="pref_key_switch_enable_night_mode" translatable="false">SHARED_PREF_IS_NIGHT_MODE_ENABLED</string>
@@ -32,28 +36,14 @@
     <string name="pref_select_places_auto_attendance">Select Places for Auto Attendance</string>
     <string name="pref_key_select_places_auto_attendance" translatable="false">SHARED_PREF_SELECT_AUTO_ATTENDANCE_PLACES</string>
 
-    <string name="pref_key_backup_database" translatable="false">SHARED_PREF_BACKUP_DATABASE</string>
-    <string name="pref_backup_database">BackUp Database</string>
-    <string name="pref_key_restore_database" translatable="false">SHARED_PREF_RESTORE_DATABASE</string>
-    <string name="pref_restore_database">Restore Database</string>
-
-    <string name="pref_list_notification_label_event">Events</string>
-    <string name="pref_list_notification_label_new_item_shop">New Items in Shop</string>
-    <string name="pref_key_list_notification_event">SHARED_PREF_NOTIFICATION_EVENT</string>
-    <string name="pref_key_list_notification_new_item_shop">SHARED_PREF_NOTIFICATION_NEW_ITEM_SHOP</string>
     <string name="pref_list_notification_title">Notifications</string>
     <string name="pref_key_list_notification">SHRED_PREF_NOTIFICATION</string>
-
-    <string name="t_name_wlv_recycler_adapter_overall_attendance_detail">overall_attendance_detail.WLV_PROGRESS</string>
 
     <!--about developer-->
     <string name="profile_url_github">https://github.com/PranavVyas</string>
     <string name="profile_url_facebook">https://www.facebook.com/pranav.vyas.330</string>
     <string name="profile_url_twitter">https://twitter.com/PranavVyas99</string>
     <string name="profile_url_instagram">https://www.instagram.com/pro_vyas4399</string>
-
-    <string name="trans_overall_attendance_progress">overall_progress_transition</string>
-    <string name="trans_overall_attendance_sub_name">overall_sub_name_transition</string>
 
 
     <string name="instr_overall_card_title">Overall Attendance Card</string>
@@ -78,12 +68,11 @@
     <string name="instr_atd_previous_atd_desc">To See Previous Attendance, touch here and select the date for which you want to change or see Attendance.</string>
     <string name="instr_digital_search_title">Search Box</string>
     <string name="instr_digital_search_desc">Search here for books to download online! No Need to be exact just search anypart of the name to search for it</string>
-    <string name="instr_digital_menu_title">Menu</string>
-    <string name="instr_digital_menu_desc">Click on "Three Vertical Dots" or "Menu"(Which is located at top most right corner) to reveal Menu Options
-        \n<b><big>\u25CF\u25CF Sync Now \u25CF\u25CF</big></b>
-        \n\u25CF Click on "Sync Now" the offline database with the online database
-        \n<b><big>\u25CF\u25CF Auto Sync \u25CF\u25CF</big></b>
-        \n\u25CF You can also use feature of "Auto Sync" to turn on Sync in Realtime whenever database is changed by any update on cloud</string>
+    <string name="instr_digital_menu_title">Sync</string>
+    <string name="instr_digital_menu_desc">Click on "Sync Now" to sync the offline database with the online database</string>
+    <string name="instr_notes_title">Notes</string>
+    <string name="instr_notes_desc">Click on Notes to open NoteManager, in which you can see the latest notes as well as old notes all well organized
+    \n\u25CF You can also Edit old notes and create new notes\n\u25CF TIP: Create Note like Subject CRE 2 and put all important notes in it like bring tutorial book etc…</string>
 
     <string name="navigation_home">Today\'s attendance</string>
     <string name="navigation_overall_attendance">Overall Attendance</string>
@@ -101,13 +90,45 @@
     <string name="title_attention">Attention</string>
 
     <string name="main_message_delete_acc">\u25CF Deleting account will remove all the attendance data and account from server as well as locally.\n\u25CF Application will shut down after deleting account, You have to manually start again.\n\u25CF Please proceed by touching \"OK\" to continue Or Click On \"Cancel\" to cancel.</string>
-    <string name="main_positive_btn_delete_acc">Delete Anyways...</string>
 
     <string name="btn_cancel">Cancel</string>
     <string name="btn_ok">OK</string>
 
     <string name="main_neutral_btn_delete_acc_sign_out_instead">Sign out Instead</string>
     <string name="main_sheet_delete_account">Do you want to Delete Account?</string>
-    <string name="overall_days_available_to_bunk">Available to Bunk</string>
+    <string name="overall_days_available_to_bunk">Available to Bunk: </string>
+    <string name="tut_welcome_title">Welcome!</string>
+    <string name="tut_welcome_desc">Hello user, Here are sime features of ths app!</string>
+    <string name="tut_att_man_title">Attendance Manager</string>
+    <string name="tut_att_man_desc">Simple and easy to use Attendance Manager to track attendance</string>
+    <string name="tut_smart_silent_title">Smart Silent</string>
+    <string name="tut_smart_silent_desc">Smart Silent is feature that will make your phone silent when you are in the lecture</string>
+    <string name="tut_auto_att_title">Auto Attendance (Testing)</string>
+    <string name="tut_auto_att_desc">Works on the GPS location, WiFi and cellular signals to mark your present at you selected location</string>
+    <string name="tut_resources_title">Resources</string>
+    <string name="tut_resources_desc">See Resources Menu from the navigation menu for surprises</string>
+    <string name="tut_digital_library_title">Digital Library</string>
+    <string name="tut_digital_library_desc">Look for book from digital library section for E-books, Photos etc</string>
+    <string name="tut_buy_sell_title">Buy/Sell Items</string>
+    <string name="tut_buy_sell_desc">Buy or sell Items like Books, Vehicles(like bikes, bicycles) etc and have users notify when new Items available in store</string>
+    <string name="tut_overall_att_title">Overall Attendance</string>
+    <string name="tut_overall_att_desc">Know where you are in required attendance criteria and know available lectures for bunk, Bunked lecutres etc..</string>
+    <string name="tut_that_s_more_title">There\'s More</string>
+    <string name="tut_that_s_more_desc">That\'s not all!! Discover new features by exploring this app!</string>
+    <string name="tut_note_title">Notes Manager</string>
+    <string name="tut_note_desc">Don\'t worry about forgetting things just write them down in notes and then forget them ;, Check here for all your notes!)</string>
+    <string name="tut_get_started">Get Started</string>
+    <string name="time_table">Time Table</string>
+    <string name="holidays">Holidays</string>
+    <string name="market_place">Market Place</string>
+    <string name="instr_note_help_title">Help</string>
+    <string name="instr_note_help_desc">To understand what is this card click here to see help now!</string>
+    <string name="instr_notes_add_title">Add Note</string>
+    <string name="instr_notes_add_desc">You can add new note from here!</string>
+    <string name="instr_menu_digital_library_auto_sync_desc">You can also use feature of \"Auto Sync\" to turn on Sync in Realtime whenever database is changed by any update on cloud</string>
+    <string name="instr_menu_digital_library_auto_sync_title">Auto Sync</string>
+    <string name="terms_url">https://student-companion-vyas.000webhostapp.com/terms-conditions</string>
+    <string name="policy_url">https://student-companion-vyas.000webhostapp.com/privacy-policy-student-companion</string>
+    <string name="website_url">https://student-companion-vyas.000webhostapp.com</string>
 
 </resources>

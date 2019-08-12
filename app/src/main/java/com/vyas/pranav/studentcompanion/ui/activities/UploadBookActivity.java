@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,25 +12,18 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
@@ -86,8 +80,12 @@ public class UploadBookActivity extends AppCompatActivity {
     ScrollView scrollContainer;
     @BindView(R.id.image_placeholder_upload_book)
     ImageView imagePlaceHolder;
+    @BindView(R.id.text_input_upload_book_link)
+    TextInputLayout inputLink;
+    @BindView(R.id.et_upload_book_link)
+    TextInputEditText etLink;
 
-    private String authorName, bookName, subject, userName, extraInfo;
+    private String authorName, bookName, subject, userName, extraInfo, extLink;
     private Uri selectedBookUri;
     private UploadBookViewModel uploadBookViewModel;
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
@@ -105,7 +103,7 @@ public class UploadBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_book);
         ButterKnife.bind(this);
-        mCollectionReference = mFirestore.collection(new SharedPreferencesUtils(this).getCurrentPath() + Constants.PATH_DIGITAL_LIBRARY_SVNIT);
+        mCollectionReference = mFirestore.collection(SharedPreferencesUtils.getInstance(this).getCurrentPath() + Constants.PATH_DIGITAL_LIBRARY_SVNIT);
         uploadBookViewModel = ViewModelProviders.of(this).get(UploadBookViewModel.class);
         initData();
         setUpUi();
@@ -118,6 +116,7 @@ public class UploadBookActivity extends AppCompatActivity {
         authorName = uploadBookViewModel.getAuthorName();
         subject = uploadBookViewModel.getSubject();
         extraInfo = uploadBookViewModel.getExtraInfo();
+        extLink = uploadBookViewModel.getExternalLink();
     }
 
     private void setUpUi() {
@@ -126,7 +125,8 @@ public class UploadBookActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         continueUploadDocumentIfAvailable();
         if (validateDownloadUrl()) {
-            uploadStatus.setText("Selected successfully");
+            String pathFull = Uri.parse(downloadBookUrl).getLastPathSegment();
+            uploadStatus.setText(pathFull.substring(pathFull.lastIndexOf('/') + 1) + " Uploaded");
             btnPostDocument.setEnabled(true);
         } else {
             btnPostDocument.setEnabled(false);
@@ -152,22 +152,14 @@ public class UploadBookActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                retryClicked();
-            }
-        }, TimeUnit.SECONDS.toMillis(1));
+        new Handler().postDelayed(() -> retryClicked(), TimeUnit.SECONDS.toMillis(1));
     }
 
     @OnClick(R.id.btn_placeholder_upload_book_no_connection_retry)
     void retryClicked() {
-        AppExecutors.getInstance().networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                showPlaceHolder(!AttendanceUtils.hasInternetAccess(UploadBookActivity.this));
-                Logger.d("Internet Connection is " + AttendanceUtils.hasInternetAccess(UploadBookActivity.this));
-            }
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            showPlaceHolder(!AttendanceUtils.hasInternetAccess(UploadBookActivity.this));
+            Logger.d("Internet Connection is " + AttendanceUtils.hasInternetAccess(UploadBookActivity.this));
         });
     }
 
@@ -204,19 +196,15 @@ public class UploadBookActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
         if (requestCode == RC_OPEN_CHOOSER) {
             if (resultCode == RESULT_OK) {
                 selectedBookUri = data.getData();
                 uploadBookViewModel.setImageUri(selectedBookUri);
-                AppExecutors.getInstance().networkIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (AttendanceUtils.hasInternetAccess(UploadBookActivity.this)) {
-                            startUploadingDocument();
-                        } else {
-                            showPlaceHolder(true);
-                        }
+                AppExecutors.getInstance().networkIO().execute(() -> {
+                    if (AttendanceUtils.hasInternetAccess(UploadBookActivity.this)) {
+                        startUploadingDocument();
+                    } else {
+                        showPlaceHolder(true);
                     }
                 });
             } else {
@@ -238,72 +226,41 @@ public class UploadBookActivity extends AppCompatActivity {
 
     private void uploadDocument() {
         showSnackbar(uploadBookViewModel.getProgress());
-        AppExecutors.getInstance().mainThread().execute(new Runnable() {
-            @Override
-            public void run() {
-                btnSelectBook.setEnabled(false);
-
-            }
-        });
+        AppExecutors.getInstance().mainThread().execute(() -> btnSelectBook.setEnabled(false));
         uploadStatus.setText("Uploading Now...");
-        uploadBookViewModel.getUploadTask().addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                getDownloadUrl(taskSnapshot);
-                uploadBookViewModel.setUploadTask(null);
-                AppExecutors.getInstance().mainThread().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        btnSelectBook.setEnabled(true);
-
-                    }
-                });
+        uploadBookViewModel.getUploadTask().addOnSuccessListener(taskSnapshot -> {
+            getDownloadUrl(taskSnapshot);
+            uploadBookViewModel.setUploadTask(null);
+            AppExecutors.getInstance().mainThread().execute(() -> btnSelectBook.setEnabled(true));
+        }).addOnFailureListener(e -> {
+            showSnackbar("Error while uploading document in database");
+            Logger.d("Failed due to " + e.getMessage());
+            uploadBookViewModel.setUploadTask(null);
+            AppExecutors.getInstance().mainThread().execute(() -> btnSelectBook.setEnabled(true));
+            btnPostDocument.setEnabled(false);
+        }).addOnProgressListener(taskSnapshot -> {
+            long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+            uploadBookViewModel.setCurrProgress(progress);
+            if (progress == 100) {
+                uploadBookViewModel.setCurrProgress(0);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                showSnackbar("Error while uploading document in database");
-//                Toast.makeText(MarketPlaceSellItemActivity.this, "Error while uploading image in database", Toast.LENGTH_SHORT).show();
-                Logger.d("Failed due to " + e.getMessage());
-                uploadBookViewModel.setUploadTask(null);
-                AppExecutors.getInstance().mainThread().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        btnSelectBook.setEnabled(true);
-
-                    }
-                });
-                btnPostDocument.setEnabled(false);
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                long progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                uploadBookViewModel.setCurrProgress(progress);
-                if (progress == 100) {
-                    uploadBookViewModel.setCurrProgress(0);
-                }
-                showSnackbar(progress);
-            }
+            showSnackbar(progress);
         });
     }
 
     private void getDownloadUrl(UploadTask.TaskSnapshot taskSnapshot) {
-        taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    downloadBookUrl = task.getResult().toString();
-                    uploadBookViewModel.setDownloadUri(downloadBookUrl);
-                    btnPostDocument.setEnabled(true);
-                    btnSelectBook.setEnabled(true);
-                    uploadStatus.setText("Selected successfully");
-                } else {
-                    showSnackbar("Error While getting download link");
-                    uploadStatus.setText("Upload Problem");
-                    btnSelectBook.setEnabled(true);
-//                    Toast.makeText(MarketPlaceSellItemActivity.this, "Error While getting download link", Toast.LENGTH_SHORT).show();
-                }
+        taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                downloadBookUrl = task.getResult().toString();
+                uploadBookViewModel.setDownloadUri(downloadBookUrl);
+                btnPostDocument.setEnabled(true);
+                btnSelectBook.setEnabled(true);
+                String pathFull = Uri.parse(downloadBookUrl).getLastPathSegment();
+                uploadStatus.setText(pathFull.substring(pathFull.lastIndexOf('/') + 1) + " Uploaded");
+            } else {
+                showSnackbar("Error While getting download link");
+                uploadStatus.setText("Upload Problem");
+                btnSelectBook.setEnabled(true);
             }
         });
     }
@@ -335,35 +292,41 @@ public class UploadBookActivity extends AppCompatActivity {
     @OnClick(R.id.btn_upload_book_upload)
     void uploadBookClicked() {
         if (validateName() & validateAuthorName() & validateSubject() & validateDownloadUrl() & validateExtraInfo()) {
-            BookModel book = new BookModel();
-            book.setExtra_info(extraInfo);
-            book.setUploader_name(userName);
-            book.setBook_name(bookName);
-            book.setDownload_url(downloadBookUrl);
-            book.setSubject(subject);
-            book.setAuthor_name(authorName);
-
-            mCollectionReference.add(book).addOnSuccessListener(this, new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    showSnackbar("Added to database");
-                    Logger.d("Successfully added to the database");
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra(EXTRA_DOWNLOAD_URL_DOCUMENT, uploadBookViewModel.getDownloadUriString());
-                    UploadBookActivity.this.setResult(RESULT_OK, resultIntent);
-                    UploadBookActivity.this.finish();
-                }
-            }).addOnFailureListener(this, new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Logger.d("Failed to add Due to : " + e.toString());
-                    showSnackbar("Failed to add data");
-//                    Toast.makeText(MarketPlaceSellItemActivity.this, "Failed to add data", Toast.LENGTH_SHORT).show();
-                }
-            });
+            uploadBookModel(downloadBookUrl);
         } else {
             showSnackbar("Error while uploading");
         }
+    }
+
+    @OnClick(R.id.btn_upload_book_upload_link)
+    void uploadUsingLink() {
+        if (validateAuthorName() & validateExtraInfo() & validateGivenLink() & validateName() & validateSubject()) {
+            uploadBookModel(extLink);
+        } else {
+            showSnackbar("Error While Uploading");
+        }
+    }
+
+    private void uploadBookModel(String downloadBookUrl) {
+        BookModel book = new BookModel();
+        book.setExtra_info(extraInfo);
+        book.setUploader_name(userName);
+        book.setBook_name(bookName);
+        book.setDownload_url(downloadBookUrl);
+        book.setSubject(subject);
+        book.setAuthor_name(authorName);
+
+        mCollectionReference.add(book).addOnSuccessListener(this, documentReference -> {
+            showSnackbar("Added to database");
+            Logger.d("Successfully added to the database");
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra(EXTRA_DOWNLOAD_URL_DOCUMENT, uploadBookViewModel.getDownloadUriString());
+            UploadBookActivity.this.setResult(RESULT_OK, resultIntent);
+            UploadBookActivity.this.finish();
+        }).addOnFailureListener(this, e -> {
+            Logger.d("Failed to add Due to : " + e.toString());
+            showSnackbar("Failed to add data");
+        });
     }
 
     private boolean validateExtraInfo() {
@@ -421,13 +384,21 @@ public class UploadBookActivity extends AppCompatActivity {
         }
     }
 
+    private boolean validateGivenLink() {
+        extLink = etLink.getText().toString().trim();
+        uploadBookViewModel.setExternalLink(extLink);
+        if (TextUtils.isEmpty(extLink)) {
+            inputLink.setError("Link can not be empty!");
+            return false;
+        } else {
+            inputLink.setErrorEnabled(false);
+            return true;
+        }
+    }
+
     private void sendRemoveDocumentIntentIfAny() {
         if (child != null) {
             removeLastUploadedDocument();
-//            Intent resultIntent = new Intent();
-//            resultIntent.putExtra(EXTRA_DOWNLOAD_URL, child.getPath());
-//            setResult(RESULT_CANCELED, resultIntent);
-//            Logger.d("Child is not null");
         } else {
             Logger.d("Child is null");
         }
@@ -438,33 +409,20 @@ public class UploadBookActivity extends AppCompatActivity {
         Logger.d("Path of image is " + childPath);
         if (childPath != null) {
             StorageReference ref = FirebaseStorage.getInstance().getReference().child(childPath);
-            ref.delete().addOnSuccessListener(this, new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Toast.makeText(UploadBookActivity.this, "Removed from database", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(this, new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(UploadBookActivity.this, "Error from database", Toast.LENGTH_SHORT).show();
-                }
-            });
+            ref.delete().addOnSuccessListener(this, aVoid -> Toast.makeText(UploadBookActivity.this, "Removed from database", Toast.LENGTH_SHORT).show())
+                    .addOnFailureListener(this, e -> Toast.makeText(UploadBookActivity.this, "Error from database", Toast.LENGTH_SHORT).show());
         }
     }
 
     private void showPlaceHolder(boolean isShown) {
-        AppExecutors.getInstance().mainThread().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (isShown) {
-                    placeHolderConnection.setVisibility(View.VISIBLE);
-                    scrollContainer.setVisibility(View.GONE);
-                } else {
-                    placeHolderConnection.setVisibility(View.GONE);
-                    scrollContainer.setVisibility(View.VISIBLE);
-                }
+        AppExecutors.getInstance().mainThread().execute(() -> {
+            if (isShown) {
+                placeHolderConnection.setVisibility(View.VISIBLE);
+                scrollContainer.setVisibility(View.GONE);
+            } else {
+                placeHolderConnection.setVisibility(View.GONE);
+                scrollContainer.setVisibility(View.VISIBLE);
             }
         });
-
     }
 }

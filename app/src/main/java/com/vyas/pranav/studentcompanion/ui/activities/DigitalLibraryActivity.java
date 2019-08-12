@@ -1,10 +1,10 @@
 package com.vyas.pranav.studentcompanion.ui.activities;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,14 +27,11 @@ import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.DigitalLibraryRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.firebase.BookModel;
-import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.DigitalLibraryViewModel;
@@ -42,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,21 +48,20 @@ import butterknife.OnClick;
 
 public class DigitalLibraryActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private static final String TAG = "DigitalLibraryActivity";
     @BindView(R.id.recycler_digital_library_list)
     RecyclerView rvList;
     @BindView(R.id.toolbar_digital_library)
     Toolbar toolbar;
-    private static final String TAG = "DigitalLibraryActivity";
-
     @BindView(R.id.text_input_digital_library_search_container)
     TextInputLayout inputSearch;
     @BindView(R.id.et_digital_library_search)
     TextInputEditText etSearch;
-
-    private DigitalLibraryRecyclerAdapter mAdapter;
-    private DigitalLibraryViewModel digitalLibraryViewModel;
     @BindView(R.id.placeholder_digital_library_no_item)
     ConstraintLayout placeHolder;
+    private DigitalLibraryRecyclerAdapter mAdapter;
+    private DigitalLibraryViewModel digitalLibraryViewModel;
+    private FirestoreQueryLiveData liveBooksData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +74,9 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         digitalLibraryViewModel = ViewModelProviders.of(this).get(DigitalLibraryViewModel.class);
         setUpUi();
-        startInstruction(this);
-//        //TODO do something about recyclerview not transitioning
-//        Slide slide = new Slide(Gravity.RIGHT);
-//        slide.setInterpolator(
-//                AnimationUtils.loadInterpolator(this,
-//                        android.R.interpolator.linear_out_slow_in));
-//        slide.addTarget(etSearch);
-//        slide.addTarget(inputSearch);
-//        slide.addTarget(R.id.btn_digital_library_search);
-//        slide.addTarget(rvList);
-//        slide.addTarget(R.id.textView59);
-//        slide.addTarget(R.id.imageView12);
-//        slide.addTarget(R.id.divider8);
-//        slide.addTarget(R.id.fab_digital_library_upload_book);
-////        slide.setDuration(TimeUnit.SECONDS.toMillis(20));
-//        getWindow().setEnterTransition(android.R.transition.slide_right);
+        new Handler().postDelayed(() -> {
+            startInstruction(this);
+        }, TimeUnit.SECONDS.toMillis(1));
         searchClicked();
     }
 
@@ -122,9 +107,9 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
     void searchClicked() {
         String searchTerm = etSearch.getText().toString().trim();
         if (searchTerm.isEmpty()) {
-            digitalLibraryViewModel.getAllBooks().observe(this, new Observer<List<DigitalLibraryEntry>>() {
+            digitalLibraryViewModel.getAllBooks().observe(this, new Observer<PagedList<DigitalLibraryEntry>>() {
                 @Override
-                public void onChanged(List<DigitalLibraryEntry> digitalLibraryEntries) {
+                public void onChanged(PagedList<DigitalLibraryEntry> digitalLibraryEntries) {
                     if (digitalLibraryEntries.size() == 0) {
                         showPlaceHolder(true);
                     } else {
@@ -134,9 +119,9 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
                 }
             });
         } else {
-            digitalLibraryViewModel.getBookByName(searchTerm).observe(this, new Observer<List<DigitalLibraryEntry>>() {
+            digitalLibraryViewModel.getBookByName(searchTerm).observe(this, new Observer<PagedList<DigitalLibraryEntry>>() {
                 @Override
-                public void onChanged(List<DigitalLibraryEntry> digitalLibraryEntries) {
+                public void onChanged(PagedList<DigitalLibraryEntry> digitalLibraryEntries) {
                     if (digitalLibraryEntries.size() == 0) {
                         showPlaceHolder(true);
                     } else {
@@ -150,7 +135,6 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
 
     @OnClick(R.id.fab_digital_library_upload_book)
     void onFabClicked() {
-        Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         Intent intent = new Intent(this, UploadBookActivity.class);
         startActivity(intent);
     }
@@ -197,9 +181,10 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
 
     private void onSyncClicked() {
         Toast.makeText(this, "Sync Clicked", Toast.LENGTH_SHORT).show();
-        CollectionReference booksRef = FirebaseFirestore.getInstance().collection(new SharedPreferencesUtils(this).getCurrentPath() + Constants.PATH_DIGITAL_LIBRARY_SVNIT);
-        FirestoreQueryLiveData liveBooksData = new FirestoreQueryLiveData(booksRef);
+        liveBooksData = digitalLibraryViewModel.getLiveDataOfBooks();
+        digitalLibraryViewModel.nullLiveData();
         liveBooksData.removeObservers(this);
+        liveBooksData = digitalLibraryViewModel.refreshLiveData();
         liveBooksData.observe(this, new Observer<QuerySnapshot>() {
             @Override
             public void onChanged(QuerySnapshot queryDocumentSnapshots) {
@@ -236,16 +221,21 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
                 .title(getString(R.string.instr_digital_search_title))
                 .description(getString(R.string.instr_digital_search_desc))
                 .targetView(inputSearch)
-//                .showOnce(TAG + "Search")
-                ;
-        BubbleShowCaseBuilder menu = new BubbleShowCaseBuilder(activity)
+                .showOnce(TAG + "Search");
+        BubbleShowCaseBuilder menuSync = new BubbleShowCaseBuilder(activity)
                 .title(getString(R.string.instr_digital_menu_title))
                 .description(getString(R.string.instr_digital_menu_desc))
-//                .showOnce(TAG + "Menu")
-                ;
+                .targetView(findViewById(R.id.menu_digital_library_sync))
+                .showOnce(TAG + "Menu");
+        BubbleShowCaseBuilder menuAutoSync = new BubbleShowCaseBuilder(activity)
+                .title(getString(R.string.instr_menu_digital_library_auto_sync_title))
+                .description(getString(R.string.instr_menu_digital_library_auto_sync_desc))
+                .targetView(findViewById(R.id.menu_digital_library_auto_sync))
+                .showOnce(TAG + "MenuAutoSync");
         new BubbleShowCaseSequence()
                 .addShowCase(intro)
-                .addShowCase(menu)
+                .addShowCase(menuSync)
+                .addShowCase(menuAutoSync)
                 .show();
     }
 

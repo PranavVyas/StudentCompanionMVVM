@@ -55,12 +55,6 @@
         </item>
     </style>
 
-    <style name="MyMaterialTextView.MediumTextViewHeadLine4" parent="MyMaterialTextView">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline4
-        </item>
-    </style>
-
     <!--<style name="MyMaterialTextView.MediumTextViewHeadLine6.White" parent="MyMaterialTextView">--><!--<item name="android:textStyle">bold</item>--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6--><!--</item>--><!--</style>-->
 
     <!--<style name="MyMaterialTextView.MediumTextViewHeadLine5.White" parent="MyMaterialTextView">--><!--<item name="android:textStyle">bold</item>--><!--<item name="android:textColor">?attr/text_default_color_custom</item>--><!--<item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline5--><!--</item>--><!--</style>-->

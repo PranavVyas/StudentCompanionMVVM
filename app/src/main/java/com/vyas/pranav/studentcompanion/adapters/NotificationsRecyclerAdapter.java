@@ -84,6 +84,9 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
                     .into(holder.imageItem);
             return;
         }
+        holder.btnMore.setVisibility(View.VISIBLE);
+
+
         GlideApp.with(holder.itemView)
                 .load(notification.getImage_url())
                 .error(R.drawable.ic_caution)

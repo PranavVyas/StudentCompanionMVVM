@@ -87,16 +87,11 @@ public class OverallAttendanceFragment extends Fragment {
     }
 
     private void showInstruction(Activity activity) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                new BubbleShowCaseBuilder(activity)
-                        .title(getContext().getString(R.string.instr_overall_card_title))
-                        .description(getContext().getString(R.string.instr_overall_card_desc))
-                        .showOnce(TAG + "overallAttCard")
-                        .show();
-            }
-        }, TimeUnit.SECONDS.toMillis(1));
+        new Handler().postDelayed(() -> new BubbleShowCaseBuilder(activity)
+                .title(getContext().getString(R.string.instr_overall_card_title))
+                .description(getContext().getString(R.string.instr_overall_card_desc))
+                .showOnce(TAG + "overallAttCard")
+                .show(), TimeUnit.SECONDS.toMillis(1));
 
     }
 }

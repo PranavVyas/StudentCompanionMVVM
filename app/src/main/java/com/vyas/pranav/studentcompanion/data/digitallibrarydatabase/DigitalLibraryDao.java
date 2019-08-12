@@ -1,18 +1,18 @@
 package com.vyas.pranav.studentcompanion.data.digitallibrarydatabase;
 
-import java.util.List;
-
-import androidx.lifecycle.LiveData;
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import java.util.List;
+
 @Dao
 public interface DigitalLibraryDao {
 
     @Query("SELECT * FROM `Digital Library`")
-    LiveData<List<DigitalLibraryEntry>> getAllBooks();
+    DataSource.Factory<Integer, DigitalLibraryEntry> getAllBooks();
 
     @Query("DELETE FROM `Digital Library`")
     void deleteAllBooks();
@@ -24,6 +24,6 @@ public interface DigitalLibraryDao {
     void insertOneBook(DigitalLibraryEntry bookEntry);
 
     @Query("SELECT * FROM  `Digital Library` WHERE bookName LIKE :searchName")
-    LiveData<List<DigitalLibraryEntry>> getBookByName(String searchName);
+    DataSource.Factory<Integer, DigitalLibraryEntry> getBookByName(String searchName);
 
 }

@@ -3,6 +3,11 @@ package com.vyas.pranav.studentcompanion.services;
 import android.app.IntentService;
 import android.content.Intent;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.repositories.AttendanceDatabaseRepository;
@@ -12,11 +17,6 @@ import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.Date;
 import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 public class AttendanceEditIntentService extends IntentService {
 
@@ -30,7 +30,7 @@ public class AttendanceEditIntentService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
         manager.cancel(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION);
-        AttendanceDatabaseRepository repository = new AttendanceDatabaseRepository(getApplicationContext());
+        AttendanceDatabaseRepository repository = AttendanceDatabaseRepository.getInstance(getApplicationContext());
         Date date = new Date();
         ConverterUtils.CustomDate customDate = ConverterUtils.extractElementsFromDate(date);
         Date date1 = ConverterUtils.formatDateFromCalender(customDate.getDate(), customDate.getMonth(), customDate.getYear());

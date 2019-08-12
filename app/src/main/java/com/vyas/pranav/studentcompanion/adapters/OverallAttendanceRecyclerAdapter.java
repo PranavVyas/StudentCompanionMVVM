@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -64,7 +63,7 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
 
     private int getCurrentAttendanceCriteria(Context context) {
         if (sharedPreferencesUtils == null) {
-            sharedPreferencesUtils = new SharedPreferencesUtils(context);
+            sharedPreferencesUtils = SharedPreferencesUtils.getInstance(context);
             currentAttendance = sharedPreferencesUtils.getCurrentAttendanceCriteria();
         }
         return currentAttendance;
@@ -148,8 +147,6 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         MaterialCardView cardMain;
         @BindView(R.id.btn_overall_attendance_more)
         Button btnMore;
-        @BindView(R.id.constraint_overall_attendance_card)
-        ConstraintLayout constraintCard;
 
         OverallAttendanceHolder(@NonNull View itemView) {
             super(itemView);

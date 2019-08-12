@@ -16,7 +16,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_toolbar_digital_library"
             style="@style/MyCustomToolbarTextView"
             android:text="Digital Library" />
     </androidx.appcompat.widget.Toolbar>
@@ -66,7 +65,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/fab_digital_library_upload_book"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/shape_rounded_corner_background" />
+        app:srcCompat="@drawable/shape_rounded_corner_background"
+        tools:ignore="ContentDescription" />
 
     <FrameLayout
         android:layout_width="0dp"
@@ -101,10 +101,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/image_no_items_digital_library" />
+                app:srcCompat="@drawable/image_no_items_digital_library"
+                tools:ignore="ContentDescription" />
 
             <TextView
-                android:id="@+id/textView69"
                 style="@style/MyMaterialTextView.MediumTextViewHeadLine5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -144,7 +144,6 @@
         app:layout_constraintTop_toTopOf="@+id/imageView12" />
 
     <TextView
-        android:id="@+id/textView59"
         style="@style/MyMaterialTextView.SmallTextViewBody2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

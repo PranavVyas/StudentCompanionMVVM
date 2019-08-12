@@ -114,7 +114,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         // Try if the preference is one of our custom Preferences
         DialogFragment dialogFragment = null;
         if (preference instanceof TimePreference) {
-            // Create a new instance of TimePreferenceDialogFragment with the key of the relatee Preference
+            // Create a new instance of TimePreferenceDialogFragment with the key of the relate Preference
             dialogFragment = TimePreferenceDialogFragmentCompat
                     .getNewInstance(preference.getKey());
         }

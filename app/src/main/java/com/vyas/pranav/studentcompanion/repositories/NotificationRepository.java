@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 public class NotificationRepository {
+    private static final Object LOCK = new Object();
+    private static NotificationRepository instance;
     private final Context context;
     private final AppExecutors mExecutors;
     private final NotificationDao notificationDao;
@@ -27,13 +29,17 @@ public class NotificationRepository {
         mExecutors = AppExecutors.getInstance();
     }
 
-    public void insertNotification(NotificationFirestoreModel notification) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                notificationDao.insertNotification(notification);
+    public static NotificationRepository getInstance(Context context) {
+        if (instance == null) {
+            synchronized (LOCK) {
+                instance = new NotificationRepository(context.getApplicationContext());
             }
-        });
+        }
+        return instance;
+    }
+
+    public void insertNotification(NotificationFirestoreModel notification) {
+        mExecutors.diskIO().execute(() -> notificationDao.insertNotification(notification));
     }
 
     public LiveData<List<NotificationFirestoreModel>> getAllNotifications() {
@@ -51,26 +57,16 @@ public class NotificationRepository {
     public void syncNotifications(List<String> ids, List<NotificationFirestoreModel> notificationFirestoreModels) {
         Logger.d("Ids are: ");
         Logger.d(ids);
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                List<NotificationFirestoreModel> lowAttendanceNotis = notificationDao.getNotificationByTypeInForeground(Constants.NOTI_TYPE_LOW_ATTENDANCE);
-                notificationDao.deleteAllNotifications();
-                for (int i = 0; i < ids.size(); i++) {
-                    notificationFirestoreModels.get(i).set_ID(ids.get(i));
-                    notificationFirestoreModels.get(i).setType(Constants.NOTI_TYPE_EVENT);
-                }
-                notificationDao.insertAllNotifications(lowAttendanceNotis);
-                notificationDao.insertAllNotifications(notificationFirestoreModels);
+        mExecutors.diskIO().execute(() -> {
+            List<NotificationFirestoreModel> lowAttendanceNotis = notificationDao.getNotificationByTypeInForeground(Constants.NOTI_TYPE_LOW_ATTENDANCE);
+            notificationDao.deleteAllNotifications();
+            for (int i = 0; i < ids.size(); i++) {
+                notificationFirestoreModels.get(i).set_ID(ids.get(i));
+                notificationFirestoreModels.get(i).setType(Constants.NOTI_TYPE_EVENT);
             }
+            notificationDao.insertAllNotifications(lowAttendanceNotis);
+            notificationDao.insertAllNotifications(notificationFirestoreModels);
         });
-
-//        mExecutors.diskIO().execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                notificationDao.insertAllNotifications(notificationFirestoreModels);
-//            }
-//        });
     }
 
     public LiveData<NotificationFirestoreModel> getNotificationById(String s) {
@@ -78,20 +74,10 @@ public class NotificationRepository {
     }
 
     public void updateNotification(NotificationFirestoreModel notificationFirestoreModel) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                notificationDao.updateNotification(notificationFirestoreModel);
-            }
-        });
+        mExecutors.diskIO().execute(() -> notificationDao.updateNotification(notificationFirestoreModel));
     }
 
     public void deleteNotificationById(String s) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                notificationDao.deleteNotification(s);
-            }
-        });
+        mExecutors.diskIO().execute(() -> notificationDao.deleteNotification(s));
     }
 }

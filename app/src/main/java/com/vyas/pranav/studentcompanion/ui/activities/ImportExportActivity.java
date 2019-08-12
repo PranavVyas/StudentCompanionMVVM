@@ -2,6 +2,7 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.os.Environment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -62,7 +63,7 @@ public class ImportExportActivity extends AppCompatActivity {
         File dbShm = new File(dbMain.getParent(), MainDatabase.DB_NAME + "-shm");
         File dbWal = new File(dbMain.getParent(), MainDatabase.DB_NAME + "-wal");
 
-        File dbDest = new File("/sdcard/", MainDatabase.DB_NAME);
+        File dbDest = new File(Environment.getExternalStorageDirectory().getPath(), MainDatabase.DB_NAME);
         File dbShmDest = new File(dbDest.getParent(), MainDatabase.DB_NAME + "-shm");
         File dbWalDest = new File(dbDest.getParent(), MainDatabase.DB_NAME + "-wal");
 

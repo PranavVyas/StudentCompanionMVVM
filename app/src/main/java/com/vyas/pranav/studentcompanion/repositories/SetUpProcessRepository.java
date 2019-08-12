@@ -12,8 +12,8 @@ import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
-import com.vyas.pranav.studentcompanion.data.firebase.model.HolidayModel;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
+import com.vyas.pranav.studentcompanion.data.holidaydatabase.firebase.model.HolidayModel;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
@@ -38,6 +38,7 @@ public class SetUpProcessRepository {
     private TimetableRepository timetableRepository;
     private SharedPreferencesUtils sharedPreferencesUtils;
     private MainDatabase mDb;
+    private static final Object LOCK = new Object();
 
     private List<TimetableEntry> Monday;
     private List<TimetableEntry> Tuesday;
@@ -45,12 +46,23 @@ public class SetUpProcessRepository {
     private List<TimetableEntry> Thursday;
     private List<TimetableEntry> Friday;
 
+    private static SetUpProcessRepository instance;
+
     public SetUpProcessRepository(Context context) {
-        sharedPreferencesUtils = new SharedPreferencesUtils(context);
+        sharedPreferencesUtils = SharedPreferencesUtils.getInstance(context.getApplicationContext());
         this.context = context;
-        holidayRepository = new HolidayRepository(context);
-        timetableRepository = new TimetableRepository(context);
+        holidayRepository = HolidayRepository.getInstance(context);
+        timetableRepository = TimetableRepository.getInstance(context);
         mDb = MainDatabase.getInstance(context);
+    }
+
+    public static SetUpProcessRepository getInstance(Context context) {
+        if (instance == null) {
+            synchronized (LOCK) {
+                instance = new SetUpProcessRepository(context);
+            }
+        }
+        return instance;
     }
 
     public FirestoreQueryLiveData getCollagesLiveData(Query query) {
@@ -213,7 +225,7 @@ public class SetUpProcessRepository {
                     }
                     Logger.d("Till date " + date + " Size of attendance is " + attendanceEntries.size());
                 }
-                AttendanceDatabaseRepository repo = new AttendanceDatabaseRepository(context);
+                AttendanceDatabaseRepository repo = AttendanceDatabaseRepository.getInstance(context);
                 repo.insertAllAttendanceAndOverallAttendance(attendanceEntries, context);
             }
         });
@@ -281,42 +293,36 @@ public class SetUpProcessRepository {
     }
 
     private void insertAllOverallAttendance(final List<String> subjectList, final AttendanceDao attendanceDao, final OverallAttendanceDao overallAttendanceDao) {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < subjectList.size(); i++) {
-                    String subject = subjectList.get(i);
-                    OverallAttendanceEntry x = new OverallAttendanceEntry();
-                    Date todayDate = new Date();
-                    int presentDays = attendanceDao.getAttendedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), todayDate);
-                    int bunkedDays = attendanceDao.getBunkedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), new Date());
-                    int totalDays = attendanceDao.getTotalDaysForSubject(subject);
-                    x.setTotalDays(totalDays);
-                    x.setBunkedDays(bunkedDays);
-                    x.setPresentDays(presentDays);
-                    x.setSubName(subject);
-                    overallAttendanceDao.insertOverall(x);
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            for (int i = 0; i < subjectList.size(); i++) {
+                String subject = subjectList.get(i);
+                OverallAttendanceEntry x = new OverallAttendanceEntry();
+                Date todayDate = new Date();
+                int presentDays = attendanceDao.getAttendedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), todayDate);
+                int bunkedDays = attendanceDao.getBunkedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), new Date());
+                int totalDays = attendanceDao.getTotalDaysForSubject(subject);
+                x.setTotalDays(totalDays);
+                x.setBunkedDays(bunkedDays);
+                x.setPresentDays(presentDays);
+                x.setSubName(subject);
+                overallAttendanceDao.insertOverall(x);
 //                    DailyJobForDoingDailyJobs.scheduleJob();
-                }
-                Logger.d("Overall Attendance Database Init success");
             }
+            Logger.d("Overall Attendance Database Init success");
         });
     }
 
     private void setUpAutoAttendanceDatabase() {
         final AutoAttendancePlaceDao autoAttendancePlaceDao = mDb.autoAttendancePlaceDao();
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                List<String> subjectsListOnly = getSubjectList();
-                for (int i = 0; i < subjectsListOnly.size(); i++) {
-                    String subject = subjectsListOnly.get(i);
-                    AutoAttendancePlaceEntry autoAttendancePlaceEntry = new AutoAttendancePlaceEntry();
-                    autoAttendancePlaceEntry.setSubject(subject);
-                    autoAttendancePlaceEntry.setLat(Constants.DEFAULT_LAT);
-                    autoAttendancePlaceEntry.setLang(Constants.DEFAULT_LANG);
-                    autoAttendancePlaceDao.insertNewPlaceEntry(autoAttendancePlaceEntry);
-                }
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            List<String> subjectsListOnly = getSubjectList();
+            for (int i = 0; i < subjectsListOnly.size(); i++) {
+                String subject = subjectsListOnly.get(i);
+                AutoAttendancePlaceEntry autoAttendancePlaceEntry = new AutoAttendancePlaceEntry();
+                autoAttendancePlaceEntry.setSubject(subject);
+                autoAttendancePlaceEntry.setLat(Constants.DEFAULT_LAT);
+                autoAttendancePlaceEntry.setLang(Constants.DEFAULT_LANG);
+                autoAttendancePlaceDao.insertNewPlaceEntry(autoAttendancePlaceEntry);
             }
         });
     }

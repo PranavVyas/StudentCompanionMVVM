@@ -2,15 +2,15 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
 import com.vyas.pranav.studentcompanion.repositories.TimetableRepository;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 public class TimetableViewModel extends AndroidViewModel {
 
@@ -39,9 +39,9 @@ public class TimetableViewModel extends AndroidViewModel {
 
     public TimetableViewModel(@NonNull Application application) {
         super(application);
-        timetableRepository = new TimetableRepository(application);
+        timetableRepository = TimetableRepository.getInstance(application);
         timetableEntries = timetableRepository.getFullTimetable();
-        setUpProcessRepository = new SetUpProcessRepository(application);
+        setUpProcessRepository = SetUpProcessRepository.getInstance(application);
         lecturesPerDay = setUpProcessRepository.getNoOfLecturesPerDay();
     }
 

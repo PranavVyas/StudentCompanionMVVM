@@ -8,21 +8,17 @@ import androidx.lifecycle.AndroidViewModel;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MarketPlaceViewModel extends AndroidViewModel {
 
-    private final List<String> categories = new ArrayList<>(Arrays.asList(
-            "Book",
-            "Bicycle",
-            "Xerox"
-    ));
+    private List<String> categories;
     private String searchStr = "";
     private int selectedCategory = 0;
     private final CollectionReference collectionReference;
@@ -32,7 +28,8 @@ public class MarketPlaceViewModel extends AndroidViewModel {
 
     public MarketPlaceViewModel(@NonNull Application application) {
         super(application);
-        collectionReference = FirebaseFirestore.getInstance().collection(new SharedPreferencesUtils(application).getCurrentPath() + Constants.PATH_SELL_SVNIT);
+        categories = Arrays.asList(application.getResources().getStringArray(R.array.categories_buy_sell));
+        collectionReference = FirebaseFirestore.getInstance().collection(SharedPreferencesUtils.getInstance(application).getCurrentPath() + Constants.PATH_SELL_SVNIT);
         mQuery = collectionReference.whereEqualTo("category", categories.get(selectedCategory));
         queryLiveData = new FirestoreQueryLiveData(mQuery);
     }

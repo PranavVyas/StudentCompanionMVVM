@@ -37,7 +37,7 @@ import com.orhanobut.logger.Logger;
 import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.MarketPlaceSellRecyclerAdapter;
-import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.data.models.ItemModel;
 import com.vyas.pranav.studentcompanion.ui.activities.MarketPlaceSellItemActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
@@ -80,11 +80,7 @@ public class MarketPlaceFragment extends Fragment {
 
     private String selectedCategory;
     private String searchStr;
-    private final List<String> categories = new ArrayList<>(Arrays.asList(
-            "Book",
-            "Bicycle",
-            "Xerox"
-    ));
+    private List<String> categories;
 
 
     public MarketPlaceFragment() {
@@ -107,15 +103,13 @@ public class MarketPlaceFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        categories = Arrays.asList(getContext().getResources().getStringArray(R.array.categories_buy_sell));
         marketPlaceViewModel = ViewModelProviders.of(getActivity()).get(MarketPlaceViewModel.class);
         populateUI();
         getLiveData();
-        AppExecutors.getInstance().networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (!AttendanceUtils.hasInternetAccess(getContext())) {
-                    showSnackbar("Internet not available. Latest sync Failed");
-                }
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            if (!AttendanceUtils.hasInternetAccess(getContext())) {
+                showSnackbar("Internet not available. Latest sync Failed");
             }
         });
         startInstruction(getActivity());
@@ -236,12 +230,8 @@ public class MarketPlaceFragment extends Fragment {
             @Override
             public void onChanged(QuerySnapshot queryDocumentSnapshots) {
                 if (queryDocumentSnapshots != null) {
-                    mExecutors.diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            listLiveData.postValue(queryDocumentSnapshots.toObjects(ItemModel.class));
-                        }
-                    });
+                    mExecutors.diskIO().execute(() ->
+                            listLiveData.postValue(queryDocumentSnapshots.toObjects(ItemModel.class)));
                 } else {
                     listLiveData.setValue(null);
                 }

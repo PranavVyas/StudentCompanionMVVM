@@ -138,7 +138,7 @@ public class ConverterUtils {
 
     /**
      * Convert time int in string string.
-     * Used to perform various operations using the time preference obtained from custom Timeprefence
+     * Used to perform various operations using the time preference obtained from custom TimePreference
      *
      * @param time the time
      * @return the string
@@ -157,7 +157,7 @@ public class ConverterUtils {
      * Extract hour and min from int time.
      *
      * @param time the time
-     * @return the custom time (Object that contains various helper varables)
+     * @return the custom time (Object that contains various helper variables)
      */
     public static CustomTime extractHourAndMinFromTime(int time) {
         int hour = time / 60;
@@ -166,7 +166,7 @@ public class ConverterUtils {
     }
 
     /**
-     * Extract hourand min from time custom time.
+     * Extract hour and min from time custom time.
      *
      * @param timeStr the time str
      * @return the custom time

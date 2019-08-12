@@ -20,11 +20,17 @@
 
     <SwitchPreference
         app:defaultValue="false"
+        app:enabled="false"
         app:icon="@drawable/ic_enable_auto_attendance"
         app:key="@string/pref_key_switch_enable_auto_attendance"
-        app:summaryOff="@string/pref_summery_off_switch_enable_auto_attendance"
+        app:summaryOff="Working On It.. Will be available in next update!"
         app:summaryOn="@string/pref_summery_on_switch_enable_auto_attendance"
         app:title="@string/pref_title_switch_enable_auto_attendance" />
+
+    <Preference
+        app:icon="@drawable/ic_auto_attendance_map"
+        app:key="@string/pref_key_select_places_auto_attendance"
+        app:title="@string/pref_select_places_auto_attendance" />
 
     <SwitchPreference
         app:defaultValue="@bool/pref_def_value_switch_enable_night_mode"
@@ -33,11 +39,6 @@
         app:summaryOff="@string/pref_summery_off_switch_enable_night_mode"
         app:summaryOn="@string/pref_summery_on_switch_enable_night_mode"
         app:title="@string/pref_title_switch_enable_night_mode" />
-
-    <Preference
-        android:icon="@drawable/ic_auto_attendance_map"
-        android:key="@string/pref_key_select_places_auto_attendance"
-        android:title="@string/pref_select_places_auto_attendance" />
 
     <SwitchPreference
         app:defaultValue="@bool/pref_def_value_switch_enable_smart_silent"
@@ -48,8 +49,8 @@
         app:title="@string/pref_title_switch_enable_smart_silent" />
 
     <Preference
-        android:icon="@drawable/ic_chat"
-        android:key="@string/pref_key_list_notification"
-        android:title="@string/pref_list_notification_title" />
+        app:icon="@drawable/ic_chat"
+        app:key="@string/pref_key_list_notification"
+        app:title="@string/pref_list_notification_title" />
 
 </androidx.preference.PreferenceScreen>

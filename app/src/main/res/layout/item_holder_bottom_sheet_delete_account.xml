@@ -33,7 +33,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView75">
 
         <TextView
-            android:id="@+id/textView76"
             style="@style/MyMaterialTextView.SmallTextViewBody2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

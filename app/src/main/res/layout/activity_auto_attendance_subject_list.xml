@@ -28,7 +28,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_toolbar_auto_attendance_subject_list"
             style="@style/MyCustomToolbarTextView"
             android:text="Select Subject" />
     </androidx.appcompat.widget.Toolbar>

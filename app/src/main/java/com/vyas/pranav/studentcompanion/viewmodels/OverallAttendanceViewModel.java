@@ -27,10 +27,10 @@ public class OverallAttendanceViewModel extends AndroidViewModel {
 
     public OverallAttendanceViewModel(@NonNull Application application) {
         super(application);
-        repository = new OverallAttendanceRepository(application);
+        repository = OverallAttendanceRepository.getInstance(application);
         allOverallAttendance = repository.getAllOverallAttendance();
         this.context = application;
-        utils = new SharedPreferencesUtils(application);
+        utils = SharedPreferencesUtils.getInstance(application);
     }
 
     public LiveData<List<OverallAttendanceEntry>> getAllOverallAttendance() {
@@ -38,7 +38,7 @@ public class OverallAttendanceViewModel extends AndroidViewModel {
     }
 
     public Date getStartingDate() {
-        setUpProcessRepository = new SetUpProcessRepository(context);
+        setUpProcessRepository = SetUpProcessRepository.getInstance(context);
         return ConverterUtils.convertStringToDate(setUpProcessRepository.getStartingDate());
     }
 

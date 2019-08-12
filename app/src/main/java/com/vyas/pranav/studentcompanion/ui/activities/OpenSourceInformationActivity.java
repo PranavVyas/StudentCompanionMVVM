@@ -62,7 +62,7 @@ public class OpenSourceInformationActivity extends AppCompatActivity {
             tvLicenceExtra.setText("License Info : " + libraryModel.getExtra_license());
             tvLicense.setText("License Type : " + libraryModel.getLicense());
             tvName.setText(libraryModel.getName());
-            libraryModel.getExternal_libraries();
+            List<ExternalLibraryModel> external_libraries = libraryModel.getExternal_libraries();
             setUpRecyclerView();
 //            setUpExpansionLayout();
         } else {

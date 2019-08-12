@@ -5,7 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
-import com.vyas.pranav.studentcompanion.data.models.NotesEntry;
+import com.vyas.pranav.studentcompanion.data.notedatabase.NotesEntry;
 import com.vyas.pranav.studentcompanion.repositories.NoteRepository;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
@@ -20,7 +20,7 @@ public class AddNoteViewModel extends AndroidViewModel {
 
     public AddNoteViewModel(@NonNull Application application) {
         super(application);
-        repository = new NoteRepository(application);
+        repository = NoteRepository.getInstance(application);
     }
 
     public long getId() {

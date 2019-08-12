@@ -18,7 +18,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_toolbar_open_source_information"
             style="@style/MyCustomToolbarTextView"
             android:text="License Information" />
     </androidx.appcompat.widget.Toolbar>

@@ -7,7 +7,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.vyas.pranav.studentcompanion.data.NoteDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
@@ -16,7 +15,8 @@ import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibra
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayDao;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
-import com.vyas.pranav.studentcompanion.data.models.NotesEntry;
+import com.vyas.pranav.studentcompanion.data.notedatabase.NoteDao;
+import com.vyas.pranav.studentcompanion.data.notedatabase.NotesEntry;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationDao;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;

@@ -22,8 +22,8 @@ public class AppSettingsViewModel extends AndroidViewModel {
 
     public AppSettingsViewModel(@NonNull Application application) {
         super(application);
-        appSettingsRepository = new AppSettingsRepository(application);
-        autoAttendancePlaceEntryLiveData = appSettingsRepository.getAutoAtttendanceLiveData();
+        appSettingsRepository = AppSettingsRepository.getInstance(application);
+        autoAttendancePlaceEntryLiveData = appSettingsRepository.getAutoAttendanceLiveData();
     }
 
     public boolean isReminderEnabled() {

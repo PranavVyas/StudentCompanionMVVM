@@ -18,7 +18,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_toolbar_upload_book"
             style="@style/MyCustomToolbarTextView"
             android:text="Upload Book" />
     </androidx.appcompat.widget.Toolbar>
@@ -49,20 +48,19 @@
 
                 <Button
                     android:id="@+id/btn_upload_book_upload"
-                    android:layout_width="wrap_content"
+                    style="@style/MyCustomMaterialButton"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    style="@style/MyCustomMaterialButton"
                     android:layout_marginBottom="8dp"
                     android:enabled="false"
-                    android:text="Upload"
+                    android:text="Upload using selected document"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_upload_book_upload_link"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_upload_book_select_book"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_input_upload_book_link" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_input_upload_book_extra_info"
@@ -116,6 +114,19 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_upload_book_status" />
+
+                <Button
+                    android:id="@+id/btn_upload_book_upload_link"
+                    style="@style/MyCustomMaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Upload using link"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_upload_book_upload"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/btn_upload_book_upload"
+                    app:layout_constraintTop_toTopOf="@+id/btn_upload_book_upload" />
 
                 <TextView
                     android:id="@+id/tv_upload_book_status"
@@ -171,6 +182,40 @@
                         android:layout_height="wrap_content"
                         android:hint="Subject" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/textView113"
+                    style="@style/MyMaterialTextView.SmallTextViewBody2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="center"
+                    android:text="OR Paste link below:"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_upload_book_select_book" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_input_upload_book_link"
+                    style="@style/MyCustomOutlinedBoxTextInput"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView113">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_upload_book_link"
+                        style="@style/MyCustomMaterialEditTextInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Paste link here" />
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
@@ -198,6 +243,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.19999999"
+                tools:ignore="ContentDescription"
                 tools:srcCompat="@drawable/image_no_connection_placeholder" />
 
             <Button

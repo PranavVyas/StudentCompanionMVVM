@@ -41,7 +41,7 @@ public class SetUpViewModel extends AndroidViewModel {
     public SetUpViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
-        repository = new SetUpProcessRepository(application);
+        repository = SetUpProcessRepository.getInstance(application);
         isFirstRun = repository.isAppFirstRun();
         FirebaseFirestore mDb = FirebaseFirestore.getInstance();
         CollectionReference mRef = mDb.collection(Constants.PATH_COLLAGES);
@@ -144,7 +144,7 @@ public class SetUpViewModel extends AndroidViewModel {
     }
 
     public void initTimetableAttendance() {
-        timetableRepository = new TimetableRepository(application);
+        timetableRepository = TimetableRepository.getInstance(application);
     }
 
     public void setTimetableAttendanceForDay(int day, List<String> schedule) {

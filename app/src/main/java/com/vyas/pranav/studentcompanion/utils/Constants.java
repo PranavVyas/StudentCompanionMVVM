@@ -39,6 +39,7 @@ public final class Constants {
     public static final String FENCE_RECEIVER_ACTION = "com.vyas.pranav.studentcompanion.ACTION_FENCE_INTENT";
     public static final int RC_SEND_FENCE_BROADCAST = 1018;
     public static final int FENCE_CALLBACK_NOTIFICATION = 1019;
+    public static final int RC_SIGN_IN = 1020;
 
     public static final int NOTI_TYPE_EVENT = 1;
     public static final int NOTI_TYPE_LOW_ATTENDANCE = 2;
@@ -55,4 +56,6 @@ public final class Constants {
     public static final String PATH_HOLIDAYS_SVNIT = "/holidays";
     public static final String PATH_DIGITAL_LIBRARY_SVNIT = "/digitalLibrary";
     public static final String PATH_COLLAGES = "collage";
+    public static final int PAGE_SIZE_DIGITAL_LIBRARY = 20;
+    public static final int SHOW_NOTIFICATION_RC_OVERALL_REFRESH_ATTENDANCE = 1021;
 }

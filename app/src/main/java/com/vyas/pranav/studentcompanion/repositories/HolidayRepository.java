@@ -14,6 +14,17 @@ import java.util.List;
 public class HolidayRepository {
     private final HolidayDao holidayDao;
     private final AppExecutors mExecutors;
+    public static final Object LOCK = new Object();
+    private static HolidayRepository instance;
+
+    public static HolidayRepository getInstance(Context context) {
+        if (instance == null) {
+            synchronized (LOCK) {
+                instance = new HolidayRepository(context.getApplicationContext());
+            }
+        }
+        return instance;
+    }
 
     public HolidayRepository(Context context) {
         this.holidayDao = MainDatabase.getInstance(context).holidayDao();
@@ -29,12 +40,7 @@ public class HolidayRepository {
     }
 
     public void setHolidays(final List<HolidayEntry> holidayEntries) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                holidayDao.insertAllHolidays(holidayEntries);
-            }
-        });
+        mExecutors.diskIO().execute(() -> holidayDao.insertAllHolidays(holidayEntries));
     }
 
 }

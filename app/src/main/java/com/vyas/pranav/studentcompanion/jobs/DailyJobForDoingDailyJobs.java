@@ -38,12 +38,12 @@ public class DailyJobForDoingDailyJobs extends DailyJob {
     @Override
     protected DailyJobResult onRunDailyJob(@NonNull Params params) {
         getContext();
-        OverallAttendanceRepository overallAttendanceRepository = new OverallAttendanceRepository(getContext());
+        OverallAttendanceRepository overallAttendanceRepository = OverallAttendanceRepository.getInstance(getContext());
         overallAttendanceRepository.refreshAllOverallAttendance();
-        AppSettingsRepository repo = new AppSettingsRepository(getContext());
+        AppSettingsRepository repo = AppSettingsRepository.getInstance(getContext());
         repo.toggleSmartSilent();
         if (repo.isAutoAttendanceEnabled()) {
-            TimetableRepository timetableRepository = new TimetableRepository(getContext());
+            TimetableRepository timetableRepository = TimetableRepository.getInstance(getContext());
             LiveData<List<TimetableEntry>> timetableForDay =
                     timetableRepository.getTimetableForDay(ConverterUtils.getDayOfWeek(new Date()));
             AppExecutors.getInstance().mainThread().execute(new Runnable() {

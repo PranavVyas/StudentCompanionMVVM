@@ -3,12 +3,12 @@ package com.vyas.pranav.studentcompanion.viewmodels;
 import android.app.Application;
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.UploadTask;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 
 public class UploadBookViewModel extends AndroidViewModel {
 
@@ -18,6 +18,7 @@ public class UploadBookViewModel extends AndroidViewModel {
     private FirebaseUser currUser = null;
     private long progress = 0;
     private String authorName, bookName, subject, extraInfo, downloadUriString;
+    private String externalLink;
 
     public UploadBookViewModel(@NonNull Application application) {
         super(application);
@@ -106,5 +107,13 @@ public class UploadBookViewModel extends AndroidViewModel {
 
     public void setDownloadUriString(String downloadUriString) {
         this.downloadUriString = downloadUriString;
+    }
+
+    public String getExternalLink() {
+        return externalLink;
+    }
+
+    public void setExternalLink(String externalLink) {
+        this.externalLink = externalLink;
     }
 }

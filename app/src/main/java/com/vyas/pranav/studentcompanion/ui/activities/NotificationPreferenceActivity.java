@@ -3,7 +3,6 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -62,20 +61,14 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
         initViews();
         fcmInstance = notificationsViewModel.getInstance();
 
-        checkBoxEvent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                sharedPreferencesUtils.setNotificationForEvent(b);
-                refreshEventSubscription();
-            }
+        checkBoxEvent.setOnCheckedChangeListener((compoundButton, b) -> {
+            sharedPreferencesUtils.setNotificationForEvent(b);
+            refreshEventSubscription();
         });
 
-        checkBoxNewItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                sharedPreferencesUtils.setNotificationForNewItemInShop(b);
-                refreshNewItemSubscription();
-            }
+        checkBoxNewItem.setOnCheckedChangeListener((compoundButton, b) -> {
+            sharedPreferencesUtils.setNotificationForNewItemInShop(b);
+            refreshNewItemSubscription();
         });
     }
 
@@ -92,41 +85,38 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
     }
 
     void refreshEventSubscription() {
+        checkBoxEvent.setEnabled(false);
         if (sharedPreferencesUtils.isEventNotificationEnabed()) {
-            fcmInstance.subscribeToTopic("events").addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(NotificationPreferenceActivity.this, "Subscribed to Event!", Toast.LENGTH_SHORT).show();
-                        Logger.d("Subscribed to Events");
-                    } else {
-                        checkBoxEvent.setChecked(false);
-                        Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
-                        Logger.d("Problem while subscribing to event: ");
-                    }
+            fcmInstance.subscribeToTopic(sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "events").addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(NotificationPreferenceActivity.this, "Subscribed to Event!", Toast.LENGTH_SHORT).show();
+                    Logger.d("Subscribed to Events");
+                } else {
+                    checkBoxEvent.setChecked(false);
+                    Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    Logger.d("Problem while subscribing to event: ");
                 }
+                checkBoxEvent.setEnabled(true);
             });
         } else {
-            fcmInstance.unsubscribeFromTopic("events").addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(NotificationPreferenceActivity.this, "Unsubscribed to Event!", Toast.LENGTH_SHORT).show();
-                        Logger.d("Unsubscribed from Events");
-                    } else {
-                        checkBoxEvent.setChecked(true);
-                        Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
-                        Logger.d("Problem while unsubscribe from Event");
-                    }
+            fcmInstance.unsubscribeFromTopic(sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "events").addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(NotificationPreferenceActivity.this, "Unsubscribed to Event!", Toast.LENGTH_SHORT).show();
+                    Logger.d("Unsubscribed from Events");
+                } else {
+                    checkBoxEvent.setChecked(true);
+                    Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+                    Logger.d("Problem while unsubscribe from Event");
                 }
-            })
-            ;
+                checkBoxEvent.setEnabled(true);
+            });
         }
     }
 
     void refreshNewItemSubscription() {
+        checkBoxNewItem.setEnabled(false);
         if (sharedPreferencesUtils.isNewItemShopNotificationEnabled()) {
-            fcmInstance.subscribeToTopic("sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.subscribeToTopic(sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -137,10 +127,11 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
                         checkBoxNewItem.setChecked(false);
                         Logger.d("Problem while subscribing to new item: ");
                     }
+                    checkBoxNewItem.setEnabled(true);
                 }
             });
         } else {
-            fcmInstance.unsubscribeFromTopic("sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.unsubscribeFromTopic(sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
@@ -152,6 +143,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
                         Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                         Logger.d("Problem while unsubscribe from new item");
                     }
+                    checkBoxNewItem.setEnabled(true);
                 }
             });
         }
@@ -159,26 +151,20 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_placeholder_notification_preference_no_connection_retry)
     void retryClicked() {
-        AppExecutors.getInstance().networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                showPlaceHOlder(!AttendanceUtils.hasInternetAccess(NotificationPreferenceActivity.this));
-                Logger.d("Internet Connection is " + AttendanceUtils.hasInternetAccess(NotificationPreferenceActivity.this));
-            }
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            showPlaceholder(!AttendanceUtils.hasInternetAccess(NotificationPreferenceActivity.this));
+            Logger.d("Internet Connection is " + AttendanceUtils.hasInternetAccess(NotificationPreferenceActivity.this));
         });
     }
 
-    private void showPlaceHOlder(boolean isShown) {
-        AppExecutors.getInstance().mainThread().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (isShown) {
-                    placeHOlderConnection.setVisibility(View.VISIBLE);
-                    scrollContainer.setVisibility(View.GONE);
-                } else {
-                    placeHOlderConnection.setVisibility(View.GONE);
-                    scrollContainer.setVisibility(View.VISIBLE);
-                }
+    private void showPlaceholder(boolean isShown) {
+        AppExecutors.getInstance().mainThread().execute(() -> {
+            if (isShown) {
+                placeHOlderConnection.setVisibility(View.VISIBLE);
+                scrollContainer.setVisibility(View.GONE);
+            } else {
+                placeHOlderConnection.setVisibility(View.GONE);
+                scrollContainer.setVisibility(View.VISIBLE);
             }
         });
 
@@ -187,12 +173,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                retryClicked();
-            }
-        }, TimeUnit.SECONDS.toMillis(1));
+        new Handler().postDelayed(() -> retryClicked(), TimeUnit.SECONDS.toMillis(1));
     }
 
 }

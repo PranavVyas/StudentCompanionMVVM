@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
-import com.vyas.pranav.studentcompanion.data.models.NotesEntry;
+import com.vyas.pranav.studentcompanion.data.notedatabase.NotesEntry;
 import com.vyas.pranav.studentcompanion.repositories.NoteRepository;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 
@@ -19,7 +19,7 @@ public class NoteViewModel extends AndroidViewModel {
 
     public NoteViewModel(@NonNull Application application) {
         super(application);
-        repository = new NoteRepository(application);
+        repository = NoteRepository.getInstance(application);
         allNotes = new LivePagedListBuilder<>(repository.getAllNotes(), Constants.PAGE_SIZE_NOTES).build();
     }
 

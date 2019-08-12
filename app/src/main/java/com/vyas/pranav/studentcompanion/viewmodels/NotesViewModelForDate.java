@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
-import com.vyas.pranav.studentcompanion.data.models.NotesEntry;
+import com.vyas.pranav.studentcompanion.data.notedatabase.NotesEntry;
 import com.vyas.pranav.studentcompanion.repositories.NoteRepository;
 
 import java.util.Date;
@@ -24,7 +24,7 @@ public class NotesViewModelForDate extends ViewModel {
     public NotesViewModelForDate(Context context, Date date) {
         this.context = context;
         this.date = date;
-        repository = new NoteRepository(context);
+        repository = NoteRepository.getInstance(context);
         notes = new LivePagedListBuilder<>(repository.getNotesBeforeDate(date), PAGE_SIZE_NOTES).build();
     }
 

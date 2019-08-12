@@ -31,7 +31,7 @@ public class NotificationFragment extends Fragment implements ViewPager.OnPageCh
 
     @BindView(R.id.viewpager_notifications_frag)
     ViewPager viewPager;
-    @BindView(R.id.tabs_notifiations_frag_viewpager_tab)
+    @BindView(R.id.tabs_notifications_frag_viewpager_tab)
     TabLayout tabs;
     int selectedPage = 0;
     private NotificationsViewModel notificationsViewModel;

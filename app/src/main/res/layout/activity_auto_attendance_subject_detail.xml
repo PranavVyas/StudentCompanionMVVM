@@ -19,7 +19,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_toolbar_auto_attendance_subject_detail"
             style="@style/MyCustomToolbarTextView"
             android:text="Edit GeoFence" />
     </androidx.appcompat.widget.Toolbar>
@@ -145,7 +144,6 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar_auto_attendance_subject_detail">
 
             <TextView
-                android:id="@+id/textView72"
                 style="@style/MyMaterialTextView.MediumTextViewHeadLine5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -168,7 +166,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/image_no_location_new" />
+                app:srcCompat="@drawable/image_no_location_new"
+                tools:ignore="ContentDescription" />
 
             <Button
                 android:id="@+id/btn_frame_auto_attendance_subject_detail_placeholder_show_location"

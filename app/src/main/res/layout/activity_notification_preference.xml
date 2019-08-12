@@ -59,7 +59,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/carddsds"
+                    android:id="@+id/card_info_event"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -71,7 +71,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications_event">
 
                     <TextView
-                        android:id="@+id/textView63"
                         style="@style/MyMaterialTextView.SmallTextViewBody2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -107,7 +106,7 @@
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/carddsds" />
+                    app:layout_constraintTop_toBottomOf="@+id/card_info_event" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
@@ -123,7 +122,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/checkbox_notifications_new_item">
 
                     <TextView
-                        android:id="@+id/textView64"
                         style="@style/MyMaterialTextView.SmallTextViewBody2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -149,6 +147,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.19999999"
+                tools:ignore="ContentDescription"
                 tools:srcCompat="@drawable/image_no_connection_placeholder" />
 
             <Button

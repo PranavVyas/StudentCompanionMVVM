@@ -37,9 +37,9 @@ public class MainViewModel extends AndroidViewModel {
         currentFragmentId = NavigationDrawerUtil.ID_TODAY_ATTENDANCE;
         mAuth = FirebaseAuth.getInstance();
         currUser = mAuth.getCurrentUser();
-        notificationRepository = new NotificationRepository(application);
-        sharedPreferencesUtils = new SharedPreferencesUtils(application);
-        overallAttendanceRepository = new OverallAttendanceRepository(application);
+        notificationRepository = NotificationRepository.getInstance(application);
+        sharedPreferencesUtils = SharedPreferencesUtils.getInstance(application);
+        overallAttendanceRepository = OverallAttendanceRepository.getInstance(application);
         allOverallAttendance = overallAttendanceRepository.getAllOverallAttendance();
     }
 
@@ -69,7 +69,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void restartAllPendingJobs() {
-        AppSettingsRepository repository = new AppSettingsRepository(application);
+        AppSettingsRepository repository = AppSettingsRepository.getInstance(application);
         if (repository.isSmartSilentEnabled()) {
             repository.enableAutoSilentDevice();
         }

@@ -46,12 +46,7 @@ public class ResourcesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startInstruction(getActivity());
-            }
-        }, TimeUnit.SECONDS.toMillis(1));
+        new Handler().postDelayed(() -> startInstruction(getActivity()), TimeUnit.SECONDS.toMillis(1));
     }
 
     @OnClick(R.id.card_resources_fragment_digital_library)
@@ -67,7 +62,7 @@ public class ResourcesFragment extends Fragment {
     void timetableClicked() {
         Logger.d("On Timetable Clicked");
         Intent intent = new Intent(getContext(), ContainerActivity.class);
-        intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.TIME_TABLE);
+        intent.putExtra(ContainerActivity.KEY_EXTRA_RESOURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.TIME_TABLE);
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
                 .toBundle();
         startActivity(intent);
@@ -78,7 +73,7 @@ public class ResourcesFragment extends Fragment {
         Intent intent = new Intent(getContext(), ContainerActivity.class);
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
                 .toBundle();
-        intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.MARKETPLACE_ACTIVITY);
+        intent.putExtra(ContainerActivity.KEY_EXTRA_RESOURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.MARKETPLACE_ACTIVITY);
         startActivity(intent);
     }
 
@@ -87,7 +82,7 @@ public class ResourcesFragment extends Fragment {
         Intent intent = new Intent(getContext(), ContainerActivity.class);
         Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity())
                 .toBundle();
-        intent.putExtra(ContainerActivity.KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.HOLIDAYS);
+        intent.putExtra(ContainerActivity.KEY_EXTRA_RESOURCE_TO_CONTAINER_ACTIVITY, ContainerActivity.HOLIDAYS);
         startActivity(intent);
     }
 
@@ -118,12 +113,17 @@ public class ResourcesFragment extends Fragment {
                 .description(getContext().getString(R.string.instr_res_timetable_desc))
                 .targetView(activity.findViewById(R.id.card_resources_fragment_timetable))
                 .showOnce(TAG + "timetable");
+        BubbleShowCaseBuilder notes = new BubbleShowCaseBuilder(activity)
+                .title(getString(R.string.instr_notes_title))
+                .description(getString(R.string.instr_notes_desc))
+                .showOnce(TAG + "notes");
 
         new BubbleShowCaseSequence()
                 .addShowCase(digital)
                 .addShowCase(buySell)
                 .addShowCase(timetable)
                 .addShowCase(holiday)
+                .addShowCase(notes)
                 .show();
     }
 }

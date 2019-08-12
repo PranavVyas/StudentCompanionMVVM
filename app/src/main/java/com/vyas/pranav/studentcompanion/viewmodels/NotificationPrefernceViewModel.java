@@ -15,7 +15,7 @@ public class NotificationPrefernceViewModel extends AndroidViewModel {
 
     public NotificationPrefernceViewModel(@NonNull Application application) {
         super(application);
-        sharedPreferencesUtils = new SharedPreferencesUtils(application);
+        sharedPreferencesUtils = SharedPreferencesUtils.getInstance(application);
         instance = FirebaseMessaging.getInstance();
     }
 

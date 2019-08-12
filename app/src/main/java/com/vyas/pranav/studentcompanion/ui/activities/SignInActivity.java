@@ -15,6 +15,7 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SignInViewModel;
 
@@ -27,7 +28,6 @@ import butterknife.OnClick;
 
 public class SignInActivity extends AppCompatActivity {
 
-    private static final int RC_SIGN_IN = 123;
     private SignInViewModel signInViewModel;
 
     @BindView(R.id.toolbar_sign_in_activity)
@@ -68,7 +68,7 @@ public class SignInActivity extends AppCompatActivity {
                             .setIsSmartLockEnabled(false)
                             .setLogo(R.drawable.ic_logo)
                             .build(),
-                    RC_SIGN_IN, bundle);
+                    Constants.RC_SIGN_IN, bundle);
         } else {
             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
             Intent startSetUp = new Intent(this, SetUpActivity.class);
@@ -85,7 +85,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == Constants.RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             // Successfully signed in

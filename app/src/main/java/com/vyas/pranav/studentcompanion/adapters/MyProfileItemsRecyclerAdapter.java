@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.data.models.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 
 import butterknife.BindView;

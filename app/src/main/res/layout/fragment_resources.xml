@@ -33,10 +33,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/image_digital_library" />
+                    app:srcCompat="@drawable/image_digital_library"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:id="@+id/textView41"
                     style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,7 +63,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/image_marketplace" />
+                    app:srcCompat="@drawable/image_marketplace"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/textView42"
@@ -90,14 +91,13 @@
                 app:cardCornerRadius="8dp">
 
                 <ImageView
-                    android:id="@+id/imageView15"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/image_timetable" />
+                    android:src="@drawable/image_timetable"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:id="@+id/textView46"
                     style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,14 +120,13 @@
                 app:cardCornerRadius="8dp">
 
                 <ImageView
-                    android:id="@+id/imageView11"
                     android:layout_width="wrap_content"
                     android:layout_height="156dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/image_holiday" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/image_holiday_new"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:id="@+id/textView47"
                     style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -155,7 +154,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/image_holiday" />
+                    android:src="@drawable/image_notes"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     style="@style/MyMaterialTextView.MediumTextViewHeadLine6"

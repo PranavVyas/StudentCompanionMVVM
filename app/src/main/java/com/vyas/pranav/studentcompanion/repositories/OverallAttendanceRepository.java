@@ -1,17 +1,29 @@
 package com.vyas.pranav.studentcompanion.repositories;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.orhanobut.logger.Logger;
+import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
+import com.vyas.pranav.studentcompanion.utils.Constants;
+import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.MainApp;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
+import java.util.Date;
 import java.util.List;
 
 public class OverallAttendanceRepository {
@@ -19,13 +31,24 @@ public class OverallAttendanceRepository {
     private final OverallAttendanceDao overallAttendanceDao;
     private final AttendanceDao attendanceDao;
     private final AppExecutors mExecutors;
-    private final Context context;
+    private static final Object LOCK = new Object();
+    private static OverallAttendanceRepository instance;
+    private final Context applicationContext;
 
     public OverallAttendanceRepository(Context context) {
         this.overallAttendanceDao = MainDatabase.getInstance(context).overallAttendanceDao();
         this.attendanceDao = MainDatabase.getInstance(context).attendanceDao();
         this.mExecutors = AppExecutors.getInstance();
-        this.context = context;
+        this.applicationContext = context;
+    }
+
+    public static OverallAttendanceRepository getInstance(Context context) {
+        if (instance == null) {
+            synchronized (LOCK) {
+                instance = new OverallAttendanceRepository(context);
+            }
+        }
+        return instance;
     }
 
     public LiveData<List<OverallAttendanceEntry>> getAllOverallAttendance() {
@@ -33,51 +56,83 @@ public class OverallAttendanceRepository {
     }
 
     public void insertOverallAttendance(final OverallAttendanceEntry overallAttendanceEntry) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                overallAttendanceDao.insertOverall(overallAttendanceEntry);
-            }
-        });
+        mExecutors.diskIO().execute(() -> overallAttendanceDao.insertOverall(overallAttendanceEntry));
     }
 
     public void updateOverallAttendance(final OverallAttendanceEntry overallAttendanceEntry) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                overallAttendanceDao.updateOverall(overallAttendanceEntry);
-            }
-        });
+        mExecutors.diskIO().execute(() -> overallAttendanceDao.updateOverall(overallAttendanceEntry));
     }
 
     public void deleteOverallAttendance(final OverallAttendanceEntry overallAttendanceEntry) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                overallAttendanceDao.deleteOverall(overallAttendanceEntry);
-            }
-        });
+        mExecutors.diskIO().execute(() -> overallAttendanceDao.deleteOverall(overallAttendanceEntry));
     }
 
     public void deleteAllOverallAttendance() {
-        mExecutors.diskIO().execute(new Runnable() {
+        mExecutors.diskIO().execute(() -> overallAttendanceDao.deleteAllOverall());
+    }
+
+    public void refreshAllOverallAttendance() {
+        if (applicationContext == null) {
+            Logger.d("Context empty in refreshOverallAttendance");
+        }
+        SharedPreferencesUtils sharedPreferencesUtils = SharedPreferencesUtils.getInstance(applicationContext.getApplicationContext());
+        List<String> subList = sharedPreferencesUtils.getSubjectList();
+        for (int i = 0; i < subList.size(); i++) {
+            String subject = subList.get(i);
+            refreshOverallAttendanceForSubject(subject);
+        }
+    }
+
+    public void refreshOverallAttendanceForSubject(final String subjectName) {
+        if (subjectName.equals("No Lecture")) {
+            return;
+        }
+        mExecutors.mainThread().execute(new Runnable() {
             @Override
             public void run() {
-                overallAttendanceDao.deleteAllOverall();
+                sendNotification(applicationContext, "Refreshing", "Attendance is Refreshing,\nPlease wait...", getContentIntent());
+                final LiveData<OverallAttendanceEntry> overallAttendance = overallAttendanceDao.getOverallAttendanceForSubject(subjectName);
+                overallAttendance.observeForever(new Observer<OverallAttendanceEntry>() {
+                    @Override
+                    public void onChanged(final OverallAttendanceEntry overallAttendanceEntry) {
+                        overallAttendance.removeObserver(this);
+                        SetUpProcessRepository setUpProcessRepository = SetUpProcessRepository.getInstance(applicationContext);
+                        final Date startDate = ConverterUtils.convertStringToDate(setUpProcessRepository.getStartingDate());
+                        mExecutors.diskIO().execute(() -> {
+                            Date todayDate = new Date();
+                            int presentDays = attendanceDao.getAttendedDaysForSubject(subjectName, startDate, todayDate);
+                            int bunkedDays = attendanceDao.getBunkedDaysForSubject(subjectName, startDate, todayDate);
+                            int totalDays = attendanceDao.getTotalDaysForSubject(subjectName);
+                            overallAttendanceEntry.setTotalDays(totalDays);
+                            overallAttendanceEntry.setBunkedDays(bunkedDays);
+                            overallAttendanceEntry.setPresentDays(presentDays);
+                            updateOverallAttendance(overallAttendanceEntry);
+                            AttendanceUtils.checkForSmartCards(overallAttendanceEntry, applicationContext);
+                            NotificationManagerCompat.from(applicationContext).cancel(Constants.SHOW_NOTIFICATION_RC_OVERALL_REFRESH_ATTENDANCE);
+                        });
+                    }
+                });
             }
         });
     }
 
-    public void refreshAllOverallAttendance() {
-        if (context == null) {
-            Logger.d("Context empty in refreshOverallAttendance");
-        }
-        SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils(context);
-        List<String> subList = sharedPreferencesUtils.getSubjectList();
-        for (int i = 0; i < subList.size(); i++) {
-            String subject = subList.get(i);
-            OverallAttendanceForSubjectRepository repository = new OverallAttendanceForSubjectRepository(context, subject);
-            repository.refreshOverallAttendanceForSubject(subject);
-        }
+
+    private void sendNotification(Context context, @SuppressWarnings("SameParameterValue") String title, String desc, PendingIntent contentIntent) {
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.logo_forground)
+                .setContentTitle(title)
+                .setContentText(desc)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat.from(context).notify(Constants.SHOW_NOTIFICATION_RC_OVERALL_REFRESH_ATTENDANCE, notificationBuilder.build());
     }
+
+    private PendingIntent getContentIntent() {
+        Intent intent = new Intent(applicationContext, SignInActivity.class);
+        return PendingIntent.getActivity(applicationContext, Constants.SHOW_REMINDER_JOB_RC_CONTENT_INTENT, intent, 0);
+    }
+
 }

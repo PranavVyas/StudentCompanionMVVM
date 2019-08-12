@@ -26,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.523"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_setup_collage" />
+            app:layout_constraintTop_toBottomOf="@+id/textView109" />
 
         <TextView
             android:id="@+id/textView"
@@ -158,5 +158,16 @@
             app:layout_constraintEnd_toEndOf="@+id/seek_set_up_dates_attendance_crieteria"
             app:layout_constraintStart_toStartOf="@+id/seek_set_up_dates_attendance_crieteria"
             app:layout_constraintTop_toBottomOf="@+id/textView106" />
+
+        <TextView
+            android:id="@+id/textView109"
+            style="@style/MyMaterialTextView.SmallSubtitleTextViewBody1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="To add new collages mail to : pranavvyas4399@gmail.com"
+            app:layout_constraintEnd_toEndOf="@+id/spinner_setup_collage"
+            app:layout_constraintStart_toStartOf="@+id/spinner_setup_collage"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_setup_collage" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

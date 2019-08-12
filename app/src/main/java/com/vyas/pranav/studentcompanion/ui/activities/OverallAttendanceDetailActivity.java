@@ -52,7 +52,7 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         Intent receivedData = getIntent();
-        preferencesUtils = new SharedPreferencesUtils(this);
+        preferencesUtils = SharedPreferencesUtils.getInstance(this);
         currentAttendanceCriteria = preferencesUtils.getCurrentAttendanceCriteria();
         if (receivedData != null) {
             if (receivedData.hasExtra(EXTRA_OVERALL_ATTENDANCE)) {

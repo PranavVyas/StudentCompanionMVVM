@@ -82,25 +82,15 @@ class AllNotificationFragment extends Fragment {
 
     private void initData() {
         LiveData<List<NotificationFirestoreModel>> allNotisFromDb = notificationsViewModel.getAllNotisFromDb();
-        allNotisFromDb.observe(getActivity(), new Observer<List<NotificationFirestoreModel>>() {
-            @Override
-            public void onChanged(List<NotificationFirestoreModel> notificationFirestoreModels) {
-                List<NotificationFirestoreModel> finalNotis;
-                finalNotis = notificationFirestoreModels;
-                if (date != null) {
-                    finalNotis = new ArrayList<>();
-                    for (NotificationFirestoreModel x : notificationFirestoreModels) {
-                        if (x.getDateInMillis() - (new Date().getTime()) > -1) {
-                            finalNotis.add(x);
-                        }
+        allNotisFromDb.observe(getActivity(), notificationFirestoreModels -> {
+            List<NotificationFirestoreModel> finalNotis;
+            finalNotis = notificationFirestoreModels;
+            if (date != null) {
+                finalNotis = new ArrayList<>();
+                for (NotificationFirestoreModel x : notificationFirestoreModels) {
+                    if (x.getDateInMillis() - (new Date().getTime()) > -1) {
+                        finalNotis.add(x);
                     }
-                    if (finalNotis.size() == 0) {
-                        showPlaceHolder(true);
-                    } else {
-                        showPlaceHolder(false);
-                    }
-                    mAdapter.submitList(finalNotis);
-                    return;
                 }
                 if (finalNotis.size() == 0) {
                     showPlaceHolder(true);
@@ -108,7 +98,14 @@ class AllNotificationFragment extends Fragment {
                     showPlaceHolder(false);
                 }
                 mAdapter.submitList(finalNotis);
+                return;
             }
+            if (finalNotis.size() == 0) {
+                showPlaceHolder(true);
+            } else {
+                showPlaceHolder(false);
+            }
+            mAdapter.submitList(finalNotis);
         });
 
         FirestoreQueryLiveData firestoreLiveData = notificationsViewModel.getFirestoreLiveData();
@@ -123,37 +120,8 @@ class AllNotificationFragment extends Fragment {
                     notificationFirestoreModels.add(x.toObject(NotificationFirestoreModel.class));
                 }
                 notificationsViewModel.syncNotificationDatabase(listOfIds, notificationFirestoreModels);
-//                List<NotificationFirestoreModel> finalNotis = notificationFirestoreModels;
-//                if (date != null) {
-//                    finalNotis = new ArrayList<>();
-//                    for (NotificationFirestoreModel x : notificationFirestoreModels) {
-//                        if (ConverterUtils.convertStringToDate(x.getDate()).compareTo(new Date()) > -1) {
-//                            finalNotis.add(x);
-//                        }
-//                    }
-//                    if (finalNotis.size() == 0) {
-//                        showPlaceHolder(true);
-//                    } else {
-//                        showPlaceHolder(false);
-//                    }
-//                    mAdapter.submitList(finalNotis);
-//                    return;
-//                }
-//                if (finalNotis.size() == 0) {
-//                    showPlaceHolder(true);
-//                } else {
-//                    showPlaceHolder(false);
-//                }
-//                mAdapter.submitList(finalNotis);
             }
         });
-//        LiveData<List<NotificationEntry>> allNotifications = notificationsViewModel.getAllNotifications();
-//        allNotifications.observe(this, new Observer<List<NotificationEntry>>() {
-//            @Override
-//            public void onChanged(List<NotificationEntry> notificationEntries) {
-//            }
-//        });
-
     }
 
     private void showPlaceHolder(boolean isShown) {

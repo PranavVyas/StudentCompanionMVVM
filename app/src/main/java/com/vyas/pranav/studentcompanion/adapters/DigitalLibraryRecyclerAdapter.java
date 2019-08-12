@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -20,7 +20,7 @@ import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibra
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DigitalLibraryRecyclerAdapter extends ListAdapter<DigitalLibraryEntry, DigitalLibraryRecyclerAdapter.BookHolder> {
+public class DigitalLibraryRecyclerAdapter extends PagedListAdapter<DigitalLibraryEntry, DigitalLibraryRecyclerAdapter.BookHolder> {
 
     private static final DiffUtil.ItemCallback<DigitalLibraryEntry> diffCallback = new DiffUtil.ItemCallback<DigitalLibraryEntry>() {
         @Override

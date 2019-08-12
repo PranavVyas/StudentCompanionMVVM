@@ -2,18 +2,22 @@ package com.vyas.pranav.studentcompanion.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.ui.fragments.NotesListFragment;
+import com.vyas.pranav.studentcompanion.adapters.NotesViewPagerAdapterNew;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +27,7 @@ import static com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils.setU
 
 public class NotesActivity extends AppCompatActivity {
 
+    private static final String TAG = "NotesActivity";
     @BindView(R.id.viewpager_notes)
     ViewPager viewPagerNotes;
     @BindView(R.id.toolbar_notes)
@@ -39,25 +44,9 @@ public class NotesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        viewPagerNotes.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
         NotesViewPagerAdapterNew mAdapter = new NotesViewPagerAdapterNew(getSupportFragmentManager());
         viewPagerNotes.setAdapter(mAdapter);
+        new Handler().postDelayed(this::showInstruction, TimeUnit.SECONDS.toMillis(1));
     }
 
     @OnClick(R.id.fab_notes_add_new)
@@ -65,55 +54,41 @@ public class NotesActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddNoteActivity.class);
         startActivity(intent);
     }
-}
 
-class NotesViewPagerAdapterNew extends FragmentStatePagerAdapter {
-
-    NotesViewPagerAdapterNew(@NonNull FragmentManager fm) {
-        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.notes_menu, menu);
+        return true;
     }
 
-    @Nullable
     @Override
-    public CharSequence getPageTitle(int position) {
-        switch (position) {
-            case 0:
-                return "Till Today";
-
-            case 1:
-                return "All";
-
-            default:
-                return "Default";
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.notes_menu_help:
+                BottomSheetDialog mDialog = new BottomSheetDialog(this);
+                mDialog.setContentView(R.layout.item_holder_bottom_sheet_note_help);
+                mDialog.show();
+                return false;
         }
+        return false;
     }
 
-    @Override
-    public int getCount() {
-        return 2;
-    }
+    private void showInstruction() {
+        BubbleShowCaseBuilder help = new BubbleShowCaseBuilder(this)
+                .title(getString(R.string.instr_note_help_title))
+                .description(getString(R.string.instr_note_help_desc))
+                .targetView(findViewById(R.id.notes_menu_help))
+                .showOnce(TAG + "MenuHelp");
+        BubbleShowCaseBuilder add = new BubbleShowCaseBuilder(this)
+                .title((getString(R.string.instr_notes_add_title)))
+                .description(getString(R.string.instr_notes_add_desc))
+                .targetView(findViewById(R.id.fab_notes_add_new))
+                .showOnce(TAG + "AddNote");
 
-    @NonNull
-    @Override
-    public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                NotesListFragment todayNotes = new NotesListFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt(NotesListFragment.EXTRA_NOTES_DISPLAY_TYPE, NotesListFragment.TYPE_TILL_TODAY_NOTES_SHOW);
-                todayNotes.setArguments(bundle);
-                return todayNotes;
-
-            case 1:
-                NotesListFragment allNotes = new NotesListFragment();
-                Bundle bundleAll = new Bundle();
-                bundleAll.putInt(NotesListFragment.EXTRA_NOTES_DISPLAY_TYPE, NotesListFragment.TYPE_ALL_NOTES_SHOW);
-                allNotes.setArguments(bundleAll);
-                return allNotes;
-
-            default:
-                return null;
-        }
+        new BubbleShowCaseSequence()
+                .addShowCase(help)
+                .addShowCase(add)
+                .show();
     }
 }
 

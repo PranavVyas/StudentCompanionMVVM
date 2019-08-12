@@ -51,7 +51,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView52">
 
         <TextView
-            android:id="@+id/textView56"
             style="@style/MyMaterialTextView.SmallTextViewBody2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +73,7 @@
 
     <Button
         android:id="@+id/btn_holder_atert_dialog_auto_sync_disable"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

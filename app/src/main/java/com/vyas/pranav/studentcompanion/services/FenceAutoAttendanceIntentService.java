@@ -23,23 +23,23 @@ import com.vyas.pranav.studentcompanion.utils.MainApp;
 
 public class FenceAutoAttendanceIntentService extends IntentService {
 
-    public static final String SERVICE_AUTO_ATENDANCE_FENCE_RUN = "com.pranav.vyas.FenceAutoAttendanceIntentService";
+    public static final String SERVICE_AUTO_ATTENDANCE_FENCE_RUN = "com.pranav.vyas.FenceAutoAttendanceIntentService";
 
     public FenceAutoAttendanceIntentService() {
-        super(SERVICE_AUTO_ATENDANCE_FENCE_RUN);
+        super(SERVICE_AUTO_ATTENDANCE_FENCE_RUN);
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Logger.addLogAdapter(new AndroidLogAdapter());
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        //TODO For now Just make jobs and this uneffective if the user is not signed in later try to remove them and enable them when user is signed in
+        //TODO For now Just make jobs and this unEffective if the user is not signed in later try to remove them and enable them when user is signed in
         if (mAuth.getCurrentUser() == null) {
             Logger.d("User is not Signed in and fence is triggered");
             return;
         }
         FenceState fenceState = FenceState.extract(intent);
-        SetUpProcessRepository repository = new SetUpProcessRepository(getApplicationContext());
+        SetUpProcessRepository repository = SetUpProcessRepository.getInstance(getApplicationContext());
         String subjectNameFromFence = fenceState.getFenceKey().substring(AutoAttendanceHelper.KEY_PRE_SUBJECT_FENCE.length());
         Logger.d("Subject Received in Fence Service is :" + subjectNameFromFence);
         for (String x :

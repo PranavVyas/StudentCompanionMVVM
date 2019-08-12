@@ -2,6 +2,7 @@ package com.vyas.pranav.studentcompanion.ui.fragments;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +50,32 @@ public class AboutThisAppFragment extends Fragment {
 
     @OnClick(R.id.tv_about_app_tos)
     void termsOfServicesClicked() {
-        Toast.makeText(getContext(), "Will Implement here", Toast.LENGTH_SHORT).show();
-        //TODO Implement TOS here
+        Intent openTos = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.terms_url)));
+        if (openTos.resolveActivity(getContext().getPackageManager()) != null) {
+            getContext().startActivity(openTos);
+        } else {
+            Toast.makeText(getContext(), "Please Install any browser application", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @OnClick(R.id.tv_about_app_website)
+    void websiteClicked() {
+        Intent openWebsite = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_url)));
+        if (openWebsite.resolveActivity(getContext().getPackageManager()) != null) {
+            getContext().startActivity(openWebsite);
+        } else {
+            Toast.makeText(getContext(), "Please Install any browser application", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @OnClick(R.id.tv_about_app_privacy)
+    void privacyClicked() {
+        Intent openPrivacy = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.policy_url)));
+        if (openPrivacy.resolveActivity(getContext().getPackageManager()) != null) {
+            getContext().startActivity(openPrivacy);
+        } else {
+            Toast.makeText(getContext(), "Please Install any browser application", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.tv_about_app_open_source_license)

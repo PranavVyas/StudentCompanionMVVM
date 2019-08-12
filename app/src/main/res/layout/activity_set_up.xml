@@ -18,7 +18,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_toolbar_setup_activity"
             style="@style/MyCustomToolbarTextView"
             android:text="Set Up" />
     </androidx.appcompat.widget.Toolbar>
@@ -30,7 +29,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_setup_activity"></FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_setup_activity" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_set_up_placeholder"
@@ -49,7 +48,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/image_no_connection_placeholder" />
+            app:srcCompat="@drawable/image_no_connection_placeholder"
+            tools:ignore="ContentDescription" />
 
         <Button
             android:id="@+id/btn_set_up_placeholder_retry"

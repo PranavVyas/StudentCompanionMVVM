@@ -18,7 +18,7 @@ public class HolidayViewModel extends AndroidViewModel {
 
     public HolidayViewModel(@NonNull Application application) {
         super(application);
-        holidayRepository = new HolidayRepository(application);
+        holidayRepository = HolidayRepository.getInstance(application);
         holidayEntries = holidayRepository.getAllHolidays();
     }
 

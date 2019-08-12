@@ -3,13 +3,13 @@ package com.vyas.pranav.studentcompanion.utils;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import androidx.annotation.NonNull;
-
 /**
- * Class for providing methods to make database operations in seperate background thread
+ * Class for providing methods to make database operations in separate background thread
  */
 public class AppExecutors {
     // For Singleton instantiation
@@ -37,7 +37,7 @@ public class AppExecutors {
     }
 
     /**
-     * Doing disk releated operations like DB operations
+     * Doing disk related operations like DB operations
      */
     public Executor diskIO() {
         return diskIO;
@@ -52,7 +52,7 @@ public class AppExecutors {
     }
 
     /**
-     * For doing changing in UI stuff like stting adapter frm within the background thread
+     * For doing changing in UI stuff like sitting adapter frm within the background thread
      */
     private static class MainThreadExecutor implements Executor {
         private Handler mainThreadHandler = new Handler(Looper.getMainLooper());

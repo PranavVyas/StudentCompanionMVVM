@@ -39,6 +39,19 @@ public class SharedPreferencesUtils {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
+    private static final Object LOCK = new Object();
+
+    private static SharedPreferencesUtils instance;
+
+    public static SharedPreferencesUtils getInstance(Context context) {
+        if (instance == null) {
+            synchronized (LOCK) {
+                instance = new SharedPreferencesUtils(context.getApplicationContext());
+            }
+        }
+        return instance;
+    }
+
     public SharedPreferencesUtils(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();

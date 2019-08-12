@@ -14,7 +14,17 @@ public class AutoAttendanceRepository {
     private final Context context;
     private final AutoAttendancePlaceDao autoAttendancePlaceDao;
     private final AppExecutors mExecutors;
+    private static final Object LOCK = new Object();
+    private static AutoAttendanceRepository instance;
 
+    public static AutoAttendanceRepository getInstance(Context context) {
+        if (instance == null) {
+            synchronized (LOCK) {
+                instance = new AutoAttendanceRepository(context.getApplicationContext());
+            }
+        }
+        return instance;
+    }
     public AutoAttendanceRepository(Context context) {
         this.context = context.getApplicationContext();
         autoAttendancePlaceDao = MainDatabase.getInstance(context).autoAttendancePlaceDao();
@@ -22,21 +32,11 @@ public class AutoAttendanceRepository {
     }
 
     public void updatePlaceEntry(AutoAttendancePlaceEntry placeEntry) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                autoAttendancePlaceDao.updatePlaceEntry(placeEntry);
-            }
-        });
+        mExecutors.diskIO().execute(() -> autoAttendancePlaceDao.updatePlaceEntry(placeEntry));
     }
 
     public void insertPlaceEntry(AutoAttendancePlaceEntry placeEntry) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                autoAttendancePlaceDao.insertNewPlaceEntry(placeEntry);
-            }
-        });
+        mExecutors.diskIO().execute(() -> autoAttendancePlaceDao.insertNewPlaceEntry(placeEntry));
     }
 
     public LiveData<AutoAttendancePlaceEntry> getPlaceEntryOfSubject(String subject) {

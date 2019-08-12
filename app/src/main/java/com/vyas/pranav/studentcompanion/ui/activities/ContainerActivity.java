@@ -23,7 +23,7 @@ public class ContainerActivity extends AppCompatActivity {
     public static final int TIME_TABLE = 2;
     public static final int HOLIDAYS = 3;
     public static final int MARKETPLACE_ACTIVITY = 4;
-    public static final String KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY = "KEY_CONTAINER_RECEIVED_EXTRA";
+    public static final String KEY_EXTRA_RESOURCE_TO_CONTAINER_ACTIVITY = "KEY_CONTAINER_RECEIVED_EXTRA";
     @BindView(R.id.toolbar_container)
     Toolbar toolbar;
     @BindView(R.id.tv_toolbar_container)
@@ -45,7 +45,7 @@ public class ContainerActivity extends AppCompatActivity {
     }
 
     private void initLogic() {
-        int receivedData = getIntent().getIntExtra(KEY_EXTRA_RESIURCE_TO_CONTAINER_ACTIVITY, 0);
+        int receivedData = getIntent().getIntExtra(KEY_EXTRA_RESOURCE_TO_CONTAINER_ACTIVITY, 0);
         if (containerViewModel.getCurrentFragmentId() != 0) {
             containerViewModel.setCurrentFragmentId(receivedData);
         }
@@ -79,15 +79,15 @@ public class ContainerActivity extends AppCompatActivity {
     private void setFragmentTitle(int receivedData) {
         switch (receivedData) {
             case TIME_TABLE:
-                tvToolbar.setText("Time Table");
+                tvToolbar.setText(R.string.time_table);
                 break;
 
             case HOLIDAYS:
-                tvToolbar.setText("Holidays");
+                tvToolbar.setText(R.string.holidays);
                 break;
 
             case MARKETPLACE_ACTIVITY:
-                tvToolbar.setText("Market Place");
+                tvToolbar.setText(R.string.market_place);
                 break;
         }
     }

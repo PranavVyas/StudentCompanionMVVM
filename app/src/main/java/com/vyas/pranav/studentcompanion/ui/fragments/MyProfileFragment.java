@@ -21,7 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.MyProfileItemsRecyclerAdapter;
-import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.data.models.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
 
 import java.util.ArrayList;

@@ -16,6 +16,18 @@ public class TimetableRepository {
     private TimetableDao timetableDao;
     private AppExecutors mExecutors;
     private Context context;
+    private static final Object LOCK = new Object();
+
+    private static TimetableRepository instance;
+
+    public static TimetableRepository getInstance(Context context) {
+        if (instance == null) {
+            synchronized (LOCK) {
+                instance = new TimetableRepository(context.getApplicationContext());
+            }
+        }
+        return instance;
+    }
 
     public TimetableRepository(Context context) {
         this.context = context;
@@ -24,21 +36,11 @@ public class TimetableRepository {
     }
 
     public void insertTimetable(final TimetableEntry timetableEntry) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                timetableDao.insertTimeTableEntry(timetableEntry);
-            }
-        });
+        mExecutors.diskIO().execute(() -> timetableDao.insertTimeTableEntry(timetableEntry));
     }
 
     public void insertTimetable(final List<TimetableEntry> timetableEntries) {
-        mExecutors.diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                timetableDao.insertAllTimeTableEntry(timetableEntries);
-            }
-        });
+        mExecutors.diskIO().execute(() -> timetableDao.insertAllTimeTableEntry(timetableEntries));
     }
 
     public LiveData<List<TimetableEntry>> getFullTimetable() {

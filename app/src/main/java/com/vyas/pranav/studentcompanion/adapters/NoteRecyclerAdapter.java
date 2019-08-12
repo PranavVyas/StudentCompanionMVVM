@@ -1,10 +1,10 @@
 package com.vyas.pranav.studentcompanion.adapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.models.NotesEntry;
+import com.vyas.pranav.studentcompanion.data.notedatabase.NotesEntry;
 import com.vyas.pranav.studentcompanion.ui.activities.AddNoteActivity;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
@@ -66,7 +66,12 @@ public class NoteRecyclerAdapter extends PagedListAdapter<NotesEntry, NoteRecycl
             }
         });
 
-        holder.btnMore.setOnClickListener(view -> {
+        holder.imageEdit.setOnClickListener(view -> {
+            openEditActivity(holder.itemView.getContext(), note);
+        });
+
+
+        holder.imageMore.setOnClickListener(view -> {
             BottomSheetDialog mDialog = new BottomSheetDialog(holder.itemView.getContext());
             mDialog.setContentView(R.layout.item_holder_bottom_sheet_note);
             mDialog.show();
@@ -78,21 +83,24 @@ public class NoteRecyclerAdapter extends PagedListAdapter<NotesEntry, NoteRecycl
             TextView tvEdit = mDialog.findViewById(R.id.tv_note_bottom_sheet_edit_note);
 
             View.OnClickListener listener = view1 -> {
-                Intent intent = new Intent(holder.itemView.getContext(), AddNoteActivity.class);
-                intent.putExtra(EXTRA_TYPE_EDIT_ADD_NOTE, EDIT_NOTE);
-                intent.putExtra(EXTRA_EDIT_NOTE, new Gson().toJson(note));
-                holder.itemView.getContext().startActivity(intent);
+                openEditActivity(holder.itemView.getContext(), note);
                 mDialog.dismiss();
             };
 
             tvDate.setText(ConverterUtils.convertDateToString(note.getDate()));
-            tvTitle.setText("Title:" + note.getTitle());
+            tvTitle.setText("Title: " + note.getTitle());
             tvDesc.setText(note.getDesc());
             imageEdit.setOnClickListener(listener);
             tvEdit.setOnClickListener(listener);
         });
     }
 
+    private void openEditActivity(Context context, NotesEntry noteToOpen) {
+        Intent intent = new Intent(context, AddNoteActivity.class);
+        intent.putExtra(EXTRA_TYPE_EDIT_ADD_NOTE, EDIT_NOTE);
+        intent.putExtra(EXTRA_EDIT_NOTE, new Gson().toJson(noteToOpen));
+        context.startActivity(intent);
+    }
     public void setOnNotesDeleteClickedListener(OnNotesDeleteClickedListener callback) {
         mCallback = callback;
     }
@@ -101,7 +109,7 @@ public class NoteRecyclerAdapter extends PagedListAdapter<NotesEntry, NoteRecycl
         void OnNotesDeleteClicked(NotesEntry note);
     }
 
-    class NoteHolderSingle extends RecyclerView.ViewHolder {
+    public class NoteHolderSingle extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_recycler_holder_note_title)
         TextView tvTitle;
@@ -110,9 +118,11 @@ public class NoteRecyclerAdapter extends PagedListAdapter<NotesEntry, NoteRecycl
         @BindView(R.id.tv_recycler_holder_note_date)
         TextView tvDate;
         @BindView(R.id.btn_recycler_holder_more)
-        Button btnMore;
-        @BindView(R.id.image_recycler_holder_note_delete)
+        ImageView imageMore;
+        @BindView(R.id.image_recycler_holder_note_edit)
         ImageView imageDelete;
+        @BindView(R.id.image_note_holder_edit_parent)
+        ImageView imageEdit;
 
         public NoteHolderSingle(@NonNull View itemView) {
             super(itemView);

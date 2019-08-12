@@ -18,7 +18,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_toolbar_sign_in_activity"
             style="@style/MyCustomToolbarTextView"
             android:text="Sign In" />
     </androidx.appcompat.widget.Toolbar>
@@ -61,7 +60,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_sign_in_activity"
-        app:srcCompat="@drawable/ic_logo" />
+        app:srcCompat="@drawable/ic_logo"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/textView57"
@@ -78,7 +78,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
-        android:id="@+id/textView58"
         style="@style/MyMaterialTextView.SmallTextViewBody2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -37,7 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.data.itemdatabase.firebase.ItemModel;
+import com.vyas.pranav.studentcompanion.data.models.ItemModel;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.Constants;
@@ -45,7 +45,6 @@ import com.vyas.pranav.studentcompanion.utils.GlideApp;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.MarketPlaceSellItemViewModel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -117,7 +116,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mCollectionReference = mFirestore.collection(new SharedPreferencesUtils(this).getCurrentPath() + Constants.PATH_SELL_SVNIT);
+        mCollectionReference = mFirestore.collection(SharedPreferencesUtils.getInstance(this).getCurrentPath() + Constants.PATH_SELL_SVNIT);
         marketPlaceSellItemViewModel = ViewModelProviders.of(this).get(MarketPlaceSellItemViewModel.class);
         userName = marketPlaceSellItemViewModel.getCurrUser().getDisplayName();
         populateUI();
@@ -141,11 +140,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     }
 
     private void setUpSpinner() {
-        List<String> categories = new ArrayList<>(Arrays.asList(
-                "Book",
-                "Bicycle",
-                "Xerox"
-        ));
+        List<String> categories = Arrays.asList(getResources().getStringArray(R.array.categories_buy_sell));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_simple_custom_main, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -171,12 +166,7 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                retryClicked();
-            }
-        }, TimeUnit.SECONDS.toMillis(1));
+        new Handler().postDelayed(() -> retryClicked(), TimeUnit.SECONDS.toMillis(1));
     }
 
     @Override
@@ -269,14 +259,11 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
                         .into(imageItem);
                 btnPostAd.setEnabled(false);
                 imageItem.setEnabled(false);
-                AppExecutors.getInstance().networkIO().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (AttendanceUtils.hasInternetAccess(MarketPlaceSellItemActivity.this)) {
-                            uploadImage();
-                        } else {
-                            showPlaceHOlder(true);
-                        }
+                AppExecutors.getInstance().networkIO().execute(() -> {
+                    if (AttendanceUtils.hasInternetAccess(MarketPlaceSellItemActivity.this)) {
+                        uploadImage();
+                    } else {
+                        showPlaceHOlder(true);
                     }
                 });
             }
@@ -442,16 +429,13 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
     }
 
     private void showPlaceHOlder(boolean isShown) {
-        AppExecutors.getInstance().mainThread().execute(new Runnable() {
-            @Override
-            public void run() {
-                if (isShown) {
-                    placeHOlderConnection.setVisibility(View.VISIBLE);
-                    scrollContainer.setVisibility(View.GONE);
-                } else {
-                    placeHOlderConnection.setVisibility(View.GONE);
-                    scrollContainer.setVisibility(View.VISIBLE);
-                }
+        AppExecutors.getInstance().mainThread().execute(() -> {
+            if (isShown) {
+                placeHOlderConnection.setVisibility(View.VISIBLE);
+                scrollContainer.setVisibility(View.GONE);
+            } else {
+                placeHOlderConnection.setVisibility(View.GONE);
+                scrollContainer.setVisibility(View.VISIBLE);
             }
         });
 
@@ -459,12 +443,9 @@ public class MarketPlaceSellItemActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_placeholder_marketplace_sell_item_no_connection_retry)
     void retryClicked() {
-        AppExecutors.getInstance().networkIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                showPlaceHOlder(!AttendanceUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
-                Logger.d("Internet Connection is " + AttendanceUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
-            }
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            showPlaceHOlder(!AttendanceUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
+            Logger.d("Internet Connection is " + AttendanceUtils.hasInternetAccess(MarketPlaceSellItemActivity.this));
         });
     }
 

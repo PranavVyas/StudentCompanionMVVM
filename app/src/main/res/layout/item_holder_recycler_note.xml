@@ -57,48 +57,77 @@
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
-            app:layout_constraintEnd_toStartOf="@+id/divider11"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_recycler_holder_note_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_recycler_holder_note_title"
             tools:text="@tools:sample/lorem/random" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_recycler_holder_more"
-            style="@style/MyCustomMaterialButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:padding="0dp"
-            android:text="More"
-            app:cornerRadius="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <ImageView
+            android:id="@+id/image_recycler_holder_note_edit"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_recycler_holder_more"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_holder_note_desc" />
+            app:layout_constraintStart_toEndOf="@+id/divider12"
+            app:layout_constraintTop_toTopOf="@+id/btn_recycler_holder_more"
+            app:srcCompat="@drawable/ic_delete"
+            tools:ignore="ContentDescription" />
 
         <ImageView
-            android:id="@+id/image_recycler_holder_note_delete"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
+            android:id="@+id/btn_recycler_holder_more"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/divider11"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/divider11"
-            app:srcCompat="@drawable/ic_delete" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/divider12"
+            app:layout_constraintStart_toEndOf="@+id/divider11"
+            app:layout_constraintTop_toBottomOf="@+id/divider13"
+            app:srcCompat="@drawable/ic_note_full"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/image_note_holder_edit_parent"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_recycler_holder_more"
+            app:layout_constraintEnd_toStartOf="@+id/divider11"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_recycler_holder_more"
+            app:srcCompat="@drawable/ic_edit_round"
+            tools:ignore="ContentDescription" />
 
         <View
             android:id="@+id/divider11"
             android:layout_width="1dp"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:background="?android:attr/listDivider"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/image_recycler_holder_note_delete"
-            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_holder_note_title" />
+            app:layout_constraintBottom_toBottomOf="@+id/image_note_holder_edit_parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_recycler_holder_more"
+            app:layout_constraintStart_toEndOf="@+id/image_note_holder_edit_parent"
+            app:layout_constraintTop_toTopOf="@+id/image_note_holder_edit_parent" />
+
+        <View
+            android:id="@+id/divider12"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="@+id/image_recycler_holder_note_edit"
+            app:layout_constraintEnd_toStartOf="@+id/image_recycler_holder_note_edit"
+            app:layout_constraintStart_toEndOf="@+id/btn_recycler_holder_more"
+            app:layout_constraintTop_toTopOf="@+id/image_recycler_holder_note_edit" />
+
+        <View
+            android:id="@+id/divider13"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_holder_note_desc" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

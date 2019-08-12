@@ -12,15 +12,7 @@ import androidx.preference.SwitchPreferenceCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//
-//import androidx.preference.PreferenceViewHolder;
-//import androidx.preference.SwitchPreferenceCompat;
-//
-//import com.suke.widget.SwitchButton;
-//import com.vyas.pranav.studentcompanion.R;
-//
 public class CustomSwitchPreference extends SwitchPreferenceCompat {
-//
 
     @BindView(android.R.id.switchInputMethod)
     CompoundButton widget;
@@ -105,56 +97,4 @@ public class CustomSwitchPreference extends SwitchPreferenceCompat {
             }
         }
     }
-//    private final Listener mListener = new Listener();
-//    private boolean currentState;
-//
-//    public CustomSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//        setLayoutResource(R.layout.custom_item_switch_prefence_full);
-//    }
-//
-//    public CustomSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-//        super(context, attrs, defStyleAttr);
-//        setLayoutResource(R.layout.custom_item_switch_prefence_full);
-//    }
-//
-//    public CustomSwitchPreference(Context context, AttributeSet attrs) {
-//        super(context, attrs);
-//        setLayoutResource(R.layout.custom_item_switch_prefence_full);
-//    }
-//
-//    public CustomSwitchPreference(Context context) {
-//        super(context);
-//        setLayoutResource(R.layout.custom_item_switch_prefence_full);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(PreferenceViewHolder holder) {
-//        super.onBindViewHolder(holder);
-//        View itemView = holder.itemView;
-////        View checkableView = itemView.findViewById(R.id.custom_switch_widget_switch);
-//        if (checkableView instanceof SwitchButton) {
-//            ((SwitchButton) checkableView).setChecked(mChecked);
-//            ((SwitchButton) checkableView).setOnCheckedChangeListener(mListener);
-//        }
-//        GlideApp.with(getContext())
-//                .load(getIcon())
-//                .into((ImageView) itemView.findViewById(android.R.id.icon));
-//        syncSummaryView(holder);
-//    }
-//
-//    private class Listener implements SwitchButton.OnCheckedChangeListener {
-//
-//        @Override
-//        public void onCheckedChanged(SwitchButton view, boolean isChecked) {
-//            if (!callChangeListener(isChecked)) {
-//                // Listener didn't like it, change it back.
-//                // CompoundButton will make sure we don't recurse.
-//                view.setChecked(!isChecked);
-//                return;
-//            }
-//            CustomSwitchPreference.this.setChecked(isChecked);
-//            notifyChanged();
-//        }
-//    }
 }

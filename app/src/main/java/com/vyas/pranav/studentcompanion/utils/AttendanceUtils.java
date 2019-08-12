@@ -46,8 +46,8 @@ public class AttendanceUtils {
     }
 
     public static void checkForSmartCards(OverallAttendanceEntry subjectAttendance, Context applicationContext) {
-        NotificationRepository notificationRepository = new NotificationRepository(applicationContext);
-        SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils(applicationContext);
+        NotificationRepository notificationRepository = NotificationRepository.getInstance(applicationContext);
+        SharedPreferencesUtils sharedPreferencesUtils = SharedPreferencesUtils.getInstance(applicationContext);
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {

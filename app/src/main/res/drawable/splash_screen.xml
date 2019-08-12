@@ -1,5 +1,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
-    android:opacity="opaque">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:opacity="opaque"
+    tools:keep="@drawable/splash_screen">
     <!-- The background color, preferably the same as your normal theme -->
     <item android:drawable="@drawable/splash_background" />
     <!-- Your product logo - 144dp color version of your app icon -->

@@ -37,6 +37,17 @@ public class AppSettingsRepository {
     private final Context context;
     private final SharedPreferences mPreference;
     private final SharedPreferences.Editor mEditor;
+    private static final Object LOCK = new Object();
+    private static AppSettingsRepository instance;
+
+    public static AppSettingsRepository getInstance(Context context) {
+        if (instance == null) {
+            synchronized (LOCK) {
+                instance = new AppSettingsRepository(context.getApplicationContext());
+            }
+        }
+        return instance;
+    }
 
     public AppSettingsRepository(Context context) {
         this.context = context;
@@ -73,7 +84,7 @@ public class AppSettingsRepository {
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {
-                final LiveData<List<TimetableEntry>> timetableForDay = new TimetableRepository(context).getTimetableForDay(ConverterUtils.getDayOfWeek(new Date()));
+                final LiveData<List<TimetableEntry>> timetableForDay = TimetableRepository.getInstance(context).getTimetableForDay(ConverterUtils.getDayOfWeek(new Date()));
                 timetableForDay.observeForever(new Observer<List<TimetableEntry>>() {
                     @Override
                     public void onChanged(List<TimetableEntry> timetableEntries) {
@@ -142,7 +153,7 @@ public class AppSettingsRepository {
         }
     }
 
-    public LiveData<List<AutoAttendancePlaceEntry>> getAutoAtttendanceLiveData() {
+    public LiveData<List<AutoAttendancePlaceEntry>> getAutoAttendanceLiveData() {
         AutoAttendancePlaceDao attendancePlaceDao = MainDatabase.getInstance(context).autoAttendancePlaceDao();
         return attendancePlaceDao.getAllPlaceEntries();
     }
