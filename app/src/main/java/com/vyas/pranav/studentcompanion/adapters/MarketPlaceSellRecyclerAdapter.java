@@ -69,7 +69,7 @@ public class MarketPlaceSellRecyclerAdapter extends ListAdapter<ItemModel, Marke
         }
         holder.tvName.setText(name);
         holder.tvPersonName.setText(pName);
-        holder.tvPrice.setText("Rs. " + price + " \\-");
+        holder.tvPrice.setText("Rs. " + price + " /-");
         GlideApp.with(holder.itemView.getContext())
                 .load(imageUri)
                 .placeholder(R.drawable.ic_market_place)
@@ -94,7 +94,7 @@ public class MarketPlaceSellRecyclerAdapter extends ListAdapter<ItemModel, Marke
         tvDialogCategory.setText(item.getCategory());
         tvDialogName.setText(item.getName());
         tvDialogInfo.setText(item.getExtra_info());
-        tvDialogPrice.setText(item.getPrice() + "//- Rs.");
+        tvDialogPrice.setText(item.getPrice() + "/- Rs.");
         tvDialogContact.setText(item.getP_name() + "\n No : " + item.getContact());
         GlideApp.with(context)
                 .load(item.getImage_uri())

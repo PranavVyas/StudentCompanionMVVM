@@ -102,7 +102,7 @@ public class AutoAttendanceHelper {
 //                                        Logger.d("Fence Added for Constraint: Day(Friday) :: Time: " + start + " to " + end + " :: Timezone: " + TimeZone.getDefault().getDisplayName());
 //                                    }
 //                                }
-//                                //todo repair this
+//                                //todo improve this
 //                                AwarenessFence finalTimeFence = AwarenessFence.or(timeFences);
 ////                                AwarenessFence finalFence = AwarenessFence.and(finalTimeFence, mLocationFence);
 //                                String key = KEY_PRE_SUBJECT_FENCE + subject;

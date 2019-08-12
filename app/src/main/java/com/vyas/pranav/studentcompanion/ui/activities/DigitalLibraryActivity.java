@@ -151,7 +151,7 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
                 break;
 
             default:
-                Toast.makeText(this, "Invalid Selection", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Invalid Selection", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }

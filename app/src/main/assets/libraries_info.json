@@ -1,7 +1,7 @@
 {
   "name": "Student Companion",
-  "license": "MIT 2",
-  "extra_license": "lkjlkajsdlks",
+  "license": "GNU Affero General Public License v3 ",
+  "extra_license": "https://github.com/PranavVyas/StudentCompanionMVVM/License.md",
   "external_libraries": [
     {
       "name": "MaterialDrawer",
@@ -62,6 +62,36 @@
       "name": "Toggle",
       "license": "Apache License, Version 2.0",
       "url": "https://github.com/Angads25/android-toggle"
+    },
+    {
+      "name": "Wave Loading View",
+      "license": "Apache License, Version 2.0",
+      "url": "https://github.com/tangqi92/WaveLoadingView"
+    },
+    {
+      "name": "Stetho-Facebook",
+      "license": "MIT",
+      "url": "https://github.com/facebook/stetho"
+    },
+    {
+      "name": "Leku",
+      "license": "Apache License, Version 2.0",
+      "url": "https://github.com/SchibstedSpain/Leku"
+    },
+    {
+      "name": "FancyWalkthrough-Android",
+      "license": "Apache License, Version 2.0",
+      "url": "https://github.com/Shashank02051997/FancyWalkthrough-Android"
+    },
+    {
+      "name": "BubbleShowCase - Android",
+      "license": "MIT",
+      "url": "https://github.com/ECLaboratorio/BubbleShowCase-Android"
+    },
+    {
+      "name": "Android Architecture Components",
+      "license": "Set of libraries provided by Google",
+      "url": "https://developer.android.com/topic/libraries/architecture"
     }
   ]
 }
