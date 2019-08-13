@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,7 +36,6 @@ import androidx.lifecycle.ViewModelProviders;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.jobs.DailyJobForDoingDailyJobs;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDatesFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDetailsSemFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpLectureTimeFragment;
@@ -173,7 +173,6 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         Intent intent = new Intent(this, TutorialActivity.class);
         startActivity(intent);
         setUpViewModel.setFirstRun(false);
-        DailyJobForDoingDailyJobs.scheduleJob();
         finish();
     }
 

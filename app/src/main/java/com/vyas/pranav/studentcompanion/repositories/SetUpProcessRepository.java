@@ -33,6 +33,7 @@ import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForDoingDailyJobs;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.Constants;
@@ -323,6 +324,7 @@ public class SetUpProcessRepository {
                 overallAttendanceDao.insertOverall(x);
 //                    DailyJobForDoingDailyJobs.scheduleJob();
             }
+            DailyJobForDoingDailyJobs.scheduleJob();
             Logger.d("Overall Attendance Database Init success");
         });
     }

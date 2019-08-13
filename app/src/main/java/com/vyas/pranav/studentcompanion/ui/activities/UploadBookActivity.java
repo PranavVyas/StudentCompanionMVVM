@@ -33,6 +33,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -58,6 +59,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class UploadBookActivity extends AppCompatActivity {
+
+    private static final String TAG = "UploadBookActivity";
 
     public static final String EXTRA_DOWNLOAD_URL_DOCUMENT = "UploadBookActivity.DownloadUri";
     private static final int RC_OPEN_CHOOSER = 100;
@@ -439,5 +442,15 @@ public class UploadBookActivity extends AppCompatActivity {
                 scrollContainer.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void showInstruction() {
+        new Handler().postDelayed(() -> {
+            new BubbleShowCaseBuilder(this)
+                    .title("Attention")
+                    .description("As developer doesn't go through any books or documents that has been uploaded by user, It is duty of user and responsibility of users that they don't upload any copyright content, Doing so will lead to account termination immediately and further steps if require\nThank You!")
+                    .showOnce(TAG + "instr_warn")
+                    .show();
+        }, TimeUnit.SECONDS.toMillis(1));
     }
 }

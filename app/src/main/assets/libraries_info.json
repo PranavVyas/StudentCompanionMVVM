@@ -92,6 +92,16 @@
       "name": "Android Architecture Components",
       "license": "Set of libraries provided by Google",
       "url": "https://developer.android.com/topic/libraries/architecture"
+    },
+    {
+      "name": "Photos and Icons",
+      "license": "Modified from Freepik",
+      "url": "http://www.freepik.com"
+    },
+    {
+      "name": "Icons from Icon Finder",
+      "license": "GPL",
+      "url": "https://www.gnu.org/licenses/gpl-3.0.html"
     }
   ]
 }

@@ -15,7 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
-import android.app.ActivityOptions;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -30,7 +30,6 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SignInViewModel;
 
@@ -41,12 +40,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignInActivity extends AppCompatActivity {
+import static com.vyas.pranav.studentcompanion.utils.Constants.RC_SIGN_IN;
 
-    private SignInViewModel signInViewModel;
+public class SignInActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar_sign_in_activity)
     Toolbar toolbarSignIn;
+    private SignInViewModel signInViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,16 @@ public class SignInActivity extends AppCompatActivity {
         checkForUserSignIn();
     }
 
+    private List<AuthUI.IdpConfig> getAvailableProviders() {
+        return Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                //new AuthUI.IdpConfig.PhoneBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build()
+                //new AuthUI.IdpConfig.FacebookBuilder().build(),
+                //new AuthUI.IdpConfig.TwitterBuilder().build()
+        );
+    }
+
     @OnClick(R.id.btn_sign_in_activity_sign_in)
     void signInClicked() {
         checkForUserSignIn();
@@ -67,25 +77,17 @@ public class SignInActivity extends AppCompatActivity {
 
     private void checkForUserSignIn() {
         if (signInViewModel.getCurrUser() == null) {
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                    //new AuthUI.IdpConfig.PhoneBuilder().build(),
-                    new AuthUI.IdpConfig.GoogleBuilder().build()
-                    //new AuthUI.IdpConfig.FacebookBuilder().build(),
-                    //new AuthUI.IdpConfig.TwitterBuilder().build()
-            );
-            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
             // Create and launch sign-in intent
             startActivityForResult(
                     AuthUI.getInstance()
                             .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .setIsSmartLockEnabled(false)
+                            .setAvailableProviders(getAvailableProviders())
+                            .setIsSmartLockEnabled(false, true)
+                            .setTosAndPrivacyPolicyUrls(getString(R.string.terms_url), getString(R.string.policy_url))
                             .setLogo(R.drawable.ic_logo)
                             .build(),
-                    Constants.RC_SIGN_IN, bundle);
+                    RC_SIGN_IN);
         } else {
-            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
             Intent startSetUp = new Intent(this, SetUpActivity.class);
             startActivity(startSetUp);
             finish();
@@ -100,7 +102,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             // Successfully signed in
