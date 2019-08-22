@@ -20,7 +20,7 @@ GNU Affero General Public License for more details.
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreference
-        app:defaultValue="true"
+        app:defaultValue="false"
         app:icon="@drawable/ic_reminder"
         app:key="@string/pref_key_switch_enable_reminder"
         app:summaryOff="@string/pref_summery_off_switch_enable_reminder"

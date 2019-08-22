@@ -250,6 +250,7 @@ GNU Affero General Public License for more details.
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             app:cardCornerRadius="@dimen/card_radius_profile"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -276,14 +277,14 @@ GNU Affero General Public License for more details.
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/tv_about_developer_about_me"
                     style="@style/MyMaterialTextView.SmallTextViewBody2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="\u25CF I am a Udacity Certified Android Developer and I like to develop Android Apps to solve some real life issue.\n\u25CF I have been working on and off (because of Exams, Assignments, Practicals, etc.) this project from last 6 months and have added some useful features and plan to add more in future!"
+                    android:text="@string/about_developer_about_me"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView5" />

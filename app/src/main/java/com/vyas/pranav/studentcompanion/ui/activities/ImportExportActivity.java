@@ -15,9 +15,11 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.Manifest;
 import android.os.Bundle;
 import android.os.Environment;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,11 +37,16 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils.setUserTheme;
 
 public class ImportExportActivity extends AppCompatActivity {
+
+    @BindView(R.id.tv_import_export_status)
+    TextView tvStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +54,24 @@ public class ImportExportActivity extends AppCompatActivity {
         setUserTheme(this);
         setContentView(R.layout.activity_import_export);
         ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.tv_import_export_status)
+    void exportClicked() {
         backUpFiles();
     }
 
     void backUpFiles() {
+        tvStatus.setText("Backing Up Now!");
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
-                        copyDbToDownloads();
+                        copy(
+                                ImportExportActivity.this.getExternalFilesDir(null).getPath() + MainDatabase.DB_NAME
+                                , Environment.getExternalStorageDirectory().getPath()
+                        );
                     }
 
                     @Override
@@ -71,21 +86,21 @@ public class ImportExportActivity extends AppCompatActivity {
                 }).check();
     }
 
-    void copyDbToDownloads() {
+    void copy(String sourcePath, String destinationPath) {
+
         MainDatabase.getInstance(this).close();
 
-        File dbMain = new File(this.getExternalFilesDir(null).getPath() + MainDatabase.DB_NAME);
-        File dbShm = new File(dbMain.getParent(), MainDatabase.DB_NAME + "-shm");
-        File dbWal = new File(dbMain.getParent(), MainDatabase.DB_NAME + "-wal");
+        File dbMain = new File(sourcePath);
+//        File dbShm = new File(dbMain.getParent(), MainDatabase.DB_NAME + "-shm");
+//        File dbWal = new File(dbMain.getParent(), MainDatabase.DB_NAME + "-wal");
 
-        File dbDest = new File(Environment.getExternalStorageDirectory().getPath(), MainDatabase.DB_NAME);
-        File dbShmDest = new File(dbDest.getParent(), MainDatabase.DB_NAME + "-shm");
-        File dbWalDest = new File(dbDest.getParent(), MainDatabase.DB_NAME + "-wal");
+        File dbDest = new File(destinationPath, MainDatabase.DB_NAME);
+//        File dbShmDest = new File(dbDest.getParent(), MainDatabase.DB_NAME + "-shm");
+//        File dbWalDest = new File(dbDest.getParent(), MainDatabase.DB_NAME + "-wal");
 
         try {
             FileUtils.copyFile(dbMain, dbDest);
-            FileUtils.copyFile(dbShm, dbShmDest);
-            FileUtils.copyFile(dbWal, dbWalDest);
+            tvStatus.setText("Back up Done!");
         } catch (IOException e) {
             e.printStackTrace();
         }

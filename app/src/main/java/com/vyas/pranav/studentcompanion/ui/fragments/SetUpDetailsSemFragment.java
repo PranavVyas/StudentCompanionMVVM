@@ -71,6 +71,10 @@ public class SetUpDetailsSemFragment extends Fragment {
     public SetUpDetailsSemFragment() {
     }
 
+    public static SetUpDetailsSemFragment newInstance() {
+        return new SetUpDetailsSemFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

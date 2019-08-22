@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?> <!--
+Student Companion - An Android App that has features like attendance manager, note manager etc
+Copyright (C) 2019  Pranav Vyas
+
+This file is a part of Student Companion.
+
+Student Companion is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Student Companion is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/image_login_background">
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/almendra_bold"
+            android:gravity="center"
+            android:text="Welcome to\nStudent Companion"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView15"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="250dp"
+            android:layout_marginEnd="8dp"
+            android:text="Sign In / Sign Up"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/tv_holder_sign_in_tos"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="32dp"
+            android:gravity="center"
+            android:text="By proceeding you agree to Privacy Policy and Terms and Conditions"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_holder_sign_in_email"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_holder_sign_in_email"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="8dp"
+            android:paddingStart="30dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="18dp"
+            android:text="Email"
+            android:textColor="#311B92"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="32dp"
+            app:elevation="8dp"
+            app:icon="@android:drawable/sym_action_email"
+            app:iconPadding="16dp"
+            app:iconTint="#311B92"
+            app:layout_constraintEnd_toEndOf="@+id/btn_holder_sign_in_google"
+            app:layout_constraintStart_toStartOf="@+id/btn_holder_sign_in_google"
+            app:layout_constraintTop_toBottomOf="@+id/btn_holder_sign_in_google"
+            app:strokeColor="#B71C1C"
+            app:strokeWidth="2dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_holder_sign_in_google"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:backgroundTint="@color/quantum_white_text"
+            android:paddingStart="30dp"
+            android:paddingTop="18dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="18dp"
+            android:text="Google"
+            android:textColor="#311B92"
+            app:cornerRadius="32dp"
+            app:elevation="8dp"
+            app:icon="@drawable/fui_ic_googleg_color_24dp"
+            app:iconPadding="16dp"
+            app:iconTint="#311B92"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15"
+            app:strokeColor="#880E4F"
+            app:strokeWidth="2dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

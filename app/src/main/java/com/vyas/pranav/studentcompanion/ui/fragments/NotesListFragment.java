@@ -59,8 +59,15 @@ public class NotesListFragment extends Fragment implements NoteRecyclerAdapter.O
     ConstraintLayout placeHolder;
 
     private NoteRecyclerAdapter mAdapter;
+    private int notificationType;
 
     public NotesListFragment() {
+    }
+
+    public static NotesListFragment newInstance(int notificationType) {
+        NotesListFragment fragment = new NotesListFragment();
+        fragment.notificationType = notificationType;
+        return fragment;
     }
 
     @Override
@@ -79,7 +86,7 @@ public class NotesListFragment extends Fragment implements NoteRecyclerAdapter.O
         rvNotesList.setAdapter(mAdapter);
         LinearLayoutManager llm = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rvNotesList.setLayoutManager(llm);
-        if (getArguments().getInt(EXTRA_NOTES_DISPLAY_TYPE, TYPE_ALL_NOTES_SHOW) == TYPE_TILL_TODAY_NOTES_SHOW) {
+        if (notificationType == TYPE_TILL_TODAY_NOTES_SHOW) {
             long dateInMillis = new Date().getTime() - TimeUnit.DAYS.toMillis(1);
             NotesViewModelFactory factory = new NotesViewModelFactory(new Date(dateInMillis), getContext());
             NotesViewModelForDate viewModelForDate = ViewModelProviders.of(getActivity(), factory).get(NotesViewModelForDate.class);

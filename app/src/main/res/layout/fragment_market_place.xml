@@ -29,7 +29,7 @@ GNU Affero General Public License for more details.
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:fabIcon="@drawable/ic_market_place"
-        app:fabText="Sell Something !"
+        app:fabText="Sell Something!"
         app:fabColor="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

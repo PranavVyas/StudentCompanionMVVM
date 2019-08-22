@@ -31,7 +31,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.NotificationsViewModel;
 
@@ -56,6 +55,14 @@ public class NotificationFragment extends Fragment implements ViewPager.OnPageCh
         // Required empty public constructor
     }
 
+    public static NotificationFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        NotificationFragment fragment = new NotificationFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,6 +83,12 @@ public class NotificationFragment extends Fragment implements ViewPager.OnPageCh
         viewPager.addOnPageChangeListener(this);
         tabs.setupWithViewPager(viewPager);
     }
+
+//    @OnClick(R.id.fab_notification_add_event)
+//    void addEventClicked(){
+//        Intent intent = new Intent(getContext(), AddEventActivity.class);
+//        startActivity(intent);
+//    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -105,14 +118,10 @@ public class NotificationFragment extends Fragment implements ViewPager.OnPageCh
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    AllNotificationFragment fragment = new AllNotificationFragment();
-                    Bundle sendData = new Bundle();
-                    sendData.putString(Constants.KEY_SEND_DATA_TO_NOTIFICATION_CLASS_DATE, ConverterUtils.convertDateToString(new Date()));
-                    fragment.setArguments(sendData);
-                    return fragment;
+                    return AllNotificationFragment.newInstance(ConverterUtils.convertDateToString(new Date()));
 
                 case 1:
-                    return new AllNotificationFragment();
+                    return AllNotificationFragment.newInstance(null);
             }
             return null;
         }

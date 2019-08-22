@@ -52,8 +52,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
-import static com.vyas.pranav.studentcompanion.utils.Constants.EXTRA_TIMETABLE_DAY;
-import static com.vyas.pranav.studentcompanion.utils.Constants.EXTRA_TIMETABLE_DAY_KEY;
 
 public class TimetableFragment extends Fragment {
     @BindView(R.id.table_timetable_fragment_main)
@@ -70,6 +68,10 @@ public class TimetableFragment extends Fragment {
     private boolean isProductiveViewOn = false;
 
     public TimetableFragment() {
+    }
+
+    public static TimetableFragment newInstance() {
+        return new TimetableFragment();
     }
 
     @Override
@@ -182,44 +184,35 @@ public class TimetableFragment extends Fragment {
             @NonNull
             @Override
             public Fragment getItem(int position) {
-                TimetableDayFragment dayFrag = new TimetableDayFragment();
+                String day = null;
+                ArrayList<String> lectures = null;
                 switch (position) {
                     case 0:
-                        Bundle mondayBundle = new Bundle();
-                        mondayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(0));
-                        mondayBundle.putString(EXTRA_TIMETABLE_DAY, "Monday");
-                        dayFrag.setArguments(mondayBundle);
-                        return dayFrag;
+                        lectures = (ArrayList<String>) daysLectures.get(0);
+                        day = "Monday";
+                        break;
 
                     case 1:
-                        Bundle tuesdayBundle = new Bundle();
-                        tuesdayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(1));
-                        tuesdayBundle.putString(EXTRA_TIMETABLE_DAY, "Tuesday");
-                        dayFrag.setArguments(tuesdayBundle);
-                        return dayFrag;
+                        lectures = (ArrayList<String>) daysLectures.get(1);
+                        day = "Tuesday";
+                        break;
 
                     case 2:
-                        Bundle wednesdayBundle = new Bundle();
-                        wednesdayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(2));
-                        wednesdayBundle.putString(EXTRA_TIMETABLE_DAY, "Wednesday");
-                        dayFrag.setArguments(wednesdayBundle);
-                        return dayFrag;
+                        lectures = (ArrayList<String>) daysLectures.get(2);
+                        day = "Wednesday";
+                        break;
 
                     case 3:
-                        Bundle thursdayBundle = new Bundle();
-                        thursdayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(3));
-                        thursdayBundle.putString(EXTRA_TIMETABLE_DAY, "Thursday");
-                        dayFrag.setArguments(thursdayBundle);
-                        return dayFrag;
+                        lectures = (ArrayList<String>) daysLectures.get(3);
+                        day = "Thursday";
+                        break;
 
                     case 4:
-                        Bundle fridayBundle = new Bundle();
-                        fridayBundle.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, (ArrayList<String>) daysLectures.get(4));
-                        fridayBundle.putString(EXTRA_TIMETABLE_DAY, "Friday");
-                        dayFrag.setArguments(fridayBundle);
-                        return dayFrag;
+                        lectures = (ArrayList<String>) daysLectures.get(4);
+                        day = "Friday";
+                        break;
                 }
-                return null;
+                return TimetableDayFragment.newInstance(day, lectures);
 
             }
 
@@ -228,7 +221,6 @@ public class TimetableFragment extends Fragment {
                 return 5;
             }
 
-            @Nullable
             @Override
             public CharSequence getPageTitle(int position) {
                 switch (position) {

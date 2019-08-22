@@ -101,10 +101,11 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
 
     void refreshEventSubscription() {
         checkBoxEvent.setEnabled(false);
+        String topic = sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "events";
         if (sharedPreferencesUtils.isEventNotificationEnabed()) {
-            fcmInstance.subscribeToTopic(sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "events").addOnCompleteListener(task -> {
+            fcmInstance.subscribeToTopic(topic).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(NotificationPreferenceActivity.this, "Subscribed to Event!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NotificationPreferenceActivity.this, "Subscribed to Event: !" + topic, Toast.LENGTH_SHORT).show();
                     Logger.d("Subscribed to Events");
                 } else {
                     checkBoxEvent.setChecked(false);
@@ -114,7 +115,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
                 checkBoxEvent.setEnabled(true);
             });
         } else {
-            fcmInstance.unsubscribeFromTopic(sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "events").addOnCompleteListener(task -> {
+            fcmInstance.unsubscribeFromTopic(topic).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Toast.makeText(NotificationPreferenceActivity.this, "Unsubscribed to Event!", Toast.LENGTH_SHORT).show();
                     Logger.d("Unsubscribed from Events");
@@ -130,12 +131,14 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
 
     void refreshNewItemSubscription() {
         checkBoxNewItem.setEnabled(false);
+        String topic = sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "sell_item";
         if (sharedPreferencesUtils.isNewItemShopNotificationEnabled()) {
-            fcmInstance.subscribeToTopic(sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.subscribeToTopic(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(NotificationPreferenceActivity.this, "Subscribed to sell item!", Toast.LENGTH_SHORT).show();
+                        //todo remove from toast
+                        Toast.makeText(NotificationPreferenceActivity.this, "Subscribed to sell item!" + topic, Toast.LENGTH_SHORT).show();
                         Logger.d("Subscribed to New Item Subscription");
                     } else {
                         Toast.makeText(NotificationPreferenceActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
@@ -146,7 +149,7 @@ public class NotificationPreferenceActivity extends AppCompatActivity {
                 }
             });
         } else {
-            fcmInstance.unsubscribeFromTopic(sharedPreferencesUtils.getCurrentPath().replace("/", "_") + "_" + "sell_item").addOnCompleteListener(new OnCompleteListener<Void>() {
+            fcmInstance.unsubscribeFromTopic(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()) {

@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Html;
@@ -53,7 +54,7 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
 
         @Override
         public boolean areContentsTheSame(@NonNull NotificationFirestoreModel oldItem, @NonNull NotificationFirestoreModel newItem) {
-            return (oldItem.getDateInMillis() == (newItem.getDateInMillis())) &&
+            return (oldItem.getDateInMillis().equals(newItem.getDateInMillis())) &&
                     (oldItem.getShort_info().equals(newItem.getShort_info())) &&
                     (oldItem.getVenue().equals(newItem.getVenue())) &&
                     (oldItem.getName().equals(newItem.getName())) &&
@@ -75,22 +76,13 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
     public void onBindViewHolder(@NonNull NotificationHolder holder, int position) {
         NotificationFirestoreModel notification = getItem(position);
         Date date = new Date();
-        date.setTime(notification.getDateInMillis());
+        date.setTime(Long.parseLong(notification.getDateInMillis()));
         holder.tvDate.setText(ConverterUtils.convertDateToString(date));
         holder.tvName.setText(notification.getName());
         holder.tvShortInfo.setText(notification.getShort_info());
 
         if (notification.getType() == Constants.NOTI_TYPE_LOW_ATTENDANCE) {
             holder.btnMore.setVisibility(View.GONE);
-//                    .setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent openOverallAttendance = new Intent(holder.itemView.getContext(), MainActivity.class);
-//                    openOverallAttendance.putExtra(Constants.EXTRA_MAIN_ACT_OPEN_OVERALL, NavigationDrawerUtil.ID_OVERALL_ATTENDANCE);
-//                    holder.itemView.getContext().startActivity(openOverallAttendance);
-//                    Toast.makeText(view.getContext(), "Intent Fired", Toast.LENGTH_SHORT).show();
-//                }
-//            });
             GlideApp.with(holder.itemView)
                     .load(R.drawable.ic_caution)
                     .error(R.drawable.ic_caution)
@@ -100,7 +92,6 @@ public class NotificationsRecyclerAdapter extends ListAdapter<NotificationFirest
             return;
         }
         holder.btnMore.setVisibility(View.VISIBLE);
-
 
         GlideApp.with(holder.itemView)
                 .load(notification.getImage_url())

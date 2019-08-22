@@ -70,6 +70,10 @@ public class SetUpTimetableFragment extends Fragment {
     public SetUpTimetableFragment() {
     }
 
+    public static SetUpTimetableFragment newInstance() {
+        return new SetUpTimetableFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

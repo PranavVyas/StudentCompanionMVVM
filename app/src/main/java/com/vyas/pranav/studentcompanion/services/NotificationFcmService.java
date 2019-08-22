@@ -47,10 +47,12 @@ public class NotificationFcmService extends FirebaseMessagingService {
         String typeOfEvent = receivedData.get("typeOfEvent");
         if (typeOfEvent.equals(TYPE_NEW_DOCUMENT)) {
             String name = receivedData.get("nameOfEvent");
-            String date = receivedData.get("dateOfEvent");
+            String dateInMillis = receivedData.get("dateOfEvent");
+            String date = ConverterUtils.convertDateToString(new Date(Long.parseLong(dateInMillis)));
             String link = receivedData.get("linkOfEvent");
             String venue = receivedData.get("venueOfEvent");
             String shortInfo = receivedData.get("shortInfoOfEvent");
+            String imageLink = receivedData.get("imageOfEvent");
             Logger.addLogAdapter(new AndroidLogAdapter());
             Logger.d("name: " + name + "\ndate: " + date + "\ntype :" + typeOfEvent + "\nlink: " + link + "\nvenue: " + venue + "\nshort_info: " + shortInfo);
 //        addToDatabase(name,typeOfEvent,link,venue,date,shortInfo);

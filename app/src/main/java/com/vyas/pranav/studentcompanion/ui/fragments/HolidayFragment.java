@@ -51,6 +51,9 @@ public class HolidayFragment extends Fragment {
     public HolidayFragment() {
     }
 
+    public static HolidayFragment newInstance() {
+        return new HolidayFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

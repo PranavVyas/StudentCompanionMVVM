@@ -84,7 +84,10 @@ public class SetUpDatesFragment extends Fragment {
     public SetUpDatesFragment() {
     }
 
-
+    public static SetUpDatesFragment newInstance() {
+        return new SetUpDatesFragment();
+    }
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

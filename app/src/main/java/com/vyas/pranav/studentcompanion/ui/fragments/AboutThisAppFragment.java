@@ -45,6 +45,10 @@ public class AboutThisAppFragment extends Fragment {
     public AboutThisAppFragment() {
     }
 
+    public static AboutThisAppFragment newInstance() {
+        return new AboutThisAppFragment();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

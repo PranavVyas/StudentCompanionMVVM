@@ -28,6 +28,7 @@ import androidx.preference.PreferenceManager;
 
 import com.bumptech.glide.Glide;
 import com.evernote.android.job.JobManager;
+import com.facebook.stetho.Stetho;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
@@ -42,7 +43,7 @@ public class MainApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         createNotificationChannels();
-//        Stetho.initializeWithDefaults(this);
+        Stetho.initializeWithDefaults(this);
 //        if (isNightModeEnabled()){
 //            AppCompatDelegate.setDefaultNightMode(
 //                    AppCompatDelegate.MODE_NIGHT_YES);

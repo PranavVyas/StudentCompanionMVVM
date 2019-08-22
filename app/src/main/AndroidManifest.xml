@@ -44,9 +44,10 @@ GNU Affero General Public License for more details.
         android:theme="@style/AppTheme.Launcher"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:theme">
-        <activity android:name=".ui.activities.ImportExportActivity">
-
-        </activity>
+        <activity
+            android:name=".ui.activities.AddEventActivity"
+            android:launchMode="singleTop" />
+        <activity android:name=".ui.activities.ImportExportActivity" />
         <activity
             android:name=".ui.activities.AddNoteActivity"
             android:launchMode="singleTop"
@@ -74,6 +75,7 @@ GNU Affero General Public License for more details.
             android:name=".ui.activities.OpenSourceInformationActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivity" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

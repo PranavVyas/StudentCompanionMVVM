@@ -15,10 +15,13 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -32,7 +35,6 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.vyas.pranav.studentcompanion.R;
 
@@ -40,10 +42,7 @@ public class NavigationDrawerUtil {
 
     public static final int ID_TODAY_ATTENDANCE = 1;
     public static final int ID_OVERALL_ATTENDANCE = 2;
-    //    public static final int ID_HOLIDAYS = 3;
-//    public static final int ID_TIMETABLE = 4;
     public static final int ID_SETTINGS = 5;
-    //    public static final int ID_MARKET_PLACE = 6;
     public static final int ID_NOTIFICATIONS = 7;
     public static final int ID_MY_PROFILE = 8;
     public static final int ID_ABOUT_APP = 9;
@@ -51,6 +50,7 @@ public class NavigationDrawerUtil {
     public static final int ID_SIGN_OUT = 11;
     public static final int ID_DELETE_ACCOUNT = 12;
     public static final int ID_RESOURCES = 3;
+    public static final int ID_TIPS_TRICKS = 13;
 
     public static Drawer getMaterialDrawer(Activity context, Toolbar toolbar, FirebaseUser currUser) {
 
@@ -66,137 +66,92 @@ public class NavigationDrawerUtil {
                 .withIdentifier(ID_TODAY_ATTENDANCE)
                 .withName(R.string.navigation_home)
                 .withIcon(R.drawable.ic_today_attendance)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_TODAY_ATTENDANCE);
-                        return false;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_TODAY_ATTENDANCE);
+                    return false;
                 });
         PrimaryDrawerItem overallAttendance = new PrimaryDrawerItem()
                 .withIdentifier(ID_OVERALL_ATTENDANCE)
                 .withName(R.string.navigation_overall_attendance)
                 .withIcon(R.drawable.ic_overall_attendance)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_OVERALL_ATTENDANCE);
-                        return false;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_OVERALL_ATTENDANCE);
+                    return false;
                 });
-//        PrimaryDrawerItem holidays = new PrimaryDrawerItem()
-//                .withIdentifier(ID_HOLIDAYS)
-//                .withName("Holidays")
-//                .withIcon(R.drawable.ic_holidays)
-//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-//                    @Override
-//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//                        mCallback.OnNavigationItemClicked(ID_HOLIDAYS);
-//                        return false;
-//                    }
-//                });
-//        PrimaryDrawerItem timetable = new PrimaryDrawerItem()
-//                .withIdentifier(ID_TIMETABLE)
-//                .withName("Timetable")
-//                .withIcon(R.drawable.ic_timetable)
-//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-//                    @Override
-//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//                        mCallback.OnNavigationItemClicked(ID_TIMETABLE);
-//                        return false;
-//                    }
-//                });
         PrimaryDrawerItem settings = new PrimaryDrawerItem()
                 .withIdentifier(ID_SETTINGS)
                 .withName(R.string.navigation_settings)
                 .withIcon(R.drawable.ic_settings)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_SETTINGS);
-                        return false;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_SETTINGS);
+                    return false;
                 });
-//        PrimaryDrawerItem marketplace = new PrimaryDrawerItem()
-//                .withIdentifier(ID_MARKET_PLACE)
-//                .withName("Buy/Sell Items")
-//                .withIcon(R.drawable.ic_market_place)
-//                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-//                    @Override
-//                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-//                        mCallback.OnNavigationItemClicked(ID_MARKET_PLACE);
-//                        return false;
-//                    }
-//                });
         PrimaryDrawerItem notifications = new PrimaryDrawerItem()
                 .withIdentifier(ID_NOTIFICATIONS)
                 .withName(R.string.navigation_notifications)
                 .withIcon(R.drawable.ic_chat)
                 .withBadge("0")
                 .withBadgeStyle(new BadgeStyle().withTextColor(Color.WHITE).withColorRes(R.color.md_red_700))
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_NOTIFICATIONS);
-                        return false;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_NOTIFICATIONS);
+                    return false;
                 });
         SecondaryDrawerItem myProfile = new SecondaryDrawerItem()
                 .withIdentifier(ID_MY_PROFILE)
                 .withName(R.string.navigation_my_profile)
                 .withIcon(R.drawable.ic_profile)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_MY_PROFILE);
-                        return false;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_MY_PROFILE);
+                    return false;
                 });
         SecondaryDrawerItem aboutApp = new SecondaryDrawerItem()
                 .withIdentifier(ID_ABOUT_APP)
                 .withName(R.string.navigation_about_this_app)
                 .withIcon(R.mipmap.ic_launcher_round)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_ABOUT_APP);
-                        return false;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_ABOUT_APP);
+                    return false;
                 });
         SecondaryDrawerItem aboutDeveloper = new SecondaryDrawerItem()
                 .withIdentifier(ID_ABOUT_DEVELOPER)
                 .withName(R.string.navigation_about_developer)
                 .withIcon(R.drawable.ic_developer)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_ABOUT_DEVELOPER);
-                        return false;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_ABOUT_DEVELOPER);
+                    return false;
                 });
         PrimaryDrawerItem signOut = new PrimaryDrawerItem()
                 .withIdentifier(ID_SIGN_OUT)
                 .withName(R.string.navigation_sign_out)
                 .withIcon(R.drawable.ic_log_in_out)
                 .withSelectable(false)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_SIGN_OUT);
-                        return false;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_SIGN_OUT);
+                    return false;
                 });
         PrimaryDrawerItem deleteAccount = new PrimaryDrawerItem()
                 .withIdentifier(ID_DELETE_ACCOUNT)
                 .withName(R.string.navigation_delete_account)
                 .withIcon(R.drawable.ic_delete)
                 .withSelectable(false)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_DELETE_ACCOUNT);
-                        return false;
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_DELETE_ACCOUNT);
+                    return false;
+                });
+        SecondaryDrawerItem tipsTricks = new SecondaryDrawerItem()
+                .withIdentifier(ID_TIPS_TRICKS)
+                .withName(R.string.navigation_tips_tricks)
+                .withIcon(R.drawable.ic_tips_and_tricks)
+                .withSelectable(false)
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("https://student-companion-vyas.000webhostapp.com/faqs-tips-tricks"));
+                    if (intent.resolveActivity(context.getPackageManager()) != null) {
+                        context.startActivity(intent);
+                    } else {
+                        Toast.makeText(context, "Install any browser Application", Toast.LENGTH_SHORT).show();
                     }
+                    return false;
                 });
 
         ProfileDrawerItem profile = new ProfileDrawerItem();
@@ -212,12 +167,9 @@ public class NavigationDrawerUtil {
                 .withIdentifier(ID_RESOURCES)
                 .withName(R.string.navigation_resources)
                 .withIcon(R.drawable.ic_resources_magic_wand)
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                    @Override
-                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        mCallback.OnNavigationItemClicked(ID_RESOURCES);
-                        return false;
-                    }
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    mCallback.OnNavigationItemClicked(ID_RESOURCES);
+                    return false;
                 });
 
         AccountHeader accountHeader = new AccountHeaderBuilder()
@@ -251,12 +203,10 @@ public class NavigationDrawerUtil {
                         resources,
                         notifications,
                         new DividerDrawerItem(),
-//                        holidays,
-//                        timetable,
-//                        marketplace,
                         myProfile,
                         aboutApp,
                         aboutDeveloper,
+                        tipsTricks,
                         new DividerDrawerItem(),
                         settings,
                         signOut,

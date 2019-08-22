@@ -25,13 +25,11 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.NotificationsRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
@@ -47,7 +45,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-class AllNotificationFragment extends Fragment {
+public class AllNotificationFragment extends Fragment {
 
 
     @BindView(R.id.recycler_all_notifications)
@@ -63,6 +61,16 @@ class AllNotificationFragment extends Fragment {
 //    private NotificationsViewModelForDate notificationsViewModelForDate;
 
     public AllNotificationFragment() {
+    }
+
+    public static AllNotificationFragment newInstance(String dateStr) {
+        AllNotificationFragment allNotificationFragment = new AllNotificationFragment();
+        if (dateStr != null) {
+            Bundle args = new Bundle();
+            args.putString(Constants.KEY_SEND_DATA_TO_NOTIFICATION_CLASS_DATE, dateStr);
+            allNotificationFragment.setArguments(args);
+        }
+        return allNotificationFragment;
     }
 
     @Override
@@ -103,7 +111,7 @@ class AllNotificationFragment extends Fragment {
             if (date != null) {
                 finalNotis = new ArrayList<>();
                 for (NotificationFirestoreModel x : notificationFirestoreModels) {
-                    if (x.getDateInMillis() - (new Date().getTime()) > -1) {
+                    if (Long.parseLong(x.getDateInMillis()) - (new Date().getTime()) > -1) {
                         finalNotis.add(x);
                     }
                 }
@@ -124,18 +132,15 @@ class AllNotificationFragment extends Fragment {
         });
 
         FirestoreQueryLiveData firestoreLiveData = notificationsViewModel.getFirestoreLiveData();
-        firestoreLiveData.observe(getActivity(), new Observer<QuerySnapshot>() {
-            @Override
-            public void onChanged(QuerySnapshot queryDocumentSnapshots) {
-                List<NotificationFirestoreModel> notificationFirestoreModels = new ArrayList<>();
-                List<String> listOfIds = new ArrayList<>();
-                for (DocumentSnapshot x :
-                        queryDocumentSnapshots.getDocuments()) {
-                    listOfIds.add(x.getId());
-                    notificationFirestoreModels.add(x.toObject(NotificationFirestoreModel.class));
-                }
-                notificationsViewModel.syncNotificationDatabase(listOfIds, notificationFirestoreModels);
+        firestoreLiveData.observe(getActivity(), queryDocumentSnapshots -> {
+            List<NotificationFirestoreModel> notificationFirestoreModels = new ArrayList<>();
+            List<String> listOfIds = new ArrayList<>();
+            for (DocumentSnapshot x :
+                    queryDocumentSnapshots.getDocuments()) {
+                listOfIds.add(x.getId());
+                notificationFirestoreModels.add(x.toObject(NotificationFirestoreModel.class));
             }
+            notificationsViewModel.syncNotificationDatabase(listOfIds, notificationFirestoreModels);
         });
     }
 

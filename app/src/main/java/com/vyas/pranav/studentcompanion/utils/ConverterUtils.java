@@ -224,6 +224,17 @@ public class ConverterUtils {
         private int year;
         private int dayOfYear;
 
+        public CustomDate(int date, int month, int year) {
+            this.date = date;
+            this.month = month;
+            this.year = year;
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.set(GregorianCalendar.DAY_OF_MONTH, date);
+            calendar.set(GregorianCalendar.MONTH, month - 1);
+            calendar.set(GregorianCalendar.YEAR, year);
+            this.dayOfYear = calendar.get(GregorianCalendar.DAY_OF_YEAR);
+        }
+
         /**
          * Instantiates a new Custom date.
          *

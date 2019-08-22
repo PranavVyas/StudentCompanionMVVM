@@ -60,9 +60,12 @@ public class MyProfileFragment extends Fragment {
     private MyProfileItemsRecyclerAdapter mAdapter;
 
     private List<ItemModel> items;
-    private List<String> ids;
 
     public MyProfileFragment() {
+    }
+
+    public static MyProfileFragment newInstance() {
+        return new MyProfileFragment();
     }
 
     @Override

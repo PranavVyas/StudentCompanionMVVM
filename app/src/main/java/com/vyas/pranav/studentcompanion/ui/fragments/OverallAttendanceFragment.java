@@ -56,6 +56,10 @@ public class OverallAttendanceFragment extends Fragment {
     public OverallAttendanceFragment() {
     }
 
+    public static OverallAttendanceFragment newInstance() {
+        return new OverallAttendanceFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

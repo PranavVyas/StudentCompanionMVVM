@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -77,6 +78,11 @@ public class SignInActivity extends AppCompatActivity {
 
     private void checkForUserSignIn() {
         if (signInViewModel.getCurrUser() == null) {
+            AuthMethodPickerLayout mLayout = new AuthMethodPickerLayout.Builder(R.layout.item_holder_login_screen)
+                    .setGoogleButtonId(R.id.btn_holder_sign_in_google)
+                    .setEmailButtonId(R.id.btn_holder_sign_in_email)
+                    .setTosAndPrivacyPolicyId(R.id.tv_holder_sign_in_tos)
+                    .build();
             // Create and launch sign-in intent
             startActivityForResult(
                     AuthUI.getInstance()
@@ -85,6 +91,7 @@ public class SignInActivity extends AppCompatActivity {
                             .setIsSmartLockEnabled(false, true)
                             .setTosAndPrivacyPolicyUrls(getString(R.string.terms_url), getString(R.string.policy_url))
                             .setLogo(R.drawable.ic_logo)
+                            .setAuthMethodPickerLayout(mLayout)
                             .build(),
                     RC_SIGN_IN);
         } else {

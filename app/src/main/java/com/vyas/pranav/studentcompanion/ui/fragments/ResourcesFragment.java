@@ -50,6 +50,10 @@ public class ResourcesFragment extends Fragment {
     public ResourcesFragment() {
     }
 
+    public static ResourcesFragment newInstance() {
+        return new ResourcesFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

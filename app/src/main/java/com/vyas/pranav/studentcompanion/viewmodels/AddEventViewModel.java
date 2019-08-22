@@ -1,4 +1,4 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package com.vyas.pranav.studentcompanion.viewmodels;
 /*
 Student Companion - An Android App that has features like attendance manager, note manager etc
 Copyright (C) 2019  Pranav Vyas
@@ -15,29 +15,34 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
-buildscript {
-    
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
-        classpath 'com.google.gms:google-services:4.3.0'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
+import android.app.Application;
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven { url 'https://jitpack.io' }
-    }
-}
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+public class AddEventViewModel extends AndroidViewModel {
+
+    private long dateInMillis;
+    private String dateStr;
+
+    public AddEventViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public long getDateInMillis() {
+        return dateInMillis;
+    }
+
+    public void setDateInMillis(long dateInMillis) {
+        this.dateInMillis = dateInMillis;
+    }
+
+    public String getDateStr() {
+        return dateStr;
+    }
+
+    public void setDateStr(String dateStr) {
+        this.dateStr = dateStr;
+    }
 }

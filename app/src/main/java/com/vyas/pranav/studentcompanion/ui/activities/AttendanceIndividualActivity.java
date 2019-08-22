@@ -48,10 +48,7 @@ public class AttendanceIndividualActivity extends AppCompatActivity {
         if (receivedData != null) {
             if (receivedData.hasExtra(EXTRA_DATE)) {
                 String dateStr = receivedData.getStringExtra(EXTRA_DATE);
-                Bundle bundle = new Bundle();
-                bundle.putString(EXTRA_DATE, dateStr);
-                AttendanceIndividualFragment attendanceIndividualFragment = new AttendanceIndividualFragment();
-                attendanceIndividualFragment.setArguments(bundle);
+                AttendanceIndividualFragment attendanceIndividualFragment = AttendanceIndividualFragment.newInstance(dateStr);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_attendance_individual_container, attendanceIndividualFragment)
                         .commit();

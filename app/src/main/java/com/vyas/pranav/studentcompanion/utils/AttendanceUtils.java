@@ -79,7 +79,7 @@ public class AttendanceUtils {
                             if (notificationFirestoreModel == null) {
                                 notificationFirestoreModel = new NotificationFirestoreModel();
                                 long time = new Date().getTime() + TimeUnit.DAYS.toMillis(1);
-                                notificationFirestoreModel.setDateInMillis(time);
+                                notificationFirestoreModel.setDateInMillis(String.valueOf(time));
                                 notificationFirestoreModel.setUrl("-1");
                                 notificationFirestoreModel.setVenue("-1");
                                 notificationFirestoreModel.setName("Low Attendance");
@@ -90,7 +90,7 @@ public class AttendanceUtils {
                                 notificationRepository.insertNotification(notificationFirestoreModel);
                             } else {
                                 long time = new Date().getTime() + TimeUnit.DAYS.toMillis(1);
-                                notificationFirestoreModel.setDateInMillis(time);
+                                notificationFirestoreModel.setDateInMillis(String.valueOf(time));
                                 notificationFirestoreModel.setUrl("-1");
                                 notificationFirestoreModel.setVenue("-1");
                                 notificationFirestoreModel.setName("Low Attendance");

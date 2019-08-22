@@ -32,7 +32,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,7 +42,6 @@ import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.AttendanceIndividualRecyclerAdapter;
-import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.ui.activities.AttendanceIndividualActivity;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModel;
@@ -51,7 +49,6 @@ import com.vyas.pranav.studentcompanion.viewmodels.AttendanceForDateViewModelFac
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,9 +71,20 @@ public class AttendanceIndividualFragment extends Fragment {
     private AttendanceForDateViewModel attendanceViewModel;
     private AttendanceIndividualRecyclerAdapter mAdapter;
 
+
     public AttendanceIndividualFragment() {
     }
 
+    public static AttendanceIndividualFragment newInstance(String dateStr) {
+        if (dateStr != null) {
+            Bundle args = new Bundle();
+            args.putString(AttendanceIndividualActivity.EXTRA_DATE, dateStr);
+            AttendanceIndividualFragment fragment = new AttendanceIndividualFragment();
+            fragment.setArguments(args);
+            return fragment;
+        }
+        return new AttendanceIndividualFragment();
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -143,25 +151,17 @@ public class AttendanceIndividualFragment extends Fragment {
     private void setUpIndividualAttendance(Date date) {
         AttendanceForDateViewModelFactory factory = new AttendanceForDateViewModelFactory(getActivity().getApplicationContext(), date);
         attendanceViewModel = ViewModelProviders.of(getActivity(), factory).get(AttendanceForDateViewModel.class);
-        attendanceViewModel.getAttendanceForDate().observe(this, new Observer<List<AttendanceEntry>>() {
-            @Override
-            public void onChanged(final List<AttendanceEntry> attendanceEntries) {
-                if (!attendanceEntries.isEmpty()) {
-                    mAdapter.submitList(attendanceEntries);
-                    stopProgress();
-                    showHolidayPlaceHolder(false);
-                    return;
-                }
-                showHolidayPlaceHolder(true);
+        attendanceViewModel.getAttendanceForDate().observe(this, attendanceEntries -> {
+            if (!attendanceEntries.isEmpty()) {
+                mAdapter.submitList(attendanceEntries);
                 stopProgress();
+                showHolidayPlaceHolder(false);
+                return;
             }
+            showHolidayPlaceHolder(true);
+            stopProgress();
         });
-        mAdapter.setOnAttendanceSwitchToggledListener(new AttendanceIndividualRecyclerAdapter.onAttendanceSwitchToggleListener() {
-            @Override
-            public void onAttendanceSwitchToggled(AttendanceEntry attendanceEntry) {
-                attendanceViewModel.updateAttendanceInSequence(attendanceEntry);
-            }
-        });
+        mAdapter.setOnAttendanceSwitchToggledListener(attendanceEntry -> attendanceViewModel.updateAttendanceInSequence(attendanceEntry));
     }
 
     private void startProgress() {

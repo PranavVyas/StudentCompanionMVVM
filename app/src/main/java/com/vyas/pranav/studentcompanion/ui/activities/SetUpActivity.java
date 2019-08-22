@@ -104,7 +104,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         retryClicked();
         switch (step) {
             case 1:
-                SetUpDatesFragment setUpDatesFragment = new SetUpDatesFragment();
+                SetUpDatesFragment setUpDatesFragment = SetUpDatesFragment.newInstance();
                 addAnimationsToFragment(setUpDatesFragment);
                 setUpDatesFragment.setOnDatesSetUpListener(this);
                 getSupportFragmentManager().beginTransaction()
@@ -113,7 +113,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
                 break;
 
             case 2:
-                SetUpDetailsSemFragment setUpDetailsSemFragment = new SetUpDetailsSemFragment();
+                SetUpDetailsSemFragment setUpDetailsSemFragment = SetUpDetailsSemFragment.newInstance();
                 setUpDetailsSemFragment.setOnSubjectSelectedListener(this);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_setup_activity_container, setUpDetailsSemFragment)
@@ -121,7 +121,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
                 break;
 
             case 3:
-                SetUpLectureTimeFragment setUpLectureTimeFragment = new SetUpLectureTimeFragment();
+                SetUpLectureTimeFragment setUpLectureTimeFragment = SetUpLectureTimeFragment.newInstance();
                 addAnimationsToFragment(setUpLectureTimeFragment);
                 setUpLectureTimeFragment.setOnLectureTimeSelectedListener(this);
                 getSupportFragmentManager().beginTransaction()
@@ -130,7 +130,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
                 break;
 
             case 4:
-                SetUpTimetableFragment setUpTimetableFragment = new SetUpTimetableFragment();
+                SetUpTimetableFragment setUpTimetableFragment = SetUpTimetableFragment.newInstance();
                 addAnimationsToFragment(setUpTimetableFragment);
                 setUpTimetableFragment.setOnTimeTableSelectedListener(this);
                 getSupportFragmentManager().beginTransaction()

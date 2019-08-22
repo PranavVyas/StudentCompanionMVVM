@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,15 +23,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.adapters.NotesViewPagerAdapterNew;
+import com.vyas.pranav.studentcompanion.ui.fragments.NotesListFragment;
 
 import java.util.concurrent.TimeUnit;
 
@@ -59,7 +64,7 @@ public class NotesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        NotesViewPagerAdapterNew mAdapter = new NotesViewPagerAdapterNew(getSupportFragmentManager());
+        NoteViewPagerAdapter mAdapter = new NoteViewPagerAdapter(getSupportFragmentManager());
         viewPagerNotes.setAdapter(mAdapter);
         new Handler().postDelayed(this::showInstruction, TimeUnit.SECONDS.toMillis(1));
     }
@@ -106,6 +111,49 @@ public class NotesActivity extends AppCompatActivity {
                 .show();
     }
 }
+
+class NoteViewPagerAdapter extends FragmentStatePagerAdapter {
+
+    public NoteViewPagerAdapter(@NonNull FragmentManager fm) {
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "Till Today";
+
+            case 1:
+                return "All";
+
+            default:
+                return "Default";
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return 2;
+    }
+
+    @NonNull
+    @Override
+    public Fragment getItem(int position) {
+        switch (position) {
+            case 0:
+                return NotesListFragment.newInstance(NotesListFragment.TYPE_TILL_TODAY_NOTES_SHOW);
+
+            case 1:
+                return NotesListFragment.newInstance(NotesListFragment.TYPE_ALL_NOTES_SHOW);
+
+            default:
+                return null;
+        }
+    }
+}
+
 
 
 

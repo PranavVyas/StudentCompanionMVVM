@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 mDrawer.closeDrawer();
             } else if (mainViewModel.getCurrentFragmentId() != NavigationDrawerUtil.ID_TODAY_ATTENDANCE) {
                 mainViewModel.setCurrentFragmentId(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
-                AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
+                AttendanceIndividualFragment attendanceFragment = AttendanceIndividualFragment.newInstance(null);
                 swapFragment(attendanceFragment);
                 tvTitle.setText(R.string.title_home);
                 mDrawer.setSelection(NavigationDrawerUtil.ID_TODAY_ATTENDANCE);
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         switch (identifier) {
             case NavigationDrawerUtil.ID_TODAY_ATTENDANCE:
                 tvTitle.setText(R.string.navigation_home);
-                AttendanceIndividualFragment attendanceFragment = new AttendanceIndividualFragment();
+                AttendanceIndividualFragment attendanceFragment = AttendanceIndividualFragment.newInstance(null);
                 swapFragment(attendanceFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
                 break;
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
             case NavigationDrawerUtil.ID_OVERALL_ATTENDANCE:
                 tvTitle.setText(R.string.navigation_overall_attendance);
 
-                OverallAttendanceFragment overallAttendanceFragment = new OverallAttendanceFragment();
+                OverallAttendanceFragment overallAttendanceFragment = OverallAttendanceFragment.newInstance();
                 swapFragment(overallAttendanceFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
                 break;
@@ -153,21 +153,21 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
                 break;
 
             case NavigationDrawerUtil.ID_MY_PROFILE:
-                MyProfileFragment myProfileFragment = new MyProfileFragment();
+                MyProfileFragment myProfileFragment = MyProfileFragment.newInstance();
                 tvTitle.setText(R.string.navigation_my_profile);
                 swapFragment(myProfileFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_ABOUT_APP:
-                AboutThisAppFragment aboutThisAppFragment = new AboutThisAppFragment();
+                AboutThisAppFragment aboutThisAppFragment = AboutThisAppFragment.newInstance();
                 tvTitle.setText(R.string.navigation_about_this_app);
                 swapFragment(aboutThisAppFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
                 break;
 
             case NavigationDrawerUtil.ID_ABOUT_DEVELOPER:
-                AboutDeveloperFragment aboutDeveloperFragment = new AboutDeveloperFragment();
+                AboutDeveloperFragment aboutDeveloperFragment = AboutDeveloperFragment.newInstance();
                 tvTitle.setText(R.string.navigation_about_developer);
                 swapFragment(aboutDeveloperFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
 
             case NavigationDrawerUtil.ID_RESOURCES:
-                ResourcesFragment resourcesFragment = new ResourcesFragment();
+                ResourcesFragment resourcesFragment = ResourcesFragment.newInstance();
                 tvTitle.setText(R.string.navigation_resources);
                 swapFragment(resourcesFragment);
                 mainViewModel.setCurrentFragmentId(identifier);

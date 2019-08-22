@@ -144,8 +144,23 @@
     <string name="instr_notes_add_desc">You can add new note from here!</string>
     <string name="instr_menu_digital_library_auto_sync_desc">You can also use feature of \"Auto Sync\" to turn on Sync in Realtime whenever database is changed by any update on cloud</string>
     <string name="instr_menu_digital_library_auto_sync_title">Auto Sync</string>
+
     <string name="terms_url">https://student-companion-vyas.000webhostapp.com/terms-conditions</string>
     <string name="policy_url">https://student-companion-vyas.000webhostapp.com/privacy-policy-student-companion</string>
     <string name="website_url">https://student-companion-vyas.000webhostapp.com</string>
 
+    <string name="about_developer_about_me">● Google Certified Android Associate Developer\n● Udacity Certified Android Developer\n● I like to develop Android Apps as my hobby\n● To know more <u>click here</u></string>
+    <string name="developer_website">https://student-companion-vyas.000webhostapp.com/about-developer</string>
+    <string name="version_info">1.0.0\n(See Open Source License For License Info)</string>
+    <string name="last_update_info">August 2019</string>
+    <string name="app_desc">The Student Companion is as the name suggest comes with many features like Attendance Manager which can predict your attendance, Smart Silent, Timetable, Holidays, Auto Attendance, Reminder to fill attendance, Night Mode, etc…</string>
+    <string name="terms_and_conditions">Terms and Conditions (Click Here)</string>
+    <string name="developer">Pranav Vyas</string>
+    <string name="open_source_license">Open Source License (Click Here)</string>
+    <string name="privacy_policy">Privacy Policy (Click Here)</string>
+    <string name="version_title">Version</string>
+    <string name="last_update_title">Last Update</string>
+    <string name="developer_title">Developer</string>
+    <string name="website_title">Website (maintenance time :3–4 PM)</string>
+    <string name="navigation_tips_tricks"><![CDATA[Tips & Tricks]]></string>
 </resources>

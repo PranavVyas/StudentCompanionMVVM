@@ -34,7 +34,7 @@ public class NotificationFirestoreModel {
     private String _ID = "DEFAULT_ID";
     private String url = "";
     private String venue = "";
-    private long dateInMillis;
+    private String dateInMillis;
     private int type = Constants.NOTI_TYPE_EVENT;
 
     @Ignore
@@ -42,7 +42,7 @@ public class NotificationFirestoreModel {
     }
 
     @Ignore
-    public NotificationFirestoreModel(String name, String short_info, String image_url, String url, String venue, long dateInMillis, int type) {
+    public NotificationFirestoreModel(String name, String short_info, String image_url, String url, String venue, String dateInMillis, int type) {
         this.name = name;
         this.short_info = short_info;
         this.image_url = image_url;
@@ -52,7 +52,7 @@ public class NotificationFirestoreModel {
         this.type = type;
     }
 
-    public NotificationFirestoreModel(String name, String short_info, String image_url, String _ID, String url, String venue, long dateInMillis, int type) {
+    public NotificationFirestoreModel(String name, String short_info, String image_url, String _ID, String url, String venue, String dateInMillis, int type) {
         this.name = name;
         this.short_info = short_info;
         this.image_url = image_url;
@@ -81,11 +81,11 @@ public class NotificationFirestoreModel {
         this.name = name;
     }
 
-    public long getDateInMillis() {
+    public String getDateInMillis() {
         return dateInMillis;
     }
 
-    public void setDateInMillis(long dateInMillis) {
+    public void setDateInMillis(String dateInMillis) {
         this.dateInMillis = dateInMillis;
     }
 

@@ -102,6 +102,11 @@
       "name": "Icons from Icon Finder",
       "license": "GPL",
       "url": "https://www.gnu.org/licenses/gpl-3.0.html"
+    },
+    {
+      "name": "Sublime Picker",
+      "license": "Apache License, Version 2.0",
+      "url": "https://github.com/vikramkakkar/SublimePicker"
     }
   ]
 }

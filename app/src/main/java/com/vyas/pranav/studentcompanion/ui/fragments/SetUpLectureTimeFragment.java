@@ -56,7 +56,11 @@ public class SetUpLectureTimeFragment extends Fragment {
     public SetUpLectureTimeFragment() {
     }
 
-    void clickedInfo() {
+    public static SetUpLectureTimeFragment newInstance() {
+        return new SetUpLectureTimeFragment();
+    }
+
+    private void clickedInfo() {
         BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
         mDialog.setContentView(R.layout.item_holder_bottom_sheet_setup_time_info);
         mDialog.show();
@@ -110,12 +114,7 @@ public class SetUpLectureTimeFragment extends Fragment {
 
                 int finalI = i;
                 btnStartTime.setOnClickListener(view -> {
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int i12, int i1) {
-                            btnStartTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i12 + ":" + i1)));
-                        }
-                    }, 0, 0, false);
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (timePicker, i12, i1) -> btnStartTime.setText(ConverterUtils.convertTimeIntInString(ConverterUtils.convertTimeInInt(i12 + ":" + i1))), 0, 0, false);
                     timePickerDialog.setTitle("Choose Starting Time for Lecture " + ((finalI / 2) + 1));
                     timePickerDialog.show();
                 });

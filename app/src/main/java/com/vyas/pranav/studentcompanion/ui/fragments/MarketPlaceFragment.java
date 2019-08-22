@@ -102,6 +102,10 @@ public class MarketPlaceFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static MarketPlaceFragment newInstance() {
+        return new MarketPlaceFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

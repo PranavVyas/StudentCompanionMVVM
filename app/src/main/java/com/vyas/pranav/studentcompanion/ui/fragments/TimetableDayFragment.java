@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.TimetableDayRecyclerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -50,6 +51,17 @@ public class TimetableDayFragment extends Fragment {
     private TimetableDayRecyclerAdapter mAdapter;
 
     public TimetableDayFragment() {
+    }
+
+    public static TimetableDayFragment newInstance(String day, ArrayList<String> lectures) {
+        TimetableDayFragment fragment = new TimetableDayFragment();
+        if (day != null) {
+            Bundle args = new Bundle();
+            args.putStringArrayList(EXTRA_TIMETABLE_DAY_KEY, lectures);
+            args.putString(EXTRA_TIMETABLE_DAY, day);
+            fragment.setArguments(args);
+        }
+        return fragment;
     }
 
 

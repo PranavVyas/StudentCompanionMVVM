@@ -68,22 +68,21 @@ public class ContainerActivity extends AppCompatActivity {
         setFragmentTitle(receivedData);
         switch (receivedData) {
             case TIME_TABLE:
-                TimetableFragment timetableFragment = new TimetableFragment();
-//                timetableFragment.setEnterTransition();
+                TimetableFragment timetableFragment = TimetableFragment.newInstance();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_container_activity_container, timetableFragment, "TIME_TABLE")
                         .commit();
                 break;
 
             case HOLIDAYS:
-                HolidayFragment holidayFragment = new HolidayFragment();
+                HolidayFragment holidayFragment = HolidayFragment.newInstance();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_container_activity_container, holidayFragment, "HOLIDAY")
                         .commit();
                 break;
 
             case MARKETPLACE_ACTIVITY:
-                MarketPlaceFragment marketPlaceFragment = new MarketPlaceFragment();
+                MarketPlaceFragment marketPlaceFragment = MarketPlaceFragment.newInstance();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_container_activity_container, marketPlaceFragment, "MARKET_PLACE")
                         .commit();

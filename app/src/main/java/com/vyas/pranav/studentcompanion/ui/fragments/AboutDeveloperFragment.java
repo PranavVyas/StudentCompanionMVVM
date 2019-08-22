@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +42,11 @@ public class AboutDeveloperFragment extends Fragment {
     ImageView imageDeveloper;
 
     public AboutDeveloperFragment() {
+    }
+
+    public static AboutDeveloperFragment newInstance() {
+        AboutDeveloperFragment fragment = new AboutDeveloperFragment();
+        return fragment;
     }
 
 
@@ -87,5 +93,16 @@ public class AboutDeveloperFragment extends Fragment {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(getString(R.string.profile_url_instagram)));
         startActivity(intent);
+    }
+
+    @OnClick(R.id.tv_about_developer_about_me)
+    void aboutMeClicked() {
+        Intent openWebsite = new Intent(Intent.ACTION_VIEW);
+        openWebsite.setData(Uri.parse(getString(R.string.developer_website)));
+        if (openWebsite.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivity(openWebsite);
+        } else {
+            Toast.makeText(getContext(), "Install any browser application to view this", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -23,6 +23,21 @@ GNU Affero General Public License for more details.
     tools:context=".ui.fragments.NotificationFragment">
     <!--tools:background="?attr/custom_background_main"-->
 
+    <!--<com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton-->
+    <!--android:id="@+id/fab_notification_add_event"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="?attr/colorAccent"-->
+    <!--android:clickable="true"-->
+    <!--android:textSize="18sp"-->
+    <!--android:textStyle="bold"-->
+    <!--app:fabIcon="@android:drawable/ic_input_add"-->
+    <!--app:fabText="Add Event"-->
+    <!--app:fabTextAllCaps="true"-->
+    <!--app:fabType="circle"-->
+    <!--app:layout_constraintBottom_toBottomOf="@+id/viewpager_notifications_frag"-->
+    <!--app:layout_constraintEnd_toEndOf="parent" />-->
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs_notifications_frag_viewpager_tab"
         android:layout_width="match_parent"
@@ -38,6 +53,8 @@ GNU Affero General Public License for more details.
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/tabs_notifications_frag_viewpager_tab"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
