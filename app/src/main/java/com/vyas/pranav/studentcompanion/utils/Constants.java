@@ -74,4 +74,9 @@ public final class Constants {
     public static final String PATH_COLLAGES = "collage";
     public static final int PAGE_SIZE_DIGITAL_LIBRARY = 20;
     public static final int SHOW_NOTIFICATION_RC_OVERALL_REFRESH_ATTENDANCE = 1021;
+    public static final int RC_OPEN_BACKUP_RESTORE_ACTIVITY = 1022;
+    public static final String METADATA_ATTENDANCE_CRITERIA = "METADATA_ATTENDANCE_CRITERIA";
+
+    public static final String METADATA_CURRENT_PATH = "METADATA_CURRENT_PATH";
+    public static final String METADATA_SEMESTER = "METADATA_SEMESTER";
 }

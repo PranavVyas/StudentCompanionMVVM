@@ -65,7 +65,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements NavigationDrawerUtil.OnNavigationItemClickedListener {
+public class MainActivity extends AppCompatActivity implements NavigationDrawerUtil.OnNavigationItemClickedListener, AppSettingsFragment.OnDatabaseImportedListener {
 
     private static final String TAG = "MainActivity";
     @BindView(R.id.toolbar_main_activity)
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
             case NavigationDrawerUtil.ID_NOTIFICATIONS:
                 tvTitle.setText(R.string.navigation_notifications);
-                NotificationFragment notificationFragment = new NotificationFragment();
+                NotificationFragment notificationFragment = NotificationFragment.newInstance();
                 swapFragment(notificationFragment);
                 mainViewModel.setCurrentFragmentId(identifier);
                 break;
@@ -263,6 +263,12 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
         notificationCount.observe(this, integer -> {
             mDrawer.updateBadge(NavigationDrawerUtil.ID_NOTIFICATIONS, new StringHolder(integer.toString()));
         });
+    }
+
+    @Override
+    public void databaseImported() {
+        Toast.makeText(this, "Activity recreated", Toast.LENGTH_SHORT).show();
+        recreate();
     }
 
 //    private void refreshOverallAttendance(){

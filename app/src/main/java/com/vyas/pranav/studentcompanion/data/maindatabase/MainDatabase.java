@@ -30,6 +30,10 @@ import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibra
 import com.vyas.pranav.studentcompanion.data.digitallibrarydatabase.DigitalLibraryEntry;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayDao;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
+import com.vyas.pranav.studentcompanion.data.lecturedatabase.LectureDao;
+import com.vyas.pranav.studentcompanion.data.lecturedatabase.LectureEntry;
+import com.vyas.pranav.studentcompanion.data.metadatadatabase.MetaDataDao;
+import com.vyas.pranav.studentcompanion.data.metadatadatabase.MetadataEntry;
 import com.vyas.pranav.studentcompanion.data.notedatabase.NoteDao;
 import com.vyas.pranav.studentcompanion.data.notedatabase.NotesEntry;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.NotificationDao;
@@ -40,7 +44,7 @@ import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDao;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.utils.DateConverter;
 
-@Database(entities = {AttendanceEntry.class, AutoAttendancePlaceEntry.class, DigitalLibraryEntry.class, HolidayEntry.class, OverallAttendanceEntry.class, TimetableEntry.class, NotificationFirestoreModel.class, NotesEntry.class}, version = 1, exportSchema = false)
+@Database(entities = {AttendanceEntry.class, AutoAttendancePlaceEntry.class, DigitalLibraryEntry.class, HolidayEntry.class, OverallAttendanceEntry.class, TimetableEntry.class, NotificationFirestoreModel.class, NotesEntry.class, LectureEntry.class, MetadataEntry.class}, version = 1, exportSchema = false)
 @TypeConverters(DateConverter.class)
 public abstract class MainDatabase extends RoomDatabase {
     public static final String DB_NAME = "MainDatabase";
@@ -52,13 +56,15 @@ public abstract class MainDatabase extends RoomDatabase {
             synchronized (LOCK) {
                 sInstance = Room.databaseBuilder(context.getApplicationContext()
                         , MainDatabase.class
-                        , context.getExternalFilesDir(null).getPath() + DB_NAME)
+                        , context.getExternalFilesDir(null) + "/" + DB_NAME)
                         .fallbackToDestructiveMigration()
                         .build();
             }
         }
         return sInstance;
     }
+
+    public abstract LectureDao lectureDao();
 
     public abstract AttendanceDao attendanceDao();
 
@@ -75,4 +81,6 @@ public abstract class MainDatabase extends RoomDatabase {
     public abstract NotificationDao notificationDao();
 
     public abstract NoteDao noteDao();
+
+    public abstract MetaDataDao metaDataDao();
 }

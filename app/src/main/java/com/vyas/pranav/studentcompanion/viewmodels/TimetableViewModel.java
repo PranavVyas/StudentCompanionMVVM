@@ -88,4 +88,7 @@ public class TimetableViewModel extends AndroidViewModel {
         return setUpProcessRepository.getEndingDate();
     }
 
+    public List<String> getSubjectList() {
+        return setUpProcessRepository.getSubjectList();
+    }
 }

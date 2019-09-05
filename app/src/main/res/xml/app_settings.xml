@@ -46,6 +46,7 @@ GNU Affero General Public License for more details.
     <Preference
         app:icon="@drawable/ic_auto_attendance_map"
         app:key="@string/pref_key_select_places_auto_attendance"
+        app:summary="@string/pref_summary_select_places_auto_attendance"
         app:title="@string/pref_select_places_auto_attendance" />
 
     <SwitchPreference
@@ -67,6 +68,13 @@ GNU Affero General Public License for more details.
     <Preference
         app:icon="@drawable/ic_chat"
         app:key="@string/pref_key_list_notification"
+        app:summary="@string/pref_summary_list_notification"
         app:title="@string/pref_list_notification_title" />
+
+    <Preference
+        app:icon="@drawable/ic_arrow_down_rounded"
+        app:key="@string/pref_key_backup_database"
+        app:summary="@string/pref_summary_backup_database"
+        app:title="@string/pref_title_backup_database" />
 
 </androidx.preference.PreferenceScreen>

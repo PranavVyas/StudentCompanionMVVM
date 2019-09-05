@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
@@ -30,6 +31,7 @@ import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAt
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.HolidayEntry;
 import com.vyas.pranav.studentcompanion.data.holidaydatabase.firebase.model.HolidayModel;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
+import com.vyas.pranav.studentcompanion.data.metadatadatabase.MetadataEntry;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceDao;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
@@ -47,28 +49,28 @@ import java.util.List;
 
 public class SetUpProcessRepository {
 
+    private static final Object LOCK = new Object();
+    private static SetUpProcessRepository instance;
     private Context context;
     //    private SharedPreferences preferences;
 //    private SharedPreferences.Editor editor;
     private HolidayRepository holidayRepository;
     private TimetableRepository timetableRepository;
     private SharedPreferencesUtils sharedPreferencesUtils;
+    private LectureRepository lectureRepository;
     private MainDatabase mDb;
-    private static final Object LOCK = new Object();
-
     private List<TimetableEntry> Monday;
     private List<TimetableEntry> Tuesday;
     private List<TimetableEntry> Wednesday;
     private List<TimetableEntry> Thursday;
     private List<TimetableEntry> Friday;
 
-    private static SetUpProcessRepository instance;
-
     public SetUpProcessRepository(Context context) {
         sharedPreferencesUtils = SharedPreferencesUtils.getInstance(context.getApplicationContext());
         this.context = context;
         holidayRepository = HolidayRepository.getInstance(context);
         timetableRepository = TimetableRepository.getInstance(context);
+        lectureRepository = LectureRepository.getInstance(context);
         mDb = MainDatabase.getInstance(context);
     }
 
@@ -135,6 +137,9 @@ public class SetUpProcessRepository {
     }
 
     public void setUpSemester(int semester) {
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            mDb.metaDataDao().addMetadata(new MetadataEntry(Constants.METADATA_SEMESTER, String.valueOf(semester)));
+        });
         sharedPreferencesUtils.setUpSemester(semester);
     }
 
@@ -183,67 +188,62 @@ public class SetUpProcessRepository {
                 holidayEntries.add(holiday);
             }
             setHolidays(holidayEntries);
-            List<Date> eligibleDates = removeHolidaysAndWeekends(holidayDates);
-            setUpAutoAttendanceDatabase();
-            eligibleDatesCalculated(eligibleDates);
+            holidayInitialized(holidayDates, ConverterUtils.convertStringToDate(getStartingDate()), ConverterUtils.convertStringToDate(getEndingDate()));
         });
+    }
 
-//        holidaysFetcher.setOnHolidaysReceivedListener(new HolidaysFetcher.OnHolidaysReceivedListener() {
-//            @Override
-//            public void onHolidaysReceived(List<HolidayEntry> holidayEntries) {
-//
-//            }
-//        });
-//        holidaysFetcher.getHolidayEntries();
-
-
+    public void holidayInitialized(List<Date> holidayDates, Date startDate, Date endDate) {
+        List<Date> eligibleDates = removeHolidaysAndWeekends(holidayDates, startDate, endDate);
+        setUpAutoAttendanceDatabase();
+        eligibleDatesCalculated(eligibleDates);
     }
 
     private void eligibleDatesCalculated(List<Date> eligibleDates) {
         final List<AttendanceEntry> attendanceEntries = new ArrayList<>();
-        Logger.d(eligibleDates);
         final LiveData<List<TimetableEntry>> fullTimetable = timetableRepository.getFullTimetable();
-        fullTimetable.observeForever(new Observer<List<TimetableEntry>>() {
-            @Override
-            public void onChanged(List<TimetableEntry> timetableEntries) {
-                fullTimetable.removeObserver(this);
-                setTimetableForDay(timetableEntries);
-                for (Date date :
-                        eligibleDates) {
-                    List<TimetableEntry> currList = new ArrayList<>();
-                    String day = ConverterUtils.getDayOfWeek(date);
-                    switch (day) {
-                        case "Monday":
-                            currList = Monday;
-                            break;
+        AppExecutors.getInstance().mainThread().execute(() -> {
+            fullTimetable.observeForever(new Observer<List<TimetableEntry>>() {
+                @Override
+                public void onChanged(List<TimetableEntry> timetableEntries) {
+                    fullTimetable.removeObserver(this);
+                    setTimetableForDay(timetableEntries);
+                    for (Date date :
+                            eligibleDates) {
+                        List<TimetableEntry> currList = new ArrayList<>();
+                        String day = ConverterUtils.getDayOfWeek(date);
+                        switch (day) {
+                            case "Monday":
+                                currList = Monday;
+                                break;
 
-                        case "Tuesday":
-                            currList = Tuesday;
-                            break;
+                            case "Tuesday":
+                                currList = Tuesday;
+                                break;
 
-                        case "Wednesday":
-                            currList = Wednesday;
-                            break;
+                            case "Wednesday":
+                                currList = Wednesday;
+                                break;
 
-                        case "Thursday":
-                            currList = Thursday;
-                            break;
+                            case "Thursday":
+                                currList = Thursday;
+                                break;
 
-                        case "Friday":
-                            currList = Friday;
-                            break;
+                            case "Friday":
+                                currList = Friday;
+                                break;
+                        }
+                        Logger.d("Size of Current List is " + currList.size());
+                        for (TimetableEntry x :
+                                currList) {
+                            AttendanceEntry attendanceEntry = new AttendanceEntry(date, x.getLectureNo(), x.getSubName(), false);
+                            attendanceEntries.add(attendanceEntry);
+                        }
+                        Logger.d("Till date " + date + " Size of attendance is " + attendanceEntries.size());
                     }
-                    Logger.d("Size of Current List is " + currList.size());
-                    for (TimetableEntry x :
-                            currList) {
-                        AttendanceEntry attendanceEntry = new AttendanceEntry(date, x.getLectureNo(), x.getSubName(), false);
-                        attendanceEntries.add(attendanceEntry);
-                    }
-                    Logger.d("Till date " + date + " Size of attendance is " + attendanceEntries.size());
+                    AttendanceDatabaseRepository repo = AttendanceDatabaseRepository.getInstance(context);
+                    repo.insertAllAttendanceAndOverallAttendance(attendanceEntries, context);
                 }
-                AttendanceDatabaseRepository repo = AttendanceDatabaseRepository.getInstance(context);
-                repo.insertAllAttendanceAndOverallAttendance(attendanceEntries, context);
-            }
+            });
         });
     }
 
@@ -277,11 +277,11 @@ public class SetUpProcessRepository {
                     break;
             }
         }
-        Logger.d("Size of Monday is " + Monday.size());
-        Logger.d("Size of Tuesday is " + Tuesday.size());
-        Logger.d("Size of Wednesday is " + Wednesday.size());
-        Logger.d("Size of Thursday is " + Thursday.size());
-        Logger.d("Size of Friday is " + Friday.size());
+//        Logger.d("Size of Monday is " + Monday.size());
+//        Logger.d("Size of Tuesday is " + Tuesday.size());
+//        Logger.d("Size of Wednesday is " + Wednesday.size());
+//        Logger.d("Size of Thursday is " + Thursday.size());
+//        Logger.d("Size of Friday is " + Friday.size());
     }
 
 
@@ -289,8 +289,8 @@ public class SetUpProcessRepository {
         holidayRepository.setHolidays(holidayEntries);
     }
 
-    private List<Date> removeHolidaysAndWeekends(List<Date> holidayDates) {
-        List<Date> allDates = AttendanceUtils.getDates(ConverterUtils.convertStringToDate(getStartingDate()), ConverterUtils.convertStringToDate(getEndingDate()));
+    private List<Date> removeHolidaysAndWeekends(List<Date> holidayDates, Date startDate, Date endDate) {
+        List<Date> allDates = AttendanceUtils.getDates(startDate, endDate);
         List<Date> resultDates = new ArrayList<>();
         for (int i = 0; i < allDates.size(); i++) {
             Date date = allDates.get(i);
@@ -331,6 +331,7 @@ public class SetUpProcessRepository {
 
     private void setUpAutoAttendanceDatabase() {
         final AutoAttendancePlaceDao autoAttendancePlaceDao = mDb.autoAttendancePlaceDao();
+        //TODO remove auto attendance first and then continue to avoid problem in future
         AppExecutors.getInstance().diskIO().execute(() -> {
             List<String> subjectsListOnly = getSubjectList();
             for (int i = 0; i < subjectsListOnly.size(); i++) {
@@ -357,6 +358,9 @@ public class SetUpProcessRepository {
     }
 
     public void setCurrentAttendanceCriteria(int progress) {
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            mDb.metaDataDao().addMetadata(new MetadataEntry(Constants.METADATA_ATTENDANCE_CRITERIA, String.valueOf(progress)));
+        });
         sharedPreferencesUtils.setCurrentAttendanceCriteria(progress);
     }
 
@@ -365,6 +369,16 @@ public class SetUpProcessRepository {
     }
 
     public void setCurrentPath(String currentPath) {
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            mDb.metaDataDao().addMetadata(new MetadataEntry(Constants.METADATA_CURRENT_PATH, currentPath));
+        });
         sharedPreferencesUtils.setCurrentPath(currentPath);
+    }
+
+    public void setTimesInDb(List<Integer> startTimes, List<Integer> endTimes) {
+        //ToDo
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            lectureRepository.insertLectures(startTimes, endTimes);
+        });
     }
 }

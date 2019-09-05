@@ -15,19 +15,17 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.preference.PreferenceManager;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
@@ -49,11 +47,18 @@ import java.util.concurrent.TimeUnit;
 
 public class AppSettingsRepository {
 
+    private static final Object LOCK = new Object();
+    private static AppSettingsRepository instance;
     private final Context context;
     private final SharedPreferences mPreference;
     private final SharedPreferences.Editor mEditor;
-    private static final Object LOCK = new Object();
-    private static AppSettingsRepository instance;
+
+    public AppSettingsRepository(Context context) {
+        this.context = context;
+        mPreference = PreferenceManager.getDefaultSharedPreferences(context);
+        mEditor = mPreference.edit();
+        mEditor.apply();
+    }
 
     public static AppSettingsRepository getInstance(Context context) {
         if (instance == null) {
@@ -64,13 +69,6 @@ public class AppSettingsRepository {
         return instance;
     }
 
-    public AppSettingsRepository(Context context) {
-        this.context = context;
-        mPreference = PreferenceManager.getDefaultSharedPreferences(context);
-        mEditor = mPreference.edit();
-        mEditor.apply();
-    }
-
     public boolean isReminderEnabled() {
         return mPreference.getBoolean(context.getString(R.string.pref_key_switch_enable_reminder), context.getResources().getBoolean(R.bool.pref_def_value_switch_enable_reminder));
     }
@@ -79,21 +77,21 @@ public class AppSettingsRepository {
         return mPreference.getInt(context.getString(R.string.pref_key_time_reminder_time), context.getResources().getInteger(R.integer.pref_def_value_time_reminder_time));
     }
 
-    public void cancelReminderJob() {
+    public boolean cancelReminderJob() {
         DailyJobForShowingReminder.cancelReminderJob();
-        Toast.makeText(context, "Reminder Canceled!", Toast.LENGTH_SHORT).show();
+        return true;
     }
 
-    public void setReminderJob(int timeInMinutes) {
+    public boolean setReminderJob(int timeInMinutes) {
         DailyJobForShowingReminder.scheduleReminderJob(timeInMinutes);
-        Toast.makeText(context, "Reminder set for time : " + ConverterUtils.convertTimeIntInString(timeInMinutes), Toast.LENGTH_SHORT).show();
+        return true;
     }
 
     public boolean isAutoAttendanceEnabled() {
         return mPreference.getBoolean(context.getString(R.string.pref_key_switch_enable_auto_attendance), context.getResources().getBoolean(R.bool.pref_def_value_switch_enable_auto_attendance));
     }
 
-    public void enableAutoSilentDevice() {
+    public boolean enableAutoSilentDevice() {
         DailyJobForSilentAction.cancelAllJobs();
         DailyJobForUnsilentAction.cancelAllJobs();
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
@@ -108,9 +106,7 @@ public class AppSettingsRepository {
                             if (!timetableEntries.get(i).getSubName().equals("No Lecture")) {
                                 int startTime = timetableEntries.get(i).getTimeStart();
                                 int endTime = timetableEntries.get(i).getTimeEnd();
-                                Toast.makeText(context, "Enabled Smart Silent!", Toast.LENGTH_SHORT).show();
                                 Logger.d("Smart Silent : Enabled");
-
                                 DailyJobForSilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(startTime + Constants.TIME_WINDOW_SILENT_DEVICE));
                                 DailyJobForUnsilentAction.scheduleDeviceSilentAtTime(TimeUnit.MINUTES.toMillis(endTime - Constants.TIME_WINDOW_UNSILENT_DEVICE));
                             }
@@ -119,19 +115,17 @@ public class AppSettingsRepository {
                 });
             }
         });
+        return true;
     }
 
     public void deleteUserAccount() {
-        AuthUI.getInstance().delete(context).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(context, "Account Successfully Removed\nRedirecting to Login screen...", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, SignInActivity.class);
-                    context.startActivity(intent);
-                } else if (task.isCanceled()) {
-                    Toast.makeText(context, "Error Occurred Try Again", Toast.LENGTH_SHORT).show();
-                }
+        AuthUI.getInstance().delete(context).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(context, "Account Successfully Removed\nRedirecting to Login screen...", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, SignInActivity.class);
+                context.startActivity(intent);
+            } else if (task.isCanceled()) {
+                Toast.makeText(context, "Error Occurred Try Again", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -157,14 +151,15 @@ public class AppSettingsRepository {
         return mPreference.getBoolean(context.getString(R.string.pref_key_switch_enable_smart_silent), false);
     }
 
-    public void toggleSmartSilent() {
+    public boolean toggleSmartSilent() {
         if (isSmartSilentEnabled()) {
             enableAutoSilentDevice();
+            return true;
         } else {
             DailyJobForSilentAction.cancelAllJobs();
             DailyJobForUnsilentAction.cancelAllJobs();
-            Toast.makeText(context, "Disabled Smart Silent!", Toast.LENGTH_SHORT).show();
             Logger.d("Smart Silent : Disabled");
+            return false;
         }
     }
 

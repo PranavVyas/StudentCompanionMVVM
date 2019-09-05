@@ -38,6 +38,9 @@ public interface AttendanceDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateAttendance(AttendanceEntry attendanceEntry);
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateAttendance(List<AttendanceEntry> attendanceEntries);
+
     @Delete
     void deleteAttendance(AttendanceEntry attendanceEntry);
 
@@ -55,5 +58,17 @@ public interface AttendanceDao {
 
     @Query("SELECT COUNT(_ID) FROM AttendanceIndividual WHERE subjectName = :subName AND present = 0 AND date <= :endDate AND date >= :startDate")
     int getBunkedDaysForSubject(String subName, Date startDate, Date endDate);
+
+    @Query("SELECT date FROM AttendanceIndividual ORDER BY date ASC LIMIT 1")
+    Date getFirstDate();
+
+    @Query("SELECT date FROM AttendanceIndividual ORDER BY date DESC LIMIT 1")
+    Date getLastDate();
+
+    @Query("SELECT * FROM attendanceindividual WHERE subjectName = :subName AND date <= :endDate AND date >= :startDate")
+    List<AttendanceEntry> getDaysForSubject(String subName, Date startDate, Date endDate);
+
+    @Query("DELETE FROM AttendanceIndividual WHERE date > :date")
+    void removeAttendanceAfter(Date date);
 
 }

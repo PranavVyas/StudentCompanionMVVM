@@ -1,38 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-Student Companion - An Android App that has features like attendance manager, note manager etc
-Copyright (C) 2019  Pranav Vyas
-
-This file is a part of Student Companion.
-
-Student Companion is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Student Companion is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
--->
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.vyas.pranav.studentcompanion">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-feature
-        android:name="android.hardware.location.network"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.location.gps"
-        android:required="false" />
 
     <application
         android:name=".utils.MainApp"
@@ -44,10 +13,23 @@ GNU Affero General Public License for more details.
         android:theme="@style/AppTheme.Launcher"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:theme">
+        <activity android:name=".ui.activities.DeveloperTimetableActivity"></activity>
+        <activity
+            android:name=".ui.activities.DeveloperAttendanceActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.DeveloperActivity" />
+        <activity
+            android:name=".ui.activities.DeveloperActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.AddEventActivity"
-            android:launchMode="singleTop" />
-        <activity android:name=".ui.activities.ImportExportActivity" />
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.MainActivity" />
+        <activity
+            android:name=".ui.activities.ImportExportActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.MainActivity" />
         <activity
             android:name=".ui.activities.AddNoteActivity"
             android:launchMode="singleTop"
@@ -75,15 +57,6 @@ GNU Affero General Public License for more details.
             android:name=".ui.activities.OpenSourceInformationActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivity" />
-
-        <uses-library
-            android:name="org.apache.http.legacy"
-            android:required="false" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/api_key" />
-
         <activity
             android:name=".ui.activities.MainActivity"
             android:launchMode="singleTop" />
@@ -98,19 +71,6 @@ GNU Affero General Public License for more details.
             android:name=".ui.activities.SetUpActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-
-        <service android:name=".services.EditOverallAttendanceIntentService" />
-        <service android:name=".services.AttendanceEditIntentService" />
-        <service android:name=".services.ToggleSilentDeviceIntentService" />
-        <service
-            android:name=".services.NotificationFcmService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".services.FenceAutoAttendanceIntentService" />
-
         <activity
             android:name=".ui.activities.SignInActivity"
             android:launchMode="singleTop">
@@ -154,8 +114,44 @@ GNU Affero General Public License for more details.
         </activity>
 
         <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/api_key" />
+        <meta-data
             android:name="com.google.android.awareness.API_KEY"
             android:value="@string/api_fence_key" />
+
+        <service android:name=".services.EditOverallAttendanceIntentService" />
+        <service android:name=".services.AttendanceEditIntentService" />
+        <service android:name=".services.ToggleSilentDeviceIntentService" />
+        <service
+            android:name=".services.NotificationFcmService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".services.FenceAutoAttendanceIntentService" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
+
+    <uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

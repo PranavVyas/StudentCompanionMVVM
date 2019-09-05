@@ -15,7 +15,8 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
-import android.app.ActivityOptions;
+
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +27,6 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,9 +37,11 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
 import com.vyas.pranav.studentcompanion.ui.activities.AutoAttendanceSubjectListActivity;
+import com.vyas.pranav.studentcompanion.ui.activities.ImportExportActivity;
 import com.vyas.pranav.studentcompanion.ui.activities.NotificationPreferenceActivity;
 import com.vyas.pranav.studentcompanion.utils.AutoAttendanceHelper;
 import com.vyas.pranav.studentcompanion.utils.Constants;
@@ -58,6 +60,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
 
     private AppSettingsViewModel appSettingsViewModel;
     private AutoAttendanceHelper helper;
+    private OnDatabaseImportedListener mCallback;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -98,7 +101,9 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             setReminderIfEnabled();
         } else if (s.equals(getString(R.string.pref_key_time_reminder_time))) {
             appSettingsViewModel.cancelReminderJob();
-            appSettingsViewModel.setReminderJobTime(getTimeFromViewModel());
+            if (appSettingsViewModel.setReminderJobTime(getTimeFromViewModel())) {
+                showSnackbar("Daily Reminder set successfully at " + ConverterUtils.convertTimeIntInString(appSettingsViewModel.getReminderTime()));
+            }
         } else if (s.equals(getString(R.string.pref_key_switch_enable_auto_attendance))) {
 //            checkAutoAttendanceStateAndExecute();
 //            appSettingsViewModel.setRefreshGeoFence(appSettingsViewModel.isAutoAttendanceEnabled());
@@ -162,9 +167,13 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     private void setReminderIfEnabled() {
         boolean isEnabled = appSettingsViewModel.isReminderEnabled();
         if (isEnabled) {
-            appSettingsViewModel.setReminderJobTime(getTimeFromViewModel());
+            if (appSettingsViewModel.setReminderJobTime(getTimeFromViewModel())) {
+                showSnackbar("Daily Reminder set successfully at " + ConverterUtils.convertTimeIntInString(appSettingsViewModel.getReminderTime()));
+            }
         } else {
-            appSettingsViewModel.cancelReminderJob();
+            if (appSettingsViewModel.cancelReminderJob()) {
+                showSnackbar("Reminder Cancelled!");
+            }
         }
     }
 
@@ -178,8 +187,7 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             (findPreference(getString(R.string.pref_key_time_reminder_time))).setEnabled(true);
         } else {
             (findPreference(getString(R.string.pref_key_time_reminder_time))).setEnabled(false);
-//            CustomSwitchPreference customSwitchPreference = (CustomSwitchPreference) findPreference(getString(R.string.pref_key_time_reminder_time));
-//            customSwitchPreference.setSwitchState(false);
+
         }
     }
 
@@ -206,6 +214,12 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        mCallback = (OnDatabaseImportedListener) context;
+        super.onAttach(context);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         appSettingsViewModel = ViewModelProviders.of(getActivity()).get(AppSettingsViewModel.class);
@@ -214,48 +228,44 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         setSelectTimeStateFromViewModel();
         setEditAutoAttendanceStateFromViewModel();
         //Select Places for Auto Attendance is Clicked
-        findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-//                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                Intent intent = new Intent(getContext(), AutoAttendanceSubjectListActivity.class);
-                startActivity(intent);
-                return false;
-            }
+        findPreference(getString(R.string.pref_key_select_places_auto_attendance)).setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent(getContext(), AutoAttendanceSubjectListActivity.class);
+            startActivity(intent);
+            return false;
         });
         //Smart Silent is Clicked
-        findPreference(getString(R.string.pref_key_switch_enable_smart_silent)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                return checkAndApplySmartSilent();
-            }
-        });
+        findPreference(getString(R.string.pref_key_switch_enable_smart_silent)).setOnPreferenceClickListener(preference -> checkAndApplySmartSilent());
 
         //Notification is clicked
-        findPreference(getString(R.string.pref_key_list_notification)).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                Intent intent = new Intent(getContext(), NotificationPreferenceActivity.class);
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                startActivity(intent);
-                return true;
-            }
+        findPreference(getString(R.string.pref_key_list_notification)).setOnPreferenceClickListener(preference -> {
+            Intent intent = new Intent(getContext(), NotificationPreferenceActivity.class);
+            startActivity(intent);
+            return true;
+        });
+
+        findPreference(getString(R.string.pref_key_backup_database)).setOnPreferenceClickListener((preference) -> {
+            Intent intent = new Intent(getContext(), ImportExportActivity.class);
+            intent.putExtra(ImportExportActivity.EXTRA_FORCE_START_ACTIVITY, true);
+            startActivityForResult(intent, Constants.RC_OPEN_BACKUP_RESTORE_ACTIVITY, null);
+            return false;
         });
     }
 
     private boolean checkAndApplySmartSilent() {
         if (isPermissionGranted()) {
-            //We can change preference here...
-            appSettingsViewModel.toggleSmartSilent();
+            if (appSettingsViewModel.toggleSmartSilent()) {
+                showSnackbar("Enabled Smart Silent, Your device will automatically silent from next time");
+            } else {
+                showSnackbar("Disabled Smart Silent");
+            }
             return true;
         } else {
             //We can not change value here..We need to revert back now
-            Toast.makeText(getContext(), "Permission is not granted\nPlease Grant Do Not Disturb Access to StudentCompanion", Toast.LENGTH_SHORT).show();
+            showSnackbar("Permission is not granted\nPlease Grant Do Not Disturb Access to StudentCompanion");
             NotificationManager nm = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
             if (Build.VERSION.SDK_INT >= 24 && !nm.isNotificationPolicyAccessGranted()) {
                 Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
-                startActivityForResult(intent, Constants.RC_SETTINGS_SILENT_DEVICE, bundle);
+                startActivityForResult(intent, Constants.RC_SETTINGS_SILENT_DEVICE, null);
             }
             return false;
         }
@@ -267,14 +277,35 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
         if (requestCode == Constants.RC_SETTINGS_SILENT_DEVICE) {
             ((SwitchPreference) getPreferenceScreen().findPreference(getString(R.string.pref_key_switch_enable_smart_silent))).setChecked(false);
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getContext(), "Thanks For Permission", Toast.LENGTH_SHORT).show();
+                showSnackbar("Thanks For Permission", Snackbar.LENGTH_SHORT);
             } else {
                 if (isPermissionGranted()) {
-                    Toast.makeText(getContext(), "Thank You For Permission! Please Enable it now", Toast.LENGTH_LONG).show();
+                    showSnackbar("Thank You For Permission! Please Enable it now", Snackbar.LENGTH_LONG);
                 } else {
-                    Toast.makeText(getContext(), "Please Provide me with permission", Toast.LENGTH_LONG).show();
+                    showSnackbar("Please Provide me with permission", Snackbar.LENGTH_LONG);
                 }
+            }
+        } else if (requestCode == Constants.RC_OPEN_BACKUP_RESTORE_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK) {
+                showSnackbar("Successfully changed in database");
+                getActivity().finish();
+            } else if (resultCode == 2) {
+                showSnackbar("Continue Clicked");
+                getActivity().finish();
             }
         }
     }
+
+    private void showSnackbar(String message) {
+        Snackbar.make(getListView(), message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void showSnackbar(String message, int length) {
+        Snackbar.make(getListView(), message, length).show();
+    }
+
+    public interface OnDatabaseImportedListener {
+        void databaseImported();
+    }
+
 }

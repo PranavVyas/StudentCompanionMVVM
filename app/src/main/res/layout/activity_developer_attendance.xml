@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.DeveloperAttendanceActivity">
+
+    <Button
+        android:id="@+id/btn_developer_attendance_from_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="from date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_developer_attendance_subjects" />
+
+    <Button
+        android:id="@+id/btn_developer_attendance_to_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="to date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_developer_attendance_from_date" />
+
+    <Button
+        android:id="@+id/btn_developer_attendance_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Edit Now"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_developer_attendance_new_value" />
+
+    <Spinner
+        android:id="@+id/spinner_developer_attendance_subjects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_developer_attendance" />
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="to"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_developer_attendance_from_date"
+        app:layout_constraintEnd_toStartOf="@+id/btn_developer_attendance_to_date"
+        app:layout_constraintStart_toEndOf="@+id/btn_developer_attendance_from_date"
+        app:layout_constraintTop_toTopOf="@+id/btn_developer_attendance_from_date" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_developer_attendance"
+        style="@style/MyCustomMaterialToolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            style="@style/MyCustomToolbarTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Developer Attendance" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_developer_attendance_new_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_developer_attendance_from_date">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_developer_attendance_new_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="New Value" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

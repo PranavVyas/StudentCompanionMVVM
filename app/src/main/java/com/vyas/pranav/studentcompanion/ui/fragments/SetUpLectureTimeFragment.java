@@ -38,6 +38,9 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -136,10 +139,10 @@ public class SetUpLectureTimeFragment extends Fragment {
 
     @OnClick(R.id.btn_set_up_lecture_time_continue)
     void clickedContinue() {
+        List<Integer> startTimes = new ArrayList<>();
+        List<Integer> endTimes = new ArrayList<>();
         for (int i = 0; i < noOfLecturesPerDay * 2; i++) {
-            if (i % 2 == 0) {
-                //Toast.makeText(getContext(), "Title detected", Toast.LENGTH_SHORT).show();
-            } else {
+            if (i % 2 != 0) {
                 LinearLayout linearLayout = (LinearLayout) linearContainer.getChildAt(i);
 
                 String startTimeStr = ((MaterialButton) linearLayout.getChildAt(0)).getText().toString();
@@ -158,12 +161,15 @@ public class SetUpLectureTimeFragment extends Fragment {
                     return;
                 }
 
+                startTimes.add(startTime);
+                endTimes.add(endTime);
                 setUpViewModel.setLectureStartTimeInSharedPrefs(i / 2, startTime);
                 Logger.d("Setting starting time for Lecture " + i / 2 + "as " + startTime + " Minutes");
                 setUpViewModel.setLectureEndTimeInSharedPrefs(i / 2, endTime);
                 Logger.d("Setting ending time for Lecture " + i / 2 + "as " + endTime + " Minutes");
             }
         }
+        setUpViewModel.setTimeInDb(startTimes, endTimes);
         if (listener != null) {
             listener.OnLectureTimeSelected();
         }

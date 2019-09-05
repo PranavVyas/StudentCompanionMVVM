@@ -49,12 +49,12 @@ public class AppSettingsViewModel extends AndroidViewModel {
         return appSettingsRepository.getReminderTime();
     }
 
-    public void setReminderJobTime(int timeInMinutes) {
-        appSettingsRepository.setReminderJob(timeInMinutes);
+    public boolean setReminderJobTime(int timeInMinutes) {
+        return appSettingsRepository.setReminderJob(timeInMinutes);
     }
 
-    public void cancelReminderJob() {
-        appSettingsRepository.cancelReminderJob();
+    public boolean cancelReminderJob() {
+        return appSettingsRepository.cancelReminderJob();
     }
 
     public boolean isAutoAttendanceEnabled() {
@@ -77,8 +77,8 @@ public class AppSettingsViewModel extends AndroidViewModel {
 //        appSettingsRepository.setGeoFenceRefreshing(isScheduled);
 //    }
 
-    public void toggleSmartSilent() {
-        appSettingsRepository.toggleSmartSilent();
+    public boolean toggleSmartSilent() {
+        return appSettingsRepository.toggleSmartSilent();
     }
 
     public LiveData<List<AutoAttendancePlaceEntry>> getAutoAttendanceLiveData() {

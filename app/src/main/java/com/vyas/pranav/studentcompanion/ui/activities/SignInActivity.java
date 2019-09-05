@@ -95,8 +95,10 @@ public class SignInActivity extends AppCompatActivity {
                             .build(),
                     RC_SIGN_IN);
         } else {
-            Intent startSetUp = new Intent(this, SetUpActivity.class);
-            startActivity(startSetUp);
+            Intent backUpActivity = new Intent(this, ImportExportActivity.class);
+            startActivity(backUpActivity);
+//            Intent startSetUp = new Intent(this, SetUpActivity.class);
+//            startActivity(startSetUp);
             finish();
         }
     }
@@ -116,8 +118,8 @@ public class SignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 showSnackbar("User Signed In");
 //                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
-                Intent startSetUp = new Intent(this, SetUpActivity.class);
-                startActivity(startSetUp);
+                Intent startImportExport = new Intent(this, ImportExportActivity.class);
+                startActivity(startImportExport);
                 finish();
             } else {
                 // Sign in failed

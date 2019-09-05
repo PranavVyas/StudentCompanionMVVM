@@ -42,15 +42,16 @@ public class NavigationDrawerUtil {
 
     public static final int ID_TODAY_ATTENDANCE = 1;
     public static final int ID_OVERALL_ATTENDANCE = 2;
-    public static final int ID_SETTINGS = 5;
-    public static final int ID_NOTIFICATIONS = 7;
-    public static final int ID_MY_PROFILE = 8;
-    public static final int ID_ABOUT_APP = 9;
-    public static final int ID_ABOUT_DEVELOPER = 10;
+    public static final int ID_RESOURCES = 3;
+    public static final int ID_NOTIFICATIONS = 4;
+    public static final int ID_MY_PROFILE = 5;
+    public static final int ID_ABOUT_APP = 6;
+    public static final int ID_SHARE_APP = 7;
+    public static final int ID_ABOUT_DEVELOPER = 8;
+    public static final int ID_TIPS_TRICKS = 9;
+    public static final int ID_SETTINGS = 10;
     public static final int ID_SIGN_OUT = 11;
     public static final int ID_DELETE_ACCOUNT = 12;
-    public static final int ID_RESOURCES = 3;
-    public static final int ID_TIPS_TRICKS = 13;
 
     public static Drawer getMaterialDrawer(Activity context, Toolbar toolbar, FirebaseUser currUser) {
 
@@ -104,6 +105,17 @@ public class NavigationDrawerUtil {
                     mCallback.OnNavigationItemClicked(ID_MY_PROFILE);
                     return false;
                 });
+        SecondaryDrawerItem shareApp = new SecondaryDrawerItem()
+                .withIdentifier(ID_SHARE_APP)
+                .withName(R.string.navigation_share_app)
+                .withIcon(R.drawable.ic_share_rounded)
+                .withOnDrawerItemClickListener((view, position, drawerItem) -> {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.share_message) + context.getString(R.string.feature_url) + "\n\n Download now: " + context.getString(R.string.download_url));
+                    shareIntent.setType("text/plain");
+                    context.startActivity(shareIntent);
+                    return false;
+                });
         SecondaryDrawerItem aboutApp = new SecondaryDrawerItem()
                 .withIdentifier(ID_ABOUT_APP)
                 .withName(R.string.navigation_about_this_app)
@@ -145,7 +157,7 @@ public class NavigationDrawerUtil {
                 .withSelectable(false)
                 .withOnDrawerItemClickListener((view, position, drawerItem) -> {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("https://student-companion-vyas.000webhostapp.com/faqs-tips-tricks"));
+                    intent.setData(Uri.parse(context.getString(R.string.tips_tricks_url)));
                     if (intent.resolveActivity(context.getPackageManager()) != null) {
                         context.startActivity(intent);
                     } else {
@@ -205,6 +217,7 @@ public class NavigationDrawerUtil {
                         new DividerDrawerItem(),
                         myProfile,
                         aboutApp,
+                        shareApp,
                         aboutDeveloper,
                         tipsTricks,
                         new DividerDrawerItem(),

@@ -221,4 +221,8 @@ public class SetUpViewModel extends AndroidViewModel {
         this.currentPath = currentPath;
         repository.setCurrentPath(currentPath);
     }
+
+    public void setTimeInDb(List<Integer> startTimes, List<Integer> endTimes) {
+        repository.setTimesInDb(startTimes, endTimes);
+    }
 }

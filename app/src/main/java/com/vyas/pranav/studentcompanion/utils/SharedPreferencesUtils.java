@@ -49,6 +49,7 @@ public class SharedPreferencesUtils {
     private static final String SHARED_PREF_TUTORIAL = "TUTORIAL_DONE";
     private static final String KEY_ATTENDANCE_CRITERIA = "SHARED_PREF_ATTENDANCE_CRITERIA";
     private static final String PATH_MAIN_SOURCE_FIRESTORE = "SHARED_PREF.FirestorePath";
+    private static final String SHARED_PREF_RESTORE_DONE = "SHARED_PREF_IS_RESTORED";
 
     private Context context;
     private SharedPreferences preferences;
@@ -271,5 +272,11 @@ public class SharedPreferencesUtils {
         editor.clear();
     }
 
+    public boolean isRestoreDone() {
+        return preferences.getBoolean(SHARED_PREF_RESTORE_DONE, false);
+    }
 
+    public void setRestoreDone(boolean b) {
+        editor.putBoolean(SHARED_PREF_RESTORE_DONE, b);
+    }
 }

@@ -55,19 +55,6 @@ GNU Affero General Public License for more details.
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/image_about_app_icon" />
 
-        <View
-            android:id="@+id/divider6"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="56dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="56dp"
-            android:background="?attr/custom_component_color_default"
-            app:layout_constraintEnd_toEndOf="@+id/textView32"
-            app:layout_constraintHorizontal_bias="0.35"
-            app:layout_constraintStart_toStartOf="@+id/textView32"
-            app:layout_constraintTop_toBottomOf="@+id/textView32" />
-
         <TextView
             android:id="@+id/textView33"
             style="@style/MyMaterialTextView.SmallTextViewBody2"
@@ -87,8 +74,8 @@ GNU Affero General Public License for more details.
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textStyle="bold"
             android:text="@string/version_info"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/textView33"
             app:layout_constraintStart_toStartOf="@+id/textView33"
             app:layout_constraintTop_toBottomOf="@+id/textView33" />
@@ -139,12 +126,10 @@ GNU Affero General Public License for more details.
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="24dp"
 
             android:gravity="center"
             android:text="@string/terms_and_conditions"
             android:textStyle="italic|bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider2" />
@@ -232,6 +217,50 @@ GNU Affero General Public License for more details.
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView40" />
 
+        <TextView
+            android:id="@+id/tv_about_app_make_better"
+            style="@style/MyMaterialTextView.SmallTextViewBody2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="@string/extra_help_make_it_better"
+            android:textStyle="italic|bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider17" />
+
+        <TextView
+            android:id="@+id/textView19"
+            style="@style/MyMaterialTextView.SmallTextViewBody2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:text="@string/extra_help_make_it_better_desc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_about_app_make_better" />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="56dp"
+            android:background="?attr/custom_component_color_default"
+            app:layout_constraintEnd_toEndOf="@+id/textView32"
+            app:layout_constraintHorizontal_bias="0.35"
+            app:layout_constraintStart_toStartOf="@+id/textView32"
+            app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
         <View
             android:id="@+id/divider"
             android:layout_width="0dp"
@@ -267,6 +296,18 @@ GNU Affero General Public License for more details.
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView37" />
+
+        <View
+            android:id="@+id/divider17"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_about_app_tos" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -101,9 +101,9 @@ public class AttendanceUtils {
                             }
                             Logger.d("Low Attendance");
                         } else {
-                            if (notificationFirestoreModel.getType() == 0) {
+//                            if (notificationFirestoreModel.getType() == Constants.NOTI_TYPE_LOW_ATTENDANCE) {
                                 notificationRepository.deleteNotificationById("OverallAttendance_" + subjectAttendance.getSubName());
-                            }
+//                            }
                         }
                     }
                 });
@@ -135,4 +135,6 @@ public class AttendanceUtils {
         }
         return false;
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.vyas.pranav.studentcompanion.data.holidaydatabase;
+package com.vyas.pranav.studentcompanion.data.metadatadatabase;
 /*
 Student Companion - An Android App that has features like attendance manager, note manager etc
 Copyright (C) 2019  Pranav Vyas
@@ -15,26 +15,18 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
-import androidx.lifecycle.LiveData;
+
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import java.util.Date;
-import java.util.List;
-
 @Dao
-public interface HolidayDao {
-    @Query("SELECT * FROM Holidays ORDER BY date")
-    LiveData<List<HolidayEntry>> getAllHolidays();
+public interface MetaDataDao {
+
+    @Query("SELECT * FROM MetaData WHERE name = :name")
+    MetadataEntry getMetadataOf(String name);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAllHolidays(List<HolidayEntry> holidays);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertHoliday(HolidayEntry newHoliday);
-
-    @Query("SELECT date FROM Holidays ORDER BY date")
-    List<Date> getHolidayDates();
+    void addMetadata(MetadataEntry metadataEntry);
 }

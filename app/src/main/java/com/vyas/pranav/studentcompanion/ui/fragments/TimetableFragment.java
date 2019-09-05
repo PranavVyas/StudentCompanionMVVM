@@ -28,13 +28,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.evrencoskun.tableview.TableView;
-import com.github.angads25.toggle.interfaces.OnToggledListener;
-import com.github.angads25.toggle.model.ToggleableView;
 import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
@@ -98,67 +95,61 @@ public class TimetableFragment extends Fragment {
 
         switchProductiveView.setOn(isProductiveViewOn);
         final LiveData<List<TimetableEntry>> timetableEntriesLiveData = timetableViewModel.getTimetableEntries();
-        timetableEntriesLiveData.observe(this, new Observer<List<TimetableEntry>>() {
-            @Override
-            public void onChanged(List<TimetableEntry> timetableEntries) {
-                timetableEntriesLiveData.removeObserver(this);
-                List<String> Monday = new ArrayList<>();
-                List<String> Tuesday = new ArrayList<>();
-                List<String> Wednesday = new ArrayList<>();
-                List<String> Thursday = new ArrayList<>();
-                List<String> Friday = new ArrayList<>();
-                List<String> weekDays = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"));
+        timetableEntriesLiveData.observe(this, timetableEntries -> {
+//                timetableEntriesLiveData.removeObserver(this);
+            List<String> Monday = new ArrayList<>();
+            List<String> Tuesday = new ArrayList<>();
+            List<String> Wednesday = new ArrayList<>();
+            List<String> Thursday = new ArrayList<>();
+            List<String> Friday = new ArrayList<>();
+            List<String> weekDays = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"));
 
-                for (int i = 0; i < timetableEntries.size(); i++) {
-                    int day = i / lecturesPerDay;
-                    int lecture = i % lecturesPerDay;
+            for (int i = 0; i < timetableEntries.size(); i++) {
+                int day = i / lecturesPerDay;
+                int lecture = i % lecturesPerDay;
 
-                    switch (day) {
-                        case 0:
-                            //Monday
-                            Monday.add(lecture, timetableEntries.get(i).getSubName());
-                            break;
+                switch (day) {
+                    case 0:
+                        //Monday
+                        Monday.add(lecture, timetableEntries.get(i).getSubName());
+                        break;
 
-                        case 1:
-                            //Tuesday
-                            Tuesday.add(lecture, timetableEntries.get(i).getSubName());
-                            break;
+                    case 1:
+                        //Tuesday
+                        Tuesday.add(lecture, timetableEntries.get(i).getSubName());
+                        break;
 
-                        case 2:
-                            //Wednesday
-                            Wednesday.add(lecture, timetableEntries.get(i).getSubName());
-                            break;
+                    case 2:
+                        //Wednesday
+                        Wednesday.add(lecture, timetableEntries.get(i).getSubName());
+                        break;
 
-                        case 3:
-                            //Thursday
-                            Thursday.add(lecture, timetableEntries.get(i).getSubName());
-                            break;
+                    case 3:
+                        //Thursday
+                        Thursday.add(lecture, timetableEntries.get(i).getSubName());
+                        break;
 
-                        case 4:
-                            //Friday
-                            Friday.add(lecture, timetableEntries.get(i).getSubName());
-                            break;
-                    }
-
+                    case 4:
+                        //Friday
+                        Friday.add(lecture, timetableEntries.get(i).getSubName());
+                        break;
                 }
-                List<List<String>> daysLectures = new ArrayList<>(Arrays.asList(
-                        Monday, Tuesday, Wednesday, Thursday, Friday
-                ));
-                List<String> lectureNo = getColumnHeaders(lecturesPerDay);
-                tableTimetable.setAdapter(mAdapter);
-                mAdapter.setAllItems(lectureNo, weekDays, daysLectures);
-                loadDataInViewPager(daysLectures, lectureNo);
-                refreshView();
+
             }
+            List<List<String>> daysLectures = new ArrayList<>(Arrays.asList(
+                    Monday, Tuesday, Wednesday, Thursday, Friday
+            ));
+            List<String> lectureNo = getColumnHeaders(lecturesPerDay);
+            tableTimetable.setAdapter(mAdapter);
+            mAdapter.setAllItems(lectureNo, weekDays, daysLectures);
+            loadDataInViewPager(daysLectures, lectureNo);
+            refreshView();
         });
 
-        switchProductiveView.setOnToggledListener(new OnToggledListener() {
-            @Override
-            public void onSwitched(ToggleableView toggleableView, boolean isOn) {
-                isProductiveViewOn = isOn;
-                refreshView();
-                timetableViewModel.setProductiveViewOn(isOn);
-            }
+        switchProductiveView.setOnToggledListener((toggleableView, isOn) -> {
+            isProductiveViewOn = isOn;
+            refreshView();
+            timetableViewModel.setProductiveViewOn(isOn);
         });
     }
 
@@ -246,20 +237,6 @@ public class TimetableFragment extends Fragment {
         });
     }
 
-    private List<String> getColumnHeaders(int lecturesPerDay) {
-        List<String> columnHeader = new ArrayList<>();
-        for (int i = 0; i < lecturesPerDay; i++) {
-            String header = "Lecture" + (i + 1);
-            int startingTime = timetableViewModel.getStartingTimeOfLecture(i);
-            int endingTime = timetableViewModel.getEndingTimeOfLecture(i);
-            String start = ConverterUtils.convertTimeIntInString(startingTime);
-            String end = ConverterUtils.convertTimeIntInString(endingTime);
-            header = header + "\n" + start + "\nTo\n" + end;
-            columnHeader.add(header);
-        }
-        return columnHeader;
-    }
-
     private void refreshView() {
         if (isProductiveViewOn) {
             viewPagerDaySwitcher.setVisibility(View.GONE);
@@ -285,4 +262,18 @@ public class TimetableFragment extends Fragment {
         btnOk.setOnClickListener(view -> mDialog.dismiss());
     }
 
+
+    private List<String> getColumnHeaders(int lecturesPerDay) {
+        List<String> columnHeader = new ArrayList<>();
+        for (int i = 0; i < lecturesPerDay; i++) {
+            String header = "Lecture" + (i + 1);
+            int startingTime = timetableViewModel.getStartingTimeOfLecture(i);
+            int endingTime = timetableViewModel.getEndingTimeOfLecture(i);
+            String start = ConverterUtils.convertTimeIntInString(startingTime);
+            String end = ConverterUtils.convertTimeIntInString(endingTime);
+            header = header + "\n" + start + "\nTo\n" + end;
+            columnHeader.add(header);
+        }
+        return columnHeader;
+    }
 }

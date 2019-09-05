@@ -49,4 +49,7 @@ public interface OverallAttendanceDao {
 
     @Query("SELECT * FROM OverallAttendance WHERE subName = :subName")
     LiveData<OverallAttendanceEntry> getOverallAttendanceForSubject(String subName);
+
+    @Query("SELECT subName FROM OverallAttendance")
+    List<String> getAllSubjects();
 }

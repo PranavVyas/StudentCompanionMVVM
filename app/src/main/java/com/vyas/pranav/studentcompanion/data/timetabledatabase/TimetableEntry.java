@@ -22,8 +22,8 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "TimeTable")
 public class TimetableEntry {
-    @PrimaryKey
     @NonNull
+    @PrimaryKey
     private String _ID;
     private int timeStart, timeEnd;
     private String day;
@@ -32,7 +32,6 @@ public class TimetableEntry {
 
     @Ignore
     public TimetableEntry() {
-
     }
 
     public TimetableEntry(String _ID, int timeStart, int timeEnd, String day, String subName, int lectureNo) {
