@@ -61,20 +61,24 @@ public class AttendanceUtils {
     }
 
     public static void checkForSmartCards(OverallAttendanceEntry subjectAttendance, Context applicationContext) {
+        String id = "OverallAttendance_" + subjectAttendance.getSubName();
         NotificationRepository notificationRepository = NotificationRepository.getInstance(applicationContext);
         SharedPreferencesUtils sharedPreferencesUtils = SharedPreferencesUtils.getInstance(applicationContext);
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {
-                LiveData<NotificationFirestoreModel> notification = notificationRepository.getNotificationById("OverallAttendance_" + subjectAttendance.getSubName());
+                LiveData<NotificationFirestoreModel> notification = notificationRepository.getNotificationById(id);
                 notification.observeForever(new Observer<NotificationFirestoreModel>() {
                     @Override
                     public void onChanged(NotificationFirestoreModel notificationFirestoreModel) {
                         notification.removeObserver(this);
                         int totalDays = subjectAttendance.getTotalDays();
+                        int bunkedDays = subjectAttendance.getBunkedDays();
                         double presentPresent = (subjectAttendance.getPresentDays() * 100.0) / totalDays;
                         double warningPercent = 100 - ((100.0 - sharedPreferencesUtils.getCurrentAttendanceCriteria()) * 2 / 3);
-                        if (presentPresent < warningPercent) {
+                        int maxAttendance = (int) Math.ceil(((totalDays - bunkedDays) * 100.0) / totalDays);
+                        Logger.d("Present percent : " + maxAttendance + "\nWarning Percent : " + warningPercent);
+                        if (maxAttendance < warningPercent) {
                             //Checking if notification still exists or not. If exists than it will not be 0 type
                             if (notificationFirestoreModel == null) {
                                 notificationFirestoreModel = new NotificationFirestoreModel();
@@ -86,7 +90,7 @@ public class AttendanceUtils {
                                 notificationFirestoreModel.setShort_info("Attendance is low in the Subject :" + subjectAttendance.getSubName());
                                 notificationFirestoreModel.setImage_url("NO_URL");
                                 notificationFirestoreModel.setType(Constants.NOTI_TYPE_LOW_ATTENDANCE);
-                                notificationFirestoreModel.set_ID("OverallAttendance_" + subjectAttendance.getSubName());
+                                notificationFirestoreModel.set_ID(id);
                                 notificationRepository.insertNotification(notificationFirestoreModel);
                             } else {
                                 long time = new Date().getTime() + TimeUnit.DAYS.toMillis(1);
@@ -99,11 +103,13 @@ public class AttendanceUtils {
                                 notificationFirestoreModel.setType(Constants.NOTI_TYPE_LOW_ATTENDANCE);
                                 notificationRepository.updateNotification(notificationFirestoreModel);
                             }
-                            Logger.d("Low Attendance");
+                            Logger.d("Low Attendance for id " + id);
                         } else {
 //                            if (notificationFirestoreModel.getType() == Constants.NOTI_TYPE_LOW_ATTENDANCE) {
-                                notificationRepository.deleteNotificationById("OverallAttendance_" + subjectAttendance.getSubName());
+                            if (notificationFirestoreModel != null) {
+                                notificationRepository.deleteNotificationById(id);
 //                            }
+                            }
                         }
                     }
                 });

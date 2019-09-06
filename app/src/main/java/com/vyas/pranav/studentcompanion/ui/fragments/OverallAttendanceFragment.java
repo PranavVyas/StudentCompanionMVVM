@@ -94,7 +94,7 @@ public class OverallAttendanceFragment extends Fragment {
     }
 
     @OnClick(R.id.button2)
-    void clickedINfoButton() {
+    void clickedInfoButton() {
         BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
         mDialog.setContentView(R.layout.item_holder_bottom_sheet_overall_info);
         mDialog.show();
