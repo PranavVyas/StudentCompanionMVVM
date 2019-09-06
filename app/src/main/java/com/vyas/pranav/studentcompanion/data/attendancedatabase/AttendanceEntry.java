@@ -21,27 +21,30 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.vyas.pranav.studentcompanion.utils.Constants;
+
 import java.util.Date;
 
 @Entity(tableName = "AttendanceIndividual")
 public class AttendanceEntry {
+
     @PrimaryKey(autoGenerate = true)
     @NonNull
     private long _ID;
     private Date date;
     private int lectureNo;
     private String subjectName;
-    private boolean present;
+    private int present = Constants.ABSENT;
 
     @Ignore
-    public AttendanceEntry(Date date, int lectureNo, String subjectName, boolean present) {
+    public AttendanceEntry(Date date, int lectureNo, String subjectName, int present) {
         this.date = date;
         this.lectureNo = lectureNo;
         this.subjectName = subjectName;
         this.present = present;
     }
 
-    public AttendanceEntry(long _ID, Date date, int lectureNo, String subjectName, boolean present) {
+    public AttendanceEntry(long _ID, Date date, int lectureNo, String subjectName, int present) {
         this._ID = _ID;
         this.date = date;
         this.lectureNo = lectureNo;
@@ -81,11 +84,11 @@ public class AttendanceEntry {
         this.subjectName = subjectName;
     }
 
-    public boolean isPresent() {
+    public int getPresent() {
         return present;
     }
 
-    public void setPresent(boolean present) {
+    public void setPresent(int present) {
         this.present = present;
     }
 }

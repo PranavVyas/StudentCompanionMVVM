@@ -79,4 +79,7 @@ public final class Constants {
 
     public static final String METADATA_CURRENT_PATH = "METADATA_CURRENT_PATH";
     public static final String METADATA_SEMESTER = "METADATA_SEMESTER";
+    public static final int ABSENT = -1;
+    public static final int PRESENT = 1;
+    public static final int CANCELLED = 0;
 }

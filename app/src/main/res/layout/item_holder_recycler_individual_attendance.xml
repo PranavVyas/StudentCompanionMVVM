@@ -28,21 +28,19 @@ GNU Affero General Public License for more details.
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_recycler_individual_attendance_leture_no"
+        <Button
+            android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:gravity="center"
-            style="@style/MyMaterialTextView.SmallTextViewBody1"
+            android:text="Cancelled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_recycler_individual_attendance_subject_name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Lecture 1" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_recycler_individual_attendance_leture_no" />
 
         <TextView
             android:id="@+id/tv_recycler_individual_attendance_subject_name"
@@ -77,6 +75,20 @@ GNU Affero General Public License for more details.
             app:textOff="Absent"
             app:textOn="Present"
             tools:on="false" />
+
+        <TextView
+            android:id="@+id/tv_recycler_individual_attendance_leture_no"
+            style="@style/MyMaterialTextView.SmallTextViewBody1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/tv_recycler_individual_attendance_subject_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Lecture 1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

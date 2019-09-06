@@ -235,7 +235,7 @@ public class SetUpProcessRepository {
                         Logger.d("Size of Current List is " + currList.size());
                         for (TimetableEntry x :
                                 currList) {
-                            AttendanceEntry attendanceEntry = new AttendanceEntry(date, x.getLectureNo(), x.getSubName(), false);
+                            AttendanceEntry attendanceEntry = new AttendanceEntry(date, x.getLectureNo(), x.getSubName(), Constants.ABSENT);
                             attendanceEntries.add(attendanceEntry);
                         }
                         Logger.d("Till date " + date + " Size of attendance is " + attendanceEntries.size());

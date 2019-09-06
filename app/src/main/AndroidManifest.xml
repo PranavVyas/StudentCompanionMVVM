@@ -13,7 +13,10 @@
         android:theme="@style/AppTheme.Launcher"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:theme">
-        <activity android:name=".ui.activities.DeveloperTimetableActivity"></activity>
+        <activity
+            android:name=".ui.activities.DeveloperTimetableActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.activities.DeveloperActivity" />
         <activity
             android:name=".ui.activities.DeveloperAttendanceActivity"
             android:launchMode="singleTop"

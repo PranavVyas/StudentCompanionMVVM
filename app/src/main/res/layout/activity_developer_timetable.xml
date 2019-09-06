@@ -17,9 +17,12 @@
 
     <TextView
         android:id="@+id/textView24"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Click on the slot you want to change"
+        android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_developer_timetable" />
@@ -44,6 +47,7 @@
         android:id="@+id/table_developer_timetable"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:column_header_height="100dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_developer_timetable_edit"
         app:layout_constraintEnd_toEndOf="parent"

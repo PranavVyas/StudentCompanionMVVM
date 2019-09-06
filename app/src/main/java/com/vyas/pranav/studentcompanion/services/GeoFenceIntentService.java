@@ -40,6 +40,7 @@ import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableDao;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 
 import java.util.Date;
@@ -134,7 +135,7 @@ public class GeoFenceIntentService extends IntentService {
                                                 attendanceForDate.removeObserver(this);
                                                 for (int j = 0; j < attendanceEntries.size(); j++) {
                                                     if (attendanceEntries.get(j).getSubjectName().equals(subName)) {
-                                                        attendanceEntries.get(j).setPresent(true);
+                                                        attendanceEntries.get(j).setPresent(Constants.PRESENT);
                                                         attendanceDao.updateAttendance(attendanceEntries.get(j));
                                                         showNotification(subName);
                                                     }
@@ -149,6 +150,5 @@ public class GeoFenceIntentService extends IntentService {
                 });
             }
         });
-
     }
 }

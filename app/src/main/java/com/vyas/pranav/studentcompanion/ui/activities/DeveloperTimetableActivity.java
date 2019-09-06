@@ -260,6 +260,8 @@ public class DeveloperTimetableActivity extends AppCompatActivity implements ITa
 
     void continueWithNewTimetable() {
         mDb.attendanceDao().removeAttendanceAfter(new Date());
+        //to remove creation of duplicate overall attendances
+        mDb.overallAttendanceDao().deleteAllOverall();
         SetUpProcessRepository setUpProcessRepository = SetUpProcessRepository.getInstance(this);
         setUpProcessRepository.holidayInitialized(mDb.holidayDao().getHolidayDates(), ConverterUtils.convertStringToDate(ConverterUtils.convertDateToString(new Date(new Date().getTime() + TimeUnit.DAYS.toMillis(1)))), ConverterUtils.convertStringToDate(timetableViewModel.getEndDate()));
     }

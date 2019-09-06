@@ -15,9 +15,11 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,17 +27,17 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.angads25.toggle.interfaces.OnToggledListener;
-import com.github.angads25.toggle.model.ToggleableView;
 import com.github.angads25.toggle.widget.LabeledSwitch;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceEntry, AttendanceIndividualRecyclerAdapter.AttendanceIndividualHolder> {
+
     public static final DiffUtil.ItemCallback<AttendanceEntry> diffCallback = new DiffUtil.ItemCallback<AttendanceEntry>() {
         @Override
         public boolean areItemsTheSame(@NonNull AttendanceEntry oldItem, @NonNull AttendanceEntry newItem) {
@@ -47,9 +49,10 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
             return (oldItem.getDate().equals(newItem.getDate())) &&
                     (oldItem.getLectureNo() == newItem.getLectureNo()) &&
                     (oldItem.getSubjectName().equals(newItem.getSubjectName())) &&
-                    (oldItem.isPresent() == newItem.isPresent());
+                    (oldItem.getPresent() == newItem.getPresent());
         }
     };
+    private boolean isCancelled = false;
     private static final String TAG = "AttendanceIndividualRec";
     private onAttendanceSwitchToggleListener listener;
 
@@ -84,6 +87,8 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         TextView tvSubjectName;
         @BindView(R.id.switch_recycler_individual_attendance_present)
         LabeledSwitch switchPresent;
+        @BindView(R.id.button)
+        Button btnCancel;
 
         AttendanceIndividualHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,21 +96,36 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         }
 
         public void bindTo(AttendanceEntry attendanceOfDay) {
+            isCancelled = false;
             tvLectureNo.setText("Lecture " + attendanceOfDay.getLectureNo());
             tvSubjectName.setText(attendanceOfDay.getSubjectName());
-            switchPresent.setOn(attendanceOfDay.isPresent());
+            switchPresent.setOn(attendanceOfDay.getPresent() == Constants.PRESENT);
 
             View.OnClickListener onClickListener = v -> switchPresent.performClick();
             itemView.setOnClickListener(onClickListener);
-            switchPresent.setOnToggledListener(new OnToggledListener() {
-                @Override
-                public void onSwitched(ToggleableView toggleableView, boolean isOn) {
-                    if (listener != null) {
-                        attendanceOfDay.setPresent(isOn);
-                        listener.onAttendanceSwitchToggled(attendanceOfDay);
-                    } else {
-                        Logger.d("Listener is not init");
-                    }
+            switchPresent.setOnToggledListener((toggleableView, isOn) -> {
+                if (listener != null) {
+                    attendanceOfDay.setPresent(isOn ? Constants.PRESENT : Constants.ABSENT);
+                    listener.onAttendanceSwitchToggled(attendanceOfDay);
+                } else {
+                    Logger.d("Listener is not init");
+                }
+            });
+
+            btnCancel.setOnClickListener((view) -> {
+                if (!isCancelled) {
+                    //class is cancelled
+                    btnCancel.setText("UnCancel");
+                    isCancelled = true;
+                    attendanceOfDay.setPresent(0);
+                    listener.onAttendanceSwitchToggled(attendanceOfDay);
+                    switchPresent.setEnabled(false);
+                } else {
+                    btnCancel.setText("Cancel");
+                    isCancelled = false;
+                    attendanceOfDay.setPresent((switchPresent.isOn()) ? 1 : -1);
+                    listener.onAttendanceSwitchToggled(attendanceOfDay);
+                    switchPresent.setEnabled(true);
                 }
             });
         }

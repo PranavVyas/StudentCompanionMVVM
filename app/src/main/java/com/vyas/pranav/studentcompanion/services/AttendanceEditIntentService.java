@@ -60,8 +60,8 @@ public class AttendanceEditIntentService extends IntentService {
                         Logger.d("Marking all present now");
                         for (int i = 0; i < attendanceEntries.size(); i++) {
                             AttendanceEntry attendanceEntry = attendanceEntries.get(i);
-                            if (!attendanceEntry.isPresent()) {
-                                attendanceEntry.setPresent(true);
+                            if (attendanceEntry.getPresent() != Constants.PRESENT) {
+                                attendanceEntry.setPresent(Constants.PRESENT);
                             }
                             repository.updateAttendance(attendanceEntry);
                         }

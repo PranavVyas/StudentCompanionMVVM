@@ -59,8 +59,8 @@
     <string name="pref_summary_list_notification">Configure various Notification Settings such as receiving notifications for new item in shop etc.</string>
 
     <string name="pref_key_backup_database" translatable="false">SHARED_PREF_BACK_UP_DATABASE</string>
-    <string name="pref_title_backup_database">Backup Database</string>
-    <string name="pref_summary_backup_database">Back Up Database</string>
+    <string name="pref_title_backup_database">Backup/Restore Database</string>
+    <string name="pref_summary_backup_database">Back Up or Restore Database</string>
 
     <!--about developer-->
     <string name="profile_url_github" translatable="false">https://github.com/PranavVyas</string>

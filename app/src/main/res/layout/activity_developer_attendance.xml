@@ -8,6 +8,7 @@
 
     <Button
         android:id="@+id/btn_developer_attendance_from_date"
+        style="@style/MyCustomMaterialButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -17,6 +18,7 @@
 
     <Button
         android:id="@+id/btn_developer_attendance_to_date"
+        style="@style/MyCustomMaterialButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
@@ -30,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Edit Now"
+        style="@style/MyCustomMaterialButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_developer_attendance_new_value" />
@@ -50,6 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="to"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
         app:layout_constraintBottom_toBottomOf="@+id/btn_developer_attendance_from_date"
         app:layout_constraintEnd_toStartOf="@+id/btn_developer_attendance_to_date"
         app:layout_constraintStart_toEndOf="@+id/btn_developer_attendance_from_date"
@@ -74,6 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+        style="@style/MyCustomOutlinedBoxTextInput"
         android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +88,7 @@
             android:id="@+id/et_developer_attendance_new_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/MyCustomMaterialEditTextInput"
             android:hint="New Value" />
     </com.google.android.material.textfield.TextInputLayout>
 

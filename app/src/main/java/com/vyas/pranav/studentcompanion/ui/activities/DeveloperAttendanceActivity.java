@@ -155,7 +155,7 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
                 List<AttendanceEntry> daysForSubject = mDb.attendanceDao().getDaysForSubject(currentSubject, startDate, endDate);
                 for (AttendanceEntry x :
                         daysForSubject) {
-                    x.setPresent(newValue == 1);
+                    x.setPresent(newValue);
                 }
                 mDb.attendanceDao().updateAttendance(daysForSubject);
                 OverallAttendanceRepository.getInstance(this).refreshOverallAttendanceForSubject(currentSubject);
@@ -164,7 +164,7 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
                 });
             });
         } else {
-            showSnackBar("Condition does not match! Error 100");
+            showSnackBar("Condition does not match! Error code: 100");
         }
     }
 
