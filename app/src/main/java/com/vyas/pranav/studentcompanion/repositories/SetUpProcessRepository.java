@@ -315,8 +315,8 @@ public class SetUpProcessRepository {
                 OverallAttendanceEntry x = new OverallAttendanceEntry();
                 Date todayDate = new Date();
                 int presentDays = attendanceDao.getAttendedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), todayDate);
-                int bunkedDays = attendanceDao.getBunkedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), new Date());
-                int totalDays = attendanceDao.getTotalDaysForSubject(subject);
+                int bunkedDays = attendanceDao.getBunkedDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), todayDate);
+                int totalDays = attendanceDao.getTotalDaysForSubject(subject, ConverterUtils.convertStringToDate(getStartingDate()), ConverterUtils.convertStringToDate(getEndingDate()));
                 x.setTotalDays(totalDays);
                 x.setBunkedDays(bunkedDays);
                 x.setPresentDays(presentDays);

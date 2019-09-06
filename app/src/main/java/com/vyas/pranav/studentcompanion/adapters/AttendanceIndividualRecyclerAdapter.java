@@ -19,22 +19,23 @@ GNU Affero General Public License for more details.
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.angads25.toggle.widget.LabeledSwitch;
-import com.orhanobut.logger.Logger;
+import com.google.android.material.card.MaterialCardView;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceEntry, AttendanceIndividualRecyclerAdapter.AttendanceIndividualHolder> {
 
@@ -52,7 +53,6 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
                     (oldItem.getPresent() == newItem.getPresent());
         }
     };
-    private boolean isCancelled = false;
     private static final String TAG = "AttendanceIndividualRec";
     private onAttendanceSwitchToggleListener listener;
 
@@ -85,49 +85,111 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         TextView tvLectureNo;
         @BindView(R.id.tv_recycler_individual_attendance_subject_name)
         TextView tvSubjectName;
-        @BindView(R.id.switch_recycler_individual_attendance_present)
-        LabeledSwitch switchPresent;
-        @BindView(R.id.button)
-        Button btnCancel;
+        //        @BindView(R.id.switch_recycler_individual_attendance_present)
+//        LabeledSwitch switchPresent;
+//        @BindView(R.id.button)
+//        Button btnCancel;
+        @BindView(R.id.image_recycler_individual_attendance_present)
+        ImageView btnPresent;
+        @BindView(R.id.image_recycler_individual_attendance_absent)
+        ImageView btnAbsent;
+        @BindView(R.id.image_recycler_individual_attendance_cancel)
+        ImageView btnCancel;
+        @BindView(R.id.tv_recycler_individual_attendance_status)
+        TextView tvStatus;
+        @BindView(R.id.card_recycler_individual_attendance)
+        MaterialCardView cardMain;
+
+        private int present;
 
         AttendanceIndividualHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
+        @OnClick(R.id.image_recycler_individual_attendance_present)
+        void presentClicked() {
+            present = Constants.PRESENT;
+            refreshTextView();
+            sendLatestData();
+        }
+
+        @OnClick(R.id.image_recycler_individual_attendance_absent)
+        void absentClicked() {
+            present = Constants.ABSENT;
+            refreshTextView();
+            sendLatestData();
+        }
+
+        @OnClick(R.id.image_recycler_individual_attendance_cancel)
+        void cancelClicked() {
+            present = Constants.CANCELLED;
+            refreshTextView();
+            sendLatestData();
+        }
+
+        void refreshTextView() {
+            switch (present) {
+                case Constants.PRESENT:
+                    tvStatus.setText("Present");
+                    cardMain.setCardBackgroundColor(cardMain.getContext().getResources().getColor(R.color.colorSafeOverallAttendance));
+                    break;
+
+                case Constants.ABSENT:
+                    tvStatus.setText("Absent");
+                    cardMain.setCardBackgroundColor(cardMain.getContext().getResources().getColor(R.color.colorDangerOverallAttendance));
+                    break;
+
+                case Constants.CANCELLED:
+                    tvStatus.setText("Cancelled");
+                    cardMain.setCardBackgroundColor(cardMain.getContext().getResources().getColor(R.color.colorWarningOverallAttendance));
+                    break;
+            }
+        }
+
+        void sendLatestData() {
+            AttendanceEntry attendanceOfDay = getItem(getAdapterPosition());
+            attendanceOfDay.setPresent(present);
+            if (listener != null) {
+                listener.onAttendanceSwitchToggled(attendanceOfDay);
+            } else {
+                Toast.makeText(cardMain.getContext(), "Listener is not attached Properly", Toast.LENGTH_SHORT).show();
+            }
+        }
+
         public void bindTo(AttendanceEntry attendanceOfDay) {
-            isCancelled = false;
-            tvLectureNo.setText("Lecture " + attendanceOfDay.getLectureNo());
+            present = attendanceOfDay.getPresent();
+            tvLectureNo.setText("Lecture\n" + attendanceOfDay.getLectureNo());
             tvSubjectName.setText(attendanceOfDay.getSubjectName());
-            switchPresent.setOn(attendanceOfDay.getPresent() == Constants.PRESENT);
-
-            View.OnClickListener onClickListener = v -> switchPresent.performClick();
-            itemView.setOnClickListener(onClickListener);
-            switchPresent.setOnToggledListener((toggleableView, isOn) -> {
-                if (listener != null) {
-                    attendanceOfDay.setPresent(isOn ? Constants.PRESENT : Constants.ABSENT);
-                    listener.onAttendanceSwitchToggled(attendanceOfDay);
-                } else {
-                    Logger.d("Listener is not init");
-                }
-            });
-
-            btnCancel.setOnClickListener((view) -> {
-                if (!isCancelled) {
-                    //class is cancelled
-                    btnCancel.setText("UnCancel");
-                    isCancelled = true;
-                    attendanceOfDay.setPresent(0);
-                    listener.onAttendanceSwitchToggled(attendanceOfDay);
-                    switchPresent.setEnabled(false);
-                } else {
-                    btnCancel.setText("Cancel");
-                    isCancelled = false;
-                    attendanceOfDay.setPresent((switchPresent.isOn()) ? 1 : -1);
-                    listener.onAttendanceSwitchToggled(attendanceOfDay);
-                    switchPresent.setEnabled(true);
-                }
-            });
+            refreshTextView();
+//            switchPresent.setOn(attendanceOfDay.getPresent() == Constants.PRESENT);
+//
+//            View.OnClickListener onClickListener = v -> switchPresent.performClick();
+//            itemView.setOnClickListener(onClickListener);
+//            switchPresent.setOnToggledListener((toggleableView, isOn) -> {
+//                if (listener != null) {
+//                    attendanceOfDay.setPresent(isOn ? Constants.PRESENT : Constants.ABSENT);
+//                } else {
+//                    Logger.d("Listener is not init");
+//                }
+//            });
+//
+//            btnCancel.setOnClickListener((view) -> {
+//                if (!isCancelled) {
+//                    //class is cancelled
+//                    btnCancel.setText("UnCancel");
+//                    isCancelled = true;
+//                    attendanceOfDay.setPresent(0);
+//                    listener.onAttendanceSwitchToggled(attendanceOfDay);
+//                    switchPresent.setEnabled(false);
+//                } else {
+//                    btnCancel.setText("Cancel");
+//                    isCancelled = false;
+//                    attendanceOfDay.setPresent((switchPresent.isOn()) ? 1 : -1);
+//                    listener.onAttendanceSwitchToggled(attendanceOfDay);
+//                    switchPresent.setEnabled(true);
+//                }
+//            });
         }
     }
 

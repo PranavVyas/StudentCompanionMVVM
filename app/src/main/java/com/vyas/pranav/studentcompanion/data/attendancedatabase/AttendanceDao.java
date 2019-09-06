@@ -50,8 +50,8 @@ public interface AttendanceDao {
     @Query("DELETE FROM AttendanceIndividual")
     void deleteAll();
 
-    @Query("SELECT COUNT(_ID) FROM attendanceindividual WHERE subjectName = :subName AND NOT present = 0")
-    int getTotalDaysForSubject(String subName);
+    @Query("SELECT COUNT(_ID) FROM attendanceindividual WHERE subjectName = :subName AND date <= :endDate AND date >= :startDate AND NOT present = '0'")
+    int getTotalDaysForSubject(String subName, Date startDate, Date endDate);
 
     @Query("SELECT COUNT(_ID) FROM attendanceindividual WHERE subjectName = :subName AND present = 1 AND date <= :endDate AND date >= :startDate")
     int getAttendedDaysForSubject(String subName, Date startDate, Date endDate);

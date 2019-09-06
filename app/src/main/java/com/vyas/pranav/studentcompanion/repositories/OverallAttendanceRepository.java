@@ -49,12 +49,14 @@ public class OverallAttendanceRepository {
     private static final Object LOCK = new Object();
     private static OverallAttendanceRepository instance;
     private final Context applicationContext;
+    private final SetUpProcessRepository setUpProcessRepository;
 
     public OverallAttendanceRepository(Context context) {
         this.overallAttendanceDao = MainDatabase.getInstance(context).overallAttendanceDao();
         this.attendanceDao = MainDatabase.getInstance(context).attendanceDao();
         this.mExecutors = AppExecutors.getInstance();
         this.applicationContext = context;
+        this.setUpProcessRepository = SetUpProcessRepository.getInstance(applicationContext);
     }
 
     public static OverallAttendanceRepository getInstance(Context context) {
@@ -111,13 +113,13 @@ public class OverallAttendanceRepository {
                     @Override
                     public void onChanged(final OverallAttendanceEntry overallAttendanceEntry) {
                         overallAttendance.removeObserver(this);
-                        SetUpProcessRepository setUpProcessRepository = SetUpProcessRepository.getInstance(applicationContext);
                         final Date startDate = ConverterUtils.convertStringToDate(setUpProcessRepository.getStartingDate());
+                        final Date endDate = ConverterUtils.convertStringToDate(setUpProcessRepository.getEndingDate());
                         mExecutors.diskIO().execute(() -> {
                             Date todayDate = new Date();
                             int presentDays = attendanceDao.getAttendedDaysForSubject(subjectName, startDate, todayDate);
                             int bunkedDays = attendanceDao.getBunkedDaysForSubject(subjectName, startDate, todayDate);
-                            int totalDays = attendanceDao.getTotalDaysForSubject(subjectName);
+                            int totalDays = attendanceDao.getTotalDaysForSubject(subjectName, startDate, endDate);
                             overallAttendanceEntry.setTotalDays(totalDays);
                             overallAttendanceEntry.setBunkedDays(bunkedDays);
                             overallAttendanceEntry.setPresentDays(presentDays);

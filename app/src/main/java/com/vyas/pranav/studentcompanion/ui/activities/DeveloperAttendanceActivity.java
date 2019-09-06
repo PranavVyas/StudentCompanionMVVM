@@ -24,6 +24,7 @@ import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
@@ -34,6 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 import static com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils.setUserTheme;
 
@@ -134,6 +136,28 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
         mDialog.show();
     }
 
+    @OnLongClick(R.id.btn_developer_attendance_to_date)
+    void clickedToDateLong() {
+        Calendar now = Calendar.getInstance();
+        now.setTime(new Date());
+        MaterialStyledDatePickerDialog mDialog = new MaterialStyledDatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                int date = i2;
+                int month = i1 + 1;
+                int year = i;
+                btnToDate.setText(date + "/" + month + "/" + year);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month - 1, date, 0, 0, 0);
+                toDate = calendar.getTimeInMillis();
+            }
+        }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
+        mDialog.setTitle("Choose Date");
+        mDialog.getDatePicker().setMaxDate(ConverterUtils.convertStringToDate(utils.getEndingDate()).getTime());
+        mDialog.getDatePicker().setMinDate(ConverterUtils.convertStringToDate(utils.getStartingDate()).getTime());
+        mDialog.show();
+    }
+
     @OnClick(R.id.btn_developer_attendance_edit)
     void editClicked() {
         newValue = Integer.parseInt(etNewValue.getText().toString());
@@ -148,7 +172,7 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
     }
 
     void startOperation() {
-        if ((!TextUtils.isEmpty(currentSubject)) && (toDate > fromDate) && ((newValue == 0) || (newValue == 1))) {
+        if ((!TextUtils.isEmpty(currentSubject)) && (toDate > fromDate) && ((newValue == Constants.PRESENT) || (newValue == Constants.ABSENT) || (newValue == Constants.CANCELLED))) {
             Date startDate = new Date(fromDate);
             Date endDate = new Date(toDate);
             AppExecutors.getInstance().diskIO().execute(() -> {

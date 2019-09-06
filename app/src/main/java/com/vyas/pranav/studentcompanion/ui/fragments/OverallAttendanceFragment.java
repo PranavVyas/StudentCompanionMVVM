@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +26,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,10 +34,8 @@ import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.OverallAttendanceRecyclerAdapter;
-import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.viewmodels.OverallAttendanceViewModel;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -85,14 +83,11 @@ public class OverallAttendanceFragment extends Fragment {
 
     private void setUpOverallAttendance() {
         mViewModel = ViewModelProviders.of(getActivity()).get(OverallAttendanceViewModel.class);
-        mViewModel.getAllOverallAttendance().observe(getActivity(), new Observer<List<OverallAttendanceEntry>>() {
-            @Override
-            public void onChanged(List<OverallAttendanceEntry> overallAttendanceEntries) {
-                mAdapter.submitList(overallAttendanceEntries);
-                if (!mViewModel.isTutorialShownOnStarting()) {
-                    showInstruction(getActivity());
-                    mViewModel.setTutorialShownOnStarting(true);
-                }
+        mViewModel.getAllOverallAttendance().observe(getActivity(), overallAttendanceEntries -> {
+            mAdapter.submitList(overallAttendanceEntries);
+            if (!mViewModel.isTutorialShownOnStarting()) {
+                showInstruction(getActivity());
+                mViewModel.setTutorialShownOnStarting(true);
             }
         });
 

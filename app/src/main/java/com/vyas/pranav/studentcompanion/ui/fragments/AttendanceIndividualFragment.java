@@ -53,6 +53,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 public class AttendanceIndividualFragment extends Fragment {
     private static final String TAG = "AttendanceIndividualFra";
@@ -102,11 +103,6 @@ public class AttendanceIndividualFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_attendance_individual, container, false);
@@ -138,6 +134,29 @@ public class AttendanceIndividualFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    @SuppressLint("RestrictedApi")
+    @OnLongClick(R.id.btn_attendance_individual_fragment_other_attendance)
+    void openDatePickerMax() {
+        Calendar now = Calendar.getInstance();
+        MaterialStyledDatePickerDialog datePickerDialog = new MaterialStyledDatePickerDialog(
+                getContext(),
+                (datePicker, year, i1, day) -> {
+                    int month = i1 + 1;
+                    String selectedDate = ConverterUtils.formatDateStringFromCalender(day, month, year);
+                    Intent intent = new Intent(getContext(), AttendanceIndividualActivity.class);
+                    intent.putExtra(AttendanceIndividualActivity.EXTRA_DATE, selectedDate);
+                    Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+                    startActivity(intent);
+                    //Toast.makeText(getContext(), "i = "+i+" i1 = "+i1+" i2 = "+i2, Toast.LENGTH_SHORT).show();
+                },
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.setTitle("Choose Date");
+        datePickerDialog.getDatePicker().setMaxDate(attendanceViewModel.getEndingDate().getTime());
+        datePickerDialog.getDatePicker().setMinDate(attendanceViewModel.getStartingDate().getTime());
+        datePickerDialog.show();
+    }
 
     private void setUpRecyclerView() {
         mAdapter = new AttendanceIndividualRecyclerAdapter();

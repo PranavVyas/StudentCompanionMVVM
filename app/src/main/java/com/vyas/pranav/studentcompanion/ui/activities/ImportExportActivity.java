@@ -130,7 +130,6 @@ public class ImportExportActivity extends AppCompatActivity {
     void exportClicked() {
         tvStatus.setText("Backing Up Now!");
         copy(false);
-
     }
 
     @OnClick(R.id.image_import_export_import)
@@ -194,9 +193,10 @@ public class ImportExportActivity extends AppCompatActivity {
                                 ImportExportActivity.this.continueRestore();
                             } else {
                                 tvStatus.setText("Back up Done!");
+                                showSnackBar("Back up Done!");
                             }
-                            mDb = MainDatabase.getInstance(ImportExportActivity.this);
                             checkForFiles();
+                            mDb = MainDatabase.getInstance(ImportExportActivity.this);
                         } catch (IOException e) {
                             tvStatus.setText("Error Occurred While copying file");
                             e.printStackTrace();
