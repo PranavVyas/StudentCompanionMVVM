@@ -18,16 +18,13 @@ GNU Affero General Public License for more details.
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.preference.PreferenceManager;
 
 import com.firebase.ui.auth.AuthUI;
 import com.orhanobut.logger.Logger;
-import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceDao;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
@@ -40,6 +37,7 @@ import com.vyas.pranav.studentcompanion.ui.activities.SignInActivity;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -50,14 +48,11 @@ public class AppSettingsRepository {
     private static final Object LOCK = new Object();
     private static AppSettingsRepository instance;
     private final Context context;
-    private final SharedPreferences mPreference;
-    private final SharedPreferences.Editor mEditor;
+    private final SharedPreferencesUtils sharedPreferencesUtils;
 
     public AppSettingsRepository(Context context) {
         this.context = context;
-        mPreference = PreferenceManager.getDefaultSharedPreferences(context);
-        mEditor = mPreference.edit();
-        mEditor.apply();
+        sharedPreferencesUtils = SharedPreferencesUtils.getInstance(context);
     }
 
     public static AppSettingsRepository getInstance(Context context) {
@@ -69,14 +64,6 @@ public class AppSettingsRepository {
         return instance;
     }
 
-    public boolean isReminderEnabled() {
-        return mPreference.getBoolean(context.getString(R.string.pref_key_switch_enable_reminder), context.getResources().getBoolean(R.bool.pref_def_value_switch_enable_reminder));
-    }
-
-    public int getReminderTime() {
-        return mPreference.getInt(context.getString(R.string.pref_key_time_reminder_time), context.getResources().getInteger(R.integer.pref_def_value_time_reminder_time));
-    }
-
     public boolean cancelReminderJob() {
         DailyJobForShowingReminder.cancelReminderJob();
         return true;
@@ -85,10 +72,6 @@ public class AppSettingsRepository {
     public boolean setReminderJob(int timeInMinutes) {
         DailyJobForShowingReminder.scheduleReminderJob(timeInMinutes);
         return true;
-    }
-
-    public boolean isAutoAttendanceEnabled() {
-        return mPreference.getBoolean(context.getString(R.string.pref_key_switch_enable_auto_attendance), context.getResources().getBoolean(R.bool.pref_def_value_switch_enable_auto_attendance));
     }
 
     public boolean enableAutoSilentDevice() {
@@ -118,6 +101,18 @@ public class AppSettingsRepository {
         return true;
     }
 
+    public boolean toggleSmartSilent() {
+        if (sharedPreferencesUtils.isSmartSilentEnabled()) {
+            enableAutoSilentDevice();
+            return true;
+        } else {
+            DailyJobForSilentAction.cancelAllJobs();
+            DailyJobForUnsilentAction.cancelAllJobs();
+            Logger.d("Smart Silent : Disabled");
+            return false;
+        }
+    }
+
     public void deleteUserAccount() {
         AuthUI.getInstance().delete(context).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -130,36 +125,12 @@ public class AppSettingsRepository {
         });
     }
 
-    public void toggleNightMode() {
-        if (mPreference.getBoolean(context.getString(R.string.pref_key_switch_enable_night_mode), false)) {
-            context.setTheme(R.style.AppTheme_Night);
-        } else {
-            context.setTheme(R.style.AppTheme);
-        }
-    }
-
     public void setGeoFenceRefreshing(boolean isScheduled) {
         if (isScheduled) {
             DailyJobForRefreshGeoFence.cancelJob();
             DailyJobForRefreshGeoFence.scheduleJob();
         } else {
             DailyJobForRefreshGeoFence.cancelJob();
-        }
-    }
-
-    public boolean isSmartSilentEnabled() {
-        return mPreference.getBoolean(context.getString(R.string.pref_key_switch_enable_smart_silent), false);
-    }
-
-    public boolean toggleSmartSilent() {
-        if (isSmartSilentEnabled()) {
-            enableAutoSilentDevice();
-            return true;
-        } else {
-            DailyJobForSilentAction.cancelAllJobs();
-            DailyJobForUnsilentAction.cancelAllJobs();
-            Logger.d("Smart Silent : Disabled");
-            return false;
         }
     }
 

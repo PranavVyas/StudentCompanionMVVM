@@ -171,7 +171,7 @@ public class SetUpProcessRepository {
         sharedPreferencesUtils.setNoOfLecturesPerDay(noOfLecturesPerDay);
     }
 
-    public void saveHolidaysAndInitAttendance() {
+    public void saveHolidaysAndInitAttendance(List<List<String>> subjects, List<String> days, List<String> columnTitles) {
 //        HolidaysFetcher holidaysFetcher = new HolidaysFetcher();
         FirestoreQueryLiveData holidayLiveData = new FirestoreQueryLiveData(FirebaseFirestore.getInstance().collection(getCurrentPath() + Constants.PATH_HOLIDAYS_SVNIT));
         holidayLiveData.observeForever(queryDocumentSnapshots -> {
@@ -188,7 +188,8 @@ public class SetUpProcessRepository {
                 holidayEntries.add(holiday);
             }
             setHolidays(holidayEntries);
-            holidayInitialized(holidayDates, ConverterUtils.convertStringToDate(getStartingDate()), ConverterUtils.convertStringToDate(getEndingDate()));
+            AttendanceUtils.refreshNewTimetable(context, getSemester(), subjects, days, columnTitles, getStartingDate());
+//            holidayInitialized(holidayDates, ConverterUtils.convertStringToDate(getStartingDate()), ConverterUtils.convertStringToDate(getEndingDate()));
         });
     }
 

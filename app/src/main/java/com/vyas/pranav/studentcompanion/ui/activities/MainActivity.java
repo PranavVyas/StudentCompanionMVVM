@@ -132,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerU
 
             case NavigationDrawerUtil.ID_OVERALL_ATTENDANCE:
                 tvTitle.setText(R.string.navigation_overall_attendance);
-
                 OverallAttendanceFragment overallAttendanceFragment = OverallAttendanceFragment.newInstance();
                 swapFragment(overallAttendanceFragment);
                 mainViewModel.setCurrentFragmentId(identifier);

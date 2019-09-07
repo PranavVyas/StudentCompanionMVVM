@@ -18,7 +18,6 @@ GNU Affero General Public License for more details.
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.Menu;
@@ -39,19 +38,19 @@ import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDatesFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpDetailsSemFragment;
 import com.vyas.pranav.studentcompanion.ui.fragments.SetUpLectureTimeFragment;
-import com.vyas.pranav.studentcompanion.ui.fragments.SetUpTimetableFragment;
+import com.vyas.pranav.studentcompanion.ui.fragments.SetUpTimetableNew;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragment.OnDatesSetUpListener, SetUpDetailsSemFragment.OnSubjectsSelectedListener, SetUpTimetableFragment.OnTimetableSelectedListener, SetUpLectureTimeFragment.OnLectureTimeSelectedListener {
+public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragment.OnDatesSetUpListener, SetUpDetailsSemFragment.OnSubjectsSelectedListener, SetUpTimetableNew.OnTimetableSelectedListenerNew, SetUpLectureTimeFragment.OnLectureTimeSelectedListener {
 
     private static final String TAG = "SetUpActivity";
 
@@ -74,7 +73,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setUpViewModel = ViewModelProviders.of(this).get(SetUpViewModel.class);
         if (setUpViewModel.isFirstRun()) {
-            new Handler().postDelayed(this::showInstruction, TimeUnit.SECONDS.toMillis(1));
+//            new Handler().postDelayed(this::showInstruction, TimeUnit.SECONDS.toMillis(1));
         }
         if (!setUpViewModel.isFirstRun()) {
             if (setUpViewModel.isTutorialDone()) {
@@ -130,9 +129,9 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
                 break;
 
             case 4:
-                SetUpTimetableFragment setUpTimetableFragment = SetUpTimetableFragment.newInstance();
+                SetUpTimetableNew setUpTimetableFragment = SetUpTimetableNew.newInstance();
                 addAnimationsToFragment(setUpTimetableFragment);
-                setUpTimetableFragment.setOnTimeTableSelectedListener(this);
+                setUpTimetableFragment.setOnTimeTableSelectedListenerNew(this);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_setup_activity_container, setUpTimetableFragment)
                         .commit();
@@ -167,14 +166,14 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         executeSetUpStep(setUpViewModel.getCurrentStep());
     }
 
-    @Override
-    public void onTimetableSelected() {
-        setUpViewModel.saveHolidaysAndInitAttendance();
-        Intent intent = new Intent(this, TutorialActivity.class);
-        startActivity(intent);
-        setUpViewModel.setFirstRun(false);
-        finish();
-    }
+//    @Override
+//    public void onTimetableSelected() {
+//        setUpViewModel.saveHolidaysAndInitAttendance();
+//        Intent intent = new Intent(this, TutorialActivity.class);
+//        startActivity(intent);
+//        setUpViewModel.setFirstRun(false);
+//        finish();
+//    }
 
     @Override
     public void onPreviousClickedOnSemSetUp() {
@@ -187,12 +186,12 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         setUpViewModel.setCurrentStep(2);
         executeSetUpStep(setUpViewModel.getCurrentStep());
     }
-
-    @Override
-    public void onPreviousClickedInSetUpTimetable() {
-        setUpViewModel.setCurrentStep(3);
-        executeSetUpStep(setUpViewModel.getCurrentStep());
-    }
+//
+//    @Override
+//    public void onPreviousClickedInSetUpTimetable() {
+//        setUpViewModel.setCurrentStep(3);
+//        executeSetUpStep(setUpViewModel.getCurrentStep());
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -252,5 +251,20 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
                 showPlaceHolder(true);
             }
         });
+    }
+
+    @Override
+    public void onTimetableSelectedNew(List<List<String>> subjects, List<String> days, List<String> columnTitles) {
+        setUpViewModel.saveHolidaysAndInitAttendance(subjects, days, columnTitles);
+        Intent intent = new Intent(this, TutorialActivity.class);
+        startActivity(intent);
+        setUpViewModel.setFirstRun(false);
+        finish();
+    }
+
+    @Override
+    public void onPreviousClickedInSetUpTimetableNew() {
+        setUpViewModel.setCurrentStep(3);
+        executeSetUpStep(setUpViewModel.getCurrentStep());
     }
 }

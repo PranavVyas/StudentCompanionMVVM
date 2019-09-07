@@ -19,6 +19,8 @@ GNU Affero General Public License for more details.
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,10 +87,6 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         TextView tvLectureNo;
         @BindView(R.id.tv_recycler_individual_attendance_subject_name)
         TextView tvSubjectName;
-        //        @BindView(R.id.switch_recycler_individual_attendance_present)
-//        LabeledSwitch switchPresent;
-//        @BindView(R.id.button)
-//        Button btnCancel;
         @BindView(R.id.image_recycler_individual_attendance_present)
         ImageView btnPresent;
         @BindView(R.id.image_recycler_individual_attendance_absent)
@@ -110,6 +108,9 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         @OnClick(R.id.image_recycler_individual_attendance_present)
         void presentClicked() {
             present = Constants.PRESENT;
+//            RotateAnimation animation = new RotateAnimation(0,360);
+            Animation rotateAnimation = AnimationUtils.loadAnimation(btnPresent.getContext(), R.anim.rotate_image);
+            btnPresent.startAnimation(rotateAnimation);
             refreshTextView();
             sendLatestData();
         }
@@ -117,6 +118,8 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         @OnClick(R.id.image_recycler_individual_attendance_absent)
         void absentClicked() {
             present = Constants.ABSENT;
+            Animation rotateAnimation = AnimationUtils.loadAnimation(btnPresent.getContext(), R.anim.rotate_image);
+            btnAbsent.startAnimation(rotateAnimation);
             refreshTextView();
             sendLatestData();
         }
@@ -124,6 +127,8 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         @OnClick(R.id.image_recycler_individual_attendance_cancel)
         void cancelClicked() {
             present = Constants.CANCELLED;
+            Animation rotateAnimation = AnimationUtils.loadAnimation(btnPresent.getContext(), R.anim.rotate_image);
+            btnCancel.startAnimation(rotateAnimation);
             refreshTextView();
             sendLatestData();
         }
@@ -162,34 +167,6 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
             tvLectureNo.setText("Lecture\n" + attendanceOfDay.getLectureNo());
             tvSubjectName.setText(attendanceOfDay.getSubjectName());
             refreshTextView();
-//            switchPresent.setOn(attendanceOfDay.getPresent() == Constants.PRESENT);
-//
-//            View.OnClickListener onClickListener = v -> switchPresent.performClick();
-//            itemView.setOnClickListener(onClickListener);
-//            switchPresent.setOnToggledListener((toggleableView, isOn) -> {
-//                if (listener != null) {
-//                    attendanceOfDay.setPresent(isOn ? Constants.PRESENT : Constants.ABSENT);
-//                } else {
-//                    Logger.d("Listener is not init");
-//                }
-//            });
-//
-//            btnCancel.setOnClickListener((view) -> {
-//                if (!isCancelled) {
-//                    //class is cancelled
-//                    btnCancel.setText("UnCancel");
-//                    isCancelled = true;
-//                    attendanceOfDay.setPresent(0);
-//                    listener.onAttendanceSwitchToggled(attendanceOfDay);
-//                    switchPresent.setEnabled(false);
-//                } else {
-//                    btnCancel.setText("Cancel");
-//                    isCancelled = false;
-//                    attendanceOfDay.setPresent((switchPresent.isOn()) ? 1 : -1);
-//                    listener.onAttendanceSwitchToggled(attendanceOfDay);
-//                    switchPresent.setEnabled(true);
-//                }
-//            });
         }
     }
 

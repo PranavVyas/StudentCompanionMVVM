@@ -50,4 +50,7 @@ public interface TimetableDao {
 
     @Query("SELECT * FROM TimeTable WHERE subName = :subject")
     LiveData<List<TimetableEntry>> getTimetableForSubject(String subject);
+
+    @Query("SELECT * FROM TimeTable ORDER BY _ID")
+    List<TimetableEntry> getFullTimetableMainThread();
 }

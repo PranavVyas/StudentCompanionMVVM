@@ -84,9 +84,9 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void restartAllPendingJobs() {
-        AppSettingsRepository repository = AppSettingsRepository.getInstance(application);
-        if (repository.isSmartSilentEnabled()) {
-            repository.enableAutoSilentDevice();
+        AppSettingsRepository appSettingsRepository = AppSettingsRepository.getInstance(application);
+        if (sharedPreferencesUtils.isSmartSilentEnabled()) {
+            appSettingsRepository.enableAutoSilentDevice();
         }
     }
 

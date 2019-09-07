@@ -183,8 +183,8 @@ public class SetUpViewModel extends AndroidViewModel {
         return timetableRepository.getTimetableForDay(getDayFromInt(day));
     }
 
-    public void saveHolidaysAndInitAttendance() {
-        repository.saveHolidaysAndInitAttendance();
+    public void saveHolidaysAndInitAttendance(List<List<String>> subjects, List<String> days, List<String> columnTitles) {
+        repository.saveHolidaysAndInitAttendance(subjects, days, columnTitles);
     }
 
     public boolean isFirstRun() {

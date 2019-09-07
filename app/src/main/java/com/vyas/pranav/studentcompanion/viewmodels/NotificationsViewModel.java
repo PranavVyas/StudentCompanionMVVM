@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
@@ -67,5 +68,9 @@ public class NotificationsViewModel extends AndroidViewModel {
 
     public LiveData<List<NotificationFirestoreModel>> getAllNotisFromDb() {
         return allNotisFromDb;
+    }
+
+    public String getUserEmailId() {
+        return FirebaseAuth.getInstance().getCurrentUser().getEmail();
     }
 }

@@ -24,9 +24,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.orhanobut.logger.Logger;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.notificationdatabase.firestore.NotificationFirestoreModel;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
+import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -142,5 +145,34 @@ public class AttendanceUtils {
         return false;
     }
 
+    public static void refreshNewTimetable(Context context, int semester, List<List<String>> subjects, List<String> days, List<String> columnTitles, String startDate) {
+        List<TimetableEntry> timetableEntries = new ArrayList<>();
+        MainDatabase mDb = MainDatabase.getInstance(context);
+        for (int i = 0; i < days.size(); i++) {
+            for (int j = 0; j < columnTitles.size(); j++) {
+                String subject = subjects.get(i).get(j);
+                int lectureNo = j + 1;
+                String day = days.get(i);
+                String columnTitle = columnTitles.get(j);
+                int timeStart = ConverterUtils.convertTimeInInt(columnTitle.substring(columnTitle.lastIndexOf('e') + 3, columnTitle.lastIndexOf('T') - 1));
+                int timeEnd = ConverterUtils.convertTimeInInt(columnTitle.substring(columnTitle.lastIndexOf('o') + 2));
+                String id = Generators.generateIdForTimetableEntry(lectureNo, semester, i);
+                TimetableEntry entry = new TimetableEntry(id, timeStart, timeEnd, day, subject, lectureNo);
+                timetableEntries.add(entry);
+//                showSnackBar("For Subject: " + subject + " at day: " + day + " of lecture no: " + lectureNo + "time End is : " + timeEnd + "times tart is: " + timeStart);
+            }
+        }
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            mDb.timetableDao().deleteWholeTimetable();
+            mDb.timetableDao().insertAllTimeTableEntry(timetableEntries);
+            mDb.attendanceDao().removeAttendanceAfter(new Date());
+            //to remove creation of duplicate overall attendances
+            mDb.overallAttendanceDao().deleteAllOverall();
+            SetUpProcessRepository setUpProcessRepository = SetUpProcessRepository.getInstance(context);
+            setUpProcessRepository.holidayInitialized(mDb.holidayDao().getHolidayDates(),
+                    ConverterUtils.convertStringToDate(startDate),
+                    ConverterUtils.convertStringToDate(setUpProcessRepository.getEndingDate()));
+        });
+    }
 
 }

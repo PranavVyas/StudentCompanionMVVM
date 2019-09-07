@@ -20,60 +20,55 @@ GNU Affero General Public License for more details.
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.DeveloperTimetableActivity">
+    tools:context=".ui.fragments.SetUpTimetableNew">
 
     <Button
-        android:id="@+id/btn_developer_timetable_edit"
+        android:id="@+id/btn_setup_timetable_previous"
+        style="@style/MyCustomMaterialButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Final Edit"
-        style="@style/MyCustomMaterialButton"
+        android:layout_marginBottom="8dp"
+        android:text="Previous"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_setup_timetable_next"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/btn_setup_timetable_next"
+        style="@style/MyCustomMaterialButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finish"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_setup_timetable_previous"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_setup_timetable_previous"
+        app:layout_constraintTop_toTopOf="@+id/btn_setup_timetable_previous" />
+
     <TextView
-        android:id="@+id/textView24"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:id="@+id/textView46"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:text="Click on the slot you want to change\nPlease Click on Final Edit when you are done otherwise changes will not be made."
-        android:textStyle="bold|italic"
+        android:text="Select cell you want to change and edit it!"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_developer_timetable" />
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_developer_timetable"
-        style="@style/MyCustomMaterialToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            style="@style/MyCustomToolbarTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Timetable Editor" />
-    </androidx.appcompat.widget.Toolbar>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.evrencoskun.tableview.TableView
-        android:id="@+id/table_developer_timetable"
+        android:id="@+id/table_setup_timetable"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:column_header_height="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_developer_timetable_edit"
+        app:layout_constraintBottom_toTopOf="@+id/btn_setup_timetable_previous"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView24"
+        app:layout_constraintTop_toBottomOf="@+id/textView46"
         app:row_header_width="100dp"
         app:selected_color="?attr/table_selected_cell"
         app:separator_color="#000000"
@@ -81,4 +76,5 @@ GNU Affero General Public License for more details.
         app:show_horizontal_separator="true"
         app:show_vertical_separator="true"
         app:unselected_color="?attr/table_background" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,9 +32,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.vyas.pranav.studentcompanion.R;
-import com.vyas.pranav.studentcompanion.ui.activities.DeveloperActivity;
 import com.vyas.pranav.studentcompanion.ui.activities.OpenSourceInformationActivity;
 import com.vyas.pranav.studentcompanion.utils.GlideApp;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -123,7 +123,12 @@ public class AboutThisAppFragment extends Fragment {
 
     @OnLongClick(R.id.textView34)
     void openDeveloperTools() {
-        Intent intent = new Intent(getContext(), DeveloperActivity.class);
-        startActivity(intent);
+        if (SharedPreferencesUtils.getInstance(getContext()).isDeveloperEnabled()) {
+            SharedPreferencesUtils.getInstance(getContext()).setDeveloperEnabled(false);
+            showSnackbar("Developer Tools Disabled");
+        } else {
+            SharedPreferencesUtils.getInstance(getContext()).setDeveloperEnabled(true);
+            showSnackbar("Developer Tools Enabled");
+        }
     }
 }

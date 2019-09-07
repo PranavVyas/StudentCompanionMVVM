@@ -41,11 +41,13 @@ import com.google.android.material.snackbar.Snackbar;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
 import com.vyas.pranav.studentcompanion.ui.activities.AutoAttendanceSubjectListActivity;
+import com.vyas.pranav.studentcompanion.ui.activities.DeveloperActivity;
 import com.vyas.pranav.studentcompanion.ui.activities.ImportExportActivity;
 import com.vyas.pranav.studentcompanion.ui.activities.NotificationPreferenceActivity;
 import com.vyas.pranav.studentcompanion.utils.AutoAttendanceHelper;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.utils.TimePreference;
 import com.vyas.pranav.studentcompanion.utils.TimePreferenceDialogFragmentCompat;
 import com.vyas.pranav.studentcompanion.viewmodels.AppSettingsViewModel;
@@ -113,6 +115,8 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             toggleNightMode();
         } else if (s.equals(getString(R.string.pref_key_switch_enable_smart_silent))) {
 //            checkAndApplySmartSilent();
+        } else if (s.equals(SharedPreferencesUtils.SHARED_PREF_IS_DEVELOPER_ENABLED)) {
+            checkForDeveloperTools();
         }
     }
 
@@ -242,13 +246,31 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             startActivity(intent);
             return true;
         });
-
+        //Backup or Restore is clicked
         findPreference(getString(R.string.pref_key_backup_database)).setOnPreferenceClickListener((preference) -> {
             Intent intent = new Intent(getContext(), ImportExportActivity.class);
             intent.putExtra(ImportExportActivity.EXTRA_FORCE_START_ACTIVITY, true);
             startActivityForResult(intent, Constants.RC_OPEN_BACKUP_RESTORE_ACTIVITY, null);
             return false;
         });
+        checkForDeveloperTools();
+    }
+
+    private void checkForDeveloperTools() {
+        if (!appSettingsViewModel.isDeveloperEnabled()) {
+            if (findPreference(getString(R.string.pref_key_developer_tools)) != null) {
+                getPreferenceScreen().removePreference(findPreference(getString(R.string.pref_key_developer_tools)));
+            }
+        } else {
+            if (findPreference(getString(R.string.pref_key_developer_tools)) == null) {
+                getPreferenceScreen().addPreference(findPreference(getString(R.string.pref_key_developer_tools)));
+            }
+            findPreference(getString(R.string.pref_key_developer_tools)).setOnPreferenceClickListener((preference -> {
+                Intent intent = new Intent(getContext(), DeveloperActivity.class);
+                startActivity(intent);
+                return false;
+            }));
+        }
     }
 
     private boolean checkAndApplySmartSilent() {

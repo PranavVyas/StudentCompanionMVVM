@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
@@ -50,6 +51,8 @@ public class SharedPreferencesUtils {
     private static final String KEY_ATTENDANCE_CRITERIA = "SHARED_PREF_ATTENDANCE_CRITERIA";
     private static final String PATH_MAIN_SOURCE_FIRESTORE = "SHARED_PREF.FirestorePath";
     private static final String SHARED_PREF_RESTORE_DONE = "SHARED_PREF_IS_RESTORED";
+    public static final String SHARED_PREF_IS_DEVELOPER_ENABLED = "SHARED_PREF_IS_DEVELOPER_ENABLED";
+
 
     private Context context;
     private SharedPreferences preferences;
@@ -278,5 +281,37 @@ public class SharedPreferencesUtils {
 
     public void setRestoreDone(boolean b) {
         editor.putBoolean(SHARED_PREF_RESTORE_DONE, b);
+    }
+
+    public boolean isDeveloperEnabled() {
+        return preferences.getBoolean(SHARED_PREF_IS_DEVELOPER_ENABLED, false);
+    }
+
+    public void setDeveloperEnabled(boolean isDeveloperEnabled) {
+        editor.putBoolean(SHARED_PREF_IS_DEVELOPER_ENABLED, isDeveloperEnabled).apply();
+    }
+
+    public boolean isAutoAttendanceEnabled() {
+        return preferences.getBoolean(context.getString(R.string.pref_key_switch_enable_auto_attendance), context.getResources().getBoolean(R.bool.pref_def_value_switch_enable_auto_attendance));
+    }
+
+    public boolean isReminderEnabled() {
+        return preferences.getBoolean(context.getString(R.string.pref_key_switch_enable_reminder), context.getResources().getBoolean(R.bool.pref_def_value_switch_enable_reminder));
+    }
+
+    public int getReminderTime() {
+        return preferences.getInt(context.getString(R.string.pref_key_time_reminder_time), context.getResources().getInteger(R.integer.pref_def_value_time_reminder_time));
+    }
+
+    public boolean isSmartSilentEnabled() {
+        return preferences.getBoolean(context.getString(R.string.pref_key_switch_enable_smart_silent), false);
+    }
+
+    public void toggleNightMode() {
+        if (preferences.getBoolean(context.getString(R.string.pref_key_switch_enable_night_mode), false)) {
+            context.setTheme(R.style.AppTheme_Night);
+        } else {
+            context.setTheme(R.style.AppTheme);
+        }
     }
 }

@@ -86,6 +86,7 @@ public class AttendanceIndividualFragment extends Fragment {
         }
         return new AttendanceIndividualFragment();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -97,7 +98,8 @@ public class AttendanceIndividualFragment extends Fragment {
             date = ConverterUtils.convertStringToDate(dateStr);
             btnOpenOtherAttendance.setVisibility(View.GONE);
         }
-        setUpIndividualAttendance(date);
+        setUpIndividualAttendance(
+                date);
         tvDate.setText(ConverterUtils.convertDateToString(date) + "\n" + ConverterUtils.getDayOfWeek(date));
         startInstruction(getActivity());
     }

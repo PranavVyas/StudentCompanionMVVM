@@ -82,4 +82,5 @@ public final class Constants {
     public static final int ABSENT = -1;
     public static final int PRESENT = 1;
     public static final int CANCELLED = 0;
+    public static final int NO_OF_DAYS = 5;
 }

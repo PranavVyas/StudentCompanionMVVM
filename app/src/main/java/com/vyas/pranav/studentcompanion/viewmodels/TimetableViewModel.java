@@ -24,7 +24,10 @@ import androidx.lifecycle.LiveData;
 import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
 import com.vyas.pranav.studentcompanion.repositories.TimetableRepository;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TimetableViewModel extends AndroidViewModel {
@@ -35,6 +38,7 @@ public class TimetableViewModel extends AndroidViewModel {
     private int lecturesPerDay;
     private boolean isProductiveViewOn = false;
     private int currentPage = 0;
+    private List<List<String>> daysLectures;
 
     public int getCurrentPage() {
         return currentPage;
@@ -58,6 +62,57 @@ public class TimetableViewModel extends AndroidViewModel {
         timetableEntries = timetableRepository.getFullTimetable();
         setUpProcessRepository = SetUpProcessRepository.getInstance(application);
         lecturesPerDay = setUpProcessRepository.getNoOfLecturesPerDay();
+        generateListForFirstTime();
+    }
+
+    public List<List<String>> getDaysLectures() {
+        return daysLectures;
+    }
+
+    public void setDaysLectures(int raw, int column, String newSub) {
+        this.daysLectures.get(raw).set(column, newSub);
+    }
+
+    private void generateListForFirstTime() {
+        List<String> Monday = new ArrayList<>();
+        List<String> Tuesday = new ArrayList<>();
+        List<String> Wednesday = new ArrayList<>();
+        List<String> Thursday = new ArrayList<>();
+        List<String> Friday = new ArrayList<>();
+        for (int i = 0; i < getLecturesPerDay() * Constants.NO_OF_DAYS; i++) {
+            int day = i / lecturesPerDay;
+            int lecture = i % lecturesPerDay;
+
+            switch (day) {
+                case 0:
+                    //Monday
+                    Monday.add(lecture, Constants.DEFAULT_LECTURE);
+                    break;
+
+                case 1:
+                    //Tuesday
+                    Tuesday.add(lecture, Constants.DEFAULT_LECTURE);
+                    break;
+
+                case 2:
+                    //Wednesday
+                    Wednesday.add(lecture, Constants.DEFAULT_LECTURE);
+                    break;
+
+                case 3:
+                    //Thursday
+                    Thursday.add(lecture, Constants.DEFAULT_LECTURE);
+                    break;
+
+                case 4:
+                    //Friday
+                    Friday.add(lecture, Constants.DEFAULT_LECTURE);
+                    break;
+            }
+        }
+        daysLectures = new ArrayList<>(Arrays.asList(
+                Monday, Tuesday, Wednesday, Thursday, Friday
+        ));
     }
 
     public LiveData<List<TimetableEntry>> getTimetableEntries() {
@@ -91,4 +146,6 @@ public class TimetableViewModel extends AndroidViewModel {
     public List<String> getSubjectList() {
         return setUpProcessRepository.getSubjectList();
     }
+
+
 }

@@ -23,30 +23,30 @@ import androidx.lifecycle.LiveData;
 
 import com.vyas.pranav.studentcompanion.data.autoattendanceplacesdatabase.AutoAttendancePlaceEntry;
 import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
 public class AppSettingsViewModel extends AndroidViewModel {
 
-    private boolean isReminderEnabled;
-    private boolean isAutoAttendanceEnabled;
-    private int reminderTime;
     private LiveData<List<AutoAttendancePlaceEntry>> autoAttendancePlaceEntryLiveData;
-
     private final AppSettingsRepository appSettingsRepository;
+    private final SharedPreferencesUtils sharedPreferencesUtils;
+    private boolean isDeveloperEnabled;
 
     public AppSettingsViewModel(@NonNull Application application) {
         super(application);
         appSettingsRepository = AppSettingsRepository.getInstance(application);
+        sharedPreferencesUtils = SharedPreferencesUtils.getInstance(application);
         autoAttendancePlaceEntryLiveData = appSettingsRepository.getAutoAttendanceLiveData();
     }
 
     public boolean isReminderEnabled() {
-        return appSettingsRepository.isReminderEnabled();
+        return sharedPreferencesUtils.isReminderEnabled();
     }
 
     public int getReminderTime() {
-        return appSettingsRepository.getReminderTime();
+        return sharedPreferencesUtils.getReminderTime();
     }
 
     public boolean setReminderJobTime(int timeInMinutes) {
@@ -58,11 +58,11 @@ public class AppSettingsViewModel extends AndroidViewModel {
     }
 
     public boolean isAutoAttendanceEnabled() {
-        return appSettingsRepository.isAutoAttendanceEnabled();
+        return sharedPreferencesUtils.isAutoAttendanceEnabled();
     }
 
     public boolean isSmartSilentEnabled() {
-        return appSettingsRepository.isSmartSilentEnabled();
+        return sharedPreferencesUtils.isSmartSilentEnabled();
     }
 
     public void deleteUserAccount() {
@@ -70,7 +70,7 @@ public class AppSettingsViewModel extends AndroidViewModel {
     }
 
     public void toggleNightMode() {
-        appSettingsRepository.toggleNightMode();
+        sharedPreferencesUtils.toggleNightMode();
     }
 
 //    public void setRefreshGeoFence(boolean isScheduled) {
@@ -85,7 +85,15 @@ public class AppSettingsViewModel extends AndroidViewModel {
         return autoAttendancePlaceEntryLiveData;
     }
 
-//    public boolean isNightModeEnabled() {
+    public boolean isDeveloperEnabled() {
+        return sharedPreferencesUtils.isDeveloperEnabled();
+    }
+
+    public void setDeveloperEnabled(boolean developerEnabled) {
+        sharedPreferencesUtils.setDeveloperEnabled(developerEnabled);
+    }
+
+    //    public boolean isNightModeEnabled() {
 //        return appSettingsRepository.isNightModeEnabled();
 //    }
 }

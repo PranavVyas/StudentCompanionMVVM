@@ -16,6 +16,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,17 +30,26 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.models.AdminsModel;
+import com.vyas.pranav.studentcompanion.ui.activities.AddEventActivity;
+import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.viewmodels.NotificationsViewModel;
 
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
+import static com.vyas.pranav.studentcompanion.utils.AttendanceUtils.hasInternetAccess;
 
 public class NotificationFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
@@ -48,6 +58,7 @@ public class NotificationFragment extends Fragment implements ViewPager.OnPageCh
     @BindView(R.id.tabs_notifications_frag_viewpager_tab)
     TabLayout tabs;
     int selectedPage = 0;
+    private Snackbar sbar;
     private NotificationsViewModel notificationsViewModel;
 
 
@@ -84,11 +95,49 @@ public class NotificationFragment extends Fragment implements ViewPager.OnPageCh
         tabs.setupWithViewPager(viewPager);
     }
 
-//    @OnClick(R.id.fab_notification_add_event)
-//    void addEventClicked(){
-//        Intent intent = new Intent(getContext(), AddEventActivity.class);
-//        startActivity(intent);
-//    }
+    @OnClick(R.id.fab_notification_add_event)
+    void addEventClicked() {
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            if (!hasInternetAccess(getContext())) {
+                AppExecutors.getInstance().mainThread().execute(() -> {
+                    showSnackbar("Internet Access is needed,Please connect to internet first!");
+                });
+                return;
+            }
+            AppExecutors.getInstance().mainThread().execute(() -> {
+                showSnackbar("Checking admin access to add event now...\nPlease Wait...");
+                FirestoreQueryLiveData admins = new FirestoreQueryLiveData(FirebaseFirestore.getInstance().collection("admins"));
+                admins.observe(this, queryDocumentSnapshots -> {
+                    admins.removeObservers(this);
+                    List<AdminsModel> adminsModels = queryDocumentSnapshots.toObjects(AdminsModel.class);
+                    for (AdminsModel x :
+                            adminsModels) {
+                        if (x.getEmail_id().equals(notificationsViewModel.getUserEmailId())) {
+                            Intent intent = new Intent(getContext(), AddEventActivity.class);
+                            startActivity(intent);
+                            cancelSnackbar();
+                            return;
+                        } else {
+                            showSnackbar("You are not admin,Please contact developer for admin access!");
+                        }
+                    }
+                });
+            });
+        });
+    }
+
+    private void cancelSnackbar() {
+        if (sbar != null) {
+            if (sbar.isShown()) {
+                sbar.dismiss();
+            }
+        }
+    }
+
+    private void showSnackbar(String s) {
+        sbar = Snackbar.make(viewPager, s, Snackbar.LENGTH_SHORT);
+        sbar.show();
+    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

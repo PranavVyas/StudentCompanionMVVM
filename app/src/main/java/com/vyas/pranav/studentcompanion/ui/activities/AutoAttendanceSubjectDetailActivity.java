@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -32,7 +33,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -45,6 +45,7 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -84,7 +85,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
     ConstraintLayout constraintMain;
 
     @BindView(R.id.card_auto_attendance_subject_detail_current_detail)
-    CardView cardCurrentDetails;
+    MaterialCardView cardCurrentDetails;
     @BindView(R.id.placeholder_auto_attendance_subject_detail)
     ConstraintLayout framePlaceHolder;
     @BindView(R.id.btn_auto_attendance_subject_detail_edit)

@@ -77,4 +77,10 @@ GNU Affero General Public License for more details.
         app:summary="@string/pref_summary_backup_database"
         app:title="@string/pref_title_backup_database" />
 
+    <Preference
+        app:icon="@drawable/ic_developer"
+        app:key="@string/pref_key_developer_tools"
+        app:summary="@string/pref_summary_developer_tools"
+        app:title="@string/pref_title_developer_tools" />
+
 </androidx.preference.PreferenceScreen>

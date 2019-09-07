@@ -1,23 +1,10 @@
-package com.vyas.pranav.studentcompanion.ui.activities;
-/*
-Student Companion - An Android App that has features like attendance manager, note manager etc
-Copyright (C) 2019  Pranav Vyas
+package com.vyas.pranav.studentcompanion.ui.fragments;
 
-This file is a part of Student Companion.
-
-Student Companion is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Student Companion is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-*/
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,8 +12,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,81 +24,75 @@ import com.google.android.material.snackbar.Snackbar;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.TimetableTableAdapter;
-import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
-import com.vyas.pranav.studentcompanion.viewmodels.DeveloperTimetableViewModel;
+import com.vyas.pranav.studentcompanion.viewmodels.TimetableViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.vyas.pranav.studentcompanion.utils.AttendanceUtils.refreshNewTimetable;
-import static com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils.setUserTheme;
+public class SetUpTimetableNew extends Fragment implements ITableViewListener {
 
-public class DeveloperTimetableActivity extends AppCompatActivity implements ITableViewListener {
 
-    @BindView(R.id.toolbar_developer_timetable)
-    Toolbar toolbar;
-    @BindView(R.id.table_developer_timetable)
-    TableView tableTimetable;
+    @BindView(R.id.table_setup_timetable)
+    TableView timetable;
     List<String> weekDays = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"));
     private TimetableTableAdapter mAdapter;
-    private DeveloperTimetableViewModel viewModel;
+    private TimetableViewModel timetableViewModel;
     private int lecturesPerDay;
     private List<String> columnHeadings;
-    private List<List<String>> daysLectures;
-    private List<String> Monday, Tuesday, Wednesday, Thursday, Friday;
     private String oldSub, newSub;
     private List<String> subList;
-    private MainDatabase mDb;
-    private int semester;
+    private OnTimetableSelectedListenerNew listener;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setUserTheme(this);
-        setContentView(R.layout.activity_developer_timetable);
-        ButterKnife.bind(this);
-        init();
-        bindUi();
+    public SetUpTimetableNew() {
+        // Required empty public constructor
     }
 
-    private void init() {
-        viewModel = ViewModelProviders.of(this).get(DeveloperTimetableViewModel.class);
-        lecturesPerDay = viewModel.getLecturesPerDay();
-        subList = viewModel.getSubjectList();
+    public static SetUpTimetableNew newInstance() {
+        return new SetUpTimetableNew();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_set_up_timetable_new, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        timetableViewModel = ViewModelProviders.of(this).get(TimetableViewModel.class);
+
+        lecturesPerDay = timetableViewModel.getLecturesPerDay();
+        subList = timetableViewModel.getSubjectList();
         subList.add(Constants.DEFAULT_LECTURE);
-        mDb = MainDatabase.getInstance(this);
-        semester = viewModel.getSemInfo();
+        bindUi();
+        timetable.setTableViewListener(this);
+        showHelp();
     }
 
     private void bindUi() {
-        mAdapter = new TimetableTableAdapter(this);
-        tableTimetable.setAdapter(mAdapter);
+        mAdapter = new TimetableTableAdapter(getContext());
         columnHeadings = getColumnHeaders(lecturesPerDay);
-        mAdapter.setAllItems(columnHeadings, weekDays, daysLectures);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        viewModel.getDaysLectureLiveData().observe(this, lists -> {
-            daysLectures = lists;
-            mAdapter.setCellItems(daysLectures);
-        });
-        tableTimetable.setTableViewListener(this);
+        timetable.setAdapter(mAdapter);
+        mAdapter.setAllItems(columnHeadings, weekDays, timetableViewModel.getDaysLectures());
     }
 
     private List<String> getColumnHeaders(int lecturesPerDay) {
         List<String> columnHeader = new ArrayList<>();
         for (int i = 0; i < lecturesPerDay; i++) {
             String header = "Lecture" + (i + 1);
-            int startingTime = viewModel.getStartingTimeOfLecture(i);
-            int endingTime = viewModel.getEndingTimeOfLecture(i);
+            int startingTime = timetableViewModel.getStartingTimeOfLecture(i);
+            int endingTime = timetableViewModel.getEndingTimeOfLecture(i);
             String start = ConverterUtils.convertTimeIntInString(startingTime);
             String end = ConverterUtils.convertTimeIntInString(endingTime);
             header = header + "\n" + start + "\nTo\n" + end;
@@ -120,17 +101,23 @@ public class DeveloperTimetableActivity extends AppCompatActivity implements ITa
         return columnHeader;
     }
 
+    private void showHelp() {
+        BottomSheetDialog mDialog = new BottomSheetDialog(getContext());
+        mDialog.setContentView(R.layout.item_holder_bottom_sheet_set_up_lecture);
+        mDialog.show();
+    }
+
     //Ex no of lectures = 7, days = 5
     //Weekdays = maximum 5
     //column Index = maximum as no of lecture = 7
-
+    //
     @Override
     public void onCellClicked(@NonNull RecyclerView.ViewHolder viewHolder, int columnIndex, int rawIndex) {
-        oldSub = daysLectures.get(rawIndex).get(columnIndex);
+        oldSub = timetableViewModel.getDaysLectures().get(rawIndex).get(columnIndex);
         int lectureNo = (columnIndex + 1);
         String day = weekDays.get(rawIndex);
         showSnackBar("Day : " + day + " Lecture No :" + lectureNo + " Subject Old : " + oldSub);
-        BottomSheetDialog promptDialog = new BottomSheetDialog(this);
+        BottomSheetDialog promptDialog = new BottomSheetDialog(getContext());
         promptDialog.setContentView(R.layout.item_holder_bottom_sheet_timetable_edit);
         promptDialog.setOnDismissListener(dialogInterface -> {
             if (!newSub.equals(oldSub)) {
@@ -149,11 +136,11 @@ public class DeveloperTimetableActivity extends AppCompatActivity implements ITa
         tvDay.setText("on : " + day);
         tvSubject.setText("Old Subject : " + oldSub);
 
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<>(this, R.layout.spinner_simple_custom_main, subList);
+        ArrayAdapter<String> mAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_simple_custom_main, subList);
         mAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerSubjects.setAdapter(mAdapter);
-        spinnerSubjects.setSelection(subList.indexOf(oldSub));
-        newSub = oldSub;
+        spinnerSubjects.setSelection(0);
+        newSub = subList.get(0);
         spinnerSubjects.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -175,13 +162,14 @@ public class DeveloperTimetableActivity extends AppCompatActivity implements ITa
     }
 
     private void changeTemporary(int column, int raw, String newSub) {
-        viewModel.setDaysLectures(raw, column, newSub);
+        timetableViewModel.setDaysLectures(raw, column, newSub);
+        mAdapter.setCellItems(timetableViewModel.getDaysLectures());
+        mAdapter.notifyDataSetChanged();
     }
-
 
     private void showSnackBar(String s) {
         Logger.d(s);
-        Snackbar.make(toolbar, s, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(timetable, s, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -209,10 +197,28 @@ public class DeveloperTimetableActivity extends AppCompatActivity implements ITa
 
     }
 
-
-    @OnClick(R.id.btn_developer_timetable_edit)
-    void finalized() {
-        showSnackBar("Please wait for 15 seconds to apply changes! Then You have to RESTART app to work properly.");
-        refreshNewTimetable(this, viewModel.getSemInfo(), daysLectures, weekDays, columnHeadings, ConverterUtils.convertDateToString(new Date()));
+    @OnClick(R.id.btn_setup_timetable_previous)
+    void previousClicked() {
+        if (listener != null) {
+            listener.onPreviousClickedInSetUpTimetableNew();
+        }
     }
+
+    @OnClick(R.id.btn_setup_timetable_next)
+    void nextClicked() {
+        if (listener != null) {
+            listener.onTimetableSelectedNew(timetableViewModel.getDaysLectures(), weekDays, columnHeadings);
+        }
+    }
+
+    public void setOnTimeTableSelectedListenerNew(SetUpTimetableNew.OnTimetableSelectedListenerNew listener) {
+        this.listener = listener;
+    }
+
+    public interface OnTimetableSelectedListenerNew {
+        void onTimetableSelectedNew(List<List<String>> subjects, List<String> days, List<String> columnTitles);
+
+        void onPreviousClickedInSetUpTimetableNew();
+    }
+
 }
