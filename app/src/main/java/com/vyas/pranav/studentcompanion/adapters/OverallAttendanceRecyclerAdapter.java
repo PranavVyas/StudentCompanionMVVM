@@ -20,6 +20,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,7 +134,13 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         float presentPresent = (presentDays * 100) / totalDays;
         int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (currentAttendanceCriteria / 100.0f)));
         int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
-        holder.tvAvailableToBunk.setText(String.format(context.getString(R.string.overall_days_available_to_bunk), daysAvailableToBunk));
+        if (daysAvailableToBunk > 0) {
+            holder.tvAvailableToBunk.setText(Html.fromHtml("You can still bunk <b>" + daysAvailableToBunk + "</b> lectures in this semester"));
+        } else if (daysAvailableToBunk == 0) {
+            holder.tvAvailableToBunk.setText(Html.fromHtml("You can not bunk <b>any lectures</b> in this semester"));
+        } else if (dangerPercent < 0) {
+            holder.tvAvailableToBunk.setText(Html.fromHtml("You have already bunked <b>" + (0 - daysAvailableToBunk) + " more lectures than required amount</b>"));
+        }
         holder.progressPresent.setProgressValue((int) presentPresent);
         holder.progressPresent.setCenterTitle((int) presentPresent + " %");
         int maxAttendance = (int) Math.ceil(((totalDays - bunkedDays) * 100.0) / totalDays);
