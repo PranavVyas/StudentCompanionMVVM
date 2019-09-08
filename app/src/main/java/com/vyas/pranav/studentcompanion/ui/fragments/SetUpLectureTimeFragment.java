@@ -33,6 +33,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
@@ -160,6 +161,11 @@ public class SetUpLectureTimeFragment extends Fragment {
                     Toast.makeText(getContext(), "End time must be after Start time", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if ((i - 2) > 0) {
+                    if (startTime < convertTimeInInt(((MaterialButton) ((LinearLayout) linearContainer.getChildAt(i - 2)).getChildAt(1)).getText().toString())) {
+                        showSnackbar("Lecture " + i % 2 + "can not be before " + ((i % 2) - 2));
+                    }
+                }
 
                 startTimes.add(startTime);
                 endTimes.add(endTime);
@@ -173,6 +179,10 @@ public class SetUpLectureTimeFragment extends Fragment {
         if (listener != null) {
             listener.OnLectureTimeSelected();
         }
+    }
+
+    private void showSnackbar(String s) {
+        Snackbar.make(linearContainer, s, Snackbar.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.btn_set_up_lecture_time_previous)

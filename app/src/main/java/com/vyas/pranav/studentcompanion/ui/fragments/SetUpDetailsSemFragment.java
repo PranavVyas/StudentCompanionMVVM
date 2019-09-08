@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.vyas.pranav.studentcompanion.R;
@@ -125,7 +126,7 @@ public class SetUpDetailsSemFragment extends Fragment {
             LinearLayout subjectDetailsContainer = new LinearLayout(getContext());
             subjectDetailsContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             subjectDetailsContainer.setOrientation(LinearLayout.HORIZONTAL);
-            TextInputLayout textInputLayout = new TextInputLayout(getContext());
+            TextInputLayout textInputLayout = new TextInputLayout(getContext(), null, R.style.MyCustomOutlinedBoxTextInput);
             textInputLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             TextInputEditText et = new TextInputEditText(getContext());
             et.setHint("Subject " + (i + 1) + " Name");
@@ -176,21 +177,36 @@ public class SetUpDetailsSemFragment extends Fragment {
 
     private boolean validateNoOfSubjects() {
         if (noOfSubjects.isEmpty()) {
+            showSnackbar("No of Subject can not be empty!");
             return false;
         }
-        return Integer.valueOf(noOfSubjects) >= 1;
+        if (Integer.valueOf(noOfSubjects) >= 1 && Integer.valueOf(noOfSubjects) <= 10) {
+            return true;
+        } else {
+            showSnackbar("No of Subjects should be 1 to 10");
+            return false;
+        }
+    }
+
+    private void showSnackbar(String s) {
+        Snackbar.make(btnContinue, s, Snackbar.LENGTH_SHORT).show();
     }
 
     private boolean validateNoOfLectures() {
         if (noOfLecturesPerDay.isEmpty()) {
+            showSnackbar("No of Lecture can not be empty!");
             return false;
         }
-        return Integer.valueOf(noOfLecturesPerDay) >= 1;
+        if (Integer.valueOf(noOfLecturesPerDay) >= 1 && Integer.valueOf(noOfLecturesPerDay) <= 10) {
+            return true;
+        } else {
+            showSnackbar("No of Lecture should be 1 to 10");
+            return false;
+        }
     }
 
     public interface OnSubjectsSelectedListener {
         void onSubjectSelected();
-
         void onPreviousClickedOnSemSetUp();
     }
 

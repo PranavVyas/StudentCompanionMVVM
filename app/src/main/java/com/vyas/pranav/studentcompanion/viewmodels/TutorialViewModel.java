@@ -34,4 +34,8 @@ public class TutorialViewModel extends AndroidViewModel {
     public void setTutorialComplete(boolean isTutorialComplete) {
         setUpProcessRepository.setTutorialDone(isTutorialComplete);
     }
+
+    public boolean isTutorialComplete() {
+        return setUpProcessRepository.isTutorialDone();
+    }
 }

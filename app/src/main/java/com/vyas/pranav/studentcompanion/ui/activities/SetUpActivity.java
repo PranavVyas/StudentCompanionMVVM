@@ -18,6 +18,7 @@ GNU Affero General Public License for more details.
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.transition.Slide;
 import android.view.Gravity;
 import android.view.Menu;
@@ -45,6 +46,7 @@ import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.SetUpViewModel;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,7 +75,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         setUpViewModel = ViewModelProviders.of(this).get(SetUpViewModel.class);
         if (setUpViewModel.isFirstRun()) {
-//            new Handler().postDelayed(this::showInstruction, TimeUnit.SECONDS.toMillis(1));
+            new Handler().postDelayed(this::showInstruction, TimeUnit.SECONDS.toMillis(1));
         }
         if (!setUpViewModel.isFirstRun()) {
             if (setUpViewModel.isTutorialDone()) {
@@ -135,6 +137,12 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.frame_setup_activity_container, setUpTimetableFragment)
                         .commit();
+                break;
+
+            case 5:
+                Intent intent = new Intent(this, TutorialActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
@@ -255,6 +263,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
 
     @Override
     public void onTimetableSelectedNew(List<List<String>> subjects, List<String> days, List<String> columnTitles) {
+        setUpViewModel.setCurrentStep(5);
         setUpViewModel.saveHolidaysAndInitAttendance(subjects, days, columnTitles);
         Intent intent = new Intent(this, TutorialActivity.class);
         startActivity(intent);

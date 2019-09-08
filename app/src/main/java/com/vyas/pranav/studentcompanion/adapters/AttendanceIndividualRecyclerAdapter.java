@@ -109,7 +109,7 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         void presentClicked() {
             present = Constants.PRESENT;
 //            RotateAnimation animation = new RotateAnimation(0,360);
-            Animation rotateAnimation = AnimationUtils.loadAnimation(btnPresent.getContext(), R.anim.rotate_image);
+            Animation rotateAnimation = AnimationUtils.loadAnimation(btnPresent.getContext(), R.anim.rotate_clockwise);
             btnPresent.startAnimation(rotateAnimation);
             refreshTextView();
             sendLatestData();
@@ -118,7 +118,7 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         @OnClick(R.id.image_recycler_individual_attendance_absent)
         void absentClicked() {
             present = Constants.ABSENT;
-            Animation rotateAnimation = AnimationUtils.loadAnimation(btnPresent.getContext(), R.anim.rotate_image);
+            Animation rotateAnimation = AnimationUtils.loadAnimation(btnPresent.getContext(), R.anim.rotate_anticlockwise);
             btnAbsent.startAnimation(rotateAnimation);
             refreshTextView();
             sendLatestData();
@@ -127,7 +127,7 @@ public class AttendanceIndividualRecyclerAdapter extends ListAdapter<AttendanceE
         @OnClick(R.id.image_recycler_individual_attendance_cancel)
         void cancelClicked() {
             present = Constants.CANCELLED;
-            Animation rotateAnimation = AnimationUtils.loadAnimation(btnPresent.getContext(), R.anim.rotate_image);
+            Animation rotateAnimation = AnimationUtils.loadAnimation(btnPresent.getContext(), R.anim.rotate_clockwise);
             btnCancel.startAnimation(rotateAnimation);
             refreshTextView();
             sendLatestData();

@@ -38,6 +38,10 @@ public class TutorialActivity extends FancyWalkthroughActivity {
         super.onCreate(savedInstanceState);
 
         tutorialViewModel = ViewModelProviders.of(this).get(TutorialViewModel.class);
+        if (tutorialViewModel.isTutorialComplete()) {
+            startMainActivity();
+            return;
+        }
 
         FancyWalkthroughCard welcomeCard = new FancyWalkthroughCard(getString(R.string.tut_welcome_title), getString(R.string.tut_welcome_desc), R.drawable.ic_logo);
         FancyWalkthroughCard attendance = new FancyWalkthroughCard(getString(R.string.tut_att_man_title), getString(R.string.tut_att_man_desc), R.drawable.ic_today_attendance);

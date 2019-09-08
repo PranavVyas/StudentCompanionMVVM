@@ -133,7 +133,7 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         float presentPresent = (presentDays * 100) / totalDays;
         int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (currentAttendanceCriteria / 100.0f)));
         int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
-        holder.tvAvailableToBunk.setText(context.getString(R.string.overall_days_available_to_bunk) + daysAvailableToBunk);
+        holder.tvAvailableToBunk.setText(String.format(context.getString(R.string.overall_days_available_to_bunk), daysAvailableToBunk));
         holder.progressPresent.setProgressValue((int) presentPresent);
         holder.progressPresent.setCenterTitle((int) presentPresent + " %");
         int maxAttendance = (int) Math.ceil(((totalDays - bunkedDays) * 100.0) / totalDays);

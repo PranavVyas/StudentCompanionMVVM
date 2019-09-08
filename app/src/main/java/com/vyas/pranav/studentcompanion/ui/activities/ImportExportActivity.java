@@ -22,6 +22,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -69,8 +71,12 @@ public class ImportExportActivity extends AppCompatActivity {
     MaterialCheckBox showTutCheckbox;
     @BindView(R.id.image_import_export_import)
     ImageView btnImport;
+    @BindView(R.id.image_import_export_export)
+    ImageView btnExport;
     @BindView(R.id.btn_setup_fresh)
-    Button btnstartFresh;
+    Button btnStartFresh;
+    @BindView(R.id.btn_import_export_continue)
+    Button btnContinue;
     @BindView(R.id.textView8)
     TextView tvOr;
 
@@ -92,11 +98,18 @@ public class ImportExportActivity extends AppCompatActivity {
         backDbPath = Environment.getExternalStorageDirectory().getPath() + "/Student Companion Backup/" + MainDatabase.DB_NAME;
         if (getIntent().getBooleanExtra(EXTRA_FORCE_START_ACTIVITY, false)) {
             tvOr.setVisibility(View.GONE);
-            btnstartFresh.setVisibility(View.GONE);
+            btnStartFresh.setVisibility(View.GONE);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            btnContinue.setVisibility(View.VISIBLE);
         } else {
+            btnContinue.setVisibility(View.GONE);
             if (sharedPreferencesUtils.isRestoreDone()) {
-                if (sharedPreferencesUtils.isTutorialDone()) {
+                if (sharedPreferencesUtils.isAppFirstRun()) {
+                    Intent intent = new Intent(this, SetUpActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return;
+                } else if (sharedPreferencesUtils.isTutorialDone()) {
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                     setResult(RESULT_OK);
@@ -128,12 +141,16 @@ public class ImportExportActivity extends AppCompatActivity {
 
     @OnClick(R.id.image_import_export_export)
     void exportClicked() {
+        Animation rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise);
+        btnExport.startAnimation(rotateAnim);
         tvStatus.setText("Backing Up Now!");
         copy(false);
     }
 
     @OnClick(R.id.image_import_export_import)
     void importClicked() {
+        Animation rotateAnim = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise);
+        btnImport.startAnimation(rotateAnim);
         tvStatus.setText("Restoring Files Now!");
         copy(true);
     }
@@ -144,6 +161,7 @@ public class ImportExportActivity extends AppCompatActivity {
         sharedPreferencesUtils.setAppFirstRun(true);
         startActivity(intent);
         sharedPreferencesUtils.setRestoreDone(true);
+        finish();
     }
 
     @OnClick(R.id.btn_import_export_continue)
@@ -196,7 +214,6 @@ public class ImportExportActivity extends AppCompatActivity {
                                 showSnackBar("Back up Done!");
                             }
                             checkForFiles();
-                            mDb = MainDatabase.getInstance(ImportExportActivity.this);
                         } catch (IOException e) {
                             tvStatus.setText("Error Occurred While copying file");
                             e.printStackTrace();
@@ -232,7 +249,6 @@ public class ImportExportActivity extends AppCompatActivity {
                 sharedPreferencesUtils.setLectureStartTimeInSharedPrefs(lectureNo, startTime);
                 sharedPreferencesUtils.setLectureEndTimeInSharedPrefs(lectureNo, stopTime);
             }
-            sharedPreferencesUtils.setTutorialDone(false);
             sharedPreferencesUtils.setCurrentPath(mDb.metaDataDao().getMetadataOf(Constants.METADATA_CURRENT_PATH).getValue());
             sharedPreferencesUtils.setCurrentAttendanceCriteria(Integer.parseInt(mDb.metaDataDao().getMetadataOf(Constants.METADATA_ATTENDANCE_CRITERIA).getValue()));
             Date firstDate = mDb.attendanceDao().getFirstDate();
@@ -240,14 +256,14 @@ public class ImportExportActivity extends AppCompatActivity {
             sharedPreferencesUtils.setUpStartingDate(ConverterUtils.convertDateToString(firstDate));
             sharedPreferencesUtils.setUpEndingDate(ConverterUtils.convertDateToString(lastDate));
             sharedPreferencesUtils.setCurrentDay(5);
-            sharedPreferencesUtils.setUpCurrentStep(4);
+            sharedPreferencesUtils.setUpCurrentStep(5);
             sharedPreferencesUtils.setUpSemester(Integer.parseInt(mDb.metaDataDao().getMetadataOf(Constants.METADATA_SEMESTER).getValue()));
             sharedPreferencesUtils.setTutorialDone(!showTutCheckbox.isChecked());
             sharedPreferencesUtils.setRestoreDone(true);
-            sharedPreferencesUtils.setTutorialDone(showTutCheckbox.isChecked());
+            sharedPreferencesUtils.setAppFirstRun(false);
             AppExecutors.getInstance().mainThread().execute(() -> {
                 tvStatus.setText("Successfully Restored Database!");
-                Intent intent = new Intent(ImportExportActivity.this, MainActivity.class);
+                Intent intent = new Intent(ImportExportActivity.this, TutorialActivity.class);
                 startActivity(intent);
                 ImportExportActivity.this.setResult(Activity.RESULT_OK);
                 finish();
