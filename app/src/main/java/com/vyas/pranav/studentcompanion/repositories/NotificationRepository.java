@@ -32,26 +32,26 @@ import java.util.Date;
 import java.util.List;
 
 public class NotificationRepository {
-    private static final Object LOCK = new Object();
-    private static NotificationRepository instance;
-    private final Context context;
+    //    private static final Object LOCK = new Object();
+//    private static NotificationRepository instance;
+//    private final Context context;
     private final AppExecutors mExecutors;
     private final NotificationDao notificationDao;
 
     public NotificationRepository(Context context) {
-        this.context = context;
+//        this.context = context;
         notificationDao = MainDatabase.getInstance(context).notificationDao();
         mExecutors = AppExecutors.getInstance();
     }
 
-    public static NotificationRepository getInstance(Context context) {
-        if (instance == null) {
-            synchronized (LOCK) {
-                instance = new NotificationRepository(context.getApplicationContext());
-            }
-        }
-        return instance;
-    }
+//    public static NotificationRepository getInstance(Context context) {
+//        if (instance == null) {
+//            synchronized (LOCK) {
+//                instance = new NotificationRepository(context.getApplicationContext());
+//            }
+//        }
+//        return instance;
+//    }
 
     public void insertNotification(NotificationFirestoreModel notification) {
         mExecutors.diskIO().execute(() -> notificationDao.insertNotification(notification));

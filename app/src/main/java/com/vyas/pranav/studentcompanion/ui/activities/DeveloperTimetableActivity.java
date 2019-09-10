@@ -16,13 +16,17 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,15 +41,24 @@ import com.google.android.material.snackbar.Snackbar;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.TimetableTableAdapter;
+import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
+import com.vyas.pranav.studentcompanion.data.lecturedatabase.LectureEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
+import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
+import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
+import com.vyas.pranav.studentcompanion.repositories.SetUpProcessRepository;
+import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.Generators;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 import com.vyas.pranav.studentcompanion.viewmodels.DeveloperTimetableViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,14 +76,12 @@ public class DeveloperTimetableActivity extends AppCompatActivity implements ITa
     List<String> weekDays = new ArrayList<>(Arrays.asList("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"));
     private TimetableTableAdapter mAdapter;
     private DeveloperTimetableViewModel viewModel;
-    private int lecturesPerDay;
     private List<String> columnHeadings;
     private List<List<String>> daysLectures;
-    private List<String> Monday, Tuesday, Wednesday, Thursday, Friday;
     private String oldSub, newSub;
     private List<String> subList;
     private MainDatabase mDb;
-    private int semester;
+    private int startTime, endTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,17 +95,15 @@ public class DeveloperTimetableActivity extends AppCompatActivity implements ITa
 
     private void init() {
         viewModel = ViewModelProviders.of(this).get(DeveloperTimetableViewModel.class);
-        lecturesPerDay = viewModel.getLecturesPerDay();
         subList = viewModel.getSubjectList();
         subList.add(Constants.DEFAULT_LECTURE);
         mDb = MainDatabase.getInstance(this);
-        semester = viewModel.getSemInfo();
     }
 
     private void bindUi() {
         mAdapter = new TimetableTableAdapter(this);
         tableTimetable.setAdapter(mAdapter);
-        columnHeadings = getColumnHeaders(lecturesPerDay);
+        columnHeadings = getColumnHeaders(viewModel.getLecturesPerDay());
         mAdapter.setAllItems(columnHeadings, weekDays, daysLectures);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -214,5 +223,78 @@ public class DeveloperTimetableActivity extends AppCompatActivity implements ITa
     void finalized() {
         showSnackBar("Please wait for 15 seconds to apply changes! Then You have to RESTART app to work properly.");
         refreshNewTimetable(this, viewModel.getSemInfo(), daysLectures, weekDays, columnHeadings, ConverterUtils.convertDateToString(new Date()));
+    }
+
+    @OnClick(R.id.btn_developer_timetable_new_slota)
+    void addNewSlotClicked() {
+        BottomSheetDialog mDialog = new BottomSheetDialog(this);
+        mDialog.setContentView(R.layout.item_holder_bottom_sheet_add_slot);
+        mDialog.show();
+
+        startTime = 0;
+        endTime = 0;
+
+        Button btnStartTime = mDialog.findViewById(R.id.btn_holder_add_slot_start);
+        Button btnEndTime = mDialog.findViewById(R.id.btn_holder_add_slot_end);
+        Button btnDone = mDialog.findViewById(R.id.btn_holder_add_slot_done);
+        TextView tvLectureNo = mDialog.findViewById(R.id.tv_holder_add_slot_lecture_no);
+        TextView tvSummary = mDialog.findViewById(R.id.tv_holder_add_slot_summary);
+
+        tvLectureNo.setText(Html.fromHtml("You are adding<br>Lecture No : <b>" + (viewModel.getLecturesPerDay() + 1) + "</b>"));
+        btnStartTime.setOnClickListener(view -> {
+            TimePickerDialog picker = new TimePickerDialog(DeveloperTimetableActivity.this, (timePicker, i, i1) -> {
+                int timeInInt = i1 + (int) TimeUnit.HOURS.toMinutes(i);
+                btnStartTime.setText(ConverterUtils.convertTimeIntInString(timeInInt));
+                startTime = timeInInt;
+                tvSummary.setText(Html.fromHtml("You are creating <b><i>Lecture " + (viewModel.getLecturesPerDay() + 1) + "</i></b> with Starting at <b><i>" + ConverterUtils.convertTimeIntInString(startTime) + "</i></b> and Ending at <b><i>" + (ConverterUtils.convertTimeIntInString(endTime)) + "</i></b>"));
+            }, 0, 0, false);
+            picker.show();
+        });
+        btnEndTime.setOnClickListener(view -> {
+            TimePickerDialog picker = new TimePickerDialog(DeveloperTimetableActivity.this, (timePicker, i, i1) -> {
+                int timeInInt = i1 + (int) TimeUnit.HOURS.toMinutes(i);
+                btnEndTime.setText(ConverterUtils.convertTimeIntInString(timeInInt));
+                endTime = timeInInt;
+                tvSummary.setText(Html.fromHtml("You are creating <b><i>Lecture " + (viewModel.getLecturesPerDay() + 1) + "</i></b> with Starting at <b><i>" + ConverterUtils.convertTimeIntInString(startTime) + "</i></b> and Ending at <b><i>" + (ConverterUtils.convertTimeIntInString(endTime)) + "</i></b>"));
+            }, 0, 0, false);
+            picker.show();
+        });
+
+        btnDone.setOnClickListener((view -> {
+            if (startTime == endTime) {
+                Toast.makeText(this, "Please Select Start and End time between 00:00 and 23:59", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (endTime - startTime < 11) {
+                Toast.makeText(this, "End time must be at least after 11 minutes after Starting time\n(Because of Smart Silent to work)", Toast.LENGTH_SHORT).show();
+            }
+            Toast.makeText(this, "Please wait 5 Seconds, After that this window will automatically close", Toast.LENGTH_LONG).show();
+            addNewSlotToDb(viewModel.getLecturesPerDay() + 1, viewModel.getSemInfo(), startTime, endTime);
+            new Handler().postDelayed(this::finish, TimeUnit.SECONDS.toMillis(5));
+        }));
+    }
+
+    private void addNewSlotToDb(int lectureNo, int semester, int startTime, int endTime) {
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            mDb.lectureDao().insert(new LectureEntry(lectureNo - 1, startTime, endTime));
+            mDb.timetableDao().insertTimeTableEntry(new TimetableEntry(Generators.generateIdForTimetableEntry(lectureNo, semester, 1), startTime, endTime, "Monday", Constants.DEFAULT_LECTURE, lectureNo));
+            mDb.timetableDao().insertTimeTableEntry(new TimetableEntry(Generators.generateIdForTimetableEntry(lectureNo, semester, 2), startTime, endTime, "Tuesday", Constants.DEFAULT_LECTURE, lectureNo));
+            mDb.timetableDao().insertTimeTableEntry(new TimetableEntry(Generators.generateIdForTimetableEntry(lectureNo, semester, 3), startTime, endTime, "Wednesday", Constants.DEFAULT_LECTURE, lectureNo));
+            mDb.timetableDao().insertTimeTableEntry(new TimetableEntry(Generators.generateIdForTimetableEntry(lectureNo, semester, 4), startTime, endTime, "Thursday", Constants.DEFAULT_LECTURE, lectureNo));
+            mDb.timetableDao().insertTimeTableEntry(new TimetableEntry(Generators.generateIdForTimetableEntry(lectureNo, semester, 5), startTime, endTime, "Friday", Constants.DEFAULT_LECTURE, lectureNo));
+            SharedPreferencesUtils utils = new SharedPreferencesUtils(this);
+            utils.setNoOfLecturesPerDay(lectureNo);
+            utils.setLectureStartTimeInSharedPrefs(lectureNo - 1, startTime);
+            utils.setLectureEndTimeInSharedPrefs(lectureNo - 1, endTime);
+            SetUpProcessRepository repository = new SetUpProcessRepository(this);
+            List<Date> dates = repository.removeHolidaysAndWeekends(mDb.holidayDao().getHolidayDates(), ConverterUtils.convertStringToDate(utils.getStartingDate()), ConverterUtils.convertStringToDate(utils.getEndingDate()));
+            List<AttendanceEntry> newEntries = new ArrayList<>();
+            for (Date x :
+                    dates) {
+                newEntries.add(new AttendanceEntry(x, lectureNo, Constants.DEFAULT_LECTURE, Constants.ABSENT));
+            }
+            mDb.attendanceDao().insertAllAttendance(newEntries);
+            new OverallAttendanceRepository(this).refreshAllOverallAttendance();
+        });
     }
 }

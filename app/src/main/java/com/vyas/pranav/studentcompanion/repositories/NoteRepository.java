@@ -30,18 +30,18 @@ public class NoteRepository {
     private Context context;
     private NoteDao noteDao;
     private AppExecutors mExecutors;
-    public static final Object LOCK = new Object();
+//    public static final Object LOCK = new Object();
+//
+//    private static NoteRepository instance;
 
-    private static NoteRepository instance;
-
-    public static NoteRepository getInstance(Context context) {
-        if (instance == null) {
-            synchronized (LOCK) {
-                instance = new NoteRepository(context.getApplicationContext());
-            }
-        }
-        return instance;
-    }
+//    public static NoteRepository getInstance(Context context) {
+//        if (instance == null) {
+//            synchronized (LOCK) {
+//                instance = new NoteRepository(context.getApplicationContext());
+//            }
+//        }
+//        return instance;
+//    }
 
     public NoteRepository(Context context) {
         this.context = context;

@@ -58,9 +58,9 @@ public class TimetableViewModel extends AndroidViewModel {
 
     public TimetableViewModel(@NonNull Application application) {
         super(application);
-        timetableRepository = TimetableRepository.getInstance(application);
+        timetableRepository = new TimetableRepository(application);
         timetableEntries = timetableRepository.getFullTimetable();
-        setUpProcessRepository = SetUpProcessRepository.getInstance(application);
+        setUpProcessRepository = new SetUpProcessRepository(application);
         lecturesPerDay = setUpProcessRepository.getNoOfLecturesPerDay();
         generateListForFirstTime();
     }

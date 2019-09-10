@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -103,6 +104,7 @@ public class DigitalLibraryRecyclerAdapter extends PagedListAdapter<DigitalLibra
             TextView tvAuthor = mDialog.findViewById(R.id.tv_holder_botttom_sheet_digital_author);
             TextView tvSubjectDialog = mDialog.findViewById(R.id.tv_holder_botttom_sheet_digital_subject);
             Button btnOk = mDialog.findViewById(R.id.btn_holder_bottom_sheet_digital_open_in_browser);
+            ImageView imageShare = mDialog.findViewById(R.id.image_holder_bottom_sheet_open_link_digital_share);
 
             DigitalLibraryEntry book = getItem(getAdapterPosition());
             tvAuthor.setText(book.getAuthorName());
@@ -115,6 +117,13 @@ public class DigitalLibraryRecyclerAdapter extends PagedListAdapter<DigitalLibra
                 v.getContext().startActivity(openLink);
                 mDialog.dismiss();
             });
+
+            imageShare.setOnClickListener((view -> {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "I found *" + getItem(getAdapterPosition()).getBookName() + "* on this awesome app: *Student Companion*, " + view.getContext().getString(R.string.share_message_digital_library) + view.getContext().getString(R.string.feature_url) + "\n\n Download now: " + view.getContext().getString(R.string.download_url));
+                shareIntent.setType("text/plain");
+                view.getContext().startActivity(shareIntent);
+            }));
         }
     }
 }

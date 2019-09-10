@@ -105,6 +105,7 @@ public class MarketPlaceSellRecyclerAdapter extends ListAdapter<ItemModel, Marke
         TextView tvDialogContact = mDialog.findViewById(R.id.tv_marketplace_sell_item_contact);
         TextView tvDialogCategory = mDialog.findViewById(R.id.tv_marketplace_sell_item_category);
         ImageView imageItem = mDialog.findViewById(R.id.image_marketplace_sell_item);
+        ImageView imageShare = mDialog.findViewById(R.id.image_marketplace_sell_item_share);
 
         tvDialogCategory.setText(item.getCategory());
         tvDialogName.setText(item.getName());
@@ -117,7 +118,12 @@ public class MarketPlaceSellRecyclerAdapter extends ListAdapter<ItemModel, Marke
                 .error(R.drawable.ic_market_place)
                 .circleCrop()
                 .into(imageItem);
-
+        imageShare.setOnClickListener((view -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Hey there is new Item in Student Companion, Check it out :\nName: *" + item.getName() + "*\nSeller : *" + item.getP_name() + "*\n\nCheck out Price in *Student Companion*" + context.getString(R.string.share_message_digital_library) + context.getString(R.string.feature_url) + "\n\n Download now: " + context.getString(R.string.download_url));
+            shareIntent.setType("text/plain");
+            context.startActivity(shareIntent);
+        }));
 
         MaterialButton btnSold = mDialog.findViewById(R.id.btn_marketplace_sell_item_action);
         if (btnSold != null) {

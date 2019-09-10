@@ -46,9 +46,9 @@ public class DailyJobForDoingDailyJobs extends DailyJob {
     @Override
     protected DailyJobResult onRunDailyJob(@NonNull Params params) {
         getContext();
-        OverallAttendanceRepository overallAttendanceRepository = OverallAttendanceRepository.getInstance(getContext());
+        OverallAttendanceRepository overallAttendanceRepository = new OverallAttendanceRepository(getContext());
         overallAttendanceRepository.refreshAllOverallAttendance();
-        AppSettingsRepository repo = AppSettingsRepository.getInstance(getContext());
+        AppSettingsRepository repo = new AppSettingsRepository(getContext());
         repo.toggleSmartSilent();
         return DailyJobResult.SUCCESS;
     }

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+Student Companion - An Android App that has features like attendance manager, note manager etc
+Copyright (C) 2019  Pranav Vyas
+
+This file is a part of Student Companion.
+
+Student Companion is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Student Companion is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+
+    <Button
+        android:id="@+id/btn_holder_add_slot_start"
+        style="@style/MyCustomMaterialButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Start Time"
+        app:layout_constraintEnd_toStartOf="@+id/btn_holder_add_slot_end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_holder_add_slot_lecture_no" />
+
+    <Button
+        android:id="@+id/btn_holder_add_slot_end"
+        style="@style/MyCustomMaterialButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Ending Time"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_holder_add_slot_start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_holder_add_slot_start"
+        app:layout_constraintTop_toTopOf="@+id/btn_holder_add_slot_start" />
+
+    <Button
+        android:id="@+id/btn_holder_add_slot_done"
+        style="@style/MyCustomMaterialButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:text="Done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_holder_add_slot_summary" />
+
+    <TextView
+        android:id="@+id/tv_holder_add_slot_lecture_no"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Lecture No :"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+    <TextView
+        android:id="@+id/textView19"
+        style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bottom_sheet_title_right_left_margin"
+        android:layout_marginTop="@dimen/bottom_sheet_title_top_margin"
+        android:layout_marginEnd="@dimen/bottom_sheet_title_right_left_margin"
+        android:background="@drawable/bordered_rounded_corner_rectangle"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="Add New Time Slot"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_holder_add_slot_summary"
+        style="@style/MyMaterialCardView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_holder_add_slot_start">
+
+        <TextView
+            android:id="@+id/tv_holder_add_slot_summary"
+            style="@style/MyMaterialTextView.SmallSubtitleTextViewBody1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Please make some changes" />
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

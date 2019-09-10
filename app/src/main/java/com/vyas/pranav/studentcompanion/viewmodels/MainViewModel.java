@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.app.Application;
 import android.widget.Toast;
 
@@ -29,33 +30,31 @@ import com.vyas.pranav.studentcompanion.jobs.DailyJobForSilentAction;
 import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
 import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
-import com.vyas.pranav.studentcompanion.utils.NavigationDrawerUtil;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import java.util.Date;
 import java.util.List;
 
+import static com.vyas.pranav.studentcompanion.ui.activities.MainActivity.ID_TODAY_ATTENDANCE;
+
 public class MainViewModel extends AndroidViewModel {
 
     private int currentFragmentId;
     private FirebaseUser currUser;
-    private final FirebaseAuth mAuth;
     private final Application application;
     private final NotificationRepository notificationRepository;
     private final SharedPreferencesUtils sharedPreferencesUtils;
-    private final OverallAttendanceRepository overallAttendanceRepository;
     private LiveData<List<OverallAttendanceEntry>> allOverallAttendance;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
-        currentFragmentId = NavigationDrawerUtil.ID_TODAY_ATTENDANCE;
-        mAuth = FirebaseAuth.getInstance();
+        currentFragmentId = ID_TODAY_ATTENDANCE;
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         currUser = mAuth.getCurrentUser();
-        notificationRepository = NotificationRepository.getInstance(application);
+        notificationRepository = new NotificationRepository(application);
         sharedPreferencesUtils = SharedPreferencesUtils.getInstance(application);
-        overallAttendanceRepository = OverallAttendanceRepository.getInstance(application);
-        allOverallAttendance = overallAttendanceRepository.getAllOverallAttendance();
+        allOverallAttendance = new OverallAttendanceRepository(application).getAllOverallAttendance();
     }
 
     public int getCurrentFragmentId() {
@@ -84,7 +83,7 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void restartAllPendingJobs() {
-        AppSettingsRepository appSettingsRepository = AppSettingsRepository.getInstance(application);
+        AppSettingsRepository appSettingsRepository = new AppSettingsRepository(application);
         if (sharedPreferencesUtils.isSmartSilentEnabled()) {
             appSettingsRepository.enableAutoSilentDevice();
         }

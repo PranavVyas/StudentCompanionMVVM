@@ -47,7 +47,7 @@ public class AttendanceForDateViewModel extends ViewModel {
         this.date = date;
         attendanceForDate = repository.getAttendanceForDate(date);
         mExecutors = AppExecutors.getInstance();
-        overallRepo = OverallAttendanceRepository.getInstance(context);
+        overallRepo = new OverallAttendanceRepository(context);
         utils = SharedPreferencesUtils.getInstance(context);
     }
 

@@ -36,7 +36,7 @@ public class AppSettingsViewModel extends AndroidViewModel {
 
     public AppSettingsViewModel(@NonNull Application application) {
         super(application);
-        appSettingsRepository = AppSettingsRepository.getInstance(application);
+        appSettingsRepository = new AppSettingsRepository(application);
         sharedPreferencesUtils = SharedPreferencesUtils.getInstance(application);
         autoAttendancePlaceEntryLiveData = appSettingsRepository.getAutoAttendanceLiveData();
     }

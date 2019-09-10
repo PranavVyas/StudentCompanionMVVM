@@ -39,7 +39,7 @@ public class NotesViewModelForDate extends ViewModel {
     public NotesViewModelForDate(Context context, Date date) {
         this.context = context;
         this.date = date;
-        repository = NoteRepository.getInstance(context);
+        repository = new NoteRepository(context);
         notes = new LivePagedListBuilder<>(repository.getNotesBeforeDate(date), PAGE_SIZE_NOTES).build();
     }
 

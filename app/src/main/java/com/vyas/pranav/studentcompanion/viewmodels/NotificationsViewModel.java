@@ -42,7 +42,7 @@ public class NotificationsViewModel extends AndroidViewModel {
 
     public NotificationsViewModel(@NonNull Application application) {
         super(application);
-        repository = NotificationRepository.getInstance(application);
+        repository = new NotificationRepository(application);
         notifications = repository.getAllNotifications();
         FirebaseFirestore mDb = FirebaseFirestore.getInstance();
         CollectionReference ref = mDb.collection(SharedPreferencesUtils.getInstance(application).getCurrentPath() + Constants.PATH_EVENTS_SVNIT);

@@ -45,8 +45,8 @@ import java.util.concurrent.TimeUnit;
 
 public class AppSettingsRepository {
 
-    private static final Object LOCK = new Object();
-    private static AppSettingsRepository instance;
+    //    private static final Object LOCK = new Object();
+//    private static AppSettingsRepository instance;
     private final Context context;
     private final SharedPreferencesUtils sharedPreferencesUtils;
 
@@ -55,14 +55,14 @@ public class AppSettingsRepository {
         sharedPreferencesUtils = SharedPreferencesUtils.getInstance(context);
     }
 
-    public static AppSettingsRepository getInstance(Context context) {
-        if (instance == null) {
-            synchronized (LOCK) {
-                instance = new AppSettingsRepository(context.getApplicationContext());
-            }
-        }
-        return instance;
-    }
+//    public static AppSettingsRepository getInstance(Context context) {
+//        if (instance == null) {
+//            synchronized (LOCK) {
+//                instance = new AppSettingsRepository(context.getApplicationContext());
+//            }
+//        }
+//        return instance;
+//    }
 
     public boolean cancelReminderJob() {
         DailyJobForShowingReminder.cancelReminderJob();
@@ -80,7 +80,7 @@ public class AppSettingsRepository {
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
             public void run() {
-                final LiveData<List<TimetableEntry>> timetableForDay = TimetableRepository.getInstance(context).getTimetableForDay(ConverterUtils.getDayOfWeek(new Date()));
+                final LiveData<List<TimetableEntry>> timetableForDay = new TimetableRepository(context).getTimetableForDay(ConverterUtils.getDayOfWeek(new Date()));
                 timetableForDay.observeForever(new Observer<List<TimetableEntry>>() {
                     @Override
                     public void onChanged(List<TimetableEntry> timetableEntries) {

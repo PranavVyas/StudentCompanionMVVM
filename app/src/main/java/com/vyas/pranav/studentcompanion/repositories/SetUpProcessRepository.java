@@ -49,8 +49,8 @@ import java.util.List;
 
 public class SetUpProcessRepository {
 
-    private static final Object LOCK = new Object();
-    private static SetUpProcessRepository instance;
+    //    private static final Object LOCK = new Object();
+//    private static SetUpProcessRepository instance;
     private Context context;
     //    private SharedPreferences preferences;
 //    private SharedPreferences.Editor editor;
@@ -68,20 +68,20 @@ public class SetUpProcessRepository {
     public SetUpProcessRepository(Context context) {
         sharedPreferencesUtils = SharedPreferencesUtils.getInstance(context.getApplicationContext());
         this.context = context;
-        holidayRepository = HolidayRepository.getInstance(context);
-        timetableRepository = TimetableRepository.getInstance(context);
-        lectureRepository = LectureRepository.getInstance(context);
+        holidayRepository = new HolidayRepository(context);
+        timetableRepository = new TimetableRepository(context);
+        lectureRepository = new LectureRepository(context);
         mDb = MainDatabase.getInstance(context);
     }
 
-    public static SetUpProcessRepository getInstance(Context context) {
-        if (instance == null) {
-            synchronized (LOCK) {
-                instance = new SetUpProcessRepository(context);
-            }
-        }
-        return instance;
-    }
+//    public static SetUpProcessRepository getInstance(Context context) {
+//        if (instance == null) {
+//            synchronized (LOCK) {
+//                instance = new SetUpProcessRepository(context);
+//            }
+//        }
+//        return instance;
+//    }
 
     public FirestoreQueryLiveData getCollagesLiveData(Query query) {
         return new FirestoreQueryLiveData(query);
@@ -241,7 +241,7 @@ public class SetUpProcessRepository {
                         }
                         Logger.d("Till date " + date + " Size of attendance is " + attendanceEntries.size());
                     }
-                    AttendanceDatabaseRepository repo = AttendanceDatabaseRepository.getInstance(context);
+                    AttendanceDatabaseRepository repo = new AttendanceDatabaseRepository(context);
                     repo.insertAllAttendanceAndOverallAttendance(attendanceEntries, context);
                 }
             });
@@ -290,7 +290,7 @@ public class SetUpProcessRepository {
         holidayRepository.setHolidays(holidayEntries);
     }
 
-    private List<Date> removeHolidaysAndWeekends(List<Date> holidayDates, Date startDate, Date endDate) {
+    public List<Date> removeHolidaysAndWeekends(List<Date> holidayDates, Date startDate, Date endDate) {
         List<Date> allDates = AttendanceUtils.getDates(startDate, endDate);
         List<Date> resultDates = new ArrayList<>();
         for (int i = 0; i < allDates.size(); i++) {
@@ -304,9 +304,7 @@ public class SetUpProcessRepository {
     }
 
     public void initializeOverallAttendance() {
-        AttendanceDao attendanceDao = mDb.attendanceDao();
-        OverallAttendanceDao overallAttendanceDao = mDb.overallAttendanceDao();
-        insertAllOverallAttendance(getSubjectList(), attendanceDao, overallAttendanceDao);
+        insertAllOverallAttendance(getSubjectList(), mDb.attendanceDao(), mDb.overallAttendanceDao());
     }
 
     private void insertAllOverallAttendance(final List<String> subjectList, final AttendanceDao attendanceDao, final OverallAttendanceDao overallAttendanceDao) {

@@ -37,13 +37,13 @@ GNU Affero General Public License for more details.
             android:orientation="vertical">
 
             <View
-                android:id="@+id/divider18"
+                android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/item_developer_edit_timetable" />
 
             <View
@@ -56,41 +56,17 @@ GNU Affero General Public License for more details.
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/item_developer_bulk_attendance" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/item_developer_bulk_attendance"
+            <View
+                android:id="@+id/divider18"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_today_attendance" />
-
-                <TextView
-                    android:id="@+id/textView23"
-                    style="@style/MyMaterialTextView.SmallTextViewBody1"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="Edit bulk attendance"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageView6"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@+id/item_developer_add_subject" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/item_developer_edit_timetable"
@@ -111,7 +87,8 @@ GNU Affero General Public License for more details.
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_edit_round" />
+                    app:srcCompat="@drawable/ic_edit_round"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     style="@style/MyMaterialTextView.SmallTextViewBody1"
@@ -127,6 +104,79 @@ GNU Affero General Public License for more details.
                     app:layout_constraintStart_toEndOf="@+id/imageView7"
                     app:layout_constraintTop_toTopOf="parent" />
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/item_developer_add_subject"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view">
+
+                <ImageView
+                    android:id="@+id/imageView8"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_present" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    style="@style/MyMaterialTextView.SmallTextViewBody1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Add new subject"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView8"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/item_developer_bulk_attendance"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_today_attendance"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    style="@style/MyMaterialTextView.SmallTextViewBody1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Edit bulk attendance"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView6"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -162,7 +212,8 @@ GNU Affero General Public License for more details.
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_caution" />
+            app:srcCompat="@drawable/ic_caution"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/textView30"
@@ -179,7 +230,6 @@ GNU Affero General Public License for more details.
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            android:id="@+id/div_deve_tools_2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="8dp"

@@ -30,7 +30,7 @@ public class AutoAttendanceSubjectListViewModel extends AndroidViewModel {
 
     public AutoAttendanceSubjectListViewModel(@NonNull Application application) {
         super(application);
-        setUpProcessRepository = SetUpProcessRepository.getInstance(application);
+        setUpProcessRepository = new SetUpProcessRepository(application);
     }
 
     public List<String> getSubjectList() {

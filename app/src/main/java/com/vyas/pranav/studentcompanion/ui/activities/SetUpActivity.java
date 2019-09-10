@@ -194,7 +194,7 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
         setUpViewModel.setCurrentStep(2);
         executeSetUpStep(setUpViewModel.getCurrentStep());
     }
-//
+
 //    @Override
 //    public void onPreviousClickedInSetUpTimetable() {
 //        setUpViewModel.setCurrentStep(3);
@@ -231,7 +231,6 @@ public class SetUpActivity extends AppCompatActivity implements SetUpDatesFragme
                 mDialog.setContentView(R.layout.item_holder_bottom_sheet_set_up_lecture);
                 mDialog.show();
                 return true;
-
         }
         return super.onOptionsItemSelected(item);
     }

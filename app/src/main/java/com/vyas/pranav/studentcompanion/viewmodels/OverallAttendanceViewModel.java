@@ -42,7 +42,7 @@ public class OverallAttendanceViewModel extends AndroidViewModel {
 
     public OverallAttendanceViewModel(@NonNull Application application) {
         super(application);
-        repository = OverallAttendanceRepository.getInstance(application);
+        repository = new OverallAttendanceRepository(application);
         allOverallAttendance = repository.getAllOverallAttendance();
         this.context = application;
         utils = SharedPreferencesUtils.getInstance(application);
@@ -53,7 +53,7 @@ public class OverallAttendanceViewModel extends AndroidViewModel {
     }
 
     public Date getStartingDate() {
-        setUpProcessRepository = SetUpProcessRepository.getInstance(context);
+        setUpProcessRepository = new SetUpProcessRepository(context);
         return ConverterUtils.convertStringToDate(setUpProcessRepository.getStartingDate());
     }
 

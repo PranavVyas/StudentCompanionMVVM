@@ -42,7 +42,7 @@ public class DigitalLibraryViewModel extends AndroidViewModel {
 
     public DigitalLibraryViewModel(@NonNull Application application) {
         super(application);
-        repository = DigitalLibraryRepository.getInstance(application);
+        repository = new DigitalLibraryRepository(application);
         sharedPreferencesUtils = SharedPreferencesUtils.getInstance(application);
         booksRef = FirebaseFirestore.getInstance().collection(SharedPreferencesUtils.getInstance(application).getCurrentPath() + Constants.PATH_DIGITAL_LIBRARY_SVNIT);
         liveBooksData = new FirestoreQueryLiveData(booksRef);

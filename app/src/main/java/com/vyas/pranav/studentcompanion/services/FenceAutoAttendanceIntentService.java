@@ -54,7 +54,7 @@ public class FenceAutoAttendanceIntentService extends IntentService {
             return;
         }
         FenceState fenceState = FenceState.extract(intent);
-        SetUpProcessRepository repository = SetUpProcessRepository.getInstance(getApplicationContext());
+        SetUpProcessRepository repository = new SetUpProcessRepository(getApplicationContext());
         String subjectNameFromFence = fenceState.getFenceKey().substring(AutoAttendanceHelper.KEY_PRE_SUBJECT_FENCE.length());
         Logger.d("Subject Received in Fence Service is :" + subjectNameFromFence);
         for (String x :

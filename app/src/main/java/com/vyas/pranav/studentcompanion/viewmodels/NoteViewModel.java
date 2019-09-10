@@ -34,7 +34,7 @@ public class NoteViewModel extends AndroidViewModel {
 
     public NoteViewModel(@NonNull Application application) {
         super(application);
-        repository = NoteRepository.getInstance(application);
+        repository = new NoteRepository(application);
         allNotes = new LivePagedListBuilder<>(repository.getAllNotes(), Constants.PAGE_SIZE_NOTES).build();
     }
 

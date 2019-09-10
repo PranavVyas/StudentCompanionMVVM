@@ -26,22 +26,23 @@ import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 
 public class AutoAttendanceRepository {
 
-    private final Context context;
+    //    private final Context context;
     private final AutoAttendancePlaceDao autoAttendancePlaceDao;
     private final AppExecutors mExecutors;
-    private static final Object LOCK = new Object();
-    private static AutoAttendanceRepository instance;
 
-    public static AutoAttendanceRepository getInstance(Context context) {
-        if (instance == null) {
-            synchronized (LOCK) {
-                instance = new AutoAttendanceRepository(context.getApplicationContext());
-            }
-        }
-        return instance;
-    }
+    //    private static final Object LOCK = new Object();
+//    private static AutoAttendanceRepository instance;
+//
+//    public static AutoAttendanceRepository getInstance(Context context) {
+//        if (instance == null) {
+//            synchronized (LOCK) {
+//                instance = new AutoAttendanceRepository(context.getApplicationContext());
+//            }
+//        }
+//        return instance;
+//    }
     public AutoAttendanceRepository(Context context) {
-        this.context = context.getApplicationContext();
+//        this.context = context.getApplicationContext();
         autoAttendancePlaceDao = MainDatabase.getInstance(context).autoAttendancePlaceDao();
         mExecutors = AppExecutors.getInstance();
     }

@@ -28,7 +28,7 @@ public class TutorialViewModel extends AndroidViewModel {
 
     public TutorialViewModel(@NonNull Application application) {
         super(application);
-        setUpProcessRepository = SetUpProcessRepository.getInstance(application);
+        setUpProcessRepository = new SetUpProcessRepository(application);
     }
 
     public void setTutorialComplete(boolean isTutorialComplete) {

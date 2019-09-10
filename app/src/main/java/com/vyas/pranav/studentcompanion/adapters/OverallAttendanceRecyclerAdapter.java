@@ -138,7 +138,7 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
             holder.tvAvailableToBunk.setText(Html.fromHtml("You can still bunk <b>" + daysAvailableToBunk + "</b> lectures in this semester"));
         } else if (daysAvailableToBunk == 0) {
             holder.tvAvailableToBunk.setText(Html.fromHtml("You can not bunk <b>any lectures</b> in this semester"));
-        } else if (dangerPercent < 0) {
+        } else {
             holder.tvAvailableToBunk.setText(Html.fromHtml("You have already bunked <b>" + (0 - daysAvailableToBunk) + " more lectures than required amount</b>"));
         }
         holder.progressPresent.setProgressValue((int) presentPresent);

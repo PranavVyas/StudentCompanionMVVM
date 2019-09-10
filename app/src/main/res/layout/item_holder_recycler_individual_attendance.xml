@@ -38,7 +38,8 @@ GNU Affero General Public License for more details.
             app:layout_constraintEnd_toStartOf="@+id/divider20"
             app:layout_constraintStart_toEndOf="@+id/imageView15"
             app:layout_constraintTop_toTopOf="@+id/imageView15"
-            app:srcCompat="@drawable/ic_present" />
+            app:srcCompat="@drawable/ic_present"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/image_recycler_individual_attendance_absent"
@@ -50,7 +51,8 @@ GNU Affero General Public License for more details.
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/divider21"
             app:layout_constraintTop_toTopOf="@+id/image_recycler_individual_attendance_cancel"
-            app:srcCompat="@drawable/ic_absent" />
+            app:srcCompat="@drawable/ic_absent"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/image_recycler_individual_attendance_cancel"
@@ -62,7 +64,8 @@ GNU Affero General Public License for more details.
             app:layout_constraintEnd_toStartOf="@+id/divider21"
             app:layout_constraintStart_toEndOf="@+id/divider20"
             app:layout_constraintTop_toTopOf="@+id/image_recycler_individual_attendance_present"
-            app:srcCompat="@drawable/ic_cancel" />
+            app:srcCompat="@drawable/ic_cancel"
+            tools:ignore="ContentDescription" />
 
         <ImageView
             android:id="@+id/imageView15"
@@ -72,7 +75,8 @@ GNU Affero General Public License for more details.
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/circle" />
+            app:srcCompat="@drawable/circle"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tv_recycler_individual_attendance_leture_no"
@@ -102,7 +106,6 @@ GNU Affero General Public License for more details.
             tools:text="Engineering Mathematics 2" />
 
         <TextView
-            android:id="@+id/textView31"
             style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,7 +116,6 @@ GNU Affero General Public License for more details.
             app:layout_constraintTop_toBottomOf="@+id/image_recycler_individual_attendance_present" />
 
         <TextView
-            android:id="@+id/textView41"
             style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -127,7 +129,6 @@ GNU Affero General Public License for more details.
             app:layout_constraintTop_toBottomOf="@+id/image_recycler_individual_attendance_cancel" />
 
         <TextView
-            android:id="@+id/textView43"
             style="@style/TextAppearance.MaterialComponents.Subtitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

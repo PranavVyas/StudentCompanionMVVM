@@ -73,7 +73,8 @@ GNU Affero General Public License for more details.
                 app:layout_constraintEnd_toStartOf="@+id/divider16"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_arrow_up_rounded" />
+                app:srcCompat="@drawable/ic_arrow_up_rounded"
+                tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/image_import_export_import"
@@ -83,7 +84,8 @@ GNU Affero General Public License for more details.
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/divider16"
                 app:layout_constraintTop_toTopOf="@+id/image_import_export_export"
-                app:srcCompat="@drawable/ic_arrow_down_rounded" />
+                app:srcCompat="@drawable/ic_arrow_down_rounded"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tv_import_export_status"
@@ -123,7 +125,6 @@ GNU Affero General Public License for more details.
                 app:layout_constraintTop_toBottomOf="@+id/image_import_export_export" />
 
             <TextView
-                android:id="@+id/tv_import_export_import"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

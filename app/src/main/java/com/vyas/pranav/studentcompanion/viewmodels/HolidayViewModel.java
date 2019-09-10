@@ -33,7 +33,7 @@ public class HolidayViewModel extends AndroidViewModel {
 
     public HolidayViewModel(@NonNull Application application) {
         super(application);
-        holidayRepository = HolidayRepository.getInstance(application);
+        holidayRepository = new HolidayRepository(application);
         holidayEntries = holidayRepository.getAllHolidays();
     }
 

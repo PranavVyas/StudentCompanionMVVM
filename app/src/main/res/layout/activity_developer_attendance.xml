@@ -44,28 +44,27 @@ GNU Affero General Public License for more details.
 
     <Button
         android:id="@+id/btn_developer_attendance_edit"
+        style="@style/MyCustomMaterialButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Edit Now"
-        style="@style/MyCustomMaterialButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_developer_attendance_new_value" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_developer_attendance_new_value" />
 
     <Spinner
         android:id="@+id/spinner_developer_attendance_subjects"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_developer_attendance" />
+        app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
     <TextView
-        android:id="@+id/textView27"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="to"
@@ -89,24 +88,46 @@ GNU Affero General Public License for more details.
             android:text="Developer Attendance" />
     </androidx.appcompat.widget.Toolbar>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_developer_attendance_new_value"
+    <Spinner
+        android:id="@+id/spinner_developer_attendance_new_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        style="@style/MyCustomOutlinedBoxTextInput"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_developer_attendance_from_date">
+        app:layout_constraintTop_toBottomOf="@+id/btn_developer_attendance_from_date" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_developer_attendance_new_value"
+    <TextView
+        android:id="@+id/textView27"
+        style="@style/MyMaterialTextView.SmallTextViewBody1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Select Subject"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_developer_attendance" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_developer_attendance_edit">
+
+        <TextView
+            android:id="@+id/textView31"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/MyCustomMaterialEditTextInput"
-            android:hint="New Value" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_margin="4dp"
+            android:text="\u25CF Please note that changing attendance will only affect " />
+    </com.google.android.material.card.MaterialCardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

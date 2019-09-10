@@ -26,8 +26,8 @@ public class DeveloperTimetableViewModel extends AndroidViewModel {
 
     public DeveloperTimetableViewModel(@NonNull Application application) {
         super(application);
-        timetableRepository = TimetableRepository.getInstance(application);
-        setUpProcessRepository = SetUpProcessRepository.getInstance(application);
+        timetableRepository = new TimetableRepository(application);
+        setUpProcessRepository = new SetUpProcessRepository(application);
         lecturesPerDay = setUpProcessRepository.getNoOfLecturesPerDay();
         daysLectureLiveData = new MutableLiveData<>();
 
@@ -97,6 +97,11 @@ public class DeveloperTimetableViewModel extends AndroidViewModel {
 
     public int getLecturesPerDay() {
         return lecturesPerDay;
+    }
+
+    public void refreshViewModel() {
+        lecturesPerDay = setUpProcessRepository.getNoOfLecturesPerDay();
+
     }
 
     public int getSemInfo() {

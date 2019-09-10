@@ -119,7 +119,7 @@ public class AutoAttendanceSubjectDetailActivity extends AppCompatActivity imple
         currPlaceEntry = null;
         currSubject = getIntent().getStringExtra(EXTRA_SUBJECT_NAME);
 //        Dexter.withActivity(this)
-        AutoAttendanceSubjectDetailViewModelFactory factory = new AutoAttendanceSubjectDetailViewModelFactory(AutoAttendanceRepository.getInstance(this), currSubject);
+        AutoAttendanceSubjectDetailViewModelFactory factory = new AutoAttendanceSubjectDetailViewModelFactory(new AutoAttendanceRepository(this), currSubject);
         autoAttendanceSubjectDetailViewModel = ViewModelProviders.of(this, factory).get(AutoAttendanceSubjectDetailViewModel.class);
         checkForPermissionAndContinue();
     }

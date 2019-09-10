@@ -45,7 +45,7 @@ public class AttendanceEditIntentService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         NotificationManagerCompat manager = NotificationManagerCompat.from(this);
         manager.cancel(Constants.SHOW_REMINDER_JOB_RC_SHOW_NOTIFICATION);
-        AttendanceDatabaseRepository repository = AttendanceDatabaseRepository.getInstance(getApplicationContext());
+        AttendanceDatabaseRepository repository = new AttendanceDatabaseRepository(getApplicationContext());
         Date date = new Date();
         ConverterUtils.CustomDate customDate = ConverterUtils.extractElementsFromDate(date);
         Date date1 = ConverterUtils.formatDateFromCalender(customDate.getDate(), customDate.getMonth(), customDate.getYear());

@@ -83,12 +83,11 @@ public class NotesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.notes_menu_help:
-                BottomSheetDialog mDialog = new BottomSheetDialog(this);
-                mDialog.setContentView(R.layout.item_holder_bottom_sheet_note_help);
-                mDialog.show();
-                return false;
+        if (item.getItemId() == R.id.notes_menu_help) {
+            BottomSheetDialog mDialog = new BottomSheetDialog(this);
+            mDialog.setContentView(R.layout.item_holder_bottom_sheet_note_help);
+            mDialog.show();
+            return false;
         }
         return false;
     }

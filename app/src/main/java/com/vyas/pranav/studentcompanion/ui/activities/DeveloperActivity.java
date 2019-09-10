@@ -15,14 +15,30 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
+import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
+import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
+
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,5 +75,47 @@ public class DeveloperActivity extends AppCompatActivity {
     void clickedEditTimetable() {
         Intent intent = new Intent(this, DeveloperTimetableActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.item_developer_add_subject)
+    void clickedAddSubject() {
+        BottomSheetDialog mDialog = new BottomSheetDialog(this);
+        mDialog.setContentView(R.layout.item_holder_bottom_sheet_add_subject);
+
+        mDialog.show();
+
+        TextInputLayout inputSub = mDialog.findViewById(R.id.input_holder_add_subject);
+        TextInputEditText etSub = mDialog.findViewById(R.id.et_holder_add_subject);
+        Button btnAdd = mDialog.findViewById(R.id.btn_holder_add_subject_add);
+
+        btnAdd.setOnClickListener((view -> {
+            String subject = etSub.getText().toString().trim();
+            if (TextUtils.isEmpty(subject)) {
+                Toast.makeText(this, "Subject can not be empty!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            SharedPreferencesUtils utils = new SharedPreferencesUtils(this);
+            List<String> subjectList = utils.getSubjectList();
+            if (subjectList.contains(subject)) {
+                Toast.makeText(this, "Subject is already present!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            subjectList.add(subject);
+            utils.setSubjectListInSharedPrefrences(subjectList);
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                AttendanceDao attendanceDao = MainDatabase.getInstance(this).attendanceDao();
+                OverallAttendanceEntry x = new OverallAttendanceEntry();
+                Date todayDate = new Date();
+                int presentDays = attendanceDao.getAttendedDaysForSubject(subject, ConverterUtils.convertStringToDate(utils.getStartingDate()), todayDate);
+                int bunkedDays = attendanceDao.getBunkedDaysForSubject(subject, ConverterUtils.convertStringToDate(utils.getStartingDate()), todayDate);
+                int totalDays = attendanceDao.getTotalDaysForSubject(subject, ConverterUtils.convertStringToDate(utils.getStartingDate()), ConverterUtils.convertStringToDate(utils.getEndingDate()));
+                x.setTotalDays(totalDays);
+                x.setBunkedDays(bunkedDays);
+                x.setPresentDays(presentDays);
+                x.setSubName(subject);
+                MainDatabase.getInstance(this).overallAttendanceDao().insertOverall(x);
+                mDialog.dismiss();
+            });
+        }));
     }
 }

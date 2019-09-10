@@ -233,7 +233,6 @@ GNU Affero General Public License for more details.
             app:layout_constraintTop_toBottomOf="@+id/divider17" />
 
         <TextView
-            android:id="@+id/textView19"
             style="@style/MyMaterialTextView.SmallTextViewBody2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

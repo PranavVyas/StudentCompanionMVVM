@@ -45,8 +45,7 @@ public class AboutDeveloperFragment extends Fragment {
     }
 
     public static AboutDeveloperFragment newInstance() {
-        AboutDeveloperFragment fragment = new AboutDeveloperFragment();
-        return fragment;
+        return new AboutDeveloperFragment();
     }
 
 

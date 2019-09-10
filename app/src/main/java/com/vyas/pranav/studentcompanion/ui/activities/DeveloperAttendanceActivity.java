@@ -31,18 +31,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
-import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -57,10 +55,12 @@ import static com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils.setU
 @SuppressLint("RestrictedApi")
 public class DeveloperAttendanceActivity extends AppCompatActivity {
 
-    @BindView(R.id.input_developer_attendance_new_value)
-    TextInputLayout inputNewValue;
-    @BindView(R.id.et_developer_attendance_new_value)
-    TextInputEditText etNewValue;
+    //    @BindView(R.id.input_developer_attendance_new_value)
+////    TextInputLayout inputNewValue;
+////    @BindView(R.id.et_developer_attendance_new_value)
+////    TextInputEditText etNewValue;
+    @BindView(R.id.spinner_developer_attendance_new_value)
+    Spinner spinnerNewValue;
     @BindView(R.id.btn_developer_attendance_from_date)
     Button btnFromDate;
     @BindView(R.id.btn_developer_attendance_to_date)
@@ -75,6 +75,7 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
     private int newValue;
     private SharedPreferencesUtils utils;
     private MainDatabase mDb;
+    private List<Integer> valueList = Arrays.asList(1, 0, -1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,23 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
 
             }
         });
+        List<String> valueTitles = Arrays.asList("Present", "Class Cancelled", "Absent");
+        ArrayAdapter<String> mAdapterNewValue = new ArrayAdapter<>(this, R.layout.spinner_simple_custom_main, valueTitles);
+        mAdapterNewValue.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spinnerNewValue.setAdapter(mAdapterNewValue);
+        newValue = valueList.get(0);
+        spinnerNewValue.setSelection(0);
+        spinnerNewValue.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                newValue = valueList.get(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @OnClick(R.id.btn_developer_attendance_from_date)
@@ -114,12 +132,10 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
         MaterialStyledDatePickerDialog mDialog = new MaterialStyledDatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                int date = i2;
                 int month = i1 + 1;
-                int year = i;
-                btnFromDate.setText(date + "/" + month + "/" + year);
+                btnFromDate.setText(i2 + "/" + month + "/" + i);
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month - 1, date);
+                calendar.set(i, month - 1, i2);
                 fromDate = calendar.getTimeInMillis();
             }
         }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
@@ -136,12 +152,10 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
         MaterialStyledDatePickerDialog mDialog = new MaterialStyledDatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                int date = i2;
                 int month = i1 + 1;
-                int year = i;
-                btnToDate.setText(date + "/" + month + "/" + year);
+                btnToDate.setText(i2 + "/" + month + "/" + i);
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month - 1, date);
+                calendar.set(i, month - 1, i2);
                 toDate = calendar.getTimeInMillis();
             }
         }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
@@ -158,12 +172,10 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
         MaterialStyledDatePickerDialog mDialog = new MaterialStyledDatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                int date = i2;
                 int month = i1 + 1;
-                int year = i;
-                btnToDate.setText(date + "/" + month + "/" + year);
+                btnToDate.setText(i2 + "/" + month + "/" + i);
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month - 1, date, 0, 0, 0);
+                calendar.set(i, month - 1, i2, 0, 0, 0);
                 toDate = calendar.getTimeInMillis();
             }
         }, now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH));
@@ -175,10 +187,10 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_developer_attendance_edit)
     void editClicked() {
-        newValue = Integer.parseInt(etNewValue.getText().toString());
+//        newValue = Integer.parseInt(etNewValue.getText().toString());
         startOperation();
         showSnackBar("New Value is : " + newValue + "\nWill be changed from " + btnFromDate.getText() + " to " + btnToDate.getText() + "\n Subject : " + currentSubject);
-        showSnackBar("Date is " + new Date(fromDate) + " to " + new Date(toDate));
+//        showSnackBar("Date is " + new Date(fromDate) + " to " + new Date(toDate));
     }
 
     private void showSnackBar(String message) {
@@ -187,7 +199,7 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
     }
 
     void startOperation() {
-        if ((!TextUtils.isEmpty(currentSubject)) && (toDate > fromDate) && ((newValue == Constants.PRESENT) || (newValue == Constants.ABSENT) || (newValue == Constants.CANCELLED))) {
+        if ((!TextUtils.isEmpty(currentSubject)) && (toDate > fromDate)) {
             Date startDate = new Date(fromDate);
             Date endDate = new Date(toDate);
             AppExecutors.getInstance().diskIO().execute(() -> {
@@ -197,7 +209,7 @@ public class DeveloperAttendanceActivity extends AppCompatActivity {
                     x.setPresent(newValue);
                 }
                 mDb.attendanceDao().updateAttendance(daysForSubject);
-                OverallAttendanceRepository.getInstance(this).refreshOverallAttendanceForSubject(currentSubject);
+                new OverallAttendanceRepository(this).refreshOverallAttendanceForSubject(currentSubject);
                 AppExecutors.getInstance().mainThread().execute(() -> {
                     showSnackBar("Done!");
                 });

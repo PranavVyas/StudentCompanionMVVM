@@ -30,22 +30,22 @@ public class TimetableRepository {
 
     private TimetableDao timetableDao;
     private AppExecutors mExecutors;
-    private Context context;
-    private static final Object LOCK = new Object();
-
-    private static TimetableRepository instance;
-
-    public static TimetableRepository getInstance(Context context) {
-        if (instance == null) {
-            synchronized (LOCK) {
-                instance = new TimetableRepository(context.getApplicationContext());
-            }
-        }
-        return instance;
-    }
+//    private Context context;
+//    private static final Object LOCK = new Object();
+//
+//    private static TimetableRepository instance;
+//
+//    public static TimetableRepository getInstance(Context context) {
+//        if (instance == null) {
+//            synchronized (LOCK) {
+//                instance = new TimetableRepository(context.getApplicationContext());
+//            }
+//        }
+//        return instance;
+//    }
 
     public TimetableRepository(Context context) {
-        this.context = context;
+//        this.context = context;
         this.timetableDao = MainDatabase.getInstance(context).timetableDao();
         mExecutors = AppExecutors.getInstance();
     }

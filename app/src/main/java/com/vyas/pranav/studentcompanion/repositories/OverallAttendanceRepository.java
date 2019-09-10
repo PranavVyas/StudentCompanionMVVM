@@ -46,8 +46,8 @@ public class OverallAttendanceRepository {
     private final OverallAttendanceDao overallAttendanceDao;
     private final AttendanceDao attendanceDao;
     private final AppExecutors mExecutors;
-    private static final Object LOCK = new Object();
-    private static OverallAttendanceRepository instance;
+    //    private static final Object LOCK = new Object();
+//    private static OverallAttendanceRepository instance;
     private final Context applicationContext;
     private final SetUpProcessRepository setUpProcessRepository;
 
@@ -56,17 +56,17 @@ public class OverallAttendanceRepository {
         this.attendanceDao = MainDatabase.getInstance(context).attendanceDao();
         this.mExecutors = AppExecutors.getInstance();
         this.applicationContext = context;
-        this.setUpProcessRepository = SetUpProcessRepository.getInstance(applicationContext);
+        this.setUpProcessRepository = new SetUpProcessRepository(applicationContext);
     }
 
-    public static OverallAttendanceRepository getInstance(Context context) {
-        if (instance == null) {
-            synchronized (LOCK) {
-                instance = new OverallAttendanceRepository(context);
-            }
-        }
-        return instance;
-    }
+//    public static OverallAttendanceRepository getInstance(Context context) {
+//        if (instance == null) {
+//            synchronized (LOCK) {
+//                instance = new OverallAttendanceRepository(context);
+//            }
+//        }
+//        return instance;
+//    }
 
     public LiveData<List<OverallAttendanceEntry>> getAllOverallAttendance() {
         return overallAttendanceDao.getAllOverallAttendance();
@@ -133,7 +133,6 @@ public class OverallAttendanceRepository {
         });
     }
 
-
     private void sendNotification(Context context, @SuppressWarnings("SameParameterValue") String title, String desc, PendingIntent contentIntent) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, MainApp.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo_forground)
@@ -143,7 +142,6 @@ public class OverallAttendanceRepository {
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true);
-
         NotificationManagerCompat.from(context).notify(Constants.SHOW_NOTIFICATION_RC_OVERALL_REFRESH_ATTENDANCE, notificationBuilder.build());
     }
 

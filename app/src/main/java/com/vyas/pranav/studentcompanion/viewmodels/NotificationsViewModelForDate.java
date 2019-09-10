@@ -36,6 +36,6 @@ public class NotificationsViewModelForDate extends ViewModel {
     public NotificationsViewModelForDate(Date date, Context context) {
         this.date = date;
         this.context = context;
-        notificationRepository = NotificationRepository.getInstance(context);
+        notificationRepository = new NotificationRepository(context);
     }
 }

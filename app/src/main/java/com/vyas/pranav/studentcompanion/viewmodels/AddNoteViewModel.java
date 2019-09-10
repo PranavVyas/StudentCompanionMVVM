@@ -35,7 +35,7 @@ public class AddNoteViewModel extends AndroidViewModel {
 
     public AddNoteViewModel(@NonNull Application application) {
         super(application);
-        repository = NoteRepository.getInstance(application);
+        repository = new NoteRepository(application);
     }
 
     public long getId() {

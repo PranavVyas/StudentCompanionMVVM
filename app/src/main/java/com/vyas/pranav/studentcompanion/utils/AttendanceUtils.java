@@ -65,7 +65,7 @@ public class AttendanceUtils {
 
     public static void checkForSmartCards(OverallAttendanceEntry subjectAttendance, Context applicationContext) {
         String id = "OverallAttendance_" + subjectAttendance.getSubName();
-        NotificationRepository notificationRepository = NotificationRepository.getInstance(applicationContext);
+        NotificationRepository notificationRepository = new NotificationRepository(applicationContext);
         SharedPreferencesUtils sharedPreferencesUtils = SharedPreferencesUtils.getInstance(applicationContext);
         AppExecutors.getInstance().mainThread().execute(new Runnable() {
             @Override
@@ -168,7 +168,7 @@ public class AttendanceUtils {
             mDb.attendanceDao().removeAttendanceAfter(new Date());
             //to remove creation of duplicate overall attendances
             mDb.overallAttendanceDao().deleteAllOverall();
-            SetUpProcessRepository setUpProcessRepository = SetUpProcessRepository.getInstance(context);
+            SetUpProcessRepository setUpProcessRepository = new SetUpProcessRepository(context);
             setUpProcessRepository.holidayInitialized(mDb.holidayDao().getHolidayDates(),
                     ConverterUtils.convertStringToDate(startDate),
                     ConverterUtils.convertStringToDate(setUpProcessRepository.getEndingDate()));
