@@ -161,7 +161,7 @@ GNU Affero General Public License for more details.
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:text="Collage"
+            android:text="College"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/seek_set_up_dates_attendance_crieteria" />
@@ -181,7 +181,7 @@ GNU Affero General Public License for more details.
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="To add new collages mail to : pranavvyas4399@gmail.com"
+            android:text="To add new colleges mail to : pranavvyas4399@gmail.com"
             app:layout_constraintEnd_toEndOf="@+id/spinner_setup_collage"
             app:layout_constraintStart_toStartOf="@+id/spinner_setup_collage"
             app:layout_constraintTop_toBottomOf="@+id/spinner_setup_collage" />

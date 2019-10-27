@@ -84,7 +84,6 @@ public class MainApp extends MultiDexApplication {
                 return super.placeholder(ctx, tag);
             }
         });
-
     }
 
     private void createNotificationChannels() {

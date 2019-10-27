@@ -52,4 +52,7 @@ public interface OverallAttendanceDao {
 
     @Query("SELECT subName FROM OverallAttendance")
     List<String> getAllSubjects();
+
+    @Query("DELETE FROM OverallAttendance WHERE subName =:deleteSub")
+    void deleteAttendance(String deleteSub);
 }

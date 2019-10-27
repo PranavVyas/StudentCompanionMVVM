@@ -19,7 +19,9 @@ GNU Affero General Public License for more details.
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,9 +33,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceDao;
+import com.vyas.pranav.studentcompanion.data.attendancedatabase.AttendanceEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
+import com.vyas.pranav.studentcompanion.data.timetabledatabase.TimetableEntry;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
@@ -53,16 +58,34 @@ public class DeveloperActivity extends AppCompatActivity {
     @BindView(R.id.toolbar_developer)
     Toolbar toolbar;
 
+    SharedPreferencesUtils utils;
+    MainDatabase mDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setUserTheme(this);
         setContentView(R.layout.activity_developer);
         ButterKnife.bind(this);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        utils = new SharedPreferencesUtils(this);
+        mDb = MainDatabase.getInstance(this);
+//        SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils(this);
+//        if (sharedPreferencesUtils.isDeveloperEnabled()){
+//            MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//            materialAlertDialogBuilder.setMessage("\u25CF Please Note that This settings are only for developer use and should not be changed by any other but developer.\n\u25CF This may harm or stop application from working properly also\n\u25CF Make sure to take backup before doing anything here!")
+//                    .setTitle("Caution")
+//                    .setBackgroundInsetTop(R.drawable.image_account_background_new)
+//                    .setPositiveButton("I understand", ((dialogInterface, i) -> {
+//                        dialogInterface.dismiss();
+//                    }))
+//                    .setNegativeButton("Don't show me again", ((dialogInterface, i) -> {
+//                        sharedPreferencesUtils.setDeveloperEnabled(false);
+//                        dialogInterface.dismiss();
+//                    }));
+//        }
     }
 
     @OnClick(R.id.item_developer_bulk_attendance)
@@ -75,6 +98,26 @@ public class DeveloperActivity extends AppCompatActivity {
     void clickedEditTimetable() {
         Intent intent = new Intent(this, DeveloperTimetableActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.item_developer_delete_subject)
+    void clickedDeleteSubject() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(R.layout.item_holder_bottom_sheet_delete_sub);
+        bottomSheetDialog.show();
+
+        Spinner subSpinner = bottomSheetDialog.findViewById(R.id.spinner_holder_delete_subject_subject);
+        Button btnDelete = bottomSheetDialog.findViewById(R.id.btn_holder_delete_subject_edit);
+
+        List<String> subjects = utils.getSubjectList();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_simple_custom_main, subjects);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        subSpinner.setSelection(0);
+        subSpinner.setAdapter(adapter);
+
+        btnDelete.setOnClickListener((view -> {
+            deleteSubject((String) subSpinner.getSelectedItem(), subjects, bottomSheetDialog);
+        }));
     }
 
     @OnClick(R.id.item_developer_add_subject)
@@ -94,7 +137,6 @@ public class DeveloperActivity extends AppCompatActivity {
                 Toast.makeText(this, "Subject can not be empty!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            SharedPreferencesUtils utils = new SharedPreferencesUtils(this);
             List<String> subjectList = utils.getSubjectList();
             if (subjectList.contains(subject)) {
                 Toast.makeText(this, "Subject is already present!", Toast.LENGTH_SHORT).show();
@@ -113,9 +155,35 @@ public class DeveloperActivity extends AppCompatActivity {
                 x.setBunkedDays(bunkedDays);
                 x.setPresentDays(presentDays);
                 x.setSubName(subject);
-                MainDatabase.getInstance(this).overallAttendanceDao().insertOverall(x);
+                mDb.overallAttendanceDao().insertOverall(x);
                 mDialog.dismiss();
             });
         }));
+    }
+
+    private void deleteSubject(String deleteSub, List<String> subjectList, BottomSheetDialog bottomSheetDialog) {
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            subjectList.remove(deleteSub);
+            utils.setSubjectListInSharedPrefrences(subjectList);
+            mDb.overallAttendanceDao().deleteAttendance(deleteSub);
+            mDb.autoAttendancePlaceDao().deletePlaceEntry(deleteSub);
+            List<AttendanceEntry> allAttendanceOfSub = mDb.attendanceDao().getAllAttendanceOfSub(deleteSub);
+            for (AttendanceEntry x :
+                    allAttendanceOfSub) {
+                x.setSubjectName(Constants.DEFAULT_LECTURE);
+            }
+            mDb.attendanceDao().updateAttendance(allAttendanceOfSub);
+            List<TimetableEntry> timetableForSubjectToDelete = mDb.timetableDao().getTimetableForSubjectToDelete(deleteSub);
+            for (TimetableEntry x :
+                    timetableForSubjectToDelete) {
+                x.setSubName(Constants.DEFAULT_LECTURE);
+            }
+            mDb.timetableDao().updateTimetableEntries(timetableForSubjectToDelete);
+            AppExecutors.getInstance().mainThread().execute(() -> {
+                Toast.makeText(this, "Subject: " + deleteSub + " is deleted", Toast.LENGTH_SHORT).show();
+                bottomSheetDialog.dismiss();
+            });
+        });
+
     }
 }

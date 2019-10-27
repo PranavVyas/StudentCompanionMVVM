@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,14 +26,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.paging.PagedList;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -93,6 +92,12 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
             startInstruction(this);
         }, TimeUnit.SECONDS.toMillis(1));
         searchClicked();
+        inputSearch.setEndIconOnClickListener(view -> {
+            searchClicked();
+        });
+        if (digitalLibraryViewModel.getStateOfAutoSync()) {
+            onSyncClicked();
+        }
     }
 
     @Override
@@ -118,32 +123,25 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
         return true;
     }
 
-    @OnClick(R.id.btn_digital_library_search)
     void searchClicked() {
         String searchTerm = etSearch.getText().toString().trim();
         if (searchTerm.isEmpty()) {
-            digitalLibraryViewModel.getAllBooks().observe(this, new Observer<PagedList<DigitalLibraryEntry>>() {
-                @Override
-                public void onChanged(PagedList<DigitalLibraryEntry> digitalLibraryEntries) {
-                    if (digitalLibraryEntries.size() == 0) {
-                        showPlaceHolder(true);
-                    } else {
-                        showPlaceHolder(false);
-                    }
-                    mAdapter.submitList(digitalLibraryEntries);
+            digitalLibraryViewModel.getAllBooks().observe(this, digitalLibraryEntries -> {
+                if (digitalLibraryEntries.size() == 0) {
+                    showPlaceHolder(true);
+                } else {
+                    showPlaceHolder(false);
                 }
+                mAdapter.submitList(digitalLibraryEntries);
             });
         } else {
-            digitalLibraryViewModel.getBookByName(searchTerm).observe(this, new Observer<PagedList<DigitalLibraryEntry>>() {
-                @Override
-                public void onChanged(PagedList<DigitalLibraryEntry> digitalLibraryEntries) {
-                    if (digitalLibraryEntries.size() == 0) {
-                        showPlaceHolder(true);
-                    } else {
-                        showPlaceHolder(false);
-                    }
-                    mAdapter.submitList(digitalLibraryEntries);
+            digitalLibraryViewModel.getBookByName(searchTerm).observe(this, digitalLibraryEntries -> {
+                if (digitalLibraryEntries.size() == 0) {
+                    showPlaceHolder(true);
+                } else {
+                    showPlaceHolder(false);
                 }
+                mAdapter.submitList(digitalLibraryEntries);
             });
         }
     }
@@ -195,10 +193,6 @@ public class DigitalLibraryActivity extends AppCompatActivity implements SharedP
     }
 
     private void onSyncClicked() {
-        Toast.makeText(this, "Sync Clicked", Toast.LENGTH_SHORT).show();
-        liveBooksData = digitalLibraryViewModel.getLiveDataOfBooks();
-        digitalLibraryViewModel.nullLiveData();
-        liveBooksData.removeObservers(this);
         liveBooksData = digitalLibraryViewModel.refreshLiveData();
         liveBooksData.observe(this, new Observer<QuerySnapshot>() {
             @Override

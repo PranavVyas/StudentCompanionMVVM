@@ -22,73 +22,17 @@ GNU Affero General Public License for more details.
     android:layout_height="match_parent"
     tools:context=".ui.fragments.MarketPlaceFragment">
 
-    <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:fabIcon="@drawable/ic_market_place"
-        app:fabText="Sell Something!"
-        app:fabColor="?attr/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_marketplace_search_query"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        style="@style/MyCustomOutlinedBoxTextInput"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:helperText="Leave blank for all results"
-        app:layout_constraintEnd_toStartOf="@+id/spinner_marketplace_fragment_category"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_marketplace_search_query"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            style="@style/MyCustomMaterialEditTextInput"
-            android:hint="Search Name"
-            android:inputType="textPersonName" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/btn_marketplace_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="Search"
-        style="@style/MyCustomMaterialButtonIcon"
-        app:icon="@drawable/ic_search"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_search_query" />
-
     <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_marketplace_search">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_marketplace_fragment_search_results"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item_holder_recycler_marketplace_item" />
+        app:layout_constraintTop_toBottomOf="@+id/text_input_marketplace_search_query">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/placeholder_marketplace_no_items"
@@ -121,19 +65,63 @@ GNU Affero General Public License for more details.
                 app:layout_constraintTop_toTopOf="@+id/imageView16" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_marketplace_fragment_search_results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_holder_recycler_marketplace_item" />
 
+    </FrameLayout>
 
     <Spinner
         android:id="@+id/spinner_marketplace_fragment_category"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/text_input_marketplace_search_query"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_input_marketplace_search_query"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:includeFontPadding="false"
+        android:text="Sell"
+        app:icon="@drawable/ic_file_upload"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_marketplace_search_query"
+        style="@style/MyCustomOutlinedBoxTextInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        app:endIconCheckable="true"
+        app:endIconDrawable="@drawable/ic_search"
+        app:endIconMode="custom"
+        app:helperText="Leave blank for all results"
+        app:layout_constraintEnd_toStartOf="@+id/spinner_marketplace_fragment_category"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_marketplace_search_query"
+            style="@style/MyCustomMaterialEditTextInput"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:hint="Search Name"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

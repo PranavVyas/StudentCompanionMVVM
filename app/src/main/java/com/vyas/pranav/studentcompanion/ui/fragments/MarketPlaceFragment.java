@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -49,7 +50,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
-import com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.adapters.MarketPlaceSellRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.models.ItemModel;
@@ -82,7 +82,7 @@ public class MarketPlaceFragment extends Fragment {
     @BindView(R.id.text_input_marketplace_search_query)
     TextInputLayout inputSearchTag;
     @BindView(R.id.floatingActionButton)
-    FloatingActionButton fab;
+    ExtendedFloatingActionButton fab;
     private static final String TAG = "MarketPlaceFragment";
 
     private MarketPlaceSellRecyclerAdapter mAdapter;
@@ -132,6 +132,7 @@ public class MarketPlaceFragment extends Fragment {
             }
         });
         startInstruction(getActivity());
+        inputSearchTag.setEndIconOnClickListener((view1 -> startFetchingData()));
     }
 
     private void populateUI() {
@@ -221,11 +222,6 @@ public class MarketPlaceFragment extends Fragment {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @OnClick(R.id.btn_marketplace_search)
-    void searchBtnClicked() {
-        startFetchingData();
     }
 
     private void startFetchingData() {

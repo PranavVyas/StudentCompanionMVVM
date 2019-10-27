@@ -284,7 +284,7 @@ public class SharedPreferencesUtils {
     }
 
     public boolean isDeveloperEnabled() {
-        return preferences.getBoolean(SHARED_PREF_IS_DEVELOPER_ENABLED, false);
+        return preferences.getBoolean(SHARED_PREF_IS_DEVELOPER_ENABLED, true);
     }
 
     public void setDeveloperEnabled(boolean isDeveloperEnabled) {

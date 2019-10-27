@@ -45,4 +45,7 @@ public interface AutoAttendancePlaceDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updatePlaceEntry(AutoAttendancePlaceEntry placeEntry);
+
+    @Query("DELETE FROM PlacesTable WHERE subject =:deleteSub")
+    void deletePlaceEntry(String deleteSub);
 }

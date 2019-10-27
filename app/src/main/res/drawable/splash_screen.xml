@@ -8,6 +8,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/cap" />
+            android:src="@drawable/ic_cap" />
     </item>
 </layer-list>

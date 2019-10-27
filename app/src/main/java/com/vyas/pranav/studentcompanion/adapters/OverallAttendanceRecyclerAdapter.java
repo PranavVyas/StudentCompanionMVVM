@@ -131,7 +131,7 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         holder.itemView.setOnClickListener(listener);
         holder.btnMore.setOnClickListener(listener);
 
-        float presentPresent = (presentDays * 100) / totalDays;
+        int currentAttendance = (int) Math.ceil((presentDays * 100f) / (presentDays + bunkedDays));
         int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (currentAttendanceCriteria / 100.0f)));
         int daysAvailableToBunk = daysTotalAvailableToBunk - bunkedDays;
         if (daysAvailableToBunk > 0) {
@@ -141,9 +141,9 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         } else {
             holder.tvAvailableToBunk.setText(Html.fromHtml("You have already bunked <b>" + (0 - daysAvailableToBunk) + " more lectures than required amount</b>"));
         }
-        holder.progressPresent.setProgressValue((int) presentPresent);
-        holder.progressPresent.setCenterTitle((int) presentPresent + " %");
-        int maxAttendance = (int) Math.ceil(((totalDays - bunkedDays) * 100.0) / totalDays);
+        double maxAttendance = Math.ceil(((totalDays - bunkedDays) * 100.0) / totalDays);
+        holder.progressPresent.setProgressValue(currentAttendance);
+        holder.progressPresent.setCenterTitle(currentAttendance + " %");
         if (maxAttendance > safePercent) {
             holder.cardMain.setCardBackgroundColor(context.getResources().getColor(R.color.colorSafeOverallAttendance));
             return;

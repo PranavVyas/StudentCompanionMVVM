@@ -61,7 +61,7 @@ public class AboutDeveloperFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         GlideApp.with(this)
-                .load(R.drawable.developer_image)
+                .load(R.drawable.image_developer)
                 .circleCrop()
                 .into(imageDeveloper);
     }

@@ -58,18 +58,16 @@ GNU Affero General Public License for more details.
         app:layout_constraintStart_toStartOf="@+id/tv_holder_dialog_sem_info_start_date"
         app:layout_constraintTop_toBottomOf="@+id/textView51" />
 
-    <TextView
-        android:id="@+id/tv_holder_dialog_sem_info_start_date"
-        style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/rounded_button"
-        android:padding="8dp"
+    <ImageView
+        android:id="@+id/imageView19"
+        android:layout_width="56sp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView53"
-        tools:text="22/02/2019" />
+        app:layout_constraintTop_toBottomOf="@+id/textView70"
+        app:srcCompat="@drawable/shape_circle"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/textView55"
@@ -90,22 +88,24 @@ GNU Affero General Public License for more details.
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
-        android:background="@drawable/rounded_button"
+        android:background="@drawable/shape_rounded_button"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView55"
         tools:text="31/01/2020" />
 
-    <ImageView
-        android:id="@+id/imageView19"
-        android:layout_width="56sp"
-        android:layout_height="56dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:id="@+id/tv_holder_dialog_sem_info_start_date"
+        style="@style/MyMaterialTextView.SmallTextViewBody1.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_rounded_button"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView70"
-        app:srcCompat="@drawable/circle"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/textView53"
+        tools:text="22/02/2019" />
 
     <ImageView
         android:id="@+id/imageView20"
@@ -131,7 +131,7 @@ GNU Affero General Public License for more details.
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/bottom_sheet_title_right_left_margin"
         android:padding="8dp"
-        android:background="@drawable/bordered_rounded_corner_rectangle"
+        android:background="@drawable/shape_bordered_rounded_corner_rectangle"
         android:text="Semester Information"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

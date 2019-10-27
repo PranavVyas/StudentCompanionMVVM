@@ -91,7 +91,7 @@ GNU Affero General Public License for more details.
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="Check the box if you want to get notified for new events happening in the collage" />
+                        android:text="Check the box if you want to get notified for new events happening in the college" />
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.checkbox.MaterialCheckBox

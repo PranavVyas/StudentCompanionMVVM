@@ -30,7 +30,7 @@ GNU Affero General Public License for more details.
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/bordered_rounded_corner_rectangle"
+        android:background="@drawable/shape_bordered_rounded_corner_rectangle"
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/title_attention"

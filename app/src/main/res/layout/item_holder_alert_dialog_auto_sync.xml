@@ -32,7 +32,7 @@ GNU Affero General Public License for more details.
         android:layout_marginTop="@dimen/bottom_sheet_title_top_margin"
         android:layout_marginEnd="8dp"
         android:text="Auto Sync"
-        android:background="@drawable/bordered_rounded_corner_rectangle"
+        android:background="@drawable/shape_bordered_rounded_corner_rectangle"
         android:gravity="center"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"

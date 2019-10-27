@@ -51,7 +51,7 @@ GNU Affero General Public License for more details.
 
     <SwitchPreference
         app:defaultValue="@bool/pref_def_value_switch_enable_night_mode"
-        app:icon="@drawable/ic_night_mode"
+        app:icon="@drawable/ic_night_mode_new"
         app:key="@string/pref_key_switch_enable_night_mode"
         app:summaryOff="@string/pref_summery_off_switch_enable_night_mode"
         app:summaryOn="@string/pref_summery_on_switch_enable_night_mode"
@@ -59,7 +59,7 @@ GNU Affero General Public License for more details.
 
     <SwitchPreference
         app:defaultValue="@bool/pref_def_value_switch_enable_smart_silent"
-        app:icon="@drawable/ic_silent"
+        app:icon="@drawable/ic_mute"
         app:key="@string/pref_key_switch_enable_smart_silent"
         app:summaryOff="@string/pref_summery_off_switch_enable_smart_silent"
         app:summaryOn="@string/pref_summery_on_switch_enable_smart_silent"

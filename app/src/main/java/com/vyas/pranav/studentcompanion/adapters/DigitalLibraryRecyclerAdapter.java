@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
@@ -114,7 +115,11 @@ public class DigitalLibraryRecyclerAdapter extends PagedListAdapter<DigitalLibra
 
             btnOk.setOnClickListener(view -> {
                 Intent openLink = new Intent(Intent.ACTION_VIEW, Uri.parse(getItem(getAdapterPosition()).getBookUrl()));
-                v.getContext().startActivity(openLink);
+                if (openLink.resolveActivity(v.getContext().getPackageManager()) != null) {
+                    v.getContext().startActivity(openLink);
+                } else {
+                    Toast.makeText(v.getContext(), "Link is Broken, Please report it to developer now", Toast.LENGTH_SHORT).show();
+                }
                 mDialog.dismiss();
             });
 

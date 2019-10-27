@@ -45,7 +45,7 @@ public class TutorialActivity extends FancyWalkthroughActivity {
 
         FancyWalkthroughCard welcomeCard = new FancyWalkthroughCard(getString(R.string.tut_welcome_title), getString(R.string.tut_welcome_desc), R.drawable.ic_logo);
         FancyWalkthroughCard attendance = new FancyWalkthroughCard(getString(R.string.tut_att_man_title), getString(R.string.tut_att_man_desc), R.drawable.ic_today_attendance);
-        FancyWalkthroughCard smartSilent = new FancyWalkthroughCard(getString(R.string.tut_smart_silent_title), getString(R.string.tut_smart_silent_desc), R.drawable.ic_silent);
+        FancyWalkthroughCard smartSilent = new FancyWalkthroughCard(getString(R.string.tut_smart_silent_title), getString(R.string.tut_smart_silent_desc), R.drawable.ic_mute);
         FancyWalkthroughCard autoAttendance = new FancyWalkthroughCard(getString(R.string.tut_auto_att_title), getString(R.string.tut_auto_att_desc), R.drawable.ic_auto_attendance_map);
         FancyWalkthroughCard resources = new FancyWalkthroughCard(getString(R.string.tut_resources_title), getString(R.string.tut_resources_desc), R.drawable.ic_resources_magic_wand);
         FancyWalkthroughCard digitalLibrary = new FancyWalkthroughCard(getString(R.string.tut_digital_library_title), getString(R.string.tut_digital_library_desc), R.drawable.ic_bookshelf);

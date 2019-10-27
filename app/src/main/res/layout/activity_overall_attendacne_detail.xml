@@ -35,7 +35,7 @@ GNU Affero General Public License for more details.
             app:layout_constraintEnd_toStartOf="@+id/imageView4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:srcCompat="@drawable/circle"
+            app:srcCompat="@drawable/shape_circle"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -45,7 +45,7 @@ GNU Affero General Public License for more details.
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView5"
             app:layout_constraintTop_toTopOf="@+id/imageView5"
-            app:srcCompat="@drawable/circle"
+            app:srcCompat="@drawable/shape_circle"
             tools:ignore="ContentDescription" />
 
         <ImageView
@@ -55,7 +55,7 @@ GNU Affero General Public License for more details.
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/imageView"
-            app:srcCompat="@drawable/circle"
+            app:srcCompat="@drawable/shape_circle"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -72,26 +72,16 @@ GNU Affero General Public License for more details.
             app:layout_constraintTop_toBottomOf="@+id/toolbar_overall_attendance_detail"
             tools:text="Engineering Mathematics 2" />
 
-        <me.itangqi.waveloadingview.WaveLoadingView
-            android:id="@+id/progress_overall_attendance_detail"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="8dp"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/progress_overall_attendance_detail_max_attendance"
+            app:layout_constraintEnd_toStartOf="@+id/imageView3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_overall_attendance_detail_subject"
-            app:wlv_borderColor="?attr/colorAccent"
-            app:wlv_borderWidth="1dp"
-            app:wlv_shapeType="circle"
-            app:wlv_titleCenterColor="@android:color/holo_blue_bright"
-            app:wlv_titleCenterSize="28sp"
-            app:wlv_titleCenterStrokeColor="@android:color/black"
-            app:wlv_triangle_direction="north"
-            app:wlv_waveAmplitude="60"
-            app:wlv_waveColor="?attr/colorAccent"
-            tools:wlv_titleCenter="50 %" />
+            app:layout_constraintTop_toBottomOf="@+id/textView4"
+            app:srcCompat="@drawable/shape_circle"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tv_overall_attendance_detail_present"
@@ -106,26 +96,29 @@ GNU Affero General Public License for more details.
             app:layout_constraintTop_toTopOf="@+id/imageView3"
             tools:text="150" />
 
-        <me.itangqi.waveloadingview.WaveLoadingView
-            android:id="@+id/progress_overall_attendance_detail_max_attendance"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <com.google.android.material.card.MaterialCardView
+            style="@style/MyMaterialCardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/progress_overall_attendance_detail"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/progress_overall_attendance_detail"
-            app:layout_constraintTop_toTopOf="@+id/progress_overall_attendance_detail"
-            app:wlv_borderColor="?attr/colorAccent"
-            app:wlv_borderWidth="1dp"
-            app:wlv_shapeType="circle"
-            app:wlv_titleCenterColor="@android:color/holo_blue_bright"
-            app:wlv_titleCenterSize="28sp"
-            app:wlv_titleCenterStrokeColor="@android:color/black"
-            app:wlv_triangle_direction="north"
-            app:wlv_waveAmplitude="60"
-            app:wlv_waveColor="?attr/colorAccent"
-            tools:wlv_titleCenter="50 %" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+            <TextView
+                android:id="@+id/tv_overall_attendance_detail_att_criteria"
+                style="@style/MyMaterialTextView.SmallTextViewBody1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="TextView"
+                android:gravity="center"
+                android:textStyle="italic" />
+        </com.google.android.material.card.MaterialCardView>
         <TextView
             android:id="@+id/tv_overall_attendance_detail_bunked"
             style="@style/MyMaterialTextView.SmallTextViewBody2"
@@ -168,16 +161,26 @@ GNU Affero General Public License for more details.
                 android:text="Overall Attendance" />
         </androidx.appcompat.widget.Toolbar>
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:id="@+id/progress_overall_attendance_detail"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/progress_overall_attendance_detail_max_attendance"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4"
-            app:srcCompat="@drawable/circle"
-            tools:ignore="ContentDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_overall_attendance_detail_subject"
+            app:wlv_borderColor="?attr/colorAccent"
+            app:wlv_borderWidth="1dp"
+            app:wlv_shapeType="circle"
+            app:wlv_titleCenterColor="?attr/custom_component_color_default"
+            app:wlv_titleCenterSize="28sp"
+            app:wlv_titleCenterStrokeColor="@android:color/black"
+            app:wlv_triangle_direction="north"
+            app:wlv_waveAmplitude="60"
+            app:wlv_waveColor="?attr/colorAccent"
+            tools:wlv_titleCenter="50 %" />
 
         <TextView
             android:id="@+id/textView2"
@@ -304,28 +307,26 @@ GNU Affero General Public License for more details.
             app:layout_constraintStart_toStartOf="@+id/progress_overall_attendance_detail_max_attendance"
             app:layout_constraintTop_toBottomOf="@+id/progress_overall_attendance_detail_max_attendance" />
 
-        <com.google.android.material.card.MaterialCardView
-            style="@style/MyMaterialCardView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:id="@+id/progress_overall_attendance_detail_max_attendance"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_overall_attendance_detail"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-            <TextView
-                android:id="@+id/tv_overall_attendance_detail_att_criteria"
-                style="@style/MyMaterialTextView.SmallTextViewBody1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="TextView"
-                android:textStyle="italic" />
-        </com.google.android.material.card.MaterialCardView>
+            app:layout_constraintStart_toEndOf="@+id/progress_overall_attendance_detail"
+            app:layout_constraintTop_toTopOf="@+id/progress_overall_attendance_detail"
+            app:wlv_borderColor="?attr/colorAccent"
+            app:wlv_borderWidth="1dp"
+            app:wlv_shapeType="circle"
+            app:wlv_titleCenterColor="?attr/custom_component_color_default"
+            app:wlv_titleCenterSize="28sp"
+            app:wlv_titleCenterStrokeColor="@android:color/black"
+            app:wlv_triangle_direction="north"
+            app:wlv_waveAmplitude="60"
+            app:wlv_waveColor="?attr/colorAccent"
+            tools:wlv_titleCenter="50 %" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

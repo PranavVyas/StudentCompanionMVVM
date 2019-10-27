@@ -29,7 +29,7 @@ GNU Affero General Public License for more details.
         android:layout_marginStart="@dimen/bottom_sheet_title_right_left_margin"
         android:layout_marginTop="@dimen/bottom_sheet_title_top_margin"
         android:layout_marginEnd="@dimen/bottom_sheet_title_right_left_margin"
-        android:background="@drawable/bordered_rounded_corner_rectangle"
+        android:background="@drawable/shape_bordered_rounded_corner_rectangle"
         android:gravity="center"
         android:padding="8dp"
         android:text="Set Up Time"

@@ -93,13 +93,12 @@ public class OverallAttendanceDetailActivity extends AppCompatActivity {
         tvBunkedDays.setText(String.format(Locale.US, "%d", entry.getBunkedDays()));
         int leftToBunk = (int) Math.ceil(entry.getTotalDays() * ((100.0 - currentAttendanceCriteria) / 100.0)) - entry.getBunkedDays();
         tvLeftToBunkDays.setText(String.format(Locale.US, "%d", leftToBunk));
-        int precentPercent = (entry.getPresentDays() * 100) / entry.getTotalDays();
+        int precentPercent = (int) Math.ceil((entry.getPresentDays() * 100f) / (entry.getBunkedDays() + entry.getPresentDays()));
         progressSubject.setProgressValue(precentPercent);
         progressSubject.setCenterTitle(precentPercent + " %");
         int maxAttendance = (int) Math.ceil(((entry.getTotalDays() - entry.getBunkedDays()) * 100.0) / entry.getTotalDays());
         progressSubjectMax.setProgressValue(maxAttendance);
         progressSubjectMax.setCenterTitle(maxAttendance + " %");
         tvAttendanceCriteria.setText("You have set Attendance criteria as : " + currentAttendanceCriteria + "%");
-
     }
 }

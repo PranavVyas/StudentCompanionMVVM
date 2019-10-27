@@ -23,16 +23,15 @@ GNU Affero General Public License for more details.
     tools:context=".ui.fragments.NotificationFragment">
     <!--tools:background="?attr/custom_background_main"-->
 
-    <com.robertlevonyan.views.customfloatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_notification_add_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        app:fabColor="?attr/colorAccent"
-        app:fabText="Add Event"
-        app:fabTextAllCaps="true"
-        app:fabType="circle"
+        android:focusable="true"
+        android:text="Add Event"
         app:layout_constraintBottom_toBottomOf="@+id/viewpager_notifications_frag"
+        app:icon="@drawable/ic_add_circle_material"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <com.google.android.material.tabs.TabLayout

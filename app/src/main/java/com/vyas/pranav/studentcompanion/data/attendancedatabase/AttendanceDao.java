@@ -71,4 +71,6 @@ public interface AttendanceDao {
     @Query("DELETE FROM AttendanceIndividual WHERE date > :date")
     void removeAttendanceAfter(Date date);
 
+    @Query("SELECT * FROM AttendanceIndividual WHERE subjectName = :deleteSub")
+    List<AttendanceEntry> getAllAttendanceOfSub(String deleteSub);
 }

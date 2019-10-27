@@ -26,25 +26,40 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;
+import com.vyas.pranav.studentcompanion.adapters.DownloadRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.lecturedatabase.LectureEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
+import com.vyas.pranav.studentcompanion.data.models.DownloadModel;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
+import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.Constants;
 import com.vyas.pranav.studentcompanion.utils.ConverterUtils;
+import com.vyas.pranav.studentcompanion.utils.FirestoreQueryLiveData;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -79,7 +94,8 @@ public class ImportExportActivity extends AppCompatActivity {
     Button btnContinue;
     @BindView(R.id.textView8)
     TextView tvOr;
-
+    @BindView(R.id.divider15)
+    View divider;
 
     private SharedPreferencesUtils sharedPreferencesUtils;
     private MainDatabase mDb;
@@ -98,6 +114,7 @@ public class ImportExportActivity extends AppCompatActivity {
         backDbPath = Environment.getExternalStorageDirectory().getPath() + "/Student Companion Backup/" + MainDatabase.DB_NAME;
         if (getIntent().getBooleanExtra(EXTRA_FORCE_START_ACTIVITY, false)) {
             tvOr.setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);
             btnStartFresh.setVisibility(View.GONE);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             btnContinue.setVisibility(View.VISIBLE);
@@ -133,7 +150,7 @@ public class ImportExportActivity extends AppCompatActivity {
             btnImport.setEnabled(true);
             btnImport.setImageResource(R.drawable.ic_arrow_down_rounded);
         } else {
-            tvStatus.setText("No Backup Found, You can download it form website and place it in main directory in external storage");
+            tvStatus.setText("No Backup Found, You can download it from website and place it in main directory in external storage");
             btnImport.setEnabled(false);
             btnImport.setImageResource(R.drawable.ic_delete);
         }
@@ -276,5 +293,110 @@ public class ImportExportActivity extends AppCompatActivity {
         File dbShm = new File(dbMain.getParent(), MainDatabase.DB_NAME + "-shm");
         File dbWal = new File(dbMain.getParent(), MainDatabase.DB_NAME + "-wal");
         return dbMain.exists() && dbShm.exists() && dbWal.exists();
+    }
+
+    @OnClick(R.id.btn_setup_check_download)
+    void checkAndDownloadClicked() {
+        //check for internet connection
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            if (AttendanceUtils.hasInternetAccess(this)) {
+                AppExecutors.getInstance().mainThread().execute(() -> {
+                    BottomSheetDialog mDialog = new BottomSheetDialog(this);
+                    mDialog.setContentView(R.layout.item_holder_bottom_sheet_check_and_download);
+                    mDialog.show();
+
+                    RecyclerView rv = mDialog.findViewById(R.id.rv_bottom_holder_check_download_list);
+                    LinearLayout progressContainer = mDialog.findViewById(R.id.linear_bottom_holder_check_download);
+                    TextView tvProgressStatus = mDialog.findViewById(R.id.tv_bottom_holder_check_download_progress_status);
+
+                    progressContainer.setVisibility(View.VISIBLE);
+                    rv.setVisibility(View.INVISIBLE);
+                    DividerItemDecoration rvDivider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+                    tvProgressStatus.setText("Getting Available Downloads, Please Wait...");
+                    DownloadRecyclerAdapter mAdapter = new DownloadRecyclerAdapter();
+                    mAdapter.setOnDownloadSelectedListener(downloadModel -> {
+                        Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                .withListener(new PermissionListener() {
+                                    @Override
+                                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                                        startDownloadAndImportDb(downloadModel, progressContainer, tvProgressStatus, rv);
+                                    }
+
+                                    @Override
+                                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                                        Toast.makeText(ImportExportActivity.this, "Writing Permission is needed to import database!", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                                    }
+                                }).check();
+                    });
+
+                    rv.addItemDecoration(rvDivider);
+                    rv.setAdapter(mAdapter);
+                    rv.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+                    FirebaseFirestore mRef = FirebaseFirestore.getInstance();
+                    Query dataQuery = mRef.collection("dbs").document("svnit").collection("downloads");
+                    FirestoreQueryLiveData availableDownloadList = new FirestoreQueryLiveData(dataQuery);
+                    availableDownloadList.observe(this, queryDocumentSnapshots -> {
+                        List<DownloadModel> downloadModels = queryDocumentSnapshots.toObjects(DownloadModel.class);
+                        Logger.d("Available Downloads: " + downloadModels.size());
+                        mAdapter.submitList(downloadModels);
+                        progressContainer.setVisibility(View.INVISIBLE);
+                        rv.setVisibility(View.VISIBLE);
+                    });
+                });
+            } else {
+                //Internet Connection is not available
+                AppExecutors.getInstance().mainThread().execute(() -> {
+                    Toast.makeText(this, "Internet Connection is Required!", Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+    }
+
+    private void startDownloadAndImportDb(DownloadModel downloadModel, LinearLayout progressContainer, TextView tvProgressStatus, RecyclerView rv) {
+        progressContainer.setVisibility(View.VISIBLE);
+        rv.setVisibility(View.INVISIBLE);
+        tvProgressStatus.setText("Downloading File 1 of 3");
+        String dbPath = downloadModel.getUrl();
+//        String dbUri = Environment.getExternalStorageDirectory().getPath() + "/Student Companion Backup/" + MainDatabase.DB_NAME;
+//        String walUri = Environment.getExternalStorageDirectory().getPath() + "/Student Companion Backup/" + MainDatabase.DB_NAME + "-wal";
+//        String shmUri = Environment.getExternalStorageDirectory().getPath() + "/Student Companion Backup/" + MainDatabase.DB_NAME + "-shm";
+        FirebaseStorage mStorage = FirebaseStorage.getInstance();
+        StorageReference mDbRef = mStorage.getReference().child("dbs").child(dbPath);
+        try {
+            String parentPath = Environment.getExternalStorageDirectory().getPath() + "/Student Companion Backup";
+            File dir = new File(parentPath);
+            if (!dir.exists()) {
+                boolean mkdirs = dir.mkdirs();
+            }
+            File DbFile = new File(parentPath + "/" + MainDatabase.DB_NAME);
+            File WalFile = new File(parentPath + "/" + MainDatabase.DB_NAME + "-wal");
+            File ShmFile = new File(parentPath + "/" + MainDatabase.DB_NAME + "-shm");
+            DbFile.createNewFile();
+            WalFile.createNewFile();
+            ShmFile.createNewFile();
+//            FileOutputStream s = FileUtils.openOutputStream(DbFileOld);
+//            s.close();
+//            FileOutputStream s2 = FileUtils.openOutputStream(WalFileOld);
+//            s.close();
+//            FileOutputStream s3 = FileUtils.openOutputStream(DbFileOld);
+//            s.close();
+            mDbRef.child("MainDatabase").getFile(DbFile).addOnSuccessListener(taskSnapshot -> {
+                tvProgressStatus.setText("Downloading File 2 of 3");
+                mDbRef.child("MainDatabase-wal").getFile(WalFile).addOnSuccessListener(taskSnapshot1 -> {
+                    tvProgressStatus.setText("Downloading File 3 of 3");
+                    mDbRef.child("MainDatabase-shm").getFile(ShmFile).addOnSuccessListener(taskSnapshot2 -> {
+                        tvProgressStatus.setText("Download Successful, Importing Data...");
+                        importClicked();
+                    }).addOnFailureListener(e -> tvProgressStatus.setText("Downloading File 3 failed, please close this and retry\nIf Problem persists Report Bug!"));
+                }).addOnFailureListener(e -> tvProgressStatus.setText("Downloading File 2 failed, please close this and retry\nIf Problem persists Report Bug!"));
+            }).addOnFailureListener(e -> tvProgressStatus.setText("Downloading File 1 failed, please close this and retry\nIf Problem persists Report Bug!"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

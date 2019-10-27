@@ -27,6 +27,7 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -259,11 +260,13 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
     private void checkForDeveloperTools() {
         if (!appSettingsViewModel.isDeveloperEnabled()) {
             if (findPreference(getString(R.string.pref_key_developer_tools)) != null) {
-                getPreferenceScreen().removePreference(findPreference(getString(R.string.pref_key_developer_tools)));
+                findPreference(getString(R.string.pref_key_developer_tools)).setVisible(false);
+//                getPreferenceScreen().removePreference(findPreference(getString(R.string.pref_key_developer_tools)));
             }
         } else {
             if (findPreference(getString(R.string.pref_key_developer_tools)) == null) {
-                getPreferenceScreen().addPreference(findPreference(getString(R.string.pref_key_developer_tools)));
+                findPreference(getString(R.string.pref_key_developer_tools)).setVisible(true);
+//                getPreferenceScreen().addPreference(findPreference(getString(R.string.pref_key_developer_tools)));
             }
             findPreference(getString(R.string.pref_key_developer_tools)).setOnPreferenceClickListener((preference -> {
                 Intent intent = new Intent(getContext(), DeveloperActivity.class);
@@ -283,7 +286,8 @@ public class AppSettingsFragment extends PreferenceFragmentCompat implements Sha
             return true;
         } else {
             //We can not change value here..We need to revert back now
-            showSnackbar("Permission is not granted\nPlease Grant Do Not Disturb Access to StudentCompanion");
+
+            Toast.makeText(getContext(), "Permission is not granted\nPlease Grant Do Not Disturb Access to Student Companion", Toast.LENGTH_LONG).show();
             NotificationManager nm = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
             if (Build.VERSION.SDK_INT >= 24 && !nm.isNotificationPolicyAccessGranted()) {
                 Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);

@@ -166,7 +166,7 @@ public class SetUpDatesFragment extends Fragment {
         } else if (!validateSemNo()) {
             inputSemNo.setError("Please Input Correct Sem No");
         } else if (TextUtils.isEmpty(setUpViewModel.getCurrentPath())) {
-            Toast.makeText(getContext(), "Collage is not Selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "College is not Selected", Toast.LENGTH_SHORT).show();
         } else {
             inputSemNo.setErrorEnabled(false);
             setSemNo();

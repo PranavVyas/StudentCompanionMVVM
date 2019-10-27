@@ -159,8 +159,8 @@
 
     <string name="about_developer_about_me">● Google Certified Android Associate Developer\n● Udacity Certified Android Developer\n● I like to develop Android Apps as my hobby\n● To know more <u>click here</u></string>
     <string name="developer_website">https://student-companion-vyas.000webhostapp.com/about-developer</string>
-    <string name="version_info">1.0.0\n(See Open Source License For License Info)</string>
-    <string name="last_update_info">August 2019</string>
+    <string name="version_info">1.1.0\n(See Open Source License For License Info)</string>
+    <string name="last_update_info">September 2019</string>
     <string name="app_desc">The Student Companion is as the name suggest comes with many features like Attendance Manager which can predict your attendance, Smart Silent, Timetable, Holidays, Auto Attendance, Reminder to fill attendance, Night Mode, etc…</string>
     <string name="terms_and_conditions">Terms and Conditions (Click Here)</string>
     <string name="developer">Pranav Vyas</string>
@@ -180,5 +180,6 @@
     <string name="extra_help_make_it_better">Help me make it better! (Click Here to contact)</string>
     <string name="extra_help_make_it_better_desc">Please contact me for source code and contributions!!</string>
     <string name="share_message_digital_library">\n\nIt has some awesome features like:\n●Attendance Manager\n●Bunk Planner\n●Notes Manager\n●Buy Sell Items\n●Digital Library and many more…\n\nLink For Full Features List:</string>
+    <string name="navigation_report_bug">Report Bug</string>
 
 </resources>

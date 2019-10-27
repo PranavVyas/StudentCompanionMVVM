@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -53,4 +54,10 @@ public interface TimetableDao {
 
     @Query("SELECT * FROM TimeTable ORDER BY _ID")
     List<TimetableEntry> getFullTimetableMainThread();
+
+    @Query("SELECT * FROM TimeTable WHERE subName = :s")
+    List<TimetableEntry> getTimetableForSubjectToDelete(String s);
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    void updateTimetableEntries(List<TimetableEntry> timetableForSubjectToDelete);
 }

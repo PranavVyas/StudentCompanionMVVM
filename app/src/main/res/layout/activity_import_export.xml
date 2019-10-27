@@ -44,6 +44,7 @@ GNU Affero General Public License for more details.
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:text="Continue to use App"
+                app:icon="@drawable/ic_arrow_right_bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,14 +57,12 @@ GNU Affero General Public License for more details.
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
                 android:text="Setup Fresh"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:icon="@drawable/ic_magic_wand_material"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             <ImageView
                 android:id="@+id/image_import_export_export"
@@ -165,6 +164,58 @@ GNU Affero General Public License for more details.
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_import_export_status" />
+
+            <Button
+                android:id="@+id/btn_setup_check_download"
+                style="@style/MyCustomMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:text="Check and Download"
+                app:icon="@drawable/ic_file_download_material"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView63" />
+
+            <TextView
+                android:id="@+id/textView59"
+                style="@style/MyMaterialTextView.MediumTextViewHeadLine6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="OR"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider23" />
+
+            <TextView
+                android:id="@+id/textView63"
+                style="@style/MyMaterialTextView.SmallSubtitleTextViewBody2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Check available online database and select one to import directly!"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView59" />
+
+            <View
+                android:id="@+id/divider23"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="32dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_setup_fresh" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

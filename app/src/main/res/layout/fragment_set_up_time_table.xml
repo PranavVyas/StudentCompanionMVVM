@@ -57,7 +57,7 @@ GNU Affero General Public License for more details.
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/bordered_rounded_corner_rectangle"
+        android:background="@drawable/shape_bordered_rounded_corner_rectangle"
         android:padding="4dp"
         android:textAlignment="center"
         style="@style/MyMaterialTextView.MediumTextViewHeadLine6"

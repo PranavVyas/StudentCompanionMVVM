@@ -77,17 +77,7 @@ public class DigitalLibraryViewModel extends AndroidViewModel {
         sharedPreferencesUtils.setFileFirstTimeOpened(file, isFirstTimeOpened);
     }
 
-    public FirestoreQueryLiveData getLiveDataOfBooks() {
-        return liveBooksData;
-    }
-
-    public void nullLiveData() {
-        this.liveBooksData = null;
-    }
-
     public FirestoreQueryLiveData refreshLiveData() {
-        nullLiveData();
-        this.liveBooksData = new FirestoreQueryLiveData(booksRef);
         return liveBooksData;
     }
 }
