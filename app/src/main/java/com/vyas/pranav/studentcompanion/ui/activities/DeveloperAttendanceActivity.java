@@ -29,7 +29,7 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.picker.MaterialStyledDatePickerDialog;
+import com.google.android.material.datepicker.MaterialStyledDatePickerDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.orhanobut.logger.Logger;
 import com.vyas.pranav.studentcompanion.R;

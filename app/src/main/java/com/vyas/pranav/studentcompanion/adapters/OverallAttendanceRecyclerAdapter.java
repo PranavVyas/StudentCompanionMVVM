@@ -15,6 +15,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU Affero General Public License for more details.
 */
+
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -40,6 +41,7 @@ import com.google.gson.Gson;
 import com.vyas.pranav.studentcompanion.R;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.ui.activities.OverallAttendanceDetailActivity;
+import com.vyas.pranav.studentcompanion.ui.activities.QuickAnalysisOverallActivity;
 import com.vyas.pranav.studentcompanion.utils.SharedPreferencesUtils;
 
 import butterknife.BindView;
@@ -130,6 +132,11 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
 
         holder.itemView.setOnClickListener(listener);
         holder.btnMore.setOnClickListener(listener);
+        holder.btnAnalysis.setOnClickListener((view -> {
+            Intent intent = new Intent(holder.itemView.getContext(), QuickAnalysisOverallActivity.class);
+            intent.putExtra(QuickAnalysisOverallActivity.EXTRA_SUBEJECT_NAME_QUICK_ANALYSIS, item.getSubName());
+            holder.itemView.getContext().startActivity(intent);
+        }));
 
         int currentAttendance = (int) Math.ceil((presentDays * 100f) / (presentDays + bunkedDays));
         int daysTotalAvailableToBunk = (int) Math.ceil(totalDays * (1f - (currentAttendanceCriteria / 100.0f)));
@@ -169,6 +176,8 @@ public class OverallAttendanceRecyclerAdapter extends ListAdapter<OverallAttenda
         MaterialCardView cardMain;
         @BindView(R.id.btn_overall_attendance_more)
         Button btnMore;
+        @BindView(R.id.btn_overall_attendance_analysis)
+        Button btnAnalysis;
 
         OverallAttendanceHolder(@NonNull View itemView) {
             super(itemView);

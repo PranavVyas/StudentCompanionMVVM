@@ -314,4 +314,9 @@ public class SharedPreferencesUtils {
             context.setTheme(R.style.AppTheme);
         }
     }
+
+    public void setSmartSilentEnabled(boolean isOn) {
+        editor.putBoolean(context.getString(R.string.pref_key_switch_enable_smart_silent), isOn);
+        editor.apply();
+    }
 }

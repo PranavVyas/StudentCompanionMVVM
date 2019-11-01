@@ -82,18 +82,32 @@ GNU Affero General Public License for more details.
 
         <Button
             android:id="@+id/btn_overall_attendance_more"
-            style="@style/MyCustomMaterialButton"
+            style="@style/MyCustomMaterialButtonIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="8dp"
             android:text="More"
             app:icon="@drawable/ic_chevron_right"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tv_recycler_overall_attendance_available_to_bunk"
+            app:layout_constraintEnd_toStartOf="@+id/btn_overall_attendance_analysis"
             app:layout_constraintStart_toStartOf="@+id/tv_recycler_overall_attendance_available_to_bunk"
             app:layout_constraintTop_toBottomOf="@+id/tv_recycler_overall_attendance_available_to_bunk" />
+
+        <Button
+            android:id="@+id/btn_overall_attendance_analysis"
+            style="@style/MyCustomMaterialButtonIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp"
+            android:text="Analysis"
+            app:icon="@drawable/ic_analysis_desktop"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_overall_attendance_more"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_overall_attendance_more"
+            app:layout_constraintTop_toTopOf="@+id/btn_overall_attendance_more" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

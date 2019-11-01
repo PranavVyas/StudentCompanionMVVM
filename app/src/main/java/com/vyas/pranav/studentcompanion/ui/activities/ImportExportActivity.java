@@ -55,6 +55,7 @@ import com.vyas.pranav.studentcompanion.adapters.DownloadRecyclerAdapter;
 import com.vyas.pranav.studentcompanion.data.lecturedatabase.LectureEntry;
 import com.vyas.pranav.studentcompanion.data.maindatabase.MainDatabase;
 import com.vyas.pranav.studentcompanion.data.models.DownloadModel;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForDoingDailyJobs;
 import com.vyas.pranav.studentcompanion.utils.AppExecutors;
 import com.vyas.pranav.studentcompanion.utils.AttendanceUtils;
 import com.vyas.pranav.studentcompanion.utils.Constants;
@@ -278,6 +279,7 @@ public class ImportExportActivity extends AppCompatActivity {
             sharedPreferencesUtils.setTutorialDone(!showTutCheckbox.isChecked());
             sharedPreferencesUtils.setRestoreDone(true);
             sharedPreferencesUtils.setAppFirstRun(false);
+            DailyJobForDoingDailyJobs.scheduleJob();
             AppExecutors.getInstance().mainThread().execute(() -> {
                 tvStatus.setText("Successfully Restored Database!");
                 Intent intent = new Intent(ImportExportActivity.this, TutorialActivity.class);

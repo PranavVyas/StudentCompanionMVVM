@@ -99,7 +99,6 @@ GNU Affero General Public License for more details.
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/img_holiday_placeholder"
                 app:layout_constraintBottom_toBottomOf="parent"

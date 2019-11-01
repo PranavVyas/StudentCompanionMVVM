@@ -73,4 +73,7 @@ public interface AttendanceDao {
 
     @Query("SELECT * FROM AttendanceIndividual WHERE subjectName = :deleteSub")
     List<AttendanceEntry> getAllAttendanceOfSub(String deleteSub);
+
+    @Query("SELECT * FROM AttendanceIndividual WHERE subjectName = :subject")
+    LiveData<List<AttendanceEntry>> getAttendanceForSubject(String subject);
 }

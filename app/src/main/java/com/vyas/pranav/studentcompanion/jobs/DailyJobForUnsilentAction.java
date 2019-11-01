@@ -43,7 +43,7 @@ public class DailyJobForUnsilentAction extends Job {
 
     public static final String TAG = "DailyJobForUnsilentAction";
 
-    public static void scheduleDeviceSilentAtTime(long time) {
+    public static void scheduleDeviceUnsilentAtTime(long time) {
         long currentTimeInMillis = getCurrentTimeInMillis();
         long timeInMillis = time - currentTimeInMillis;
         Logger.d("Time - current time = " + time + " - " + currentTimeInMillis + " = " + timeInMillis);

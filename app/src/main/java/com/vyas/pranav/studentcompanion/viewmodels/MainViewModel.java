@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vyas.pranav.studentcompanion.data.overallattendancedatabase.OverallAttendanceEntry;
 import com.vyas.pranav.studentcompanion.jobs.DailyJobForSilentAction;
+import com.vyas.pranav.studentcompanion.jobs.DailyJobForUnsilentAction;
 import com.vyas.pranav.studentcompanion.repositories.AppSettingsRepository;
 import com.vyas.pranav.studentcompanion.repositories.NotificationRepository;
 import com.vyas.pranav.studentcompanion.repositories.OverallAttendanceRepository;
@@ -79,6 +80,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public void removePendingJobs() {
         DailyJobForSilentAction.cancelAllJobs();
+        DailyJobForUnsilentAction.cancelAllJobs();
         Toast.makeText(application, "Removed all Jobs for Silent Action", Toast.LENGTH_SHORT).show();
     }
 
@@ -101,4 +103,7 @@ public class MainViewModel extends AndroidViewModel {
         return allOverallAttendance;
     }
 
+    public void stopSmartSilent() {
+        sharedPreferencesUtils.setSmartSilentEnabled(false);
+    }
 }

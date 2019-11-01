@@ -257,6 +257,8 @@ public class MainActivity extends AppCompatActivity implements AppSettingsFragme
                 Intent startSignInActivity = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(startSignInActivity);
                 mainViewModel.removePendingJobs();
+                mainViewModel.stopSmartSilent();
+                Toast.makeText(MainActivity.this, "Smart Silent is Disabled Now! Please Re-enable it when you login again..", Toast.LENGTH_LONG).show();
                 MainActivity.this.finish();
             }
         });
